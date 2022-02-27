@@ -46,6 +46,7 @@
 		E753375327CAFAFF0010E3D2 /* Wasserflug-tvOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Wasserflug-tvOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E753375727CAFAFF0010E3D2 /* Wasserflug_tvOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wasserflug_tvOSUITests.swift; sourceTree = "<group>"; };
 		E753375927CAFAFF0010E3D2 /* Wasserflug_tvOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wasserflug_tvOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		E753376F27CB043D0010E3D2 /* FloatplaneAPIClient */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FloatplaneAPIClient; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +79,7 @@
 		E753373027CAFAFE0010E3D2 = {
 			isa = PBXGroup;
 			children = (
+				E753376E27CB043D0010E3D2 /* Packages */,
 				E753373B27CAFAFE0010E3D2 /* Wasserflug-tvOS */,
 				E753374C27CAFAFF0010E3D2 /* Wasserflug-tvOSTests */,
 				E753375627CAFAFF0010E3D2 /* Wasserflug-tvOSUITests */,
@@ -129,6 +131,14 @@
 				E753375927CAFAFF0010E3D2 /* Wasserflug_tvOSUITestsLaunchTests.swift */,
 			);
 			path = "Wasserflug-tvOSUITests";
+			sourceTree = "<group>";
+		};
+		E753376E27CB043D0010E3D2 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				E753376F27CB043D0010E3D2 /* FloatplaneAPIClient */,
+			);
+			name = Packages;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
