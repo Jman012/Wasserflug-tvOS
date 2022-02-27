@@ -14,6 +14,8 @@
 		E753374E27CAFAFF0010E3D2 /* Wasserflug_tvOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753374D27CAFAFF0010E3D2 /* Wasserflug_tvOSTests.swift */; };
 		E753375827CAFAFF0010E3D2 /* Wasserflug_tvOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753375727CAFAFF0010E3D2 /* Wasserflug_tvOSUITests.swift */; };
 		E753375A27CAFAFF0010E3D2 /* Wasserflug_tvOSUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753375927CAFAFF0010E3D2 /* Wasserflug_tvOSUITestsLaunchTests.swift */; };
+		E753376827CAFF550010E3D2 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = E753376727CAFF550010E3D2 /* CachedAsyncImage */; };
+		E753376B27CB01FD0010E3D2 /* Vapor in Frameworks */ = {isa = PBXBuildFile; productRef = E753376A27CB01FD0010E3D2 /* Vapor */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +53,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E753376827CAFF550010E3D2 /* CachedAsyncImage in Frameworks */,
+				E753376B27CB01FD0010E3D2 /* Vapor in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,6 +147,10 @@
 			dependencies = (
 			);
 			name = "Wasserflug-tvOS";
+			packageProductDependencies = (
+				E753376727CAFF550010E3D2 /* CachedAsyncImage */,
+				E753376A27CB01FD0010E3D2 /* Vapor */,
+			);
 			productName = "Wasserflug-tvOS";
 			productReference = E753373927CAFAFE0010E3D2 /* Wasserflug-tvOS.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +223,10 @@
 				Base,
 			);
 			mainGroup = E753373027CAFAFE0010E3D2;
+			packageReferences = (
+				E753376627CAFF550010E3D2 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
+				E753376927CB01FD0010E3D2 /* XCRemoteSwiftPackageReference "vapor" */,
+			);
 			productRefGroup = E753373A27CAFAFE0010E3D2 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -428,12 +440,13 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.jamesnl.Wasserflug-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 15.0;
 			};
 			name = Debug;
 		};
@@ -454,12 +467,13 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.jamesnl.Wasserflug-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 15.0;
 			};
 			name = Release;
 		};
@@ -579,6 +593,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E753376627CAFF550010E3D2 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image";
+			requirement = {
+				kind = exactVersion;
+				version = 2.0.0;
+			};
+		};
+		E753376927CB01FD0010E3D2 /* XCRemoteSwiftPackageReference "vapor" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vapor/vapor";
+			requirement = {
+				kind = exactVersion;
+				version = 4.55.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E753376727CAFF550010E3D2 /* CachedAsyncImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E753376627CAFF550010E3D2 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
+			productName = CachedAsyncImage;
+		};
+		E753376A27CB01FD0010E3D2 /* Vapor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E753376927CB01FD0010E3D2 /* XCRemoteSwiftPackageReference "vapor" */;
+			productName = Vapor;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E753373127CAFAFE0010E3D2 /* Project object */;
 }
