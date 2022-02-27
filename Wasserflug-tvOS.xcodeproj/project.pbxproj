@@ -1,0 +1,584 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E753373D27CAFAFE0010E3D2 /* Wasserflug_tvOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753373C27CAFAFE0010E3D2 /* Wasserflug_tvOSApp.swift */; };
+		E753373F27CAFAFE0010E3D2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753373E27CAFAFE0010E3D2 /* ContentView.swift */; };
+		E753374127CAFAFF0010E3D2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E753374027CAFAFF0010E3D2 /* Assets.xcassets */; };
+		E753374427CAFAFF0010E3D2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E753374327CAFAFF0010E3D2 /* Preview Assets.xcassets */; };
+		E753374E27CAFAFF0010E3D2 /* Wasserflug_tvOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753374D27CAFAFF0010E3D2 /* Wasserflug_tvOSTests.swift */; };
+		E753375827CAFAFF0010E3D2 /* Wasserflug_tvOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753375727CAFAFF0010E3D2 /* Wasserflug_tvOSUITests.swift */; };
+		E753375A27CAFAFF0010E3D2 /* Wasserflug_tvOSUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753375927CAFAFF0010E3D2 /* Wasserflug_tvOSUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E753374A27CAFAFF0010E3D2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E753373127CAFAFE0010E3D2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E753373827CAFAFE0010E3D2;
+			remoteInfo = "Wasserflug-tvOS";
+		};
+		E753375427CAFAFF0010E3D2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E753373127CAFAFE0010E3D2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E753373827CAFAFE0010E3D2;
+			remoteInfo = "Wasserflug-tvOS";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		E753373927CAFAFE0010E3D2 /* Wasserflug-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wasserflug-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E753373C27CAFAFE0010E3D2 /* Wasserflug_tvOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wasserflug_tvOSApp.swift; sourceTree = "<group>"; };
+		E753373E27CAFAFE0010E3D2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		E753374027CAFAFF0010E3D2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E753374327CAFAFF0010E3D2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		E753374927CAFAFF0010E3D2 /* Wasserflug-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Wasserflug-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E753374D27CAFAFF0010E3D2 /* Wasserflug_tvOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wasserflug_tvOSTests.swift; sourceTree = "<group>"; };
+		E753375327CAFAFF0010E3D2 /* Wasserflug-tvOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Wasserflug-tvOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E753375727CAFAFF0010E3D2 /* Wasserflug_tvOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wasserflug_tvOSUITests.swift; sourceTree = "<group>"; };
+		E753375927CAFAFF0010E3D2 /* Wasserflug_tvOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wasserflug_tvOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E753373627CAFAFE0010E3D2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E753374627CAFAFF0010E3D2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E753375027CAFAFF0010E3D2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E753373027CAFAFE0010E3D2 = {
+			isa = PBXGroup;
+			children = (
+				E753373B27CAFAFE0010E3D2 /* Wasserflug-tvOS */,
+				E753374C27CAFAFF0010E3D2 /* Wasserflug-tvOSTests */,
+				E753375627CAFAFF0010E3D2 /* Wasserflug-tvOSUITests */,
+				E753373A27CAFAFE0010E3D2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E753373A27CAFAFE0010E3D2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E753373927CAFAFE0010E3D2 /* Wasserflug-tvOS.app */,
+				E753374927CAFAFF0010E3D2 /* Wasserflug-tvOSTests.xctest */,
+				E753375327CAFAFF0010E3D2 /* Wasserflug-tvOSUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E753373B27CAFAFE0010E3D2 /* Wasserflug-tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				E753373C27CAFAFE0010E3D2 /* Wasserflug_tvOSApp.swift */,
+				E753373E27CAFAFE0010E3D2 /* ContentView.swift */,
+				E753374027CAFAFF0010E3D2 /* Assets.xcassets */,
+				E753374227CAFAFF0010E3D2 /* Preview Content */,
+			);
+			path = "Wasserflug-tvOS";
+			sourceTree = "<group>";
+		};
+		E753374227CAFAFF0010E3D2 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				E753374327CAFAFF0010E3D2 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		E753374C27CAFAFF0010E3D2 /* Wasserflug-tvOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				E753374D27CAFAFF0010E3D2 /* Wasserflug_tvOSTests.swift */,
+			);
+			path = "Wasserflug-tvOSTests";
+			sourceTree = "<group>";
+		};
+		E753375627CAFAFF0010E3D2 /* Wasserflug-tvOSUITests */ = {
+			isa = PBXGroup;
+			children = (
+				E753375727CAFAFF0010E3D2 /* Wasserflug_tvOSUITests.swift */,
+				E753375927CAFAFF0010E3D2 /* Wasserflug_tvOSUITestsLaunchTests.swift */,
+			);
+			path = "Wasserflug-tvOSUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E753373827CAFAFE0010E3D2 /* Wasserflug-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E753375D27CAFAFF0010E3D2 /* Build configuration list for PBXNativeTarget "Wasserflug-tvOS" */;
+			buildPhases = (
+				E753373527CAFAFE0010E3D2 /* Sources */,
+				E753373627CAFAFE0010E3D2 /* Frameworks */,
+				E753373727CAFAFE0010E3D2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Wasserflug-tvOS";
+			productName = "Wasserflug-tvOS";
+			productReference = E753373927CAFAFE0010E3D2 /* Wasserflug-tvOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E753374827CAFAFF0010E3D2 /* Wasserflug-tvOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E753376027CAFAFF0010E3D2 /* Build configuration list for PBXNativeTarget "Wasserflug-tvOSTests" */;
+			buildPhases = (
+				E753374527CAFAFF0010E3D2 /* Sources */,
+				E753374627CAFAFF0010E3D2 /* Frameworks */,
+				E753374727CAFAFF0010E3D2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E753374B27CAFAFF0010E3D2 /* PBXTargetDependency */,
+			);
+			name = "Wasserflug-tvOSTests";
+			productName = "Wasserflug-tvOSTests";
+			productReference = E753374927CAFAFF0010E3D2 /* Wasserflug-tvOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E753375227CAFAFF0010E3D2 /* Wasserflug-tvOSUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E753376327CAFAFF0010E3D2 /* Build configuration list for PBXNativeTarget "Wasserflug-tvOSUITests" */;
+			buildPhases = (
+				E753374F27CAFAFF0010E3D2 /* Sources */,
+				E753375027CAFAFF0010E3D2 /* Frameworks */,
+				E753375127CAFAFF0010E3D2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E753375527CAFAFF0010E3D2 /* PBXTargetDependency */,
+			);
+			name = "Wasserflug-tvOSUITests";
+			productName = "Wasserflug-tvOSUITests";
+			productReference = E753375327CAFAFF0010E3D2 /* Wasserflug-tvOSUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E753373127CAFAFE0010E3D2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1320;
+				LastUpgradeCheck = 1320;
+				TargetAttributes = {
+					E753373827CAFAFE0010E3D2 = {
+						CreatedOnToolsVersion = 13.2.1;
+					};
+					E753374827CAFAFF0010E3D2 = {
+						CreatedOnToolsVersion = 13.2.1;
+						TestTargetID = E753373827CAFAFE0010E3D2;
+					};
+					E753375227CAFAFF0010E3D2 = {
+						CreatedOnToolsVersion = 13.2.1;
+						TestTargetID = E753373827CAFAFE0010E3D2;
+					};
+				};
+			};
+			buildConfigurationList = E753373427CAFAFE0010E3D2 /* Build configuration list for PBXProject "Wasserflug-tvOS" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E753373027CAFAFE0010E3D2;
+			productRefGroup = E753373A27CAFAFE0010E3D2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E753373827CAFAFE0010E3D2 /* Wasserflug-tvOS */,
+				E753374827CAFAFF0010E3D2 /* Wasserflug-tvOSTests */,
+				E753375227CAFAFF0010E3D2 /* Wasserflug-tvOSUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E753373727CAFAFE0010E3D2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E753374427CAFAFF0010E3D2 /* Preview Assets.xcassets in Resources */,
+				E753374127CAFAFF0010E3D2 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E753374727CAFAFF0010E3D2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E753375127CAFAFF0010E3D2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E753373527CAFAFE0010E3D2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E753373F27CAFAFE0010E3D2 /* ContentView.swift in Sources */,
+				E753373D27CAFAFE0010E3D2 /* Wasserflug_tvOSApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E753374527CAFAFF0010E3D2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E753374E27CAFAFF0010E3D2 /* Wasserflug_tvOSTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E753374F27CAFAFF0010E3D2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E753375827CAFAFF0010E3D2 /* Wasserflug_tvOSUITests.swift in Sources */,
+				E753375A27CAFAFF0010E3D2 /* Wasserflug_tvOSUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E753374B27CAFAFF0010E3D2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E753373827CAFAFE0010E3D2 /* Wasserflug-tvOS */;
+			targetProxy = E753374A27CAFAFF0010E3D2 /* PBXContainerItemProxy */;
+		};
+		E753375527CAFAFF0010E3D2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E753373827CAFAFE0010E3D2 /* Wasserflug-tvOS */;
+			targetProxy = E753375427CAFAFF0010E3D2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		E753375B27CAFAFF0010E3D2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = appletvos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TVOS_DEPLOYMENT_TARGET = 15.2;
+			};
+			name = Debug;
+		};
+		E753375C27CAFAFF0010E3D2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = appletvos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				TVOS_DEPLOYMENT_TARGET = 15.2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E753375E27CAFAFF0010E3D2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Wasserflug-tvOS/Preview Content\"";
+				DEVELOPMENT_TEAM = 2TJ5K7WSP8;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jamesnl.Wasserflug-tvOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Debug;
+		};
+		E753375F27CAFAFF0010E3D2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Wasserflug-tvOS/Preview Content\"";
+				DEVELOPMENT_TEAM = 2TJ5K7WSP8;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jamesnl.Wasserflug-tvOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Release;
+		};
+		E753376127CAFAFF0010E3D2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2TJ5K7WSP8;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jamesnl.Wasserflug-tvOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Wasserflug-tvOS.app/Wasserflug-tvOS";
+				TVOS_DEPLOYMENT_TARGET = 15.2;
+			};
+			name = Debug;
+		};
+		E753376227CAFAFF0010E3D2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2TJ5K7WSP8;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jamesnl.Wasserflug-tvOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Wasserflug-tvOS.app/Wasserflug-tvOS";
+				TVOS_DEPLOYMENT_TARGET = 15.2;
+			};
+			name = Release;
+		};
+		E753376427CAFAFF0010E3D2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2TJ5K7WSP8;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jamesnl.Wasserflug-tvOSUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TEST_TARGET_NAME = "Wasserflug-tvOS";
+			};
+			name = Debug;
+		};
+		E753376527CAFAFF0010E3D2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2TJ5K7WSP8;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jamesnl.Wasserflug-tvOSUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TEST_TARGET_NAME = "Wasserflug-tvOS";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E753373427CAFAFE0010E3D2 /* Build configuration list for PBXProject "Wasserflug-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E753375B27CAFAFF0010E3D2 /* Debug */,
+				E753375C27CAFAFF0010E3D2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E753375D27CAFAFF0010E3D2 /* Build configuration list for PBXNativeTarget "Wasserflug-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E753375E27CAFAFF0010E3D2 /* Debug */,
+				E753375F27CAFAFF0010E3D2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E753376027CAFAFF0010E3D2 /* Build configuration list for PBXNativeTarget "Wasserflug-tvOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E753376127CAFAFF0010E3D2 /* Debug */,
+				E753376227CAFAFF0010E3D2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E753376327CAFAFF0010E3D2 /* Build configuration list for PBXNativeTarget "Wasserflug-tvOSUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E753376427CAFAFF0010E3D2 /* Debug */,
+				E753376527CAFAFF0010E3D2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E753373127CAFAFE0010E3D2 /* Project object */;
+}
