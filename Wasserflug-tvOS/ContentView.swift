@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  Wasserflug-tvOS
-//
-//  Created by James Linnell on 2/26/22.
-//
-
 import SwiftUI
 
 struct ContentView: View {

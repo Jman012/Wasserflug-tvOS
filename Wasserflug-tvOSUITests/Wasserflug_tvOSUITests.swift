@@ -1,10 +1,3 @@
-//
-//  Wasserflug_tvOSUITests.swift
-//  Wasserflug-tvOSUITests
-//
-//  Created by James Linnell on 2/26/22.
-//
-
 import XCTest
 
 class Wasserflug_tvOSUITests: XCTestCase {

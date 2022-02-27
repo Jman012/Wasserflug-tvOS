@@ -1,10 +1,3 @@
-//
-//  Wasserflug_tvOSTests.swift
-//  Wasserflug-tvOSTests
-//
-//  Created by James Linnell on 2/26/22.
-//
-
 import XCTest
 @testable import Wasserflug_tvOS
 
