@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E753373D27CAFAFE0010E3D2 /* Wasserflug_tvOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753373C27CAFAFE0010E3D2 /* Wasserflug_tvOSApp.swift */; };
-		E753373F27CAFAFE0010E3D2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753373E27CAFAFE0010E3D2 /* ContentView.swift */; };
 		E753374127CAFAFF0010E3D2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E753374027CAFAFF0010E3D2 /* Assets.xcassets */; };
 		E753374427CAFAFF0010E3D2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E753374327CAFAFF0010E3D2 /* Preview Assets.xcassets */; };
 		E753374E27CAFAFF0010E3D2 /* Wasserflug_tvOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753374D27CAFAFF0010E3D2 /* Wasserflug_tvOSTests.swift */; };
@@ -16,6 +14,40 @@
 		E753375A27CAFAFF0010E3D2 /* Wasserflug_tvOSUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753375927CAFAFF0010E3D2 /* Wasserflug_tvOSUITestsLaunchTests.swift */; };
 		E753376827CAFF550010E3D2 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = E753376727CAFF550010E3D2 /* CachedAsyncImage */; };
 		E753376B27CB01FD0010E3D2 /* Vapor in Frameworks */ = {isa = PBXBuildFile; productRef = E753376A27CB01FD0010E3D2 /* Vapor */; };
+		E753377727CB066E0010E3D2 /* Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753377027CB066E0010E3D2 /* Authentication.swift */; };
+		E753377827CB066E0010E3D2 /* FloatplaneAPIClient+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753377127CB066E0010E3D2 /* FloatplaneAPIClient+Extensions.swift */; };
+		E753377B27CB066E0010E3D2 /* FPAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753377427CB066E0010E3D2 /* FPAPIService.swift */; };
+		E753377D27CB066E0010E3D2 /* OSLoggingLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753377627CB066E0010E3D2 /* OSLoggingLogger.swift */; };
+		E753377F27CB06800010E3D2 /* Wasserflug_tvOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753377E27CB06800010E3D2 /* Wasserflug_tvOSApp.swift */; };
+		E753379E27CB06BE0010E3D2 /* BlogPostContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378127CB06BE0010E3D2 /* BlogPostContentView.swift */; };
+		E753379F27CB06BE0010E3D2 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378227CB06BE0010E3D2 /* VideoPlayerView.swift */; };
+		E75337A027CB06BE0010E3D2 /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378327CB06BE0010E3D2 /* PlayButton.swift */; };
+		E75337A127CB06BE0010E3D2 /* PlayMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378427CB06BE0010E3D2 /* PlayMediaView.swift */; };
+		E75337A227CB06BE0010E3D2 /* BlogPostSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378527CB06BE0010E3D2 /* BlogPostSelectionView.swift */; };
+		E75337A327CB06BE0010E3D2 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378627CB06BE0010E3D2 /* ErrorView.swift */; };
+		E75337A427CB06BE0010E3D2 /* BlogPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378827CB06BE0010E3D2 /* BlogPostViewModel.swift */; };
+		E75337A527CB06BE0010E3D2 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378927CB06BE0010E3D2 /* HomeViewModel.swift */; };
+		E75337A627CB06BE0010E3D2 /* VideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378A27CB06BE0010E3D2 /* VideoViewModel.swift */; };
+		E75337A727CB06BE0010E3D2 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378B27CB06BE0010E3D2 /* BaseViewModel.swift */; };
+		E75337A827CB06BE0010E3D2 /* LivestreamViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378C27CB06BE0010E3D2 /* LivestreamViewModel.swift */; };
+		E75337A927CB06BE0010E3D2 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378D27CB06BE0010E3D2 /* AuthViewModel.swift */; };
+		E75337AA27CB06BE0010E3D2 /* ViewModelState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378E27CB06BE0010E3D2 /* ViewModelState.swift */; };
+		E75337AB27CB06BE0010E3D2 /* CreatorContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378F27CB06BE0010E3D2 /* CreatorContentViewModel.swift */; };
+		E75337AC27CB06BE0010E3D2 /* PictureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379027CB06BE0010E3D2 /* PictureViewModel.swift */; };
+		E75337AD27CB06BE0010E3D2 /* CreatorSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379227CB06BE0010E3D2 /* CreatorSearchView.swift */; };
+		E75337AE27CB06BE0010E3D2 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379327CB06BE0010E3D2 /* SettingsView.swift */; };
+		E75337AF27CB06BE0010E3D2 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379427CB06BE0010E3D2 /* LoginView.swift */; };
+		E75337B027CB06BE0010E3D2 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379527CB06BE0010E3D2 /* VideoView.swift */; };
+		E75337B127CB06BE0010E3D2 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379627CB06BE0010E3D2 /* HomeView.swift */; };
+		E75337B227CB06BE0010E3D2 /* PictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379727CB06BE0010E3D2 /* PictureView.swift */; };
+		E75337B327CB06BE0010E3D2 /* BlogPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379827CB06BE0010E3D2 /* BlogPostView.swift */; };
+		E75337B427CB06BE0010E3D2 /* CreatorContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379927CB06BE0010E3D2 /* CreatorContentView.swift */; };
+		E75337B527CB06BE0010E3D2 /* LivestreamPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379A27CB06BE0010E3D2 /* LivestreamPlayerView.swift */; };
+		E75337B627CB06BE0010E3D2 /* SecondFactorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379B27CB06BE0010E3D2 /* SecondFactorView.swift */; };
+		E75337B727CB06BE0010E3D2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379C27CB06BE0010E3D2 /* ContentView.swift */; };
+		E75337B827CB06BE0010E3D2 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379D27CB06BE0010E3D2 /* RootTabView.swift */; };
+		E75337BC27CB07900010E3D2 /* FloatplaneAPIClient in Frameworks */ = {isa = PBXBuildFile; productRef = E75337BB27CB07900010E3D2 /* FloatplaneAPIClient */; };
+		E75337BE27CB08990010E3D2 /* EnvironmentKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75337BD27CB08990010E3D2 /* EnvironmentKeys.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,8 +69,6 @@
 
 /* Begin PBXFileReference section */
 		E753373927CAFAFE0010E3D2 /* Wasserflug-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wasserflug-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E753373C27CAFAFE0010E3D2 /* Wasserflug_tvOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wasserflug_tvOSApp.swift; sourceTree = "<group>"; };
-		E753373E27CAFAFE0010E3D2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		E753374027CAFAFF0010E3D2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E753374327CAFAFF0010E3D2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		E753374927CAFAFF0010E3D2 /* Wasserflug-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Wasserflug-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -47,6 +77,39 @@
 		E753375727CAFAFF0010E3D2 /* Wasserflug_tvOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wasserflug_tvOSUITests.swift; sourceTree = "<group>"; };
 		E753375927CAFAFF0010E3D2 /* Wasserflug_tvOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wasserflug_tvOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		E753376F27CB043D0010E3D2 /* FloatplaneAPIClient */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FloatplaneAPIClient; sourceTree = "<group>"; };
+		E753377027CB066E0010E3D2 /* Authentication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Authentication.swift; sourceTree = "<group>"; };
+		E753377127CB066E0010E3D2 /* FloatplaneAPIClient+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FloatplaneAPIClient+Extensions.swift"; sourceTree = "<group>"; };
+		E753377427CB066E0010E3D2 /* FPAPIService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FPAPIService.swift; sourceTree = "<group>"; };
+		E753377627CB066E0010E3D2 /* OSLoggingLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSLoggingLogger.swift; sourceTree = "<group>"; };
+		E753377E27CB06800010E3D2 /* Wasserflug_tvOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wasserflug_tvOSApp.swift; sourceTree = "<group>"; };
+		E753378127CB06BE0010E3D2 /* BlogPostContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogPostContentView.swift; sourceTree = "<group>"; };
+		E753378227CB06BE0010E3D2 /* VideoPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
+		E753378327CB06BE0010E3D2 /* PlayButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayButton.swift; sourceTree = "<group>"; };
+		E753378427CB06BE0010E3D2 /* PlayMediaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayMediaView.swift; sourceTree = "<group>"; };
+		E753378527CB06BE0010E3D2 /* BlogPostSelectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogPostSelectionView.swift; sourceTree = "<group>"; };
+		E753378627CB06BE0010E3D2 /* ErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		E753378827CB06BE0010E3D2 /* BlogPostViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogPostViewModel.swift; sourceTree = "<group>"; };
+		E753378927CB06BE0010E3D2 /* HomeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		E753378A27CB06BE0010E3D2 /* VideoViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoViewModel.swift; sourceTree = "<group>"; };
+		E753378B27CB06BE0010E3D2 /* BaseViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
+		E753378C27CB06BE0010E3D2 /* LivestreamViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LivestreamViewModel.swift; sourceTree = "<group>"; };
+		E753378D27CB06BE0010E3D2 /* AuthViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		E753378E27CB06BE0010E3D2 /* ViewModelState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelState.swift; sourceTree = "<group>"; };
+		E753378F27CB06BE0010E3D2 /* CreatorContentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatorContentViewModel.swift; sourceTree = "<group>"; };
+		E753379027CB06BE0010E3D2 /* PictureViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PictureViewModel.swift; sourceTree = "<group>"; };
+		E753379227CB06BE0010E3D2 /* CreatorSearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatorSearchView.swift; sourceTree = "<group>"; };
+		E753379327CB06BE0010E3D2 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		E753379427CB06BE0010E3D2 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		E753379527CB06BE0010E3D2 /* VideoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
+		E753379627CB06BE0010E3D2 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		E753379727CB06BE0010E3D2 /* PictureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PictureView.swift; sourceTree = "<group>"; };
+		E753379827CB06BE0010E3D2 /* BlogPostView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogPostView.swift; sourceTree = "<group>"; };
+		E753379927CB06BE0010E3D2 /* CreatorContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatorContentView.swift; sourceTree = "<group>"; };
+		E753379A27CB06BE0010E3D2 /* LivestreamPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LivestreamPlayerView.swift; sourceTree = "<group>"; };
+		E753379B27CB06BE0010E3D2 /* SecondFactorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondFactorView.swift; sourceTree = "<group>"; };
+		E753379C27CB06BE0010E3D2 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		E753379D27CB06BE0010E3D2 /* RootTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
+		E75337BD27CB08990010E3D2 /* EnvironmentKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentKeys.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +117,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E75337BC27CB07900010E3D2 /* FloatplaneAPIClient in Frameworks */,
 				E753376827CAFF550010E3D2 /* CachedAsyncImage in Frameworks */,
 				E753376B27CB01FD0010E3D2 /* Vapor in Frameworks */,
 			);
@@ -84,6 +148,7 @@
 				E753374C27CAFAFF0010E3D2 /* Wasserflug-tvOSTests */,
 				E753375627CAFAFF0010E3D2 /* Wasserflug-tvOSUITests */,
 				E753373A27CAFAFE0010E3D2 /* Products */,
+				E75337BA27CB07900010E3D2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -100,8 +165,11 @@
 		E753373B27CAFAFE0010E3D2 /* Wasserflug-tvOS */ = {
 			isa = PBXGroup;
 			children = (
-				E753373C27CAFAFE0010E3D2 /* Wasserflug_tvOSApp.swift */,
-				E753373E27CAFAFE0010E3D2 /* ContentView.swift */,
+				E753378027CB06BE0010E3D2 /* SupplementalViews */,
+				E753378727CB06BE0010E3D2 /* ViewModels */,
+				E753379127CB06BE0010E3D2 /* Views */,
+				E75337B927CB06C60010E3D2 /* Utilities */,
+				E753377E27CB06800010E3D2 /* Wasserflug_tvOSApp.swift */,
 				E753374027CAFAFF0010E3D2 /* Assets.xcassets */,
 				E753374227CAFAFF0010E3D2 /* Preview Content */,
 			);
@@ -141,6 +209,73 @@
 			name = Packages;
 			sourceTree = "<group>";
 		};
+		E753378027CB06BE0010E3D2 /* SupplementalViews */ = {
+			isa = PBXGroup;
+			children = (
+				E753378127CB06BE0010E3D2 /* BlogPostContentView.swift */,
+				E753378227CB06BE0010E3D2 /* VideoPlayerView.swift */,
+				E753378327CB06BE0010E3D2 /* PlayButton.swift */,
+				E753378427CB06BE0010E3D2 /* PlayMediaView.swift */,
+				E753378527CB06BE0010E3D2 /* BlogPostSelectionView.swift */,
+				E753378627CB06BE0010E3D2 /* ErrorView.swift */,
+			);
+			path = SupplementalViews;
+			sourceTree = "<group>";
+		};
+		E753378727CB06BE0010E3D2 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				E753378E27CB06BE0010E3D2 /* ViewModelState.swift */,
+				E753378B27CB06BE0010E3D2 /* BaseViewModel.swift */,
+				E753378D27CB06BE0010E3D2 /* AuthViewModel.swift */,
+				E753378927CB06BE0010E3D2 /* HomeViewModel.swift */,
+				E753378F27CB06BE0010E3D2 /* CreatorContentViewModel.swift */,
+				E753378C27CB06BE0010E3D2 /* LivestreamViewModel.swift */,
+				E753378827CB06BE0010E3D2 /* BlogPostViewModel.swift */,
+				E753378A27CB06BE0010E3D2 /* VideoViewModel.swift */,
+				E753379027CB06BE0010E3D2 /* PictureViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		E753379127CB06BE0010E3D2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E753379C27CB06BE0010E3D2 /* ContentView.swift */,
+				E753379427CB06BE0010E3D2 /* LoginView.swift */,
+				E753379B27CB06BE0010E3D2 /* SecondFactorView.swift */,
+				E753379D27CB06BE0010E3D2 /* RootTabView.swift */,
+				E753379627CB06BE0010E3D2 /* HomeView.swift */,
+				E753379927CB06BE0010E3D2 /* CreatorContentView.swift */,
+				E753379227CB06BE0010E3D2 /* CreatorSearchView.swift */,
+				E753379327CB06BE0010E3D2 /* SettingsView.swift */,
+				E753379827CB06BE0010E3D2 /* BlogPostView.swift */,
+				E753379527CB06BE0010E3D2 /* VideoView.swift */,
+				E753379727CB06BE0010E3D2 /* PictureView.swift */,
+				E753379A27CB06BE0010E3D2 /* LivestreamPlayerView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E75337B927CB06C60010E3D2 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				E753377027CB066E0010E3D2 /* Authentication.swift */,
+				E753377127CB066E0010E3D2 /* FloatplaneAPIClient+Extensions.swift */,
+				E753377427CB066E0010E3D2 /* FPAPIService.swift */,
+				E753377627CB066E0010E3D2 /* OSLoggingLogger.swift */,
+				E75337BD27CB08990010E3D2 /* EnvironmentKeys.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		E75337BA27CB07900010E3D2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -160,6 +295,7 @@
 			packageProductDependencies = (
 				E753376727CAFF550010E3D2 /* CachedAsyncImage */,
 				E753376A27CB01FD0010E3D2 /* Vapor */,
+				E75337BB27CB07900010E3D2 /* FloatplaneAPIClient */,
 			);
 			productName = "Wasserflug-tvOS";
 			productReference = E753373927CAFAFE0010E3D2 /* Wasserflug-tvOS.app */;
@@ -279,8 +415,39 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E753373F27CAFAFE0010E3D2 /* ContentView.swift in Sources */,
-				E753373D27CAFAFE0010E3D2 /* Wasserflug_tvOSApp.swift in Sources */,
+				E75337A427CB06BE0010E3D2 /* BlogPostViewModel.swift in Sources */,
+				E75337AC27CB06BE0010E3D2 /* PictureViewModel.swift in Sources */,
+				E75337B827CB06BE0010E3D2 /* RootTabView.swift in Sources */,
+				E75337A127CB06BE0010E3D2 /* PlayMediaView.swift in Sources */,
+				E75337B227CB06BE0010E3D2 /* PictureView.swift in Sources */,
+				E75337B327CB06BE0010E3D2 /* BlogPostView.swift in Sources */,
+				E75337B127CB06BE0010E3D2 /* HomeView.swift in Sources */,
+				E75337AB27CB06BE0010E3D2 /* CreatorContentViewModel.swift in Sources */,
+				E75337AF27CB06BE0010E3D2 /* LoginView.swift in Sources */,
+				E753377B27CB066E0010E3D2 /* FPAPIService.swift in Sources */,
+				E753377827CB066E0010E3D2 /* FloatplaneAPIClient+Extensions.swift in Sources */,
+				E75337A627CB06BE0010E3D2 /* VideoViewModel.swift in Sources */,
+				E75337BE27CB08990010E3D2 /* EnvironmentKeys.swift in Sources */,
+				E75337B727CB06BE0010E3D2 /* ContentView.swift in Sources */,
+				E753377727CB066E0010E3D2 /* Authentication.swift in Sources */,
+				E753377F27CB06800010E3D2 /* Wasserflug_tvOSApp.swift in Sources */,
+				E75337A927CB06BE0010E3D2 /* AuthViewModel.swift in Sources */,
+				E75337AA27CB06BE0010E3D2 /* ViewModelState.swift in Sources */,
+				E75337B027CB06BE0010E3D2 /* VideoView.swift in Sources */,
+				E753379E27CB06BE0010E3D2 /* BlogPostContentView.swift in Sources */,
+				E75337A027CB06BE0010E3D2 /* PlayButton.swift in Sources */,
+				E75337A527CB06BE0010E3D2 /* HomeViewModel.swift in Sources */,
+				E75337AD27CB06BE0010E3D2 /* CreatorSearchView.swift in Sources */,
+				E753377D27CB066E0010E3D2 /* OSLoggingLogger.swift in Sources */,
+				E75337A727CB06BE0010E3D2 /* BaseViewModel.swift in Sources */,
+				E75337B527CB06BE0010E3D2 /* LivestreamPlayerView.swift in Sources */,
+				E75337A827CB06BE0010E3D2 /* LivestreamViewModel.swift in Sources */,
+				E753379F27CB06BE0010E3D2 /* VideoPlayerView.swift in Sources */,
+				E75337A227CB06BE0010E3D2 /* BlogPostSelectionView.swift in Sources */,
+				E75337B427CB06BE0010E3D2 /* CreatorContentView.swift in Sources */,
+				E75337A327CB06BE0010E3D2 /* ErrorView.swift in Sources */,
+				E75337AE27CB06BE0010E3D2 /* SettingsView.swift in Sources */,
+				E75337B627CB06BE0010E3D2 /* SecondFactorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -633,6 +800,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E753376927CB01FD0010E3D2 /* XCRemoteSwiftPackageReference "vapor" */;
 			productName = Vapor;
+		};
+		E75337BB27CB07900010E3D2 /* FloatplaneAPIClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FloatplaneAPIClient;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
