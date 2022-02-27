@@ -26,16 +26,24 @@ struct ContentView: View {
 		VStack {
 			if viewModel.isLoadingAuthStatus {
 				ZStack {
-					Image("splash")
+					Image("splash-bg")
 						.resizable()
 						.ignoresSafeArea()
 						.scaledToFill()
 					VisualEffectView(effect: UIBlurEffect(style: colorScheme == .dark ? .dark : .light))
 						.ignoresSafeArea()
-					VStack {
-						Image("logo-white")
+					HStack {
+						Image("wasserflug-logo")
+							.resizable()
 							.renderingMode(.template)
-							.foregroundColor(FPColors.blue)
+							.foregroundColor(colorScheme == .dark ? .white : .black)
+							.scaledToFit()
+							.frame(height: 300)
+						VStack {
+							Text("Wasserflug")
+								.font(.title)
+							Text("An unofficial Floatplane client")
+						}
 					}
 					VStack {
 						Spacer()
@@ -44,16 +52,26 @@ struct ContentView: View {
 				}
 			} else if !viewModel.isLoggedIn {
 				ZStack {
-					Image("splash")
+					Image("splash-bg")
 						.resizable()
 						.ignoresSafeArea()
 						.scaledToFill()
 					VisualEffectView(effect: UIBlurEffect(style: colorScheme == .dark ? .dark : .light))
 						.ignoresSafeArea()
 					VStack {
-						Image("logo-white")
-							.renderingMode(.template)
-							.foregroundColor(FPColors.blue)
+						HStack {
+							Image("wasserflug-logo")
+								.resizable()
+								.renderingMode(.template)
+								.foregroundColor(colorScheme == .dark ? .white : .black)
+								.scaledToFit()
+								.frame(height: 300)
+							VStack {
+								Text("Wasserflug")
+									.font(.title)
+								Text("An unofficial Floatplane client")
+							}
+						}
 					}
 					VStack {
 						Spacer()
