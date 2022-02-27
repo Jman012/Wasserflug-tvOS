@@ -34,6 +34,9 @@ struct BlogPostSelectionView: View {
 			.padding()
 		})
 			.buttonStyle(.plain)
+			.onPlayPauseCommand(perform: {
+				isSelected = true
+			})
 			.sheet(isPresented: $isSelected, onDismiss: {
 				isSelected = false
 			}, content: {

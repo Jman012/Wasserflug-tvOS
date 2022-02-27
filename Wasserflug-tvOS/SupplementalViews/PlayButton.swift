@@ -51,6 +51,7 @@ struct PlayButton: View {
 			}
 		}
 			.buttonStyle(.card)
+			.onPlayPauseCommand(perform: self.action)
 	}
 }
 
