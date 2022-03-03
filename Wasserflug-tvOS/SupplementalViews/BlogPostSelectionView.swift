@@ -9,6 +9,7 @@ struct BlogPostSelectionView: View {
 	@Environment(\.fpApiService) var fpApiService
 	
 	@State var isSelected = false
+	@State var shouldAutoPlay = false
 	
 	var body: some View {
 		Button(action: {
@@ -35,12 +36,14 @@ struct BlogPostSelectionView: View {
 		})
 			.buttonStyle(.plain)
 			.onPlayPauseCommand(perform: {
+				shouldAutoPlay = true
 				isSelected = true
 			})
 			.sheet(isPresented: $isSelected, onDismiss: {
+				shouldAutoPlay = false
 				isSelected = false
 			}, content: {
-				BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService, id: blogPost.id))
+				BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService, id: blogPost.id), shouldAutoPlay: shouldAutoPlay)
 			})
 	}
 }

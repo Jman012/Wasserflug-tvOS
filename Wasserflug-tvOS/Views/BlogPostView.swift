@@ -4,6 +4,7 @@ import CachedAsyncImage
 
 struct BlogPostView: View {
 	@StateObject var viewModel: BlogPostViewModel
+	var shouldAutoPlay: Bool
 	
 	@Environment(\.resetFocus) var resetFocus
 	@Environment(\.fpApiService) var fpApiService
@@ -48,7 +49,8 @@ struct BlogPostView: View {
 											VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: firstVideo, contentPost: content))
 										}
 									}
-								})
+								},
+								isShowingMedia: shouldAutoPlay)
 
 							VStack(alignment: .leading) {
 								HStack(alignment: .center, spacing: 20) {
@@ -117,6 +119,6 @@ struct BlogPostView: View {
 
 struct BlogPostView_Previews: PreviewProvider {
 	static var previews: some View {
-		BlogPostView(viewModel: BlogPostViewModel(fpApiService: MockFPAPIService(), id: ""))
+		BlogPostView(viewModel: BlogPostViewModel(fpApiService: MockFPAPIService(), id: ""), shouldAutoPlay: false)
 	}
 }
