@@ -49,34 +49,6 @@ struct BlogPostView: View {
 										}
 									}
 								})
-//							CachedAsyncImage(url: URL(string: content.thumbnail.path), content: { image in
-//								ZStack {
-//									image
-//										.resizable()
-//										.scaledToFit()
-//										.frame(maxWidth: geometry.size.width * 0.5)
-//										.cornerRadius(10.0)
-//									if let firstVideo = content.videoAttachments.first {
-//										PlayButton(size: .default, action: {
-//											isShowingVideo = true
-//										})
-//											.prefersDefaultFocus(in: screenNamespace)
-//											.sheet(isPresented: $isShowingVideo, onDismiss: {
-//												isShowingVideo = false
-//											}, content: {
-//												VideoView(viewModel: VideoViewModel(fpApiService: viewModel.fpApiService, videoAttachment: firstVideo, contentPost: content))
-//											})
-//									}
-//								}
-//							}, placeholder: {
-//								ZStack {
-//									ProgressView()
-//									Rectangle()
-//										.fill(.clear)
-//										.frame(width: geometry.size.width * 0.5)
-//										.aspectRatio(content.thumbnail.aspectRatio, contentMode: .fit)
-//								}
-//							})
 
 							VStack(alignment: .leading) {
 								HStack(alignment: .center, spacing: 20) {
@@ -125,9 +97,7 @@ struct BlogPostView: View {
 									Text("\(content.dislikes + additional)")
 								}
 									.foregroundColor(viewModel.isDisliked ? FPColors.blue : colorScheme == .light ? Color.black : Color.white)
-								Button(action: {}) {
-									Text("\(content.comments) comment\(content.comments == 1 ? "" : "s")")
-								}
+								Text("\(content.comments) comment\(content.comments == 1 ? "" : "s")")
 							}
 							.padding()
 						}
@@ -146,11 +116,7 @@ struct BlogPostView: View {
 }
 
 struct BlogPostView_Previews: PreviewProvider {
-	@State static var isPresent = true
 	static var previews: some View {
-//		Rectangle()
-//			.sheet(isPresented: $isPresent, onDismiss: {}) {
-				BlogPostView(viewModel: BlogPostViewModel(fpApiService: MockFPAPIService(), id: ""))
-//			}
+		BlogPostView(viewModel: BlogPostViewModel(fpApiService: MockFPAPIService(), id: ""))
 	}
 }
