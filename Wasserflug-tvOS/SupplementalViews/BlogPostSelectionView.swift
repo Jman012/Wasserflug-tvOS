@@ -16,10 +16,12 @@ struct BlogPostSelectionView: View {
 			isSelected = true
 		}, label: {
 			VStack {
-				CachedAsyncImage(url: URL(string: blogPost.thumbnail.path), content: {
-					$0
+				CachedAsyncImage(url: URL(string: blogPost.thumbnail.path), content: { image in
+					image
 						.resizable()
 						.scaledToFit()
+						.frame(maxWidth: .infinity, maxHeight: .infinity)
+						.cornerRadius(10.0)
 				}, placeholder: {
 					ProgressView()
 						.frame(
