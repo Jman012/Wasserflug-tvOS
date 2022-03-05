@@ -16,13 +16,11 @@ struct PlayMediaView<Content>: View where Content: View {
 		ZStack {
 			if showPlayButton {
 				image
-					.frame(width: width)
 			} else {
 				Button(action: {
 					isShowingMedia = true
 				}, label: {
 					image
-						.frame(width: width)
 				})
 					.buttonStyle(.card)
 					.padding()
@@ -36,7 +34,7 @@ struct PlayMediaView<Content>: View where Content: View {
 				image
 					.resizable()
 					.scaledToFit()
-//					.frame(maxWidth: geometry.size.width * 0.5)
+					.frame(width: width)
 					.cornerRadius(10.0)
 				if showPlayButton {
 					PlayButton(size: playButtonSize, action: {
@@ -55,8 +53,7 @@ struct PlayMediaView<Content>: View where Content: View {
 				ProgressView()
 				Rectangle()
 					.fill(.clear)
-//					.frame(width: geometry.size.width * 0.5)
-//					.frame(width: 200)
+					.frame(width: width)
 					.aspectRatio(thumbnail.aspectRatio, contentMode: .fit)
 			}
 		})

@@ -70,6 +70,7 @@ struct BlogPostView: View {
 											.font(.caption)
 
 									}
+									Spacer()
 								}
 								Text(viewModel.textAttributedString)
 									.font(.body)
