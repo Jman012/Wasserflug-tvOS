@@ -36,9 +36,16 @@ struct CreatorContentView: View {
 				GeometryReader { geometry in
 					ScrollView {
 						CachedAsyncImage(url: viewModel.coverImagePath, content: { image in
-							image
-								.resizable()
-								.scaledToFill()
+							ZStack {
+								image
+									.resizable()
+									.scaledToFill()
+									.overlay(LinearGradient(
+										colors: [.clear, .black.opacity(0.6)],
+										startPoint: .top,
+										endPoint: .bottom)
+									)
+							}
 						}, placeholder: {
 							ProgressView()
 								.frame(maxWidth: .infinity, maxHeight: .infinity)

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E71FDB3C27D3F89200A9C88B /* Swift+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB3B27D3F89200A9C88B /* Swift+Extensions.swift */; };
 		E753374127CAFAFF0010E3D2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E753374027CAFAFF0010E3D2 /* Assets.xcassets */; };
 		E753374427CAFAFF0010E3D2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E753374327CAFAFF0010E3D2 /* Preview Assets.xcassets */; };
 		E753374E27CAFAFF0010E3D2 /* Wasserflug_tvOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753374D27CAFAFF0010E3D2 /* Wasserflug_tvOSTests.swift */; };
@@ -68,6 +69,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E71FDB3B27D3F89200A9C88B /* Swift+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Swift+Extensions.swift"; sourceTree = "<group>"; };
 		E753373927CAFAFE0010E3D2 /* Wasserflug-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wasserflug-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E753374027CAFAFF0010E3D2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E753374327CAFAFF0010E3D2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 				E753377427CB066E0010E3D2 /* FPAPIService.swift */,
 				E753377627CB066E0010E3D2 /* OSLoggingLogger.swift */,
 				E75337BD27CB08990010E3D2 /* EnvironmentKeys.swift */,
+				E71FDB3B27D3F89200A9C88B /* Swift+Extensions.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -422,6 +425,7 @@
 				E75337B227CB06BE0010E3D2 /* PictureView.swift in Sources */,
 				E75337B327CB06BE0010E3D2 /* BlogPostView.swift in Sources */,
 				E75337B127CB06BE0010E3D2 /* HomeView.swift in Sources */,
+				E71FDB3C27D3F89200A9C88B /* Swift+Extensions.swift in Sources */,
 				E75337AB27CB06BE0010E3D2 /* CreatorContentViewModel.swift in Sources */,
 				E75337AF27CB06BE0010E3D2 /* LoginView.swift in Sources */,
 				E753377B27CB066E0010E3D2 /* FPAPIService.swift in Sources */,
