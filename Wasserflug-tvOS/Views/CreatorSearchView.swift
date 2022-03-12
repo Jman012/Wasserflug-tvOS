@@ -25,7 +25,7 @@ struct CreatorSearchView: View {
 			case let .loaded(content):
 				LazyVGrid(columns: gridColumns, spacing: 60) {
 					ForEach(content) { blogPost in
-						BlogPostSelectionView(blogPost: blogPost)
+						BlogPostSelectionView(blogPost: blogPost, viewOrigin: .creator)
 							.onAppear(perform: {
 								viewModel.itemDidAppear(blogPost)
 							})

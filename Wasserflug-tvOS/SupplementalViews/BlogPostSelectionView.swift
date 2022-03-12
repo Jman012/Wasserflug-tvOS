@@ -4,7 +4,13 @@ import CachedAsyncImage
 
 struct BlogPostSelectionView: View {
 	
+	enum ViewOrigin: Equatable {
+		case home(UserModel?)
+		case creator
+	}
+	
 	let blogPost: BlogPostModelV3
+	let viewOrigin: ViewOrigin
 	
 	@Environment(\.fpApiService) var fpApiService
 	
@@ -36,27 +42,51 @@ struct BlogPostSelectionView: View {
 						)
 						.aspectRatio(blogPost.thumbnail.aspectRatio, contentMode: .fit)
 				})
-				Text(verbatim: blogPost.title)
-					.font(.caption2)
-					.lineLimit(2)
-				HStack(spacing: 10) {
-					let meta = blogPost.metadata
-					Text("\(meta.hasVideo ? "Video" : meta.hasAudio ? "Audio" : meta.hasGallery ? "Gallery" : "Picture")")
-//						.font(.caption2)
-						.padding([.all], 5)
-						.foregroundColor(.white)
-						.background(.gray)
-						.cornerRadius(10)
-					
-					let duration: TimeInterval = meta.hasVideo ? meta.videoDuration : meta.hasAudio ? meta.audioDuration : 0.0
-					if duration != 0 {
-						Image(systemName: "clock")
-						Text("\(TimeInterval(duration).floatplaneTimestamp)")
+				HStack(alignment: .top, spacing: 0) {
+					let profileImageSize: CGFloat = 35
+					if case let .home(creatorOwner) = viewOrigin,
+					   let profileImagePath = creatorOwner?.profileImage.path,
+					   let profileImageUrl = URL(string: profileImagePath) {
+						CachedAsyncImage(url: profileImageUrl, content: { image in
+							image
+								.resizable()
+								.scaledToFit()
+								.frame(width: profileImageSize, height: profileImageSize)
+								.cornerRadius(profileImageSize / 2)
+						}, placeholder: {
+							ProgressView()
+								.frame(width: profileImageSize, height: profileImageSize)
+						})
+							.padding([.all], 5)
 					}
-					Spacer()
-					Text("\(relativeTimeConverter.localizedString(for: blogPost.releaseDate, relativeTo: Date()))")
+					VStack(alignment: .leading, spacing: 4) {
+						Text(verbatim: blogPost.title)
+							.font(.caption2)
+							.lineLimit(2)
+						HStack(spacing: 10) {
+							let meta = blogPost.metadata
+							Text("\(meta.hasVideo ? "Video" : meta.hasAudio ? "Audio" : meta.hasGallery ? "Gallery" : "Picture")")
+		//						.font(.caption2)
+								.padding([.all], 5)
+								.foregroundColor(.white)
+								.background(.gray)
+								.cornerRadius(10)
+							
+							let duration: TimeInterval = meta.hasVideo ? meta.videoDuration : meta.hasAudio ? meta.audioDuration : 0.0
+							if duration != 0 {
+								Image(systemName: "clock")
+								Text("\(TimeInterval(duration).floatplaneTimestamp)")
+							}
+							Spacer()
+							Text("\(relativeTimeConverter.localizedString(for: blogPost.releaseDate, relativeTo: Date()))")
+						}
+							.font(.system(size: 18, weight: .light))
+						if case .home(_) = viewOrigin {
+							Text(verbatim: blogPost.creator.title)
+								.font(.system(size: 18, weight: .light))
+						}
+					}
 				}
-					.font(.system(size: 18, weight: .light))
 			}
 				.padding()
 		})
@@ -76,7 +106,13 @@ struct BlogPostSelectionView: View {
 
 struct BlogPostSelectionView_Previews: PreviewProvider {
 	static var previews: some View {
-		BlogPostSelectionView(blogPost: MockData.blogPosts.blogPosts[0])
+		BlogPostSelectionView(blogPost: MockData.blogPosts.blogPosts[0], viewOrigin: .home(MockData.creatorOwners.users.first!.user))
 			.environment(\.fpApiService, MockFPAPIService())
+			.previewLayout(.fixed(width: 1000, height: 600))
+//			.preferredColorScheme(.light)
+		BlogPostSelectionView(blogPost: MockData.blogPosts.blogPosts[0], viewOrigin: .creator)
+			.environment(\.fpApiService, MockFPAPIService())
+			.previewLayout(.fixed(width: 1000, height: 600))
+//			.preferredColorScheme(.light)
 	}
 }

@@ -27,7 +27,7 @@ struct HomeView: View {
 			ScrollView {
 				LazyVGrid(columns: gridColumns, spacing: 60) {
 					ForEach(response.blogPosts) { blogPost in
-						BlogPostSelectionView(blogPost: blogPost)
+						BlogPostSelectionView(blogPost: blogPost, viewOrigin: .home(userInfo.creatorOwners[blogPost.creator.owner.id]))
 							.onAppear(perform: {
 								viewModel.itemDidAppear(blogPost)
 							})

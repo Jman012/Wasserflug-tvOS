@@ -157,6 +157,7 @@ enum MockData {
 		a.userSelf = userSelf
 		a.userSubscriptions = userSubscriptions
 		a.creators = Dictionary(uniqueKeysWithValues: creators.map({ ($0.id, $0) }))
+		a.creatorOwners = Dictionary(uniqueKeysWithValues: creatorOwners.users.map({ ($0.user.id, $0.user) }))
 		return a
 	}()
 	
