@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21D62" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="WatchProgress" representedClassName="WatchProgress" syncable="YES" codeGenerationType="class">
+        <attribute name="blogPostId" attributeType="String"/>
+        <attribute name="progress" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="videoId" attributeType="String"/>
+    </entity>
+    <elements>
+        <element name="WatchProgress" positionX="-63" positionY="-18" width="128" height="74"/>
+    </elements>
+</model>

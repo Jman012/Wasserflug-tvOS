@@ -27,7 +27,11 @@ struct HomeView: View {
 			ScrollView {
 				LazyVGrid(columns: gridColumns, spacing: 60) {
 					ForEach(response.blogPosts) { blogPost in
-						BlogPostSelectionView(blogPost: blogPost, viewOrigin: .home(userInfo.creatorOwners[blogPost.creator.owner.id]))
+						BlogPostSelectionView(
+							blogPost: blogPost,
+							viewOrigin: .home(userInfo.creatorOwners[blogPost.creator.owner.id]),
+							watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", blogPost.id), animation: .default)
+						)
 							.onAppear(perform: {
 								viewModel.itemDidAppear(blogPost)
 							})

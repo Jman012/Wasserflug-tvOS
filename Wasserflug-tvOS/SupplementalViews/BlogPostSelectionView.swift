@@ -11,9 +11,11 @@ struct BlogPostSelectionView: View {
 	
 	let blogPost: BlogPostModelV3
 	let viewOrigin: ViewOrigin
+	@FetchRequest var watchProgresses: FetchedResults<WatchProgress>
 	
 	@Environment(\.fpApiService) var fpApiService
-	
+	@Environment(\.managedObjectContext) private var viewContext
+
 	@State var isSelected = false
 	@State var shouldAutoPlay = false
 	
@@ -106,11 +108,19 @@ struct BlogPostSelectionView: View {
 
 struct BlogPostSelectionView_Previews: PreviewProvider {
 	static var previews: some View {
-		BlogPostSelectionView(blogPost: MockData.blogPosts.blogPosts[0], viewOrigin: .home(MockData.creatorOwners.users.first!.user))
+		BlogPostSelectionView(
+			blogPost: MockData.blogPosts.blogPosts.first!,
+			viewOrigin: .home(MockData.creatorOwners.users.first!.user),
+			watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
+		)
 			.environment(\.fpApiService, MockFPAPIService())
 			.previewLayout(.fixed(width: 1000, height: 600))
 //			.preferredColorScheme(.light)
-		BlogPostSelectionView(blogPost: MockData.blogPosts.blogPosts[0], viewOrigin: .creator)
+		BlogPostSelectionView(
+			blogPost: MockData.blogPosts.blogPosts.first!,
+			viewOrigin: .creator,
+			watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
+		)
 			.environment(\.fpApiService, MockFPAPIService())
 			.previewLayout(.fixed(width: 1000, height: 600))
 //			.preferredColorScheme(.light)

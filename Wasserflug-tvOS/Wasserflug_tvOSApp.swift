@@ -25,6 +25,7 @@ struct Wasserflug_tvOSApp: App {
 	let vaporApp = Vapor.Application(.production, .createNew)
 	let fpApiService: FPAPIService = DefaultFPAPIService()
 	let authViewModel: AuthViewModel
+	let persistenceController = PersistenceController.shared
 	
 	init() {
 		FloatplaneAPIClientAPI.customHeaders.replaceOrAdd(name: "User-Agent", value: "Wasserflug tvOS App, CFNetwork")
@@ -59,6 +60,7 @@ struct Wasserflug_tvOSApp: App {
 		WindowGroup {
 			ContentView(viewModel: authViewModel)
 				.environment(\.fpApiService, fpApiService)
+				.environment(\.managedObjectContext, persistenceController.container.viewContext)
 		}
 	}
 }

@@ -7,7 +7,7 @@ See https://imgur.com/a/vXAcEJy for screenshots of Wasserflug.
 
 ## Beta Testing
 
-If you would like to enter the beta testing via Test Flight for Wasserflug, please message Jamamp on the Hydravion discord server, or email james.n.linnell@gmail.com with an email and something to fill out for the First and Last name fields in the app store.
+If you would like to enter the beta testing via Test Flight for Wasserflug, please use this Test Flist invite link: https://testflight.apple.com/join/aYwKPFNF
 
 ## Development
 

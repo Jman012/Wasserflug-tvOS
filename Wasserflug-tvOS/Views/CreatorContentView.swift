@@ -103,7 +103,11 @@ struct CreatorContentView: View {
 						
 						LazyVGrid(columns: gridColumns, spacing: 60) {
 							ForEach(content) { blogPost in
-								BlogPostSelectionView(blogPost: blogPost, viewOrigin: .creator)
+								BlogPostSelectionView(
+									blogPost: blogPost,
+									viewOrigin: .creator,
+									watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", blogPost.id), animation: .default)
+								)
 									.onAppear(perform: {
 										viewModel.itemDidAppear(blogPost)
 									})
