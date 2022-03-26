@@ -25,17 +25,34 @@ struct BlogPostSelectionView: View {
 		return formatter
 	}()
 	
+	var progress: CGFloat {
+		if let watchProgress = watchProgresses.first(where: { $0.videoId == blogPost.videoAttachments.first }) {
+			let progress = watchProgress.progress
+			return progress >= 0.95 ? 1.0 : progress
+		} else {
+			return 0.0
+		}
+	}
+	
 	var body: some View {
 		Button(action: {
 			isSelected = true
 		}, label: {
 			VStack(alignment: .leading, spacing: 2) {
 				CachedAsyncImage(url: URL(string: blogPost.thumbnail.path), content: { image in
-					image
-						.resizable()
-						.scaledToFit()
-						.frame(maxWidth: .infinity, maxHeight: .infinity)
-						.cornerRadius(10.0)
+					ZStack(alignment: .bottomLeading) {
+						image
+							.resizable()
+							.scaledToFit()
+							.frame(maxWidth: .infinity, maxHeight: .infinity)
+						GeometryReader { geometry in
+							Rectangle()
+								.fill(FPColors.blue)
+								.frame(width: geometry.size.width * progress)
+						}
+							.frame(height: 8)
+					}
+					.cornerRadius(10.0)
 				}, placeholder: {
 					ProgressView()
 						.frame(
@@ -114,6 +131,7 @@ struct BlogPostSelectionView_Previews: PreviewProvider {
 			watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
 		)
 			.environment(\.fpApiService, MockFPAPIService())
+			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 			.previewLayout(.fixed(width: 1000, height: 600))
 //			.preferredColorScheme(.light)
 		BlogPostSelectionView(

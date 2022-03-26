@@ -6,11 +6,13 @@ struct PersistenceController {
 	static var preview: PersistenceController = {
 		let result = PersistenceController(inMemory: true)
 		let viewContext = result.container.viewContext
-		for _ in 0..<10 {
-			let newWatchProgress = WatchProgress(context: viewContext)
-			newWatchProgress.videoId = "abc"
-			newWatchProgress.progress = 1.0
-		}
+		
+		// Mock seed data
+		let newWatchProgress = WatchProgress(context: viewContext)
+		newWatchProgress.blogPostId = "0YXGhFR08U"
+		newWatchProgress.videoId = "7Wgsd59qiX"
+		newWatchProgress.progress = 0.75
+		
 		do {
 			try viewContext.save()
 		} catch {

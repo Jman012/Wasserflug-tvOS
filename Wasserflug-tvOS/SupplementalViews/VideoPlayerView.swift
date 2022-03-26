@@ -2,11 +2,13 @@ import Foundation
 import SwiftUI
 import AVKit
 import Combine
+import CoreData
 import FloatplaneAPIClient
 import Logging
 
 struct VideoPlayerView: UIViewControllerRepresentable {
 	@AppStorage("DesiredQuality") var desiredQuality: String = ""
+	@Environment(\.managedObjectContext) var managedObjectContext
 	@ObservedObject var viewModel: VideoViewModel
 	let content: CdnDeliveryV2Response
 	
@@ -16,11 +18,16 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 		return logger
 	}()
 	
+	func makeCoordinator() -> Coordinator {
+		return Coordinator(self)
+	}
+	
 	func makeUIViewController(context: Context) -> AVPlayerViewController {
 		logger.notice("Creating AVPlayerViewController instance for playback.", metadata: [
 			"videoId": "\(viewModel.videoAttachment.id)",
 		])
 		let vc = AVPlayerViewController()
+		vc.delegate = context.coordinator
 		vc.transportBarCustomMenuItems = [createQualityAction(content: content)]
 		vc.player = AVPlayer(playerItem: viewModel.createAVPlayerItem(desiredQuality: desiredQuality))
 		return vc
@@ -60,11 +67,12 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 		}
 	}
 	
-	static func dismantleUIViewController(_ uiViewController: AVPlayerViewController, coordinator: ()) {
+	static func dismantleUIViewController(_ uiViewController: AVPlayerViewController, coordinator: Self.Coordinator) {
 		Wasserflug_tvOSApp.logger.notice("Dismantling AVPlayerViewController.")
 		if let player = uiViewController.player {
 			Wasserflug_tvOSApp.logger.notice("Pausing AVPlayerViewController's AVPlayer before dismantling.")
 			player.pause()
+			uiViewController.delegate?.playerViewControllerDidEndDismissalTransition?(uiViewController)
 		}
 	}
 	
@@ -82,4 +90,44 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 		return menu
 	}
 	
+	class Coordinator: NSObject, AVPlayerViewControllerDelegate {
+		let parent: VideoPlayerView
+		
+		init(_ parent: VideoPlayerView) {
+			self.parent = parent
+		}
+		
+		func playerViewControllerDidEndDismissalTransition(_ playerViewController: AVPlayerViewController) {
+			parent.logger.debug("playerViewControllerDidEndDismissalTransition(_ playerViewController: AVPlayerViewController)")
+			let fetchRequest = WatchProgress.fetchRequest()
+			let blogPostId = parent.viewModel.contentPost.id
+			let videoId = parent.viewModel.videoAttachment.id
+			
+			let progress: Double
+			if let player = playerViewController.player, let lastPlayerItem = player.currentItem {
+				progress = Double(lastPlayerItem.currentTime().seconds) / parent.viewModel.videoAttachment.duration
+			} else {
+				progress = 0.0
+			}
+			
+			fetchRequest.predicate = NSPredicate(format: "blogPostId = %@ and videoId = %@", blogPostId, videoId)
+			
+			if let fetchResult = (try? parent.managedObjectContext.fetch(fetchRequest))?.first {
+				parent.logger.debug("Did find previous watchProgress: \(String(reflecting: fetchResult))")
+				fetchResult.progress = progress
+			} else {
+				let newWatchProgress = WatchProgress(context: parent.managedObjectContext)
+				newWatchProgress.blogPostId = blogPostId
+				newWatchProgress.videoId = videoId
+				newWatchProgress.progress = progress
+			}
+			
+			do {
+				try parent.managedObjectContext.save()
+				parent.logger.debug("Successfully saved watch progress for \(blogPostId) \(videoId)")
+			} catch {
+				parent.logger.error("Error saving watch progress for for \(blogPostId) \(videoId): \(String(reflecting: error))")
+			}
+		}
+	}
 }
