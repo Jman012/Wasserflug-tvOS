@@ -26,7 +26,9 @@ struct BlogPostContentView: View {
 								playButtonSize: .small,
 								playContent: {
 									VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: video, contentPost: content))
-								})
+								},
+								watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", content.id, video.id), animation: .default)
+)
 //								.frame(maxWidth: geometry.size.width * 0.2)
 //								CachedAsyncImage(url: URL(string: video.thumbnail.path), content: { image in
 //									image

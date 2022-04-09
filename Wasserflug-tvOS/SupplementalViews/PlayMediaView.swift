@@ -12,6 +12,17 @@ struct PlayMediaView<Content>: View where Content: View {
 	
 	@State var isShowingMedia = false
 	
+	@FetchRequest var watchProgresses: FetchedResults<WatchProgress>
+	
+	var progress: CGFloat {
+		if let watchProgress = watchProgresses.first {
+			let progress = watchProgress.progress
+			return progress >= 0.95 ? 1.0 : progress
+		} else {
+			return 0.0
+		}
+	}
+	
 	var body: some View {
 		ZStack {
 			if showPlayButton {
@@ -31,11 +42,20 @@ struct PlayMediaView<Content>: View where Content: View {
 	var image: some View {
 		CachedAsyncImage(url: URL(string: thumbnail.path), content: { image in
 			ZStack {
-				image
-					.resizable()
-					.scaledToFit()
+				ZStack(alignment: .bottomLeading) {
+					image
+						.resizable()
+						.scaledToFit()
+						.frame(width: width)
+					GeometryReader { geometry in
+						Rectangle()
+							.fill(FPColors.blue)
+							.frame(width: geometry.size.width * progress)
+					}
+						.frame(height: 8)
+				}
 					.frame(width: width)
-					.cornerRadius(10.0)
+				
 				if showPlayButton {
 					PlayButton(size: playButtonSize, action: {
 						isShowingMedia = true
@@ -48,6 +68,7 @@ struct PlayMediaView<Content>: View where Content: View {
 						})
 				}
 			}
+				.cornerRadius(10.0)
 		}, placeholder: {
 			ZStack {
 				ProgressView()
@@ -68,13 +89,21 @@ struct PlayMediaView_Previews: PreviewProvider {
 				showPlayButton: true,
 				width: 200,
 				playButtonSize: .small,
-				playContent: { EmptyView() })
+				playContent: { EmptyView() },
+				watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
+			)
+				.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+
 			PlayMediaView(
 				thumbnail: MockData.blogPosts.blogPosts.first!.thumbnail,
 				showPlayButton: false,
 				width: 500,
 				playButtonSize: .default,
-				playContent: { EmptyView() })
+				playContent: { EmptyView() },
+				watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)				
+			)
+				.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+
 		}
 	}
 }

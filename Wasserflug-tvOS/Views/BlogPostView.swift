@@ -50,7 +50,8 @@ struct BlogPostView: View {
 										}
 									}
 								},
-								isShowingMedia: shouldAutoPlay)
+								isShowingMedia: shouldAutoPlay,
+								watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", content.id, content.videoAttachments.first?.id ?? ""), animation: .default))
 
 							VStack(alignment: .leading) {
 								HStack(alignment: .center, spacing: 20) {

@@ -98,6 +98,7 @@ struct BlogPostSelectionView: View {
 							}
 							Spacer()
 							Text("\(relativeTimeConverter.localizedString(for: blogPost.releaseDate, relativeTo: Date()))")
+								.lineLimit(1)
 						}
 							.font(.system(size: 18, weight: .light))
 						if case .home(_) = viewOrigin {
