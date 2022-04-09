@@ -43,10 +43,10 @@ struct BlogPostView: View {
 								showPlayButton: !content.videoAttachments.isEmpty,
 								width: geometry.size.width * 0.5,
 								playButtonSize: .default,
-								playContent: {
+								playContent: { beginningWatchTime in
 									VStack {
 										if let firstVideo = content.videoAttachments.first {
-											VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: firstVideo, contentPost: content))
+											VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: firstVideo, contentPost: content), beginningWatchTime: beginningWatchTime)
 										}
 									}
 								},

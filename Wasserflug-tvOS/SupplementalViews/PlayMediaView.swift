@@ -8,7 +8,7 @@ struct PlayMediaView<Content>: View where Content: View {
 	let showPlayButton: Bool
 	let width: CGFloat?
 	let playButtonSize: PlayButton.Size
-	let playContent: () -> Content
+	let playContent: (Double) -> Content
 	
 	@State var isShowingMedia = false
 	
@@ -64,7 +64,7 @@ struct PlayMediaView<Content>: View where Content: View {
 						.sheet(isPresented: $isShowingMedia, onDismiss: {
 							isShowingMedia = false
 						}, content: {
-							playContent()
+							playContent(Double(progress))
 						})
 				}
 			}
@@ -89,7 +89,7 @@ struct PlayMediaView_Previews: PreviewProvider {
 				showPlayButton: true,
 				width: 200,
 				playButtonSize: .small,
-				playContent: { EmptyView() },
+				playContent: { _ in EmptyView() },
 				watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
 			)
 				.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
@@ -99,7 +99,7 @@ struct PlayMediaView_Previews: PreviewProvider {
 				showPlayButton: false,
 				width: 500,
 				playButtonSize: .default,
-				playContent: { EmptyView() },
+				playContent: { _ in EmptyView() },
 				watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)				
 			)
 				.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)

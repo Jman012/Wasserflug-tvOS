@@ -24,8 +24,8 @@ struct BlogPostContentView: View {
 								showPlayButton: true,
 								width: geometry.size.width * 0.2,
 								playButtonSize: .small,
-								playContent: {
-									VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: video, contentPost: content))
+								playContent: { beginningWatchTime in
+									VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: video, contentPost: content), beginningWatchTime: beginningWatchTime)
 								},
 								watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", content.id, video.id), animation: .default)
 )
