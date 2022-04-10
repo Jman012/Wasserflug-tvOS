@@ -107,24 +107,34 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 		}
 		
 		func playerViewControllerDidEndDismissalTransition(_ playerViewController: AVPlayerViewController) {
-			parent.logger.debug("playerViewControllerDidEndDismissalTransition(_ playerViewController: AVPlayerViewController)")
 			let fetchRequest = WatchProgress.fetchRequest()
 			let blogPostId = parent.viewModel.contentPost.id
 			let videoId = parent.viewModel.videoAttachment.id
+			let totalDurationSeconds = parent.viewModel.videoAttachment.duration
 			
 			let progress: Double
 			if let player = playerViewController.player, let lastPlayerItem = player.currentItem {
-				progress = Double(lastPlayerItem.currentTime().seconds) / parent.viewModel.videoAttachment.duration
+				progress = Double(lastPlayerItem.currentTime().seconds) / totalDurationSeconds
 			} else {
 				progress = 0.0
 			}
 			
 			fetchRequest.predicate = NSPredicate(format: "blogPostId = %@ and videoId = %@", blogPostId, videoId)
 			
+			parent.logger.notice("Attempting to record watch progress for a video.", metadata: [
+				"blogPostId": "\(blogPostId)",
+				"videoId": "\(videoId)",
+				"totalDurationSeconds": "\(totalDurationSeconds)",
+				"progress": "\(progress)",
+			])
+			
 			if let fetchResult = (try? parent.managedObjectContext.fetch(fetchRequest))?.first {
-				parent.logger.debug("Did find previous watchProgress: \(String(reflecting: fetchResult))")
+				parent.logger.info("Did find previous watchProgress. Will mutate with new progress.", metadata: [
+					"previous": "\(String(reflecting: fetchResult))",
+				])
 				fetchResult.progress = progress
 			} else {
+				parent.logger.info("No previous watchProgress found. Will create new WatchProgress entity.")
 				let newWatchProgress = WatchProgress(context: parent.managedObjectContext)
 				newWatchProgress.blogPostId = blogPostId
 				newWatchProgress.videoId = videoId
@@ -133,9 +143,11 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 			
 			do {
 				try parent.managedObjectContext.save()
-				parent.logger.debug("Successfully saved watch progress for \(blogPostId) \(videoId)")
+				parent.logger.info("Successfully saved watch progress for \(blogPostId) \(videoId)")
 			} catch {
 				parent.logger.error("Error saving watch progress for for \(blogPostId) \(videoId): \(String(reflecting: error))")
+				// Otherwise, this has minimal impact on the user of this application.
+				// No need to further handle the error.
 			}
 		}
 	}
