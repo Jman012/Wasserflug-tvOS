@@ -106,8 +106,34 @@ struct BlogPostContentView: View {
 				.font(.headline)
 		}
 		if !content.audioAttachments.isEmpty {
-			Text("Audios")
+			Text("Audio")
 				.font(.headline)
+			ScrollView(.horizontal) {
+				HStack {
+					ForEach(content.audioAttachments) { audio in
+						VStack {
+							Button(action: {
+								
+							}, label: {
+								let width = geometry.size.width * 0.2 // 20% of screen width works well
+								let height = width / (1920.0 / 1080.0) // Scaled to 1080p aspect ratio of width
+								WaveformView(waveform: audio.waveform,
+											 width: width - 40, // 40pt of padding on either side
+											 height: height * 0.5) // Half height for wave form
+										.frame(width: width, height: height)
+										.background(.black)
+							})
+								.buttonStyle(.card)
+								.padding()
+							Text(audio.title)
+								.frame(maxWidth: geometry.size.width * 0.2)
+								.lineLimit(1)
+						}
+					}
+				}
+				Spacer()
+			}
+				.focusSection()
 		}
 	}
 }

@@ -31,6 +31,8 @@ extension VideoAttachmentModel: Identifiable { }
 
 extension PictureAttachmentModel: Identifiable { }
 
+extension AudioAttachmentModel: Identifiable { }
+
 extension BlogPostModelV3: Identifiable { }
 
 extension UserSubscriptionModel: Identifiable {

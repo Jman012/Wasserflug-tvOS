@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E70448E22803A9110045A1AE /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70448E12803A9110045A1AE /* WaveformView.swift */; };
 		E71FDB3C27D3F89200A9C88B /* Swift+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB3B27D3F89200A9C88B /* Swift+Extensions.swift */; };
 		E71FDB7927E66D7E00A9C88B /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB7827E66D7E00A9C88B /* Persistence.swift */; };
 		E71FDB7C27E66DB100A9C88B /* Wasserflug.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB7A27E66DB100A9C88B /* Wasserflug.xcdatamodeld */; };
@@ -71,6 +72,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E70448E12803A9110045A1AE /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
 		E71FDB3B27D3F89200A9C88B /* Swift+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Swift+Extensions.swift"; sourceTree = "<group>"; };
 		E71FDB7827E66D7E00A9C88B /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		E71FDB7B27E66DB100A9C88B /* Wasserflug.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Wasserflug.xcdatamodel; sourceTree = "<group>"; };
@@ -226,6 +228,7 @@
 				E753378427CB06BE0010E3D2 /* PlayMediaView.swift */,
 				E753378527CB06BE0010E3D2 /* BlogPostSelectionView.swift */,
 				E753378627CB06BE0010E3D2 /* ErrorView.swift */,
+				E70448E12803A9110045A1AE /* WaveformView.swift */,
 			);
 			path = SupplementalViews;
 			sourceTree = "<group>";
@@ -428,6 +431,7 @@
 				E75337AC27CB06BE0010E3D2 /* PictureViewModel.swift in Sources */,
 				E75337B827CB06BE0010E3D2 /* RootTabView.swift in Sources */,
 				E75337A127CB06BE0010E3D2 /* PlayMediaView.swift in Sources */,
+				E70448E22803A9110045A1AE /* WaveformView.swift in Sources */,
 				E75337B227CB06BE0010E3D2 /* PictureView.swift in Sources */,
 				E75337B327CB06BE0010E3D2 /* BlogPostView.swift in Sources */,
 				E75337B127CB06BE0010E3D2 /* HomeView.swift in Sources */,
