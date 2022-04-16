@@ -10,6 +10,7 @@ struct BlogPostContentView: View {
 	
 	@State var shownVideoAttachment: VideoAttachmentModel? = nil
 	@State var showingPicture: PictureAttachmentModel? = nil
+	@State var showAudioAttachmentFeatureMissing = false
 	
 	var body: some View {
 		if !content.videoAttachments.isEmpty {
@@ -113,7 +114,7 @@ struct BlogPostContentView: View {
 					ForEach(content.audioAttachments) { audio in
 						VStack {
 							Button(action: {
-								
+								showAudioAttachmentFeatureMissing = true
 							}, label: {
 								let width = geometry.size.width * 0.2 // 20% of screen width works well
 								let height = width / (1920.0 / 1080.0) // Scaled to 1080p aspect ratio of width
@@ -125,6 +126,9 @@ struct BlogPostContentView: View {
 							})
 								.buttonStyle(.card)
 								.padding()
+								.alert("Coming soon", isPresented: $showAudioAttachmentFeatureMissing, actions: {}, message: {
+									Text("This feature is coming soon.")
+								})
 							Text(audio.title)
 								.frame(maxWidth: geometry.size.width * 0.2)
 								.lineLimit(1)
