@@ -40,11 +40,11 @@ public struct ContentPostV3Response: Content, Hashable {
     public var isAccessible: Bool
     public var userInteraction: [UserInteraction]?
     public var videoAttachments: [VideoAttachmentModel]
-    public var audioAttachments: [AnyCodable]
+    public var audioAttachments: [AudioAttachmentModel]
     public var pictureAttachments: [PictureAttachmentModel]
     public var galleryAttachments: [AnyCodable]
 
-    public init(id: String, guid: String, title: String, text: String, type: ModelType, tags: [String], attachmentOrder: [String], metadata: PostMetadataModel, releaseDate: Date, likes: Int, dislikes: Int, score: Int, comments: Int, creator: CreatorModelV2, wasReleasedSilently: Bool, thumbnail: ImageModel, isAccessible: Bool, userInteraction: [UserInteraction]? = nil, videoAttachments: [VideoAttachmentModel], audioAttachments: [AnyCodable], pictureAttachments: [PictureAttachmentModel], galleryAttachments: [AnyCodable]) {
+    public init(id: String, guid: String, title: String, text: String, type: ModelType, tags: [String], attachmentOrder: [String], metadata: PostMetadataModel, releaseDate: Date, likes: Int, dislikes: Int, score: Int, comments: Int, creator: CreatorModelV2, wasReleasedSilently: Bool, thumbnail: ImageModel, isAccessible: Bool, userInteraction: [UserInteraction]? = nil, videoAttachments: [VideoAttachmentModel], audioAttachments: [AudioAttachmentModel], pictureAttachments: [PictureAttachmentModel], galleryAttachments: [AnyCodable]) {
         self.id = id
         self.guid = guid
         self.title = title

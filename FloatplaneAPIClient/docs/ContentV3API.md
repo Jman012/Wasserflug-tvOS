@@ -6,6 +6,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**dislikeContent**](ContentV3API.md#dislikecontent) | **POST** /api/v3/content/dislike | Dislike Content
 [**getBlogPost**](ContentV3API.md#getblogpost) | **GET** /api/v3/content/post | Get Blog Post
+[**getContentTags**](ContentV3API.md#getcontenttags) | **GET** /api/v3/content/tags | Get Content Tags
 [**getCreatorBlogPosts**](ContentV3API.md#getcreatorblogposts) | **GET** /api/v3/content/creator | Get Creator Blog Posts
 [**getMultiCreatorBlogPosts**](ContentV3API.md#getmulticreatorblogposts) | **GET** /api/v3/content/creator/list | Get Multi Creator Blog Posts
 [**getPictureContent**](ContentV3API.md#getpicturecontent) | **GET** /api/v3/content/picture | Get Picture Content
@@ -148,6 +149,73 @@ public enum GetBlogPost {
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **getContentTags**
+```swift
+    open class func getContentTags(creatorIds: [String], headers: HTTPHeaders = FloatplaneAPIClientAPI.customHeaders, beforeSend: (inout ClientRequest) throws -> () = { _ in }) -> EventLoopFuture<GetContentTags>
+```
+
+Get Content Tags
+
+Retrieve all tags and the number of times the tags have been used for the specified creator(s).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import FloatplaneAPIClient
+
+let creatorIds = ["inner_example"] // [String] | The creator(s) to search by.
+
+// Get Content Tags
+ContentV3API.getContentTags(creatorIds: creatorIds).whenComplete { result in
+    switch result {
+    case .failure(let error):
+    // process error
+    case .success(let response):
+        switch response {
+        // process decoded response value or raw ClientResponse
+        case .http200(let value, let raw):
+        case .http400(let value, let raw):
+        case .http401(let value, let raw):
+        case .http403(let value, let raw):
+        case .http404(let value, let raw):
+        case .http0(let value, let raw):
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **creatorIds** | [**[String]**](String.md) | The creator(s) to search by. | 
+
+### Return type
+
+#### GetContentTags
+
+```swift
+public enum GetContentTags {
+    case http200(value: [String: Int]?, raw: ClientResponse)
+    case http400(value: ErrorModel?, raw: ClientResponse)
+    case http401(value: ErrorModel?, raw: ClientResponse)
+    case http403(value: ErrorModel?, raw: ClientResponse)
+    case http404(value: ErrorModel?, raw: ClientResponse)
+    case http0(value: ErrorModel?, raw: ClientResponse)
+}
+```
+
+### Authorization
+
+[CookieAuth](../README.md#CookieAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **getCreatorBlogPosts**
 ```swift
     open class func getCreatorBlogPosts(id: String, limit: Int, fetchAfter: Int? = nil, search: String? = nil, tags: [String]? = nil, headers: HTTPHeaders = FloatplaneAPIClientAPI.customHeaders, beforeSend: (inout ClientRequest) throws -> () = { _ in }) -> EventLoopFuture<GetCreatorBlogPosts>
@@ -155,7 +223,7 @@ public enum GetBlogPost {
 
 Get Creator Blog Posts
 
-Retrieve a paginated list of blog posts from a creator. Or search for blog posts from a creator.
+Retrieve a paginated list of blog posts from a creator. Or search for blog posts from a creator.  Example query: https://www.floatplane.com/api/v3/content/creator?id=59f94c0bdd241b70349eb72b&search=illegal&tags[0]=battery
 
 ### Example
 ```swift
@@ -230,7 +298,7 @@ public enum GetCreatorBlogPosts {
 
 Get Multi Creator Blog Posts
 
-Retrieve paginated blog posts from multiple creators for the home page.
+Retrieve paginated blog posts from multiple creators for the home page.  Example query: https://www.floatplane.com/api/v3/content/creator/list?ids[0]=59f94c0bdd241b70349eb72b&limit=20&fetchAfter[0][creatorId]=59f94c0bdd241b70349eb72b&fetchAfter[0][blogPostId]=B4WsyLnybS&fetchAfter[0][moreFetchable]=true
 
 ### Example
 ```swift

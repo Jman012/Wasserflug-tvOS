@@ -154,9 +154,82 @@ open class ContentV3API {
 
 
     /**
+     Get Content Tags
+     GET /api/v3/content/tags
+     Retrieve all tags and the number of times the tags have been used for the specified creator(s).
+     - API Key:
+       - type: apiKey sails.sid 
+       - name: CookieAuth
+     - parameter creatorIds: (query) The creator(s) to search by. 
+     - returns: `EventLoopFuture` of `ClientResponse` 
+     */
+    open class func getContentTagsRaw(creatorIds: [String], headers: HTTPHeaders = FloatplaneAPIClientAPI.customHeaders, beforeSend: (inout ClientRequest) throws -> () = { _ in }) -> EventLoopFuture<ClientResponse> {
+        let localVariablePath = "/api/v3/content/tags"
+        let localVariableURLString = FloatplaneAPIClientAPI.basePath + localVariablePath
+
+        guard let localVariableApiClient = Configuration.apiClient else {
+            fatalError("Configuration.apiClient is not set.")
+        }
+
+        return localVariableApiClient.send(.GET, headers: headers, to: URI(string: localVariableURLString)) { localVariableRequest in
+            try Configuration.apiWrapper(&localVariableRequest)
+            
+            struct QueryParams: Content {
+                var creatorIds: [String]
+
+                enum CodingKeys: String, CodingKey {
+                    case creatorIds = "creatorIds"
+                }
+            }
+            try localVariableRequest.query.encode(QueryParams(creatorIds: creatorIds))
+            
+            try beforeSend(&localVariableRequest)
+        }
+    }
+
+    public enum GetContentTags {
+        case http200(value: [String: Int], raw: ClientResponse)
+        case http400(value: ErrorModel, raw: ClientResponse)
+        case http401(value: ErrorModel, raw: ClientResponse)
+        case http403(value: ErrorModel, raw: ClientResponse)
+        case http404(value: ErrorModel, raw: ClientResponse)
+        case http0(value: ErrorModel, raw: ClientResponse)
+    }
+
+    /**
+     Get Content Tags
+     GET /api/v3/content/tags
+     Retrieve all tags and the number of times the tags have been used for the specified creator(s).
+     - API Key:
+       - type: apiKey sails.sid 
+       - name: CookieAuth
+     - parameter creatorIds: (query) The creator(s) to search by. 
+     - returns: `EventLoopFuture` of `GetContentTags` 
+     */
+    open class func getContentTags(creatorIds: [String], headers: HTTPHeaders = FloatplaneAPIClientAPI.customHeaders, beforeSend: (inout ClientRequest) throws -> () = { _ in }) -> EventLoopFuture<GetContentTags> {
+        return getContentTagsRaw(creatorIds: creatorIds, headers: headers, beforeSend: beforeSend).flatMapThrowing { response -> GetContentTags in
+            switch response.status.code {
+            case 200:
+                return .http200(value: try response.content.decode([String: Int].self, using: Configuration.contentConfiguration.requireDecoder(for: [String: Int].defaultContentType)), raw: response)
+            case 400:
+                return .http400(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 401:
+                return .http401(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 403:
+                return .http403(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 404:
+                return .http404(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            default:
+                return .http0(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            }
+        }
+    }
+
+
+    /**
      Get Creator Blog Posts
      GET /api/v3/content/creator
-     Retrieve a paginated list of blog posts from a creator. Or search for blog posts from a creator.
+     Retrieve a paginated list of blog posts from a creator. Or search for blog posts from a creator.  Example query: https://www.floatplane.com/api/v3/content/creator?id=59f94c0bdd241b70349eb72b&search=illegal&tags[0]=battery
      - API Key:
        - type: apiKey sails.sid 
        - name: CookieAuth
@@ -211,7 +284,7 @@ open class ContentV3API {
     /**
      Get Creator Blog Posts
      GET /api/v3/content/creator
-     Retrieve a paginated list of blog posts from a creator. Or search for blog posts from a creator.
+     Retrieve a paginated list of blog posts from a creator. Or search for blog posts from a creator.  Example query: https://www.floatplane.com/api/v3/content/creator?id=59f94c0bdd241b70349eb72b&search=illegal&tags[0]=battery
      - API Key:
        - type: apiKey sails.sid 
        - name: CookieAuth
@@ -245,7 +318,7 @@ open class ContentV3API {
     /**
      Get Multi Creator Blog Posts
      GET /api/v3/content/creator/list
-     Retrieve paginated blog posts from multiple creators for the home page.
+     Retrieve paginated blog posts from multiple creators for the home page.  Example query: https://www.floatplane.com/api/v3/content/creator/list?ids[0]=59f94c0bdd241b70349eb72b&limit=20&fetchAfter[0][creatorId]=59f94c0bdd241b70349eb72b&fetchAfter[0][blogPostId]=B4WsyLnybS&fetchAfter[0][moreFetchable]=true
      - API Key:
        - type: apiKey sails.sid 
        - name: CookieAuth
@@ -294,7 +367,7 @@ open class ContentV3API {
     /**
      Get Multi Creator Blog Posts
      GET /api/v3/content/creator/list
-     Retrieve paginated blog posts from multiple creators for the home page.
+     Retrieve paginated blog posts from multiple creators for the home page.  Example query: https://www.floatplane.com/api/v3/content/creator/list?ids[0]=59f94c0bdd241b70349eb72b&limit=20&fetchAfter[0][creatorId]=59f94c0bdd241b70349eb72b&fetchAfter[0][blogPostId]=B4WsyLnybS&fetchAfter[0][moreFetchable]=true
      - API Key:
        - type: apiKey sails.sid 
        - name: CookieAuth

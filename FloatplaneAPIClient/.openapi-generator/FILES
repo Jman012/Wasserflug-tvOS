@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 FloatplaneAPIClient/Classes/OpenAPIs/APIs.swift
 FloatplaneAPIClient/Classes/OpenAPIs/APIs/AuthV2API.swift
 FloatplaneAPIClient/Classes/OpenAPIs/APIs/AuthV3API.swift
@@ -18,6 +17,8 @@ FloatplaneAPIClient/Classes/OpenAPIs/APIs/UserV2API.swift
 FloatplaneAPIClient/Classes/OpenAPIs/APIs/UserV3API.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Configuration.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Extensions.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/AudioAttachmentModel.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/AudioAttachmentModelWaveform.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/AuthLoginV2Request.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/AuthLoginV2Response.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/BlogPostModelV3.swift
@@ -98,6 +99,8 @@ FloatplaneAPIClient/Classes/OpenAPIs/Models/UserSubscriptionModelPlan.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/VideoAttachmentModel.swift
 Package.swift
 README.md
+docs/AudioAttachmentModel.md
+docs/AudioAttachmentModelWaveform.md
 docs/AuthLoginV2Request.md
 docs/AuthLoginV2Response.md
 docs/AuthV2API.md

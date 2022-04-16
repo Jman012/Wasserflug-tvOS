@@ -22,7 +22,7 @@ Name | Type | Description | Notes
 **isAccessible** | **Bool** |  | 
 **userInteraction** | **[String]** |  | [optional] 
 **videoAttachments** | [VideoAttachmentModel] |  | 
-**audioAttachments** | [AnyCodable] |  | 
+**audioAttachments** | [AudioAttachmentModel] |  | 
 **pictureAttachments** | [PictureAttachmentModel] |  | 
 **galleryAttachments** | [AnyCodable] |  | 
 
