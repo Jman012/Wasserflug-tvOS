@@ -113,12 +113,13 @@ struct CreatorContentView: View {
 									})
 							}
 						}
-						.padding()
+							.padding(40)
 					}
 				}.onDisappear {
 					viewModel.creatorContentDidDisappear()
 				 }.onAppear {
 					viewModel.creatorContentDidAppearAgain()
+					livestreamViewModel.loadLiveStatus()
 				 }
 			}
 		}

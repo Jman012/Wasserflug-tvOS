@@ -37,7 +37,7 @@ struct HomeView: View {
 							})
 					}
 				}
-				.padding()
+					.padding(40)
 			}.onDisappear {
 				viewModel.homeDidDisappear()
 			}.onAppear {

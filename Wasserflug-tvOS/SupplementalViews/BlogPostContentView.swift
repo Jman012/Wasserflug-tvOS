@@ -29,29 +29,8 @@ struct BlogPostContentView: View {
 									VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: video, contentPost: content), beginningWatchTime: beginningWatchTime)
 								},
 								watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", content.id, video.id), animation: .default)
-)
-//								.frame(maxWidth: geometry.size.width * 0.2)
-//								CachedAsyncImage(url: URL(string: video.thumbnail.path), content: { image in
-//									image
-//										.resizable()
-//										.scaledToFit()
-//										.frame(maxWidth: geometry.size.width * 0.2)
-//										.cornerRadius(10.0)
-//								}, placeholder: {
-//									ProgressView()
-//										.frame(width: geometry.size.width * 0.2)
-//										.aspectRatio(content.thumbnail.aspectRatio, contentMode: .fit)
-//								})
-//								PlayButton(size: .small, action: {
-//									self.shownVideoAttachment = video
-//								})
-//									.sheet(item: $shownVideoAttachment, onDismiss: {
-//										shownVideoAttachment = nil
-//									}, content: { item in
-//										VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: item, contentPost: content))
-//									})
+							)
 							Text(video.title)
-//								.frame(maxWidth: geometry.size.width * 0.2)
 								.lineLimit(1)
 						}
 							.frame(maxWidth: geometry.size.width * 0.2)

@@ -35,7 +35,7 @@ struct CreatorSearchView: View {
 							})
 					}
 				}
-					.padding()
+					.padding(40)
 			}
 		}
 		.searchable(text: $viewModel.searchText, prompt: "Search \(self.creatorName)")

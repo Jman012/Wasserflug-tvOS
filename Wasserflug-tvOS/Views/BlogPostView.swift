@@ -10,6 +10,7 @@ struct BlogPostView: View {
 	@Environment(\.fpApiService) var fpApiService
 	@Environment(\.colorScheme) var colorScheme
 	@Namespace var screenNamespace
+	@Namespace var likeDislikeCommentNamespace
 	
 	@State var isShowingVideo = false
 	
@@ -26,9 +27,14 @@ struct BlogPostView: View {
 		case let .loaded(content):
 			GeometryReader { geometry in
 				ScrollView {
+					// The entire page is a VStack of rows of contnet in a scroll view
 					VStack(alignment: .leading) {
+						/* Top row */
+						// Title
 						Text(content.title)
 							.font(.title3)
+						
+						// Tags under the title
 						HStack(alignment: .top, spacing: 20) {
 							ForEach(content.tags, id: \.self) { tag in
 								Text("#" + tag)
@@ -37,7 +43,10 @@ struct BlogPostView: View {
 							}
 						}
 							.padding([.bottom])
+						
+						/* Thumbnail and description row */
 						HStack(alignment: .top) {
+							// Thumbnail with play button, on left of screen
 							PlayMediaView(
 								thumbnail: content.thumbnail,
 								showPlayButton: !content.videoAttachments.isEmpty,
@@ -53,8 +62,10 @@ struct BlogPostView: View {
 								isShowingMedia: shouldAutoPlay,
 								watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", content.id, content.videoAttachments.first?.id ?? ""), animation: .default))
 
+							// Creator pfp, publish date, and description
 							VStack(alignment: .leading) {
 								HStack(alignment: .center, spacing: 20) {
+									// Creator profile picture
 									CachedAsyncImage(url: URL(string: content.creator.icon.path), content: { image in
 										image
 											.resizable()
@@ -64,15 +75,18 @@ struct BlogPostView: View {
 										ProgressView()
 											.frame(width: 75, height: 75)
 									})
+									
 									VStack(alignment: .leading) {
+										// Creator name
 										Text(content.creator.title)
 											.font(.headline)
+										// Blog post publish date
 										Text("\(content.releaseDate)")
 											.font(.caption)
-
 									}
 									Spacer()
 								}
+								// The description. Pre-attributed from view model
 								Text(viewModel.textAttributedString)
 									.font(.body)
 									.lineLimit(15)
@@ -81,10 +95,13 @@ struct BlogPostView: View {
 								.frame(minWidth: geometry.size.width * 0.5)
 						}
 							.focusSection()
+						
+						// Like/dislike/comments row
 						ZStack(alignment: .leading) {
 							Rectangle()
 								.fill(.clear)
 							HStack {
+								// Like button
 								Button(action: {
 									viewModel.like()
 								}) {
@@ -92,7 +109,10 @@ struct BlogPostView: View {
 									let additional = viewModel.isLiked && viewModel.latestUserInteraction != nil ? 1 : 0
 									Text("\(content.likes + additional)")
 								}
-								.foregroundColor(viewModel.isLiked ? FPColors.blue : colorScheme == .light ? Color.black : Color.white)
+									.prefersDefaultFocus(in: likeDislikeCommentNamespace)
+									.foregroundColor(viewModel.isLiked ? FPColors.blue : colorScheme == .light ? Color.black : Color.white)
+								
+								// Dislike button
 								Button(action: {
 									viewModel.dislike()
 								}) {
@@ -101,12 +121,17 @@ struct BlogPostView: View {
 									Text("\(content.dislikes + additional)")
 								}
 									.foregroundColor(viewModel.isDisliked ? FPColors.blue : colorScheme == .light ? Color.black : Color.white)
+								
+								// Comments label
 								Text("\(content.comments) comment\(content.comments == 1 ? "" : "s")")
 							}
-							.padding()
+								.padding()
 						}
 							.frame(maxWidth: .infinity)
 							.focusSection()
+							.focusScope(likeDislikeCommentNamespace)
+						
+						// If applicable, show all attachments as the last rows
 						if !(content.videoAttachments.count == 1 && content.pictureAttachments.count == 0 && content.audioAttachments.count == 0 && content.galleryAttachments.count == 0) {
 							BlogPostContentView(geometry: geometry, content: content, fpApiService: fpApiService)
 						}
