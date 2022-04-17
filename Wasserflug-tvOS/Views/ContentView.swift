@@ -16,7 +16,6 @@ struct ContentView: View {
 	
 	@State var isLoggingIn = false
 	@State var hasInitiallyLoaded = false
-	@State var showJoinAlert = false
 	
 	enum Notifications {
 		static let loggedOut = Notification.Name("com.jamesnl.Wasserflug-tvOSApp.loggedOut")
@@ -85,12 +84,6 @@ struct ContentView: View {
 									LoginView(isLoggingIn: $isLoggingIn, viewModel: viewModel)
 								}
 								.background(.ultraThinMaterial)
-							})
-						Button("Join", action: {
-							showJoinAlert = true
-						})
-							.alert("Join Floatplane", isPresented: $showJoinAlert, actions: { }, message: {
-								Text("In order to create an account on Floatplane, please visit https://www.floatplane.com/signup. After this has been completed, you may return here and login.")
 							})
 					}
 				}
