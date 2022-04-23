@@ -24,7 +24,7 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 	}
 	
 	func makeUIViewController(context: Context) -> AVPlayerViewController {
-		logger.notice("Creating AVPlayerViewController instance for playback.", metadata: [
+		logger.debug("Creating AVPlayerViewController instance for playback.", metadata: [
 			"videoId": "\(viewModel.videoAttachment.id)",
 		])
 		let vc = AVPlayerViewController()
@@ -39,14 +39,37 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 			playerItem.seek(to: newCMTime, completionHandler: nil)
 		}
 		vc.player = AVPlayer(playerItem: playerItem)
+		vc.player?.play() // Needs to play when it first appears.
 		return vc
 	}
 
 	func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {
 		
+		updateAVPlayerItem(uiViewController: uiViewController)
+		
+		if let qualityMenu = uiViewController.transportBarCustomMenuItems.first(where: { $0.title == "Resolution" }) as? UIMenu {
+			if let qualitySubMenu = qualityMenu.children.first(where: { $0.title == "Resolution" }) as? UIMenu {
+				logger.debug("Resetting resolution picker to last user-selected resolution of \(self.desiredQuality).")
+				for case let option as UIAction in qualitySubMenu.children {
+					option.state = .off
+					if option.identifier == UIAction.Identifier(desiredQuality) {
+						option.state = .on
+					}
+				}
+			}
+		}
+	}
+	
+	private func updateAVPlayerItem(uiViewController: AVPlayerViewController) {
 		if let player = uiViewController.player {
 			let newPlayerItem = viewModel.createAVPlayerItem(desiredQuality: desiredQuality)
 			let lastPlayerItem = player.currentItem
+			
+			// Only perform an update to the player item if the URL changes. This
+			// could cause a stutter in video playback as it needlessly loads something.
+			guard (lastPlayerItem?.asset as? AVURLAsset)?.url != (newPlayerItem.asset as? AVURLAsset)?.url else {
+				return
+			}
 			
 			logger.notice("Updating the AVPlayerViewController's AVPlayerItem with the latest video URL and quality.")
 			
@@ -60,19 +83,6 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 			player.play()
 		} else {
 			logger.warning("While updating AVPlayerViewController, no AVPlayer was found. Skipping the update of the AVPlayerItem.")
-		}
-		
-		
-		if let qualityMenu = uiViewController.transportBarCustomMenuItems.first(where: { $0.title == "Resolution" }) as? UIMenu {
-			if let qualitySubMenu = qualityMenu.children.first(where: { $0.title == "Resolution" }) as? UIMenu {
-				logger.debug("Resetting resolution picker to last user-selected resolution of \(self.desiredQuality).")
-				for case let option as UIAction in qualitySubMenu.children {
-					option.state = .off
-					if option.identifier == UIAction.Identifier(desiredQuality) {
-						option.state = .on
-					}
-				}
-			}
 		}
 	}
 	
