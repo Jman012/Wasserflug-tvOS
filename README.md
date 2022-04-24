@@ -36,7 +36,7 @@ See https://imgur.com/a/vXAcEJy for screenshots of Wasserflug.
 
 ## Beta Testing
 
-If you would like to enter the beta testing via Test Flight for Wasserflug or to receive advanced updated, please use this Test Flist invite link: https://testflight.apple.com/join/aYwKPFNF.
+If you would like to enter the beta testing via Test Flight for Wasserflug or to receive advanced updates, please use this Test Flist invite link: https://testflight.apple.com/join/aYwKPFNF.
 
 ## Development
 
