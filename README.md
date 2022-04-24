@@ -8,12 +8,15 @@ See https://imgur.com/a/vXAcEJy for screenshots of Wasserflug.
 ## Features
 
 ### Implemented Floatplane Features
-✅ Login (with 2FA)  
+✅ Floatplane Login (and with 2FA)  
+❌ Login via LTT Forum  
+❌ Login via Discord  
 ✅ Aggregated home screem  
 ✅ Creator screens with proper branding (banner image, profile picture, "About" information)  
 ✅ Search a creator for videos  
 ✅ Floatplane tags (viewing only)  
 ✅ Formatted post descriptions  
+✅ 4K Support  
 ✅ Attachment views  
 
 - ✅ Videos
