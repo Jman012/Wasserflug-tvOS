@@ -9,6 +9,7 @@ struct PlayMediaView<Content>: View where Content: View {
 	let width: CGFloat?
 	let playButtonSize: PlayButton.Size
 	let playContent: (Double) -> Content
+	let defaultInNamespace: Namespace.ID?
 	
 	@State var isShowingMedia = false
 	
@@ -40,13 +41,16 @@ struct PlayMediaView<Content>: View where Content: View {
 	}
 	
 	var image: some View {
-		CachedAsyncImage(url: URL(string: thumbnail.path), content: { image in
-			ZStack {
+		ZStack {
+			CachedAsyncImage(url: URL(string: thumbnail.path), content: { image in
 				ZStack(alignment: .bottomLeading) {
+					// Thumbnail image
 					image
 						.resizable()
 						.scaledToFit()
 						.frame(width: width)
+					
+					// Watch progress indicator
 					GeometryReader { geometry in
 						Rectangle()
 							.fill(FPColors.blue)
@@ -55,29 +59,31 @@ struct PlayMediaView<Content>: View where Content: View {
 						.frame(height: 8)
 				}
 					.frame(width: width)
-				
-				if showPlayButton {
-					PlayButton(size: playButtonSize, action: {
-						isShowingMedia = true
-					})
-//						.prefersDefaultFocus(in: screenNamespace)
-						.sheet(isPresented: $isShowingMedia, onDismiss: {
-							isShowingMedia = false
-						}, content: {
-							playContent(Double(progress))
-						})
+					// Apply the cornerRadius on the ZStack to get the corners of the watch progress indicator
+					.cornerRadius(10.0)
+			}, placeholder: {
+				ZStack {
+					ProgressView()
+					Rectangle()
+						.fill(.clear)
+						.frame(width: width)
+						.aspectRatio(thumbnail.aspectRatio, contentMode: .fit)
 				}
+			})
+			
+			if showPlayButton {
+				PlayButton(size: playButtonSize, action: {
+					isShowingMedia = true
+				})
+					// If a namespace is provided, then prefer default focus on it.
+					.optionalPrefersDefaultFocus(in: defaultInNamespace)
+					.sheet(isPresented: $isShowingMedia, onDismiss: {
+						isShowingMedia = false
+					}, content: {
+						playContent(Double(progress))
+					})
 			}
-				.cornerRadius(10.0)
-		}, placeholder: {
-			ZStack {
-				ProgressView()
-				Rectangle()
-					.fill(.clear)
-					.frame(width: width)
-					.aspectRatio(thumbnail.aspectRatio, contentMode: .fit)
-			}
-		})
+		}
 	}
 }
 
@@ -90,6 +96,7 @@ struct PlayMediaView_Previews: PreviewProvider {
 				width: 200,
 				playButtonSize: .small,
 				playContent: { _ in EmptyView() },
+				defaultInNamespace: nil,
 				watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
 			)
 				.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
@@ -100,6 +107,7 @@ struct PlayMediaView_Previews: PreviewProvider {
 				width: 500,
 				playButtonSize: .default,
 				playContent: { _ in EmptyView() },
+				defaultInNamespace: nil,
 				watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)				
 			)
 				.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)

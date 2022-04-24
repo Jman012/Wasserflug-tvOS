@@ -28,6 +28,7 @@ struct BlogPostContentView: View {
 								playContent: { beginningWatchTime in
 									VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: video, contentPost: content), beginningWatchTime: beginningWatchTime)
 								},
+								defaultInNamespace: nil,
 								watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", content.id, video.id), animation: .default)
 							)
 							Text(video.title)

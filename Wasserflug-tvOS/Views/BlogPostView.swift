@@ -27,7 +27,7 @@ struct BlogPostView: View {
 		case let .loaded(content):
 			GeometryReader { geometry in
 				ScrollView {
-					// The entire page is a VStack of rows of contnet in a scroll view
+					// The entire page is a VStack of rows of content in a scroll view
 					VStack(alignment: .leading) {
 						/* Top row */
 						// Title
@@ -59,6 +59,7 @@ struct BlogPostView: View {
 										}
 									}
 								},
+								defaultInNamespace: screenNamespace,
 								isShowingMedia: shouldAutoPlay,
 								watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", content.id, content.videoAttachments.first?.id ?? ""), animation: .default))
 
