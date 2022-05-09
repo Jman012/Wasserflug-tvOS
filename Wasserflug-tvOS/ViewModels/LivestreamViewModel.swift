@@ -123,7 +123,7 @@ class LivestreamViewModel: BaseViewModel, ObservableObject {
 	}
 	
 	func startLoadingLiveStatus() {
-		let interval: TimeInterval = 30.0
+		let interval: TimeInterval = 5.0
 		logger.info("Starting livestream polling", metadata: [
 			"id": "\(creator.id)",
 			"interval": "\(interval)",
