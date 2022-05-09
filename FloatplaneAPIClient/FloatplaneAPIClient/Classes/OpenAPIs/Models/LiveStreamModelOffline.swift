@@ -13,11 +13,11 @@ import Vapor
 
 public struct LiveStreamModelOffline: Content, Hashable {
 
-    public var title: String
-    public var description: String
-    public var thumbnail: ImageModel
+    public var title: String?
+    public var description: String?
+    public var thumbnail: ImageModel?
 
-    public init(title: String, description: String, thumbnail: ImageModel) {
+    public init(title: String? = nil, description: String? = nil, thumbnail: ImageModel? = nil) {
         self.title = title
         self.description = description
         self.thumbnail = thumbnail
@@ -33,9 +33,9 @@ public struct LiveStreamModelOffline: Content, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(title, forKey: .title)
-        try container.encode(description, forKey: .description)
-        try container.encode(thumbnail, forKey: .thumbnail)
+        try container.encodeIfPresent(title, forKey: .title)
+        try container.encodeIfPresent(description, forKey: .description)
+        try container.encodeIfPresent(thumbnail, forKey: .thumbnail)
     }
 }
 
