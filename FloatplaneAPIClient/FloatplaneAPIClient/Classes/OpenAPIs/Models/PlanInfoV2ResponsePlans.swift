@@ -27,7 +27,7 @@ public struct PlanInfoV2ResponsePlans: Content, Hashable {
     public var paymentID: Int
     public var currency: String
     public var trialPeriod: Double
-    public var allowGrandfatheredAccess: Bool
+    public var allowGrandfatheredAccess: Bool?
     public var logo: String
     public var creator: String
     public var discordServers: [DiscordServerModel]
@@ -36,7 +36,7 @@ public struct PlanInfoV2ResponsePlans: Content, Hashable {
     public var enabledGlobal: Bool
     public var interval: String
 
-    public init(discordRoles: [DiscordRoleModel], createdAt: Date, updatedAt: Date, id: String, title: String, enabled: Bool, featured: Bool, description: String, price: String, priceYearly: String? = nil, paymentID: Int, currency: String, trialPeriod: Double, allowGrandfatheredAccess: Bool, logo: String, creator: String, discordServers: [DiscordServerModel], userIsSubscribed: Bool, userIsGrandfathered: Bool, enabledGlobal: Bool, interval: String) {
+    public init(discordRoles: [DiscordRoleModel], createdAt: Date, updatedAt: Date, id: String, title: String, enabled: Bool, featured: Bool, description: String, price: String, priceYearly: String? = nil, paymentID: Int, currency: String, trialPeriod: Double, allowGrandfatheredAccess: Bool? = nil, logo: String, creator: String, discordServers: [DiscordServerModel], userIsSubscribed: Bool, userIsGrandfathered: Bool, enabledGlobal: Bool, interval: String) {
         self.discordRoles = discordRoles
         self.createdAt = createdAt
         self.updatedAt = updatedAt
@@ -101,7 +101,7 @@ public struct PlanInfoV2ResponsePlans: Content, Hashable {
         try container.encode(paymentID, forKey: .paymentID)
         try container.encode(currency, forKey: .currency)
         try container.encode(trialPeriod, forKey: .trialPeriod)
-        try container.encode(allowGrandfatheredAccess, forKey: .allowGrandfatheredAccess)
+        try container.encodeIfPresent(allowGrandfatheredAccess, forKey: .allowGrandfatheredAccess)
         try container.encode(logo, forKey: .logo)
         try container.encode(creator, forKey: .creator)
         try container.encode(discordServers, forKey: .discordServers)

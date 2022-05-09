@@ -16,7 +16,7 @@ Name | Type | Description | Notes
 **paymentID** | **Int** |  | 
 **currency** | **String** |  | 
 **trialPeriod** | **Double** |  | 
-**allowGrandfatheredAccess** | **Bool** |  | 
+**allowGrandfatheredAccess** | **Bool** |  | [optional] 
 **logo** | **String** |  | 
 **creator** | **String** |  | 
 **discordServers** | [DiscordServerModel] |  | 

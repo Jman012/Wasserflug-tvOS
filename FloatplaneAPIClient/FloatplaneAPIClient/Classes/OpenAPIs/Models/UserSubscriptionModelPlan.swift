@@ -22,11 +22,11 @@ public struct UserSubscriptionModelPlan: Content, Hashable {
     public var logo: String?
     public var interval: String
     public var featured: Bool
-    public var allowGrandfatheredAccess: Bool
+    public var allowGrandfatheredAccess: Bool?
     public var discordServers: [DiscordServerModel]
     public var discordRoles: [DiscordRoleModel]
 
-    public init(id: String, title: String, description: String, price: String, priceYearly: String? = nil, currency: String, logo: String? = nil, interval: String, featured: Bool, allowGrandfatheredAccess: Bool, discordServers: [DiscordServerModel], discordRoles: [DiscordRoleModel]) {
+    public init(id: String, title: String, description: String, price: String, priceYearly: String? = nil, currency: String, logo: String? = nil, interval: String, featured: Bool, allowGrandfatheredAccess: Bool? = nil, discordServers: [DiscordServerModel], discordRoles: [DiscordRoleModel]) {
         self.id = id
         self.title = title
         self.description = description
@@ -69,7 +69,7 @@ public struct UserSubscriptionModelPlan: Content, Hashable {
         try container.encodeIfPresent(logo, forKey: .logo)
         try container.encode(interval, forKey: .interval)
         try container.encode(featured, forKey: .featured)
-        try container.encode(allowGrandfatheredAccess, forKey: .allowGrandfatheredAccess)
+        try container.encodeIfPresent(allowGrandfatheredAccess, forKey: .allowGrandfatheredAccess)
         try container.encode(discordServers, forKey: .discordServers)
         try container.encode(discordRoles, forKey: .discordRoles)
     }

@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **logo** | **String** |  | [optional] 
 **interval** | **String** |  | 
 **featured** | **Bool** |  | 
-**allowGrandfatheredAccess** | **Bool** |  | 
+**allowGrandfatheredAccess** | **Bool** |  | [optional] 
 **discordServers** | [DiscordServerModel] |  | 
 **discordRoles** | [DiscordRoleModel] |  | 
 
