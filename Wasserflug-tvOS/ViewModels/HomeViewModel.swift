@@ -28,7 +28,9 @@ class HomeViewModel: BaseViewModel, ObservableObject {
 		var lastElements: [ContentCreatorListLastItems]? = nil
 		switch (loadingMode, state) {
 		case let (.append, .loaded(response)):
-			lastElements = response.lastElements
+			// Floatplane doesn't like when we send one of these without a blogPostId.
+			// so, filter those objects out before using them.
+			lastElements = response.lastElements.filter({ $0.blogPostId != nil })
 		default:
 			break
 		}
