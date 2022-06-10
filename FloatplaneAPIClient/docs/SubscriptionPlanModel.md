@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 **id** | **String** |  | 
 **title** | **String** |  | 
 **description** | **String** |  | 
-**price** | **String** |  | 
+**price** | **String** |  | [optional] 
 **priceYearly** | **String** |  | [optional] 
 **currency** | **String** |  | 
 **logo** | **String** |  | [optional] 

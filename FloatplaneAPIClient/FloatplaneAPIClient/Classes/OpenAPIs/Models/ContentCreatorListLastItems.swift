@@ -14,7 +14,7 @@ import Vapor
 public struct ContentCreatorListLastItems: Content, Hashable {
 
     public var creatorId: String
-    /** This may be `null` if no blog posts for this creator appeared yet on this page of blog posts. */
+    /** This may be returned as `null` if no blog posts for this creator appeared yet on this page of blog posts. However, Floatplane will complain if this is sent with a `null` value. */
     public var blogPostId: String?
     public var moreFetchable: Bool
 

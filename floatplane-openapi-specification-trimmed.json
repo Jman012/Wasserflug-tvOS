@@ -130,6 +130,7 @@
                 "properties": {
                     "cdn": {
                         "type": "string",
+                        "format": "uri",
                         "description": "The domain of the CDN server to use."
                     },
                     "strategy": {
@@ -692,7 +693,7 @@
                     },
                     "blogPostId": {
                         "type": "string",
-                        "description": "This may be `null` if no blog posts for this creator appeared yet on this page of blog posts."
+                        "description": "This may be returned as `null` if no blog posts for this creator appeared yet on this page of blog posts. However, Floatplane will complain if this is sent with a `null` value."
                     },
                     "moreFetchable": {
                         "type": "boolean"
@@ -1055,6 +1056,7 @@
                     "properties": {
                         "url": {
                             "type": "string",
+                            "format": "uri",
                             "description": "The URL the user has configured for this link."
                         },
                         "type": {
@@ -1760,7 +1762,6 @@
                     "id",
                     "title",
                     "description",
-                    "price",
                     "currency",
                     "interval",
                     "featured",
@@ -2041,7 +2042,8 @@
                         "type": "integer"
                     },
                     "path": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "uri"
                     },
                     "size": {
                         "type": "integer"
@@ -2069,7 +2071,8 @@
                         "type": "integer"
                     },
                     "path": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "uri"
                     }
                 },
                 "required": [
@@ -2127,19 +2130,24 @@
                 "type": "object",
                 "properties": {
                     "instagram": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "uri"
                     },
                     "twitter": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "uri"
                     },
                     "website": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "uri"
                     },
                     "facebook": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "uri"
                     },
                     "youtube": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "uri"
                     }
                 }
             },
@@ -2156,7 +2164,8 @@
                         "type": "string"
                     },
                     "inviteLink": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "uri"
                     },
                     "inviteMode": {
                         "type": "string"
@@ -2570,7 +2579,6 @@
                             "id",
                             "title",
                             "description",
-                            "price",
                             "currency",
                             "interval",
                             "featured",
