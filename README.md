@@ -9,8 +9,7 @@ See https://imgur.com/a/vXAcEJy for screenshots of Wasserflug.
 
 ### Implemented Floatplane Features
 ✅ Floatplane Login (and with 2FA)  
-❌ Login via LTT Forum  
-❌ Login via Discord  
+- Login via LTT Forum/Discord: See FAQ  
 ✅ Aggregated home screem  
 ✅ Creator screens with proper branding (banner image, profile picture, "About" information)  
 ✅ Search a creator for videos  
@@ -41,6 +40,8 @@ See https://imgur.com/a/vXAcEJy for screenshots of Wasserflug.
 
 - Q: I have an grandfathered/OG account on LinusTechTips forums, and normally log in to Floatplane using this account. How do I log in on Wasserflug?
     - A: When you log in to Floatplane using a Discord or LTT Forum account, an account is made for you in Floatplane as well, with its own password and username (the username is usually copied from the other service). You were asked to create a Floatplane-specific password when you first logged in. This is the information you should use to log in to Wasserflug. If you have forgotten the Floatplane password for this account (because you normally use LTT Forum or Discord to log in), you can go onto the Floatplane website to change your password first.
+- Q: I'm getting an error when logging in, "Logging in was successful, but an error was encountered while loading your user profile."? What do I do?
+    - A: This happens sometimes because of the differences between the LTT subscriptions and other content creators on Floatplane having slightly different data here and there. Let the app developer know over Discord or email and the issue can be sorted out quickly enough!
 
 ## Technical
 
