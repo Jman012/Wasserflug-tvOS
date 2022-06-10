@@ -92,12 +92,18 @@ struct LoginView: View {
 				.frame(maxWidth: .infinity, maxHeight: .infinity)
 			}
 		}
-		.alert("Incorrect Login", isPresented: $viewModel.showIncorrectLoginAlert, actions: { }, message: {
+		.alert("Login", isPresented: $viewModel.showIncorrectLoginAlert, actions: { }, message: {
 			if let error = viewModel.loginError {
-				Text("There was an error while attempting to log in.")
-				ErrorView(error: error)
+				Text("""
+There was an error while attempting to log in. Please submit a bug report with the app developer, *NOT* with Floatplane staff.
+
+\(error.localizedDescription)
+""")
 			} else {
-				Text("Username or password is incorrect.\nIf you have forgotten your password, please reset it via https://www.floatplane.com/reset-password")
+				Text("""
+Username or password is incorrect.
+If you have forgotten your password, please reset it via https://www.floatplane.com/reset-password
+""")
 			}
 		})
 	}

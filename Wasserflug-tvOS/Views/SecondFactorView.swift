@@ -59,10 +59,13 @@ struct SecondFactorView: View {
 			}
 			.frame(maxWidth: .infinity, maxHeight: .infinity)
 		}
-		.alert("Incorrect Code", isPresented: $viewModel.showIncorrectSecondFactorAlert, actions: { }, message: {
+		.alert("Second Factor", isPresented: $viewModel.showIncorrectSecondFactorAlert, actions: { }, message: {
 			if let error = viewModel.secondFactorError {
-				Text("There was an error while attempting to log in.")
-				ErrorView(error: error)
+				Text("""
+There was an error while attempting to log in.
+
+\(error.localizedDescription)
+""")
 			} else {
 				Text("Invalid authentication code provided.")
 			}

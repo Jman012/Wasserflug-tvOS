@@ -8,6 +8,7 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 	@Published var isLoggedIn = false
 	@Published var userInfo = UserInfo()
 	@Published var authenticationCheckError: Error? = nil
+	@Published var showAuthenticationErrorAlert = false
 	
 	@Published var isAttemptingLogin = false
 	@Published var showIncorrectLoginAlert = false
@@ -91,12 +92,14 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 																	self.isLoggedIn = false
 																	self.isLoadingAuthStatus = false
 																	self.authenticationCheckError = errorModel
+																	self.showAuthenticationErrorAlert = true
 																}
 															case let .failure(error):
 																self.logger.error("Encountered an unexpected error while loading creator owner(s). Reporting the error to the user. Error: \(String(reflecting: error))")
 																self.isLoggedIn = false
 																self.isLoadingAuthStatus = false
 																self.authenticationCheckError = error
+																self.showAuthenticationErrorAlert = true
 															}
 														}
 													}
@@ -109,12 +112,14 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 												self.isLoggedIn = false
 												self.isLoadingAuthStatus = false
 												self.authenticationCheckError = errorModel
+												self.showAuthenticationErrorAlert = true
 											}
 										case let .failure(error):
 											self.logger.error("Encountered an unexpected error while loading creator(s). Reporting the error to the user. Error: \(String(reflecting: error))")
 											self.isLoggedIn = false
 											self.isLoadingAuthStatus = false
 											self.authenticationCheckError = error
+											self.showAuthenticationErrorAlert = true
 										}
 									}
 								}
@@ -130,6 +135,7 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 						self.isLoggedIn = false
 						self.isLoadingAuthStatus = false
 						self.authenticationCheckError = error
+						self.showAuthenticationErrorAlert = true
 					}
 				}
 			}

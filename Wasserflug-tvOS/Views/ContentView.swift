@@ -16,6 +16,7 @@ struct ContentView: View {
 	
 	@State var isLoggingIn = false
 	@State var hasInitiallyLoaded = false
+	@State var showErrorMoreDetails = false
 	
 	enum Notifications {
 		static let loggedOut = Notification.Name("com.jamesnl.Wasserflug-tvOSApp.loggedOut")
@@ -100,6 +101,21 @@ struct ContentView: View {
 		})
 		.onReceive(NotificationCenter.default.publisher(for: Notifications.loggedOut, object: nil), perform: { _ in
 			viewModel.determineAuthenticationStatus()
+		})
+		.alert("Application Error", isPresented: $viewModel.showAuthenticationErrorAlert, presenting: viewModel.authenticationCheckError, actions: { _ in
+			Button("OK", action: {})
+			Button("More Information", action: {
+				showErrorMoreDetails = true
+			})
+		}, message: { error in
+			Text("""
+Logging in was successful, but an error was encountered while loading your user profile. Please submit a bug report with the app developer, *NOT* with Floatplane staff.
+
+\(error.localizedDescription)
+""")
+		})
+		.alert("Application Error", isPresented: $showErrorMoreDetails, presenting: viewModel.authenticationCheckError, actions: { _ in }, message: { error in
+			Text("\(String(describing: error))")
 		})
 	}
 }
