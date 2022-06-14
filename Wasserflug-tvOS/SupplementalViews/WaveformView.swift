@@ -43,7 +43,7 @@ struct WaveformView: View {
 
 struct WaveformView_Previews: PreviewProvider {
 	static var previews: some View {
-		WaveformView(waveform: MockData.getBlogPost.audioAttachments.first!.waveform, width: 192, height: 108)
+		WaveformView(waveform: MockData.getBlogPost.audioAttachments!.first!.waveform, width: 192, height: 108)
 			.previewLayout(.fixed(width: 192, height: 108))
 	}
 }

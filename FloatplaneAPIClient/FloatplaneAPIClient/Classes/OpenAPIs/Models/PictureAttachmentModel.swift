@@ -25,6 +25,7 @@ public struct PictureAttachmentModel: Content, Hashable {
     public var creator: String
     public var primaryBlogPost: String
     public var thumbnail: ImageModel
+    /** If false, the post should be marked as locked and not viewable by the user. */
     public var isAccessible: Bool
 
     public init(id: String, guid: String, title: String, type: String, description: String, likes: Int, dislikes: Int, score: Int, isProcessing: Bool, creator: String, primaryBlogPost: String, thumbnail: ImageModel, isAccessible: Bool) {

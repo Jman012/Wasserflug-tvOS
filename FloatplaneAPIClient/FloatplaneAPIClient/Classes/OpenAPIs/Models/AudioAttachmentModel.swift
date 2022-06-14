@@ -26,6 +26,7 @@ public struct AudioAttachmentModel: Content, Hashable {
     public var score: Int
     public var isProcessing: Bool
     public var primaryBlogPost: String
+    /** If false, the post should be marked as locked and not viewable by the user. */
     public var isAccessible: Bool
 
     public init(id: String, guid: String, title: String, type: String, description: String, duration: Int, waveform: AudioAttachmentModelWaveform, creator: String, likes: Int, dislikes: Int, score: Int, isProcessing: Bool, primaryBlogPost: String, isAccessible: Bool) {

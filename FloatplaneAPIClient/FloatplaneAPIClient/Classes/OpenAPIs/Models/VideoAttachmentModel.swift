@@ -27,6 +27,7 @@ public struct VideoAttachmentModel: Content, Hashable {
     public var isProcessing: Bool
     public var primaryBlogPost: String
     public var thumbnail: ImageModel
+    /** If false, the post should be marked as locked and not viewable by the user. */
     public var isAccessible: Bool
 
     public init(id: String, guid: String, title: String, type: String, description: String, releaseDate: Date? = nil, duration: Double, creator: String, likes: Int, dislikes: Int, score: Int, isProcessing: Bool, primaryBlogPost: String, thumbnail: ImageModel, isAccessible: Bool) {

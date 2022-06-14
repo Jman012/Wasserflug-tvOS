@@ -13,12 +13,12 @@ struct BlogPostContentView: View {
 	@State var showAudioAttachmentFeatureMissing = false
 	
 	var body: some View {
-		if !content.videoAttachments.isEmpty {
+		if let videoAttachments = content.videoAttachments, !videoAttachments.isEmpty {
 			Text("Videos")
 				.font(.headline)
 			ScrollView(.horizontal) {
 				HStack {
-					ForEach(content.videoAttachments) { video in
+					ForEach(videoAttachments) { video in
 						VStack {
 							PlayMediaView(
 								thumbnail: video.thumbnail,
@@ -42,12 +42,12 @@ struct BlogPostContentView: View {
 			}
 			.focusSection()
 		}
-		if !content.pictureAttachments.isEmpty {
+		if let pictureAttachments = content.pictureAttachments, !pictureAttachments.isEmpty {
 			Text("Pictures")
 				.font(.headline)
 			ScrollView(.horizontal) {
 				HStack {
-					ForEach(content.pictureAttachments) { picture in
+					ForEach(pictureAttachments) { picture in
 						VStack {
 							Button(action: {
 								showingPicture = picture
@@ -82,16 +82,16 @@ struct BlogPostContentView: View {
 					PictureView(viewModel: PictureViewModel(fpApiService: fpApiService, pictureAttachment: item))
 				})
 		}
-		if !content.galleryAttachments.isEmpty {
+		if let galleryAttachments = content.galleryAttachments, !galleryAttachments.isEmpty {
 			Text("Galleries")
 				.font(.headline)
 		}
-		if !content.audioAttachments.isEmpty {
+		if let audioAttachments = content.audioAttachments, !audioAttachments.isEmpty {
 			Text("Audio")
 				.font(.headline)
 			ScrollView(.horizontal) {
 				HStack {
-					ForEach(content.audioAttachments) { audio in
+					ForEach(audioAttachments) { audio in
 						VStack {
 							Button(action: {
 								showAudioAttachmentFeatureMissing = true

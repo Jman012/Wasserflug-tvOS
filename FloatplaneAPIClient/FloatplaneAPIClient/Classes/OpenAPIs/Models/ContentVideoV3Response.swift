@@ -32,6 +32,7 @@ public struct ContentVideoV3Response: Content, Hashable {
     public var isProcessing: Bool
     public var primaryBlogPost: String
     public var thumbnail: ImageModel
+    /** If false, the post should be marked as locked and not viewable by the user. */
     public var isAccessible: Bool
     public var blogPosts: [String]
     public var timelineSprite: ImageModel

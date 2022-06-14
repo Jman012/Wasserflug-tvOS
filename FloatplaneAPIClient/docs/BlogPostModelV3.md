@@ -19,11 +19,11 @@ Name | Type | Description | Notes
 **creator** | [**BlogPostModelV3Creator**](BlogPostModelV3Creator.md) |  | 
 **wasReleasedSilently** | **Bool** |  | 
 **thumbnail** | [**ImageModel**](ImageModel.md) |  | 
-**isAccessible** | **Bool** |  | 
-**videoAttachments** | **[String]** |  | 
-**audioAttachments** | **[String]** |  | 
-**pictureAttachments** | **[String]** |  | 
-**galleryAttachments** | **[String]** |  | 
+**isAccessible** | **Bool** | If false, the post should be marked as locked and not viewable by the user. | 
+**videoAttachments** | **[String]** |  | [optional] 
+**audioAttachments** | **[String]** |  | [optional] 
+**pictureAttachments** | **[String]** |  | [optional] 
+**galleryAttachments** | **[String]** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

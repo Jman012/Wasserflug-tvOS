@@ -33,13 +33,14 @@ public struct BlogPostModelV3: Content, Hashable {
     public var creator: BlogPostModelV3Creator
     public var wasReleasedSilently: Bool
     public var thumbnail: ImageModel
+    /** If false, the post should be marked as locked and not viewable by the user. */
     public var isAccessible: Bool
-    public var videoAttachments: [String]
-    public var audioAttachments: [String]
-    public var pictureAttachments: [String]
-    public var galleryAttachments: [String]
+    public var videoAttachments: [String]?
+    public var audioAttachments: [String]?
+    public var pictureAttachments: [String]?
+    public var galleryAttachments: [String]?
 
-    public init(id: String, guid: String, title: String, text: String, type: ModelType, tags: [String], attachmentOrder: [String], metadata: PostMetadataModel, releaseDate: Date, likes: Int, dislikes: Int, score: Int, comments: Int, creator: BlogPostModelV3Creator, wasReleasedSilently: Bool, thumbnail: ImageModel, isAccessible: Bool, videoAttachments: [String], audioAttachments: [String], pictureAttachments: [String], galleryAttachments: [String]) {
+    public init(id: String, guid: String, title: String, text: String, type: ModelType, tags: [String], attachmentOrder: [String], metadata: PostMetadataModel, releaseDate: Date, likes: Int, dislikes: Int, score: Int, comments: Int, creator: BlogPostModelV3Creator, wasReleasedSilently: Bool, thumbnail: ImageModel, isAccessible: Bool, videoAttachments: [String]? = nil, audioAttachments: [String]? = nil, pictureAttachments: [String]? = nil, galleryAttachments: [String]? = nil) {
         self.id = id
         self.guid = guid
         self.title = title
@@ -108,10 +109,10 @@ public struct BlogPostModelV3: Content, Hashable {
         try container.encode(wasReleasedSilently, forKey: .wasReleasedSilently)
         try container.encode(thumbnail, forKey: .thumbnail)
         try container.encode(isAccessible, forKey: .isAccessible)
-        try container.encode(videoAttachments, forKey: .videoAttachments)
-        try container.encode(audioAttachments, forKey: .audioAttachments)
-        try container.encode(pictureAttachments, forKey: .pictureAttachments)
-        try container.encode(galleryAttachments, forKey: .galleryAttachments)
+        try container.encodeIfPresent(videoAttachments, forKey: .videoAttachments)
+        try container.encodeIfPresent(audioAttachments, forKey: .audioAttachments)
+        try container.encodeIfPresent(pictureAttachments, forKey: .pictureAttachments)
+        try container.encodeIfPresent(galleryAttachments, forKey: .galleryAttachments)
     }
 }
 

@@ -17,7 +17,7 @@ Name | Type | Description | Notes
 **isProcessing** | **Bool** |  | 
 **primaryBlogPost** | **String** |  | 
 **thumbnail** | [**ImageModel**](ImageModel.md) |  | 
-**isAccessible** | **Bool** |  | 
+**isAccessible** | **Bool** | If false, the post should be marked as locked and not viewable by the user. | 
 **blogPosts** | **[String]** |  | 
 **timelineSprite** | [**ImageModel**](ImageModel.md) |  | 
 **userInteraction** | **[String]** |  | [optional] 

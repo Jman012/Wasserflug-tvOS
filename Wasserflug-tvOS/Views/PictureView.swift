@@ -34,6 +34,6 @@ struct PictureView: View {
 
 struct PictureView_Previews: PreviewProvider {
 	static var previews: some View {
-		PictureView(viewModel: PictureViewModel(fpApiService: MockFPAPIService(), pictureAttachment: MockData.getBlogPost.pictureAttachments[0]))
+		PictureView(viewModel: PictureViewModel(fpApiService: MockFPAPIService(), pictureAttachment: MockData.getBlogPost.pictureAttachments!.first!))
 	}
 }

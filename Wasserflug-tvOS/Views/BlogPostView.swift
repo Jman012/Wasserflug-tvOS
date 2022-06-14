@@ -49,19 +49,19 @@ struct BlogPostView: View {
 							// Thumbnail with play button, on left of screen
 							PlayMediaView(
 								thumbnail: content.thumbnail,
-								showPlayButton: !content.videoAttachments.isEmpty,
+								showPlayButton: !(content.videoAttachments?.isEmpty ?? false),
 								width: geometry.size.width * 0.5,
 								playButtonSize: .default,
 								playContent: { beginningWatchTime in
 									VStack {
-										if let firstVideo = content.videoAttachments.first {
+										if let videoAttachments = content.videoAttachments, let firstVideo = videoAttachments.first {
 											VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: firstVideo, contentPost: content), beginningWatchTime: beginningWatchTime)
 										}
 									}
 								},
 								defaultInNamespace: screenNamespace,
 								isShowingMedia: shouldAutoPlay,
-								watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", content.id, content.videoAttachments.first?.id ?? ""), animation: .default))
+								watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", content.id, content.videoAttachments?.first?.id ?? ""), animation: .default))
 
 							// Creator pfp, publish date, and description
 							VStack(alignment: .leading) {
@@ -133,7 +133,7 @@ struct BlogPostView: View {
 							.focusScope(likeDislikeCommentNamespace)
 						
 						// If applicable, show all attachments as the last rows
-						if !(content.videoAttachments.count == 1 && content.pictureAttachments.count == 0 && content.audioAttachments.count == 0 && content.galleryAttachments.count == 0) {
+						if !(content.videoAttachments?.count == 1 && content.pictureAttachments?.isEmpty ?? true && content.audioAttachments?.isEmpty ?? true && content.galleryAttachments?.isEmpty ?? true) {
 							BlogPostContentView(geometry: geometry, content: content, fpApiService: fpApiService)
 						}
 					}

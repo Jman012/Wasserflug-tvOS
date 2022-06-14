@@ -19,12 +19,12 @@ Name | Type | Description | Notes
 **creator** | [**CreatorModelV2**](CreatorModelV2.md) |  | 
 **wasReleasedSilently** | **Bool** |  | 
 **thumbnail** | [**ImageModel**](ImageModel.md) |  | 
-**isAccessible** | **Bool** |  | 
+**isAccessible** | **Bool** | If false, the post should be marked as locked and not viewable by the user. | 
 **userInteraction** | **[String]** |  | [optional] 
-**videoAttachments** | [VideoAttachmentModel] |  | 
-**audioAttachments** | [AudioAttachmentModel] |  | 
-**pictureAttachments** | [PictureAttachmentModel] |  | 
-**galleryAttachments** | [AnyCodable] |  | 
+**videoAttachments** | [VideoAttachmentModel] |  | [optional] 
+**audioAttachments** | [AudioAttachmentModel] |  | [optional] 
+**pictureAttachments** | [PictureAttachmentModel] |  | [optional] 
+**galleryAttachments** | [AnyCodable] |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

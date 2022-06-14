@@ -16,7 +16,7 @@ Name | Type | Description | Notes
 **primaryBlogPost** | **String** |  | 
 **userInteraction** | **[String]** |  | [optional] 
 **thumbnail** | [**ImageModel**](ImageModel.md) |  | 
-**isAccessible** | **Bool** |  | 
+**isAccessible** | **Bool** | If false, the post should be marked as locked and not viewable by the user. | 
 **imageFiles** | [ImageModel] |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
