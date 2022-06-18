@@ -36,31 +36,49 @@ struct BlogPostSelectionView: View {
 	
 	var body: some View {
 		Button(action: {
-			isSelected = true
+			if blogPost.isAccessible {
+				isSelected = true
+			}
 		}, label: {
 			VStack(alignment: .leading, spacing: 2) {
-				CachedAsyncImage(url: URL(string: blogPost.thumbnail.path), content: { image in
-					ZStack(alignment: .bottomLeading) {
-						image
+				
+				ZStack(alignment: .center) {
+					CachedAsyncImage(url: URL(string: blogPost.thumbnail.path), content: { image in
+						ZStack(alignment: .bottomLeading) {
+							image
+								.resizable()
+								.scaledToFit()
+								.frame(maxWidth: .infinity, maxHeight: .infinity)
+							GeometryReader { geometry in
+								Rectangle()
+									.fill(FPColors.blue)
+									.frame(width: geometry.size.width * progress)
+							}
+								.frame(height: 8)
+						}
+						.cornerRadius(10.0)
+					}, placeholder: {
+						ProgressView()
+							.frame(
+								maxWidth: CGFloat(blogPost.thumbnail.width),
+								maxHeight: CGFloat(blogPost.thumbnail.height)
+							)
+							.aspectRatio(blogPost.thumbnail.aspectRatio, contentMode: .fit)
+					})
+					
+					if (!blogPost.isAccessible) {
+						VisualEffectView(effect: UIBlurEffect(style: .dark))
+							.frame(width: 150, height: 150)
+							.cornerRadius(75.0)
+						Image(systemName: "lock.fill")
 							.resizable()
 							.scaledToFit()
-							.frame(maxWidth: .infinity, maxHeight: .infinity)
-						GeometryReader { geometry in
-							Rectangle()
-								.fill(FPColors.blue)
-								.frame(width: geometry.size.width * progress)
-						}
-							.frame(height: 8)
+							.frame(width: 100, height: 100)
+							.foregroundColor(.white)
+							
 					}
-					.cornerRadius(10.0)
-				}, placeholder: {
-					ProgressView()
-						.frame(
-							maxWidth: CGFloat(blogPost.thumbnail.width),
-							maxHeight: CGFloat(blogPost.thumbnail.height)
-						)
-						.aspectRatio(blogPost.thumbnail.aspectRatio, contentMode: .fit)
-				})
+				}
+				
 				HStack(alignment: .top, spacing: 0) {
 					let profileImageSize: CGFloat = 35
 					if case let .home(creatorOwner) = viewOrigin,
@@ -112,8 +130,10 @@ struct BlogPostSelectionView: View {
 		})
 			.buttonStyle(.plain)
 			.onPlayPauseCommand(perform: {
-				shouldAutoPlay = true
-				isSelected = true
+				if blogPost.isAccessible {
+					shouldAutoPlay = true
+					isSelected = true
+				}
 			})
 			.sheet(isPresented: $isSelected, onDismiss: {
 				shouldAutoPlay = false
