@@ -86,8 +86,14 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 						let screen = UIScreen.main
 						let levels = response.resource.data.qualityLevels?
 							.filter({ qualityLevel in
-								// Filter out resolutions larger than the device's screen resolution
-								let result = CGFloat(qualityLevel.width) <= screen.bounds.width
+								// Filter out resolutions larger than the device's screen resolution.
+								// LTT's videos at the stated 1080p are actually 2160x1080 instead of 1920x1080, like most
+								// television screens are. With a strict comparison, LTT 1080p videos would be filtered
+								// out on 1080p televisions. Thus, add 15% to the screen size to account for this. This
+								// will allow for actually getting 1080p on 1080p screens, with only a little bit of downsampling.
+								// But, it wouldn't make sense to show 4k on a 1080p screen. Waste of bandwidth, and the
+								// hardware may not like the massive downsampling.
+								let result = CGFloat(qualityLevel.width) <= (screen.bounds.width * 1.15)
 								if !result {
 									self.logger.warning("Ignoring quality level \(String(describing: qualityLevel)) due to larger-than-screen width of \(screen.bounds.width)")
 								}
