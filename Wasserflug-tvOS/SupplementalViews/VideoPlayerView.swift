@@ -98,6 +98,7 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 	func createQualityAction(content: CdnDeliveryV2Response) -> UIMenu {
 		let sparkleTvImage = UIImage(systemName: "sparkles.tv")
 		let resolutions = content.resource.data.qualityLevels!
+			.filter({ viewModel.qualityLevels.keys.contains($0.name) })
 			.sorted(by: { $0.order < $1.order })
 			.map({ (qualityLevel) -> UIAction in
 				return UIAction(title: qualityLevel.label, identifier: UIAction.Identifier(qualityLevel.name), handler: { _ in
