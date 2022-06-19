@@ -43,7 +43,7 @@ struct BlogPostSelectionView: View {
 			VStack(alignment: .leading, spacing: 2) {
 				
 				ZStack(alignment: .center) {
-					CachedAsyncImage(url: URL(string: blogPost.thumbnail.path), content: { image in
+					CachedAsyncImage(url: blogPost.thumbnail.pathUrlOrNil, content: { image in
 						ZStack(alignment: .bottomLeading) {
 							image
 								.resizable()
@@ -58,12 +58,13 @@ struct BlogPostSelectionView: View {
 						}
 						.cornerRadius(10.0)
 					}, placeholder: {
-						ProgressView()
-							.frame(
-								maxWidth: CGFloat(blogPost.thumbnail.width),
-								maxHeight: CGFloat(blogPost.thumbnail.height)
-							)
-							.aspectRatio(blogPost.thumbnail.aspectRatio, contentMode: .fit)
+						ZStack {
+							ProgressView()
+							Rectangle()
+								.fill(.clear)
+								.frame(maxWidth: .infinity, maxHeight: .infinity)
+								.aspectRatio(blogPost.thumbnail?.aspectRatio ?? 1.0, contentMode: .fit)
+						}
 					})
 					
 					if (!blogPost.isAccessible) {

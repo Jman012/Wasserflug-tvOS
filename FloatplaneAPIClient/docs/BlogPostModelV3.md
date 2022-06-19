@@ -18,7 +18,7 @@ Name | Type | Description | Notes
 **comments** | **Int** |  | 
 **creator** | [**BlogPostModelV3Creator**](BlogPostModelV3Creator.md) |  | 
 **wasReleasedSilently** | **Bool** |  | 
-**thumbnail** | [**ImageModel**](ImageModel.md) |  | 
+**thumbnail** | [**ImageModel**](ImageModel.md) |  | [optional] 
 **isAccessible** | **Bool** | If false, the post should be marked as locked and not viewable by the user. | 
 **videoAttachments** | **[String]** |  | [optional] 
 **audioAttachments** | **[String]** |  | [optional] 

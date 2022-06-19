@@ -62,9 +62,9 @@ struct BlogPostContentView: View {
 								}, placeholder: {
 									ProgressView()
 										.frame(width: geometry.size.width * 0.2)
-										.aspectRatio(content.thumbnail.aspectRatio, contentMode: .fit)
+										.aspectRatio(content.thumbnail?.aspectRatio ?? 1.0, contentMode: .fit)
 								})
-									.frame(width: geometry.size.width * 0.2, height: geometry.size.width * 0.2 / content.thumbnail.aspectRatio)
+								.frame(width: geometry.size.width * 0.2, height: geometry.size.width * 0.2 / (content.thumbnail?.aspectRatio ?? 1.0))
 							})
 								.buttonStyle(.card)
 								.padding()

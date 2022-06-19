@@ -812,7 +812,6 @@
                     "comments",
                     "creator",
                     "wasReleasedSilently",
-                    "thumbnail",
                     "isAccessible"
                 ]
             },
@@ -1704,7 +1703,6 @@
                     "comments",
                     "creator",
                     "wasReleasedSilently",
-                    "thumbnail",
                     "isAccessible"
                 ]
             },

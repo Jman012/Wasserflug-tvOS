@@ -46,3 +46,13 @@ extension ImageModel {
 		return CGFloat(self.width) / CGFloat(self.height)
 	}
 }
+
+extension Optional where Wrapped == ImageModel {
+	var pathUrlOrNil: URL? {
+		if let thumbnail = self {
+			return URL(string: thumbnail.path)
+		} else {
+			return nil
+		}
+	}
+}

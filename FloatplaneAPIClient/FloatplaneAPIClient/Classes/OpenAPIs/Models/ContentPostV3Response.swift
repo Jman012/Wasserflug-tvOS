@@ -36,7 +36,7 @@ public struct ContentPostV3Response: Content, Hashable {
     public var comments: Int
     public var creator: CreatorModelV2
     public var wasReleasedSilently: Bool
-    public var thumbnail: ImageModel
+    public var thumbnail: ImageModel?
     /** If false, the post should be marked as locked and not viewable by the user. */
     public var isAccessible: Bool
     public var userInteraction: [UserInteraction]?
@@ -45,7 +45,7 @@ public struct ContentPostV3Response: Content, Hashable {
     public var pictureAttachments: [PictureAttachmentModel]?
     public var galleryAttachments: [AnyCodable]?
 
-    public init(id: String, guid: String, title: String, text: String, type: ModelType, tags: [String], attachmentOrder: [String], metadata: PostMetadataModel, releaseDate: Date, likes: Int, dislikes: Int, score: Int, comments: Int, creator: CreatorModelV2, wasReleasedSilently: Bool, thumbnail: ImageModel, isAccessible: Bool, userInteraction: [UserInteraction]? = nil, videoAttachments: [VideoAttachmentModel]? = nil, audioAttachments: [AudioAttachmentModel]? = nil, pictureAttachments: [PictureAttachmentModel]? = nil, galleryAttachments: [AnyCodable]? = nil) {
+    public init(id: String, guid: String, title: String, text: String, type: ModelType, tags: [String], attachmentOrder: [String], metadata: PostMetadataModel, releaseDate: Date, likes: Int, dislikes: Int, score: Int, comments: Int, creator: CreatorModelV2, wasReleasedSilently: Bool, thumbnail: ImageModel? = nil, isAccessible: Bool, userInteraction: [UserInteraction]? = nil, videoAttachments: [VideoAttachmentModel]? = nil, audioAttachments: [AudioAttachmentModel]? = nil, pictureAttachments: [PictureAttachmentModel]? = nil, galleryAttachments: [AnyCodable]? = nil) {
         self.id = id
         self.guid = guid
         self.title = title
@@ -114,7 +114,7 @@ public struct ContentPostV3Response: Content, Hashable {
         try container.encode(comments, forKey: .comments)
         try container.encode(creator, forKey: .creator)
         try container.encode(wasReleasedSilently, forKey: .wasReleasedSilently)
-        try container.encode(thumbnail, forKey: .thumbnail)
+        try container.encodeIfPresent(thumbnail, forKey: .thumbnail)
         try container.encode(isAccessible, forKey: .isAccessible)
         try container.encodeIfPresent(userInteraction, forKey: .userInteraction)
         try container.encodeIfPresent(videoAttachments, forKey: .videoAttachments)

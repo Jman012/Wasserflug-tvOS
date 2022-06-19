@@ -4,7 +4,7 @@ import CachedAsyncImage
 
 struct PlayMediaView<Content>: View where Content: View {
 	
-	let thumbnail: ImageModel
+	let thumbnail: ImageModel?
 	let showPlayButton: Bool
 	let width: CGFloat?
 	let playButtonSize: PlayButton.Size
@@ -42,7 +42,7 @@ struct PlayMediaView<Content>: View where Content: View {
 	
 	var image: some View {
 		ZStack {
-			CachedAsyncImage(url: URL(string: thumbnail.path), content: { image in
+			CachedAsyncImage(url: thumbnail.pathUrlOrNil, content: { image in
 				ZStack(alignment: .bottomLeading) {
 					// Thumbnail image
 					image
@@ -67,7 +67,7 @@ struct PlayMediaView<Content>: View where Content: View {
 					Rectangle()
 						.fill(.clear)
 						.frame(width: width)
-						.aspectRatio(thumbnail.aspectRatio, contentMode: .fit)
+						.aspectRatio(thumbnail?.aspectRatio ?? 1.0, contentMode: .fit)
 				}
 			})
 			
