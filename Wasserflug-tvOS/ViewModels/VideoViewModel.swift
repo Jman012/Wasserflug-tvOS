@@ -22,12 +22,10 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 	private let fpApiService: FPAPIService
 	let videoAttachment: VideoAttachmentModel
 	let contentPost: ContentPostV3Response
+	let description: AttributedString
 	
 	var avMetadataItems: [AVMetadataItem] {
-		var desc = videoAttachment.description
-		if desc == "" {
-			desc = contentPost.text
-		}
+		let desc = String(description.characters)
 		
 		var releaseDate = videoAttachment.releaseDate?.formatted(.dateTime) ?? ""
 		if releaseDate == "" {
@@ -44,10 +42,11 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 	
 	private(set) var qualityLevels: [String: URL] = [:]
 	
-	init(fpApiService: FPAPIService, videoAttachment: VideoAttachmentModel, contentPost: ContentPostV3Response) {
+	init(fpApiService: FPAPIService, videoAttachment: VideoAttachmentModel, contentPost: ContentPostV3Response, description: AttributedString) {
 		self.fpApiService = fpApiService
 		self.videoAttachment = videoAttachment
 		self.contentPost = contentPost
+		self.description = description
 	}
 	
 	func load() {

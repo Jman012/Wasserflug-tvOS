@@ -55,7 +55,7 @@ struct BlogPostView: View {
 								playContent: { beginningWatchTime in
 									VStack {
 										if let videoAttachments = content.videoAttachments, let firstVideo = videoAttachments.first {
-											VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: firstVideo, contentPost: content), beginningWatchTime: beginningWatchTime)
+											VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: firstVideo, contentPost: content, description: viewModel.textAttributedString), beginningWatchTime: beginningWatchTime)
 										}
 									}
 								},
@@ -134,7 +134,7 @@ struct BlogPostView: View {
 						
 						// If applicable, show all attachments as the last rows
 						if !(content.videoAttachments?.count == 1 && content.pictureAttachments?.isEmpty ?? true && content.audioAttachments?.isEmpty ?? true && content.galleryAttachments?.isEmpty ?? true) {
-							BlogPostContentView(geometry: geometry, content: content, fpApiService: fpApiService)
+							BlogPostContentView(geometry: geometry, content: content, fpApiService: fpApiService, description: viewModel.textAttributedString)
 						}
 					}
 					

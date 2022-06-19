@@ -7,6 +7,7 @@ struct BlogPostContentView: View {
 	let geometry: GeometryProxy
 	let content: ContentPostV3Response
 	let fpApiService: FPAPIService
+	let description: AttributedString
 	
 	@State var shownVideoAttachment: VideoAttachmentModel? = nil
 	@State var showingPicture: PictureAttachmentModel? = nil
@@ -26,7 +27,7 @@ struct BlogPostContentView: View {
 								width: geometry.size.width * 0.2,
 								playButtonSize: .small,
 								playContent: { beginningWatchTime in
-									VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: video, contentPost: content), beginningWatchTime: beginningWatchTime)
+									VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: video, contentPost: content, description: description), beginningWatchTime: beginningWatchTime)
 								},
 								defaultInNamespace: nil,
 								watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", content.id, video.id), animation: .default)
@@ -126,7 +127,7 @@ struct BlogPostContentView_Previews: PreviewProvider {
 	static var previews: some View {
 		GeometryReader { geometry in
 			VStack(alignment: .leading) {
-				BlogPostContentView(geometry: geometry, content: MockData.getBlogPost, fpApiService: MockFPAPIService())
+				BlogPostContentView(geometry: geometry, content: MockData.getBlogPost, fpApiService: MockFPAPIService(), description: "Test description")
 			}
 		}
 	}
