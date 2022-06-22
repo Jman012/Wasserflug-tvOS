@@ -27,7 +27,6 @@
 		E753379F27CB06BE0010E3D2 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378227CB06BE0010E3D2 /* VideoPlayerView.swift */; };
 		E75337A027CB06BE0010E3D2 /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378327CB06BE0010E3D2 /* PlayButton.swift */; };
 		E75337A127CB06BE0010E3D2 /* PlayMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378427CB06BE0010E3D2 /* PlayMediaView.swift */; };
-		E75337A227CB06BE0010E3D2 /* BlogPostSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378527CB06BE0010E3D2 /* BlogPostSelectionView.swift */; };
 		E75337A327CB06BE0010E3D2 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378627CB06BE0010E3D2 /* ErrorView.swift */; };
 		E75337A427CB06BE0010E3D2 /* BlogPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378827CB06BE0010E3D2 /* BlogPostViewModel.swift */; };
 		E75337A527CB06BE0010E3D2 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378927CB06BE0010E3D2 /* HomeViewModel.swift */; };
@@ -53,6 +52,80 @@
 		E75337BC27CB07900010E3D2 /* FloatplaneAPIClient in Frameworks */ = {isa = PBXBuildFile; productRef = E75337BB27CB07900010E3D2 /* FloatplaneAPIClient */; };
 		E75337BE27CB08990010E3D2 /* EnvironmentKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75337BD27CB08990010E3D2 /* EnvironmentKeys.swift */; };
 		E7A447E92815E1C0009BCE2E /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */; };
+		FBDDB4E5286339B2006B4023 /* WasserflugApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB4D6286339B0006B4023 /* WasserflugApp.swift */; };
+		FBDDB4E6286339B2006B4023 /* WasserflugApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB4D6286339B0006B4023 /* WasserflugApp.swift */; };
+		FBDDB4E7286339B2006B4023 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB4D7286339B0006B4023 /* ContentView.swift */; };
+		FBDDB4E8286339B2006B4023 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB4D7286339B0006B4023 /* ContentView.swift */; };
+		FBDDB4E9286339B2006B4023 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FBDDB4D8286339B2006B4023 /* Assets.xcassets */; };
+		FBDDB4EA286339B2006B4023 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FBDDB4D8286339B2006B4023 /* Assets.xcassets */; };
+		FBDDB4F2286339CD006B4023 /* FloatplaneAPIClient in Frameworks */ = {isa = PBXBuildFile; productRef = FBDDB4F1286339CD006B4023 /* FloatplaneAPIClient */; };
+		FBDDB4F4286339D4006B4023 /* FloatplaneAPIClient in Frameworks */ = {isa = PBXBuildFile; productRef = FBDDB4F3286339D4006B4023 /* FloatplaneAPIClient */; };
+		FBDDB4F728633A09006B4023 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB4F628633A09006B4023 /* LoginView.swift */; };
+		FBDDB4F828633A09006B4023 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB4F628633A09006B4023 /* LoginView.swift */; };
+		FBDDB4FD28633A57006B4023 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378D27CB06BE0010E3D2 /* AuthViewModel.swift */; };
+		FBDDB4FE28633A57006B4023 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378D27CB06BE0010E3D2 /* AuthViewModel.swift */; };
+		FBDDB4FF28633A89006B4023 /* FPAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753377427CB066E0010E3D2 /* FPAPIService.swift */; };
+		FBDDB50028633A89006B4023 /* FPAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753377427CB066E0010E3D2 /* FPAPIService.swift */; };
+		FBDDB50228633A93006B4023 /* Vapor in Frameworks */ = {isa = PBXBuildFile; productRef = FBDDB50128633A93006B4023 /* Vapor */; };
+		FBDDB50428633A99006B4023 /* Vapor in Frameworks */ = {isa = PBXBuildFile; productRef = FBDDB50328633A99006B4023 /* Vapor */; };
+		FBDDB50528633C04006B4023 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378B27CB06BE0010E3D2 /* BaseViewModel.swift */; };
+		FBDDB50628633C05006B4023 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378B27CB06BE0010E3D2 /* BaseViewModel.swift */; };
+		FBDDB50728633C45006B4023 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378627CB06BE0010E3D2 /* ErrorView.swift */; };
+		FBDDB50928633C47006B4023 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378627CB06BE0010E3D2 /* ErrorView.swift */; };
+		FBDDB50E28633E7C006B4023 /* OSLoggingLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753377627CB066E0010E3D2 /* OSLoggingLogger.swift */; };
+		FBDDB51028633E7E006B4023 /* OSLoggingLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753377627CB066E0010E3D2 /* OSLoggingLogger.swift */; };
+		FBDDB51228633F36006B4023 /* Wasserflug.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB51128633F36006B4023 /* Wasserflug.swift */; };
+		FBDDB51328633F36006B4023 /* Wasserflug.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB51128633F36006B4023 /* Wasserflug.swift */; };
+		FBDDB51428633F36006B4023 /* Wasserflug.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB51128633F36006B4023 /* Wasserflug.swift */; };
+		FBDDB51528633FCB006B4023 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB7827E66D7E00A9C88B /* Persistence.swift */; };
+		FBDDB51628633FCB006B4023 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB7827E66D7E00A9C88B /* Persistence.swift */; };
+		FBDDB51728633FEB006B4023 /* Wasserflug.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB7A27E66DB100A9C88B /* Wasserflug.xcdatamodeld */; };
+		FBDDB51828633FEC006B4023 /* Wasserflug.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB7A27E66DB100A9C88B /* Wasserflug.xcdatamodeld */; };
+		FBDDB5192863400A006B4023 /* Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753377027CB066E0010E3D2 /* Authentication.swift */; };
+		FBDDB51B2863400C006B4023 /* Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753377027CB066E0010E3D2 /* Authentication.swift */; };
+		FBDDB51C2863423F006B4023 /* FloatplaneAPIClient+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753377127CB066E0010E3D2 /* FloatplaneAPIClient+Extensions.swift */; };
+		FBDDB51E28634240006B4023 /* FloatplaneAPIClient+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753377127CB066E0010E3D2 /* FloatplaneAPIClient+Extensions.swift */; };
+		FBDDB52028634577006B4023 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E753374027CAFAFF0010E3D2 /* Assets.xcassets */; };
+		FBDDB52128634577006B4023 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E753374027CAFAFF0010E3D2 /* Assets.xcassets */; };
+		FBDDB52228635446006B4023 /* EnvironmentKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75337BD27CB08990010E3D2 /* EnvironmentKeys.swift */; };
+		FBDDB52328635447006B4023 /* EnvironmentKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75337BD27CB08990010E3D2 /* EnvironmentKeys.swift */; };
+		FBDDB52428635CD0006B4023 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379D27CB06BE0010E3D2 /* RootTabView.swift */; };
+		FBDDB52528635CD1006B4023 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379D27CB06BE0010E3D2 /* RootTabView.swift */; };
+		FBDDB52728635CEE006B4023 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB52628635CEE006B4023 /* HomeView.swift */; };
+		FBDDB52828635CEE006B4023 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB52628635CEE006B4023 /* HomeView.swift */; };
+		FBDDB52928635D04006B4023 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378927CB06BE0010E3D2 /* HomeViewModel.swift */; };
+		FBDDB52A28635D05006B4023 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378927CB06BE0010E3D2 /* HomeViewModel.swift */; };
+		FBDDB52B28635D3C006B4023 /* ViewModelState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378E27CB06BE0010E3D2 /* ViewModelState.swift */; };
+		FBDDB52D28635D3F006B4023 /* ViewModelState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378E27CB06BE0010E3D2 /* ViewModelState.swift */; };
+		FBDDB52F28635DA7006B4023 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB52E28635DA7006B4023 /* SettingsView.swift */; };
+		FBDDB53028635DA7006B4023 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB52E28635DA7006B4023 /* SettingsView.swift */; };
+		FBDDB53528635E05006B4023 /* CreatorContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB53428635E05006B4023 /* CreatorContentView.swift */; };
+		FBDDB53628635E05006B4023 /* CreatorContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB53428635E05006B4023 /* CreatorContentView.swift */; };
+		FBDDB53728635E36006B4023 /* CreatorContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378F27CB06BE0010E3D2 /* CreatorContentViewModel.swift */; };
+		FBDDB53928635E38006B4023 /* CreatorContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378F27CB06BE0010E3D2 /* CreatorContentViewModel.swift */; };
+		FBDDB53A28635E3B006B4023 /* LivestreamViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378C27CB06BE0010E3D2 /* LivestreamViewModel.swift */; };
+		FBDDB53B28635E3B006B4023 /* LivestreamViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378C27CB06BE0010E3D2 /* LivestreamViewModel.swift */; };
+		FBDDB53D286361DD006B4023 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = FBDDB53C286361DD006B4023 /* CachedAsyncImage */; };
+		FBDDB53F286361E1006B4023 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = FBDDB53E286361E1006B4023 /* CachedAsyncImage */; };
+		FBDDB54128636D1F006B4023 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FBDDB54028636D1F006B4023 /* Launch Screen.storyboard */; };
+		FBDDB54228636D1F006B4023 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FBDDB54028636D1F006B4023 /* Launch Screen.storyboard */; };
+		FBDDB54A286376FB006B4023 /* BlogPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB549286376FB006B4023 /* BlogPostView.swift */; };
+		FBDDB54B286376FB006B4023 /* BlogPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB549286376FB006B4023 /* BlogPostView.swift */; };
+		FBDDB54C28637718006B4023 /* BlogPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378827CB06BE0010E3D2 /* BlogPostViewModel.swift */; };
+		FBDDB54D28637718006B4023 /* BlogPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378827CB06BE0010E3D2 /* BlogPostViewModel.swift */; };
+		FBDDB54F286377B0006B4023 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB54E286377B0006B4023 /* VisualEffectView.swift */; };
+		FBDDB550286377B0006B4023 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB54E286377B0006B4023 /* VisualEffectView.swift */; };
+		FBDDB5532863780E006B4023 /* FPColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB5522863780E006B4023 /* FPColors.swift */; };
+		FBDDB5542863780E006B4023 /* FPColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB5522863780E006B4023 /* FPColors.swift */; };
+		FBDDB55528637814006B4023 /* FPColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB5522863780E006B4023 /* FPColors.swift */; };
+		FBDDB55628637825006B4023 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB54E286377B0006B4023 /* VisualEffectView.swift */; };
+		FBDDB557286378D0006B4023 /* Swift+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB3B27D3F89200A9C88B /* Swift+Extensions.swift */; };
+		FBDDB559286378D2006B4023 /* Swift+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB3B27D3F89200A9C88B /* Swift+Extensions.swift */; };
+		FBDDB55A286379EF006B4023 /* BlogPostSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378527CB06BE0010E3D2 /* BlogPostSelectionView.swift */; };
+		FBDDB55C28637A03006B4023 /* BlogPostSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB55B28637A03006B4023 /* BlogPostSelectionView.swift */; };
+		FBDDB55D28637A03006B4023 /* BlogPostSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB55B28637A03006B4023 /* BlogPostSelectionView.swift */; };
+		FBDDB55E2863807B006B4023 /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */; };
+		FBDDB5602863807C006B4023 /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,6 +195,23 @@
 		E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extensions.swift"; sourceTree = "<group>"; };
 		E7CCF2D1285314B600506E51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E7CCF2D2285315B400506E51 /* Wasserflug-tvOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Wasserflug-tvOS.entitlements"; sourceTree = "<group>"; };
+		FBDDB4D6286339B0006B4023 /* WasserflugApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WasserflugApp.swift; sourceTree = "<group>"; };
+		FBDDB4D7286339B0006B4023 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		FBDDB4D8286339B2006B4023 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FBDDB4DD286339B2006B4023 /* Wasserflug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wasserflug.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FBDDB4E2286339B2006B4023 /* Wasserflug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wasserflug.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FBDDB4E4286339B2006B4023 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
+		FBDDB4F628633A09006B4023 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		FBDDB51128633F36006B4023 /* Wasserflug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wasserflug.swift; sourceTree = "<group>"; };
+		FBDDB51F2863454E006B4023 /* Wasserflug--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Wasserflug--iOS--Info.plist"; sourceTree = "<group>"; };
+		FBDDB52628635CEE006B4023 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		FBDDB52E28635DA7006B4023 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		FBDDB53428635E05006B4023 /* CreatorContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorContentView.swift; sourceTree = "<group>"; };
+		FBDDB54028636D1F006B4023 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		FBDDB549286376FB006B4023 /* BlogPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogPostView.swift; sourceTree = "<group>"; };
+		FBDDB54E286377B0006B4023 /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
+		FBDDB5522863780E006B4023 /* FPColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPColors.swift; sourceTree = "<group>"; };
+		FBDDB55B28637A03006B4023 /* BlogPostSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogPostSelectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,16 +239,39 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FBDDB4DA286339B2006B4023 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FBDDB53D286361DD006B4023 /* CachedAsyncImage in Frameworks */,
+				FBDDB4F2286339CD006B4023 /* FloatplaneAPIClient in Frameworks */,
+				FBDDB50228633A93006B4023 /* Vapor in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FBDDB4DF286339B2006B4023 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FBDDB53F286361E1006B4023 /* CachedAsyncImage in Frameworks */,
+				FBDDB4F4286339D4006B4023 /* FloatplaneAPIClient in Frameworks */,
+				FBDDB50428633A99006B4023 /* Vapor in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		E753373027CAFAFE0010E3D2 = {
 			isa = PBXGroup;
 			children = (
+				FBDDB51F2863454E006B4023 /* Wasserflug--iOS--Info.plist */,
 				E753376E27CB043D0010E3D2 /* Packages */,
 				E753373B27CAFAFE0010E3D2 /* Wasserflug-tvOS */,
 				E753374C27CAFAFF0010E3D2 /* Wasserflug-tvOSTests */,
 				E753375627CAFAFF0010E3D2 /* Wasserflug-tvOSUITests */,
+				FBDDB4D5286339B0006B4023 /* Shared */,
+				FBDDB4E3286339B2006B4023 /* macOS */,
 				E753373A27CAFAFE0010E3D2 /* Products */,
 				E75337BA27CB07900010E3D2 /* Frameworks */,
 			);
@@ -170,6 +283,8 @@
 				E753373927CAFAFE0010E3D2 /* Wasserflug.app */,
 				E753374927CAFAFF0010E3D2 /* Wasserflug-tvOSTests.xctest */,
 				E753375327CAFAFF0010E3D2 /* Wasserflug-tvOSUITests.xctest */,
+				FBDDB4DD286339B2006B4023 /* Wasserflug.app */,
+				FBDDB4E2286339B2006B4023 /* Wasserflug.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -295,6 +410,66 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		FBDDB4D5286339B0006B4023 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				FBDDB551286377FC006B4023 /* Utilities */,
+				FBDDB54328637583006B4023 /* SupplementalViews */,
+				FBDDB4F928633A19006B4023 /* ViewModels */,
+				FBDDB4F5286339E6006B4023 /* Views */,
+				FBDDB4D6286339B0006B4023 /* WasserflugApp.swift */,
+				FBDDB4D7286339B0006B4023 /* ContentView.swift */,
+				FBDDB4D8286339B2006B4023 /* Assets.xcassets */,
+				FBDDB51128633F36006B4023 /* Wasserflug.swift */,
+				FBDDB54028636D1F006B4023 /* Launch Screen.storyboard */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		FBDDB4E3286339B2006B4023 /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				FBDDB4E4286339B2006B4023 /* macOS.entitlements */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		FBDDB4F5286339E6006B4023 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FBDDB4F628633A09006B4023 /* LoginView.swift */,
+				FBDDB52628635CEE006B4023 /* HomeView.swift */,
+				FBDDB52E28635DA7006B4023 /* SettingsView.swift */,
+				FBDDB53428635E05006B4023 /* CreatorContentView.swift */,
+				FBDDB549286376FB006B4023 /* BlogPostView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FBDDB4F928633A19006B4023 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		FBDDB54328637583006B4023 /* SupplementalViews */ = {
+			isa = PBXGroup;
+			children = (
+				FBDDB54E286377B0006B4023 /* VisualEffectView.swift */,
+				FBDDB55B28637A03006B4023 /* BlogPostSelectionView.swift */,
+			);
+			path = SupplementalViews;
+			sourceTree = "<group>";
+		};
+		FBDDB551286377FC006B4023 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				FBDDB5522863780E006B4023 /* FPColors.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -356,6 +531,50 @@
 			productReference = E753375327CAFAFF0010E3D2 /* Wasserflug-tvOSUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		FBDDB4DC286339B2006B4023 /* Wasserflug (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FBDDB4EF286339B2006B4023 /* Build configuration list for PBXNativeTarget "Wasserflug (iOS)" */;
+			buildPhases = (
+				FBDDB4D9286339B2006B4023 /* Sources */,
+				FBDDB4DA286339B2006B4023 /* Frameworks */,
+				FBDDB4DB286339B2006B4023 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Wasserflug (iOS)";
+			packageProductDependencies = (
+				FBDDB4F1286339CD006B4023 /* FloatplaneAPIClient */,
+				FBDDB50128633A93006B4023 /* Vapor */,
+				FBDDB53C286361DD006B4023 /* CachedAsyncImage */,
+			);
+			productName = "Wasserflug (iOS)";
+			productReference = FBDDB4DD286339B2006B4023 /* Wasserflug.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FBDDB4E1286339B2006B4023 /* Wasserflug (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FBDDB4F0286339B2006B4023 /* Build configuration list for PBXNativeTarget "Wasserflug (macOS)" */;
+			buildPhases = (
+				FBDDB4DE286339B2006B4023 /* Sources */,
+				FBDDB4DF286339B2006B4023 /* Frameworks */,
+				FBDDB4E0286339B2006B4023 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Wasserflug (macOS)";
+			packageProductDependencies = (
+				FBDDB4F3286339D4006B4023 /* FloatplaneAPIClient */,
+				FBDDB50328633A99006B4023 /* Vapor */,
+				FBDDB53E286361E1006B4023 /* CachedAsyncImage */,
+			);
+			productName = "Wasserflug (macOS)";
+			productReference = FBDDB4E2286339B2006B4023 /* Wasserflug.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -363,7 +582,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1320;
+				LastSwiftUpdateCheck = 1330;
 				LastUpgradeCheck = 1320;
 				TargetAttributes = {
 					E753373827CAFAFE0010E3D2 = {
@@ -376,6 +595,12 @@
 					E753375227CAFAFF0010E3D2 = {
 						CreatedOnToolsVersion = 13.2.1;
 						TestTargetID = E753373827CAFAFE0010E3D2;
+					};
+					FBDDB4DC286339B2006B4023 = {
+						CreatedOnToolsVersion = 13.3.1;
+					};
+					FBDDB4E1286339B2006B4023 = {
+						CreatedOnToolsVersion = 13.3.1;
 					};
 				};
 			};
@@ -399,6 +624,8 @@
 				E753373827CAFAFE0010E3D2 /* Wasserflug-tvOS */,
 				E753374827CAFAFF0010E3D2 /* Wasserflug-tvOSTests */,
 				E753375227CAFAFF0010E3D2 /* Wasserflug-tvOSUITests */,
+				FBDDB4DC286339B2006B4023 /* Wasserflug (iOS) */,
+				FBDDB4E1286339B2006B4023 /* Wasserflug (macOS) */,
 			);
 		};
 /* End PBXProject section */
@@ -427,6 +654,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FBDDB4DB286339B2006B4023 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FBDDB54128636D1F006B4023 /* Launch Screen.storyboard in Resources */,
+				FBDDB52028634577006B4023 /* Assets.xcassets in Resources */,
+				FBDDB4E9286339B2006B4023 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FBDDB4E0286339B2006B4023 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FBDDB54228636D1F006B4023 /* Launch Screen.storyboard in Resources */,
+				FBDDB52128634577006B4023 /* Assets.xcassets in Resources */,
+				FBDDB4EA286339B2006B4023 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -439,6 +686,7 @@
 				E75337B827CB06BE0010E3D2 /* RootTabView.swift in Sources */,
 				E75337A127CB06BE0010E3D2 /* PlayMediaView.swift in Sources */,
 				E70448E22803A9110045A1AE /* WaveformView.swift in Sources */,
+				FBDDB51228633F36006B4023 /* Wasserflug.swift in Sources */,
 				E75337B227CB06BE0010E3D2 /* PictureView.swift in Sources */,
 				E75337B327CB06BE0010E3D2 /* BlogPostView.swift in Sources */,
 				E75337B127CB06BE0010E3D2 /* HomeView.swift in Sources */,
@@ -446,11 +694,13 @@
 				E7A447E92815E1C0009BCE2E /* SwiftUI+Extensions.swift in Sources */,
 				E75337AB27CB06BE0010E3D2 /* CreatorContentViewModel.swift in Sources */,
 				E75337AF27CB06BE0010E3D2 /* LoginView.swift in Sources */,
+				FBDDB55628637825006B4023 /* VisualEffectView.swift in Sources */,
 				E753377B27CB066E0010E3D2 /* FPAPIService.swift in Sources */,
 				E753377827CB066E0010E3D2 /* FloatplaneAPIClient+Extensions.swift in Sources */,
 				E75337A627CB06BE0010E3D2 /* VideoViewModel.swift in Sources */,
 				E75337BE27CB08990010E3D2 /* EnvironmentKeys.swift in Sources */,
 				E75337B727CB06BE0010E3D2 /* ContentView.swift in Sources */,
+				FBDDB55A286379EF006B4023 /* BlogPostSelectionView.swift in Sources */,
 				E753377727CB066E0010E3D2 /* Authentication.swift in Sources */,
 				E753377F27CB06800010E3D2 /* Wasserflug_tvOSApp.swift in Sources */,
 				E75337A927CB06BE0010E3D2 /* AuthViewModel.swift in Sources */,
@@ -458,6 +708,7 @@
 				E75337B027CB06BE0010E3D2 /* VideoView.swift in Sources */,
 				E753379E27CB06BE0010E3D2 /* BlogPostContentView.swift in Sources */,
 				E75337A027CB06BE0010E3D2 /* PlayButton.swift in Sources */,
+				FBDDB55528637814006B4023 /* FPColors.swift in Sources */,
 				E75337A527CB06BE0010E3D2 /* HomeViewModel.swift in Sources */,
 				E75337AD27CB06BE0010E3D2 /* CreatorSearchView.swift in Sources */,
 				E71FDB7927E66D7E00A9C88B /* Persistence.swift in Sources */,
@@ -466,7 +717,6 @@
 				E75337B527CB06BE0010E3D2 /* LivestreamPlayerView.swift in Sources */,
 				E75337A827CB06BE0010E3D2 /* LivestreamViewModel.swift in Sources */,
 				E753379F27CB06BE0010E3D2 /* VideoPlayerView.swift in Sources */,
-				E75337A227CB06BE0010E3D2 /* BlogPostSelectionView.swift in Sources */,
 				E75337B427CB06BE0010E3D2 /* CreatorContentView.swift in Sources */,
 				E75337A327CB06BE0010E3D2 /* ErrorView.swift in Sources */,
 				E75337AE27CB06BE0010E3D2 /* SettingsView.swift in Sources */,
@@ -489,6 +739,78 @@
 			files = (
 				E753375827CAFAFF0010E3D2 /* Wasserflug_tvOSUITests.swift in Sources */,
 				E753375A27CAFAFF0010E3D2 /* Wasserflug_tvOSUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FBDDB4D9286339B2006B4023 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FBDDB52928635D04006B4023 /* HomeViewModel.swift in Sources */,
+				FBDDB557286378D0006B4023 /* Swift+Extensions.swift in Sources */,
+				FBDDB54A286376FB006B4023 /* BlogPostView.swift in Sources */,
+				FBDDB53528635E05006B4023 /* CreatorContentView.swift in Sources */,
+				FBDDB55E2863807B006B4023 /* SwiftUI+Extensions.swift in Sources */,
+				FBDDB4FF28633A89006B4023 /* FPAPIService.swift in Sources */,
+				FBDDB5532863780E006B4023 /* FPColors.swift in Sources */,
+				FBDDB52428635CD0006B4023 /* RootTabView.swift in Sources */,
+				FBDDB52228635446006B4023 /* EnvironmentKeys.swift in Sources */,
+				FBDDB51C2863423F006B4023 /* FloatplaneAPIClient+Extensions.swift in Sources */,
+				FBDDB53A28635E3B006B4023 /* LivestreamViewModel.swift in Sources */,
+				FBDDB4FD28633A57006B4023 /* AuthViewModel.swift in Sources */,
+				FBDDB4F728633A09006B4023 /* LoginView.swift in Sources */,
+				FBDDB54C28637718006B4023 /* BlogPostViewModel.swift in Sources */,
+				FBDDB55C28637A03006B4023 /* BlogPostSelectionView.swift in Sources */,
+				FBDDB4E7286339B2006B4023 /* ContentView.swift in Sources */,
+				FBDDB52B28635D3C006B4023 /* ViewModelState.swift in Sources */,
+				FBDDB50728633C45006B4023 /* ErrorView.swift in Sources */,
+				FBDDB50E28633E7C006B4023 /* OSLoggingLogger.swift in Sources */,
+				FBDDB51328633F36006B4023 /* Wasserflug.swift in Sources */,
+				FBDDB4E5286339B2006B4023 /* WasserflugApp.swift in Sources */,
+				FBDDB50528633C04006B4023 /* BaseViewModel.swift in Sources */,
+				FBDDB54F286377B0006B4023 /* VisualEffectView.swift in Sources */,
+				FBDDB51528633FCB006B4023 /* Persistence.swift in Sources */,
+				FBDDB53728635E36006B4023 /* CreatorContentViewModel.swift in Sources */,
+				FBDDB52728635CEE006B4023 /* HomeView.swift in Sources */,
+				FBDDB51728633FEB006B4023 /* Wasserflug.xcdatamodeld in Sources */,
+				FBDDB5192863400A006B4023 /* Authentication.swift in Sources */,
+				FBDDB52F28635DA7006B4023 /* SettingsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FBDDB4DE286339B2006B4023 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FBDDB52A28635D05006B4023 /* HomeViewModel.swift in Sources */,
+				FBDDB559286378D2006B4023 /* Swift+Extensions.swift in Sources */,
+				FBDDB54B286376FB006B4023 /* BlogPostView.swift in Sources */,
+				FBDDB53628635E05006B4023 /* CreatorContentView.swift in Sources */,
+				FBDDB5602863807C006B4023 /* SwiftUI+Extensions.swift in Sources */,
+				FBDDB50028633A89006B4023 /* FPAPIService.swift in Sources */,
+				FBDDB5542863780E006B4023 /* FPColors.swift in Sources */,
+				FBDDB52528635CD1006B4023 /* RootTabView.swift in Sources */,
+				FBDDB52328635447006B4023 /* EnvironmentKeys.swift in Sources */,
+				FBDDB51E28634240006B4023 /* FloatplaneAPIClient+Extensions.swift in Sources */,
+				FBDDB53B28635E3B006B4023 /* LivestreamViewModel.swift in Sources */,
+				FBDDB4FE28633A57006B4023 /* AuthViewModel.swift in Sources */,
+				FBDDB4F828633A09006B4023 /* LoginView.swift in Sources */,
+				FBDDB54D28637718006B4023 /* BlogPostViewModel.swift in Sources */,
+				FBDDB55D28637A03006B4023 /* BlogPostSelectionView.swift in Sources */,
+				FBDDB4E8286339B2006B4023 /* ContentView.swift in Sources */,
+				FBDDB52D28635D3F006B4023 /* ViewModelState.swift in Sources */,
+				FBDDB50928633C47006B4023 /* ErrorView.swift in Sources */,
+				FBDDB51028633E7E006B4023 /* OSLoggingLogger.swift in Sources */,
+				FBDDB51428633F36006B4023 /* Wasserflug.swift in Sources */,
+				FBDDB4E6286339B2006B4023 /* WasserflugApp.swift in Sources */,
+				FBDDB50628633C05006B4023 /* BaseViewModel.swift in Sources */,
+				FBDDB550286377B0006B4023 /* VisualEffectView.swift in Sources */,
+				FBDDB51628633FCB006B4023 /* Persistence.swift in Sources */,
+				FBDDB53928635E38006B4023 /* CreatorContentViewModel.swift in Sources */,
+				FBDDB52828635CEE006B4023 /* HomeView.swift in Sources */,
+				FBDDB51828633FEC006B4023 /* Wasserflug.xcdatamodeld in Sources */,
+				FBDDB51B2863400C006B4023 /* Authentication.swift in Sources */,
+				FBDDB53028635DA7006B4023 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -762,6 +1084,123 @@
 			};
 			name = Release;
 		};
+		FBDDB4EB286339B2006B4023 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "Wasserflug-tvOS/Assets.xcassets Wasserflug-tvOS/Preview\\ Content/Preview\\ Assets.xcassets";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Wasserflug--iOS--Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jamesnl.Wasserflug;
+				PRODUCT_NAME = Wasserflug;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FBDDB4EC286339B2006B4023 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "Wasserflug-tvOS/Assets.xcassets Wasserflug-tvOS/Preview\\ Content/Preview\\ Assets.xcassets";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Wasserflug--iOS--Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jamesnl.Wasserflug;
+				PRODUCT_NAME = Wasserflug;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FBDDB4ED286339B2006B4023 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "Wasserflug-tvOS/Assets.xcassets Wasserflug-tvOS/Preview\\ Content/Preview\\ Assets.xcassets";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jamesnl.Wasserflug;
+				PRODUCT_NAME = Wasserflug;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		FBDDB4EE286339B2006B4023 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "Wasserflug-tvOS/Assets.xcassets Wasserflug-tvOS/Preview\\ Content/Preview\\ Assets.xcassets";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jamesnl.Wasserflug;
+				PRODUCT_NAME = Wasserflug;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -801,6 +1240,24 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		FBDDB4EF286339B2006B4023 /* Build configuration list for PBXNativeTarget "Wasserflug (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FBDDB4EB286339B2006B4023 /* Debug */,
+				FBDDB4EC286339B2006B4023 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FBDDB4F0286339B2006B4023 /* Build configuration list for PBXNativeTarget "Wasserflug (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FBDDB4ED286339B2006B4023 /* Debug */,
+				FBDDB4EE286339B2006B4023 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -836,6 +1293,34 @@
 		E75337BB27CB07900010E3D2 /* FloatplaneAPIClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FloatplaneAPIClient;
+		};
+		FBDDB4F1286339CD006B4023 /* FloatplaneAPIClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FloatplaneAPIClient;
+		};
+		FBDDB4F3286339D4006B4023 /* FloatplaneAPIClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FloatplaneAPIClient;
+		};
+		FBDDB50128633A93006B4023 /* Vapor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E753376927CB01FD0010E3D2 /* XCRemoteSwiftPackageReference "vapor" */;
+			productName = Vapor;
+		};
+		FBDDB50328633A99006B4023 /* Vapor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E753376927CB01FD0010E3D2 /* XCRemoteSwiftPackageReference "vapor" */;
+			productName = Vapor;
+		};
+		FBDDB53C286361DD006B4023 /* CachedAsyncImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E753376627CAFF550010E3D2 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
+			productName = CachedAsyncImage;
+		};
+		FBDDB53E286361E1006B4023 /* CachedAsyncImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E753376627CAFF550010E3D2 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
+			productName = CachedAsyncImage;
 		};
 /* End XCSwiftPackageProductDependency section */
 

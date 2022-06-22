@@ -1,18 +1,21 @@
+//
+//  WasserflugApp.swift
+//  Shared
+//
+//  Created by Nils Bergmann on 22.06.22.
+//
+
 import SwiftUI
-import FloatplaneAPIClient
-import Vapor
-import os
-import Logging
 
 @main
-struct Wasserflug_tvOSApp: App {
+struct WasserflugApp: App {
     let wasserflug = Wasserflug();
-	
-	var body: some Scene {
-		WindowGroup {
+    
+    var body: some Scene {
+        WindowGroup {
             ContentView(viewModel: wasserflug.authViewModel)
                 .environment(\.fpApiService, wasserflug.fpApiService)
                 .environment(\.managedObjectContext, wasserflug.persistenceController.container.viewContext)
-		}
-	}
+        }
+    }
 }

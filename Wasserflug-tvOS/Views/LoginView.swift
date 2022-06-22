@@ -28,8 +28,7 @@ struct LoginView: View {
 					VStack {
 						Text("Login to Floatplane")
 							.bold()
-						Spacer()
-						
+                        Spacer()
 						TextField("Username", text: $username)
 							.textContentType(.username)
 							.focused($focusedField, equals: .usernameField)
