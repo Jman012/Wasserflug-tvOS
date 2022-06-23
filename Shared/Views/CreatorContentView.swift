@@ -66,20 +66,66 @@ struct CreatorContentView: View {
                     }
                     .frame(height: viewModel.coverImageWidth != nil && viewModel.coverImageHeight != nil ? ( UIScreen.main.bounds.size.width / viewModel.coverImageWidth!) * viewModel.coverImageHeight! : 150)
                     
+                    // Logo and text
+                    
                     let offset: CGFloat = 70 / 2
                     
                     HStack {
                         let logoSize: CGFloat = 70
+                        
+                        // isLive circle stroke width
+                        let border: CGFloat = 3
+                        
+                        // isLive circle gradient
+                        
+                        let gradient = Gradient(colors: [Color(red: 0.07, green: 0.76, blue: 0.91), Color(red: 0.77, green: 0.44, blue: 0.93), Color(red: 0.96, green: 0.31, blue: 0.35)])
+                        
+                        let linearGradient = LinearGradient(gradient: gradient, startPoint: .topLeading, endPoint: .bottomTrailing)
+                        
                         CachedAsyncImage(url: viewModel.creatorProfileImagePath, content: { image in
                             image
                                 .resizable()
                                 .frame(width: logoSize, height: logoSize)
                                 .clipShape(Circle())
+                                
                         }, placeholder: {
                             ProgressView()
                                 .frame(width: logoSize, height: logoSize)
                         })
+                        // isLive circle
+                        .if(self.livestreamViewModel.isLive) { view in
+                            view.overlay(
+                                ZStack {
+                                    Circle()
+                                    .inset(by: -((border / 2) + 2))
+                                    .stroke(linearGradient, lineWidth: border)
+                                    .frame(width: logoSize, height: logoSize)
+                                    .animation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: true)
+                                    HStack {
+                                        Spacer()
+                                        VStack {
+                                            Spacer()
+                                            Image(systemName: "livephoto.play")
+                                                .foregroundStyle(linearGradient)
+                                                .offset(x: 5, y: 5)
+                                        }
+                                    }
+                                }
+                            )
+                        }
+                        .sheet(isPresented: $isShowingLive, onDismiss: {
+                            self.isShowingLive = false
+                        }, content: {
+                            LivestreamPlayerView(viewModel: self.livestreamViewModel)
+                                .edgesIgnoringSafeArea(.all)
+                        })
                         .offset(y: -offset)
+                        .onTapGesture {
+                            if self.livestreamViewModel.isLive {
+                                self.isShowingLive = true
+                            }
+                        }
+                        
                         VStack {
                             Text(viewModel.creatorAboutHeader)
                                 .fontWeight(.bold)
@@ -99,6 +145,10 @@ struct CreatorContentView: View {
                     }
                     .padding(.horizontal)
                     .offset(y: -offset)
+                    
+                    
+                    
+                    // Videos
                     
                     LazyVGrid(columns: gridColumns, spacing: 20) {
                         ForEach(content) { blogPost in
@@ -130,25 +180,48 @@ struct CreatorContentView: View {
 struct CreatorContentView_Previews: PreviewProvider {
     @State static var selection = RootTabView.Selection.creator(MockData.creators[0].id)
     static var previews: some View {
-        TabView(selection: $selection) {
-            Text("test").tabItem {
-                Text("Home")
+        Group {
+            TabView(selection: $selection) {
+                Text("test").tabItem {
+                    Text("Home")
+                }
+                CreatorContentView(viewModel: CreatorContentViewModel(
+                    fpApiService: MockFPAPIService(),
+                    creator: MockData.creators[0],
+                    creatorOwner: MockData.creatorOwners.users[0].user
+                ), livestreamViewModel: LivestreamViewModel(
+                    fpApiService: MockFPAPIService(),
+                    creator: MockData.creators[0])
+                )
+                .tag(RootTabView.Selection.creator(MockData.creators[0].id))
+                .tabItem {
+                    Text(MockData.creators[0].title)
+                }
+                .environmentObject(MockData.userInfo)
+                Text("test").tabItem {
+                    Text("Settings")
+                }
             }
-            CreatorContentView(viewModel: CreatorContentViewModel(
-                fpApiService: MockFPAPIService(),
-                creator: MockData.creators[0],
-                creatorOwner: MockData.creatorOwners.users[0].user
-            ), livestreamViewModel: LivestreamViewModel(
-                fpApiService: MockFPAPIService(),
-                creator: MockData.creators[0])
-            )
-            .tag(RootTabView.Selection.creator(MockData.creators[0].id))
-            .tabItem {
-                Text(MockData.creators[0].title)
-            }
-            .environmentObject(MockData.userInfo)
-            Text("test").tabItem {
-                Text("Settings")
+            TabView(selection: $selection) {
+                Text("test").tabItem {
+                    Text("Home")
+                }
+                CreatorContentView(viewModel: CreatorContentViewModel(
+                    fpApiService: MockFPAPIService(),
+                    creator: MockData.creators[0],
+                    creatorOwner: MockData.creatorOwners.users[0].user
+                ), livestreamViewModel: LivestreamViewModel(
+                    fpApiService: MockFPAPIService(),
+                    creator: MockData.creators[0], mockIsLive: true)
+                )
+                .tag(RootTabView.Selection.creator(MockData.creators[0].id))
+                .tabItem {
+                    Text(MockData.creators[0].title)
+                }
+                .environmentObject(MockData.userInfo)
+                Text("test").tabItem {
+                    Text("Settings")
+                }
             }
         }
     }

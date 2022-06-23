@@ -52,6 +52,10 @@
 		E75337BC27CB07900010E3D2 /* FloatplaneAPIClient in Frameworks */ = {isa = PBXBuildFile; productRef = E75337BB27CB07900010E3D2 /* FloatplaneAPIClient */; };
 		E75337BE27CB08990010E3D2 /* EnvironmentKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75337BD27CB08990010E3D2 /* EnvironmentKeys.swift */; };
 		E7A447E92815E1C0009BCE2E /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */; };
+		FB457F8128649753008A82AF /* CreatorSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB457F8028649753008A82AF /* CreatorSearchView.swift */; };
+		FB457F8228649753008A82AF /* CreatorSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB457F8028649753008A82AF /* CreatorSearchView.swift */; };
+		FB457F832864AB0D008A82AF /* LivestreamPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379A27CB06BE0010E3D2 /* LivestreamPlayerView.swift */; };
+		FB457F842864AB0D008A82AF /* LivestreamPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379A27CB06BE0010E3D2 /* LivestreamPlayerView.swift */; };
 		FBDDB4E5286339B2006B4023 /* WasserflugApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB4D6286339B0006B4023 /* WasserflugApp.swift */; };
 		FBDDB4E6286339B2006B4023 /* WasserflugApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB4D6286339B0006B4023 /* WasserflugApp.swift */; };
 		FBDDB4E7286339B2006B4023 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB4D7286339B0006B4023 /* ContentView.swift */; };
@@ -195,6 +199,7 @@
 		E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extensions.swift"; sourceTree = "<group>"; };
 		E7CCF2D1285314B600506E51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E7CCF2D2285315B400506E51 /* Wasserflug-tvOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Wasserflug-tvOS.entitlements"; sourceTree = "<group>"; };
+		FB457F8028649753008A82AF /* CreatorSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorSearchView.swift; sourceTree = "<group>"; };
 		FBDDB4D6286339B0006B4023 /* WasserflugApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WasserflugApp.swift; sourceTree = "<group>"; };
 		FBDDB4D7286339B0006B4023 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		FBDDB4D8286339B2006B4023 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -442,6 +447,7 @@
 				FBDDB52E28635DA7006B4023 /* SettingsView.swift */,
 				FBDDB53428635E05006B4023 /* CreatorContentView.swift */,
 				FBDDB549286376FB006B4023 /* BlogPostView.swift */,
+				FB457F8028649753008A82AF /* CreatorSearchView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -751,6 +757,7 @@
 				FBDDB54A286376FB006B4023 /* BlogPostView.swift in Sources */,
 				FBDDB53528635E05006B4023 /* CreatorContentView.swift in Sources */,
 				FBDDB55E2863807B006B4023 /* SwiftUI+Extensions.swift in Sources */,
+				FB457F8128649753008A82AF /* CreatorSearchView.swift in Sources */,
 				FBDDB4FF28633A89006B4023 /* FPAPIService.swift in Sources */,
 				FBDDB5532863780E006B4023 /* FPColors.swift in Sources */,
 				FBDDB52428635CD0006B4023 /* RootTabView.swift in Sources */,
@@ -774,6 +781,7 @@
 				FBDDB52728635CEE006B4023 /* HomeView.swift in Sources */,
 				FBDDB51728633FEB006B4023 /* Wasserflug.xcdatamodeld in Sources */,
 				FBDDB5192863400A006B4023 /* Authentication.swift in Sources */,
+				FB457F832864AB0D008A82AF /* LivestreamPlayerView.swift in Sources */,
 				FBDDB52F28635DA7006B4023 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -787,6 +795,7 @@
 				FBDDB54B286376FB006B4023 /* BlogPostView.swift in Sources */,
 				FBDDB53628635E05006B4023 /* CreatorContentView.swift in Sources */,
 				FBDDB5602863807C006B4023 /* SwiftUI+Extensions.swift in Sources */,
+				FB457F8228649753008A82AF /* CreatorSearchView.swift in Sources */,
 				FBDDB50028633A89006B4023 /* FPAPIService.swift in Sources */,
 				FBDDB5542863780E006B4023 /* FPColors.swift in Sources */,
 				FBDDB52528635CD1006B4023 /* RootTabView.swift in Sources */,
@@ -810,6 +819,7 @@
 				FBDDB52828635CEE006B4023 /* HomeView.swift in Sources */,
 				FBDDB51828633FEC006B4023 /* Wasserflug.xcdatamodeld in Sources */,
 				FBDDB51B2863400C006B4023 /* Authentication.swift in Sources */,
+				FB457F842864AB0D008A82AF /* LivestreamPlayerView.swift in Sources */,
 				FBDDB53028635DA7006B4023 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
