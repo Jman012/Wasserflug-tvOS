@@ -162,7 +162,10 @@
 				E753373A27CAFAFE0010E3D2 /* Products */,
 				E75337BA27CB07900010E3D2 /* Frameworks */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 1;
 		};
 		E753373A27CAFAFE0010E3D2 /* Products */ = {
 			isa = PBXGroup;
