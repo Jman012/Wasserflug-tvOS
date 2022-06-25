@@ -9,6 +9,7 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 	@Published var userInfo = UserInfo()
 	@Published var authenticationCheckError: Error? = nil
 	@Published var showAuthenticationErrorAlert = false
+	@Published var showNoSubscriptionsAlert = false
 	
 	@Published var isAttemptingLogin = false
 	@Published var showIncorrectLoginAlert = false
@@ -45,6 +46,15 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 								"username": "\(userSelfResponse.username)",
 								"subIds": "\(userSubscriptionsResponse.map({ $0.creator }))",
 							])
+							
+							guard !userSubscriptionsResponse.isEmpty else {
+								self.logger.warning("Login was successful but the user profile did not return any subscriptions. Aborting authentication process and informing user of inability to proceed.")
+								self.isLoggedIn = false
+								self.isLoadingAuthStatus = false
+								self.showNoSubscriptionsAlert = true
+								return
+							}
+							
 							self.isLoggedIn = true
 							self.userInfo.userSelf = userSelfResponse
 							self.userInfo.userSubscriptions = userSubscriptionsResponse
