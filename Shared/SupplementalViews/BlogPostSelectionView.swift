@@ -22,6 +22,8 @@ struct BlogPostSelectionView: View {
     @Environment(\.fpApiService) var fpApiService
     @Environment(\.managedObjectContext) private var viewContext
     
+    @State var clickedOnVideo = false;
+    
     var progress: CGFloat {
         if let watchProgress = watchProgresses.first(where: { $0.videoId == blogPost.videoAttachments?.first }) {
             let progress = watchProgress.progress
@@ -39,6 +41,12 @@ struct BlogPostSelectionView: View {
     
     var body: some View {
         let meta = blogPost.metadata
+        
+        NavigationLink("Link to Video", isActive: $clickedOnVideo) {
+            BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService, id: blogPost.id), watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", blogPost.id, blogPost.videoAttachments?.first ?? "")), shouldAutoPlay: true)
+        }
+            .hidden()
+        
         VStack {
             CachedAsyncImage(url: blogPost.thumbnail.pathUrlOrNil, content: { image in
                 ZStack(alignment: .bottomLeading) {
@@ -132,6 +140,8 @@ struct BlogPostSelectionView: View {
                 Text("\(relativeTimeConverter.localizedString(for: blogPost.releaseDate, relativeTo: Date()))")
                     .lineLimit(1)
             }
+        }.onTapGesture {
+            self.clickedOnVideo.toggle()
         }
     }
 }

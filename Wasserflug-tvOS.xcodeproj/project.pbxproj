@@ -40,7 +40,6 @@
 		E75337AD27CB06BE0010E3D2 /* CreatorSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379227CB06BE0010E3D2 /* CreatorSearchView.swift */; };
 		E75337AE27CB06BE0010E3D2 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379327CB06BE0010E3D2 /* SettingsView.swift */; };
 		E75337AF27CB06BE0010E3D2 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379427CB06BE0010E3D2 /* LoginView.swift */; };
-		E75337B027CB06BE0010E3D2 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379527CB06BE0010E3D2 /* VideoView.swift */; };
 		E75337B127CB06BE0010E3D2 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379627CB06BE0010E3D2 /* HomeView.swift */; };
 		E75337B227CB06BE0010E3D2 /* PictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379727CB06BE0010E3D2 /* PictureView.swift */; };
 		E75337B327CB06BE0010E3D2 /* BlogPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379827CB06BE0010E3D2 /* BlogPostView.swift */; };
@@ -52,6 +51,11 @@
 		E75337BC27CB07900010E3D2 /* FloatplaneAPIClient in Frameworks */ = {isa = PBXBuildFile; productRef = E75337BB27CB07900010E3D2 /* FloatplaneAPIClient */; };
 		E75337BE27CB08990010E3D2 /* EnvironmentKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75337BD27CB08990010E3D2 /* EnvironmentKeys.swift */; };
 		E7A447E92815E1C0009BCE2E /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */; };
+		FB09BD342868B74A00B52FED /* VideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378A27CB06BE0010E3D2 /* VideoViewModel.swift */; };
+		FB09BD352868B74A00B52FED /* VideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378A27CB06BE0010E3D2 /* VideoViewModel.swift */; };
+		FB09BD3C2868C5EC00B52FED /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB09BD3B2868C5EC00B52FED /* VideoPlayerView.swift */; };
+		FB09BD3D2868C5EC00B52FED /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB09BD3B2868C5EC00B52FED /* VideoPlayerView.swift */; };
+		FB18ED6F286880F100F53433 /* BlogPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB549286376FB006B4023 /* BlogPostView.swift */; };
 		FB457F8128649753008A82AF /* CreatorSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB457F8028649753008A82AF /* CreatorSearchView.swift */; };
 		FB457F8228649753008A82AF /* CreatorSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB457F8028649753008A82AF /* CreatorSearchView.swift */; };
 		FB457F832864AB0D008A82AF /* LivestreamPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379A27CB06BE0010E3D2 /* LivestreamPlayerView.swift */; };
@@ -113,7 +117,6 @@
 		FBDDB53F286361E1006B4023 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = FBDDB53E286361E1006B4023 /* CachedAsyncImage */; };
 		FBDDB54128636D1F006B4023 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FBDDB54028636D1F006B4023 /* Launch Screen.storyboard */; };
 		FBDDB54228636D1F006B4023 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FBDDB54028636D1F006B4023 /* Launch Screen.storyboard */; };
-		FBDDB54A286376FB006B4023 /* BlogPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB549286376FB006B4023 /* BlogPostView.swift */; };
 		FBDDB54B286376FB006B4023 /* BlogPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB549286376FB006B4023 /* BlogPostView.swift */; };
 		FBDDB54C28637718006B4023 /* BlogPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378827CB06BE0010E3D2 /* BlogPostViewModel.swift */; };
 		FBDDB54D28637718006B4023 /* BlogPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753378827CB06BE0010E3D2 /* BlogPostViewModel.swift */; };
@@ -130,6 +133,9 @@
 		FBDDB55D28637A03006B4023 /* BlogPostSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDDB55B28637A03006B4023 /* BlogPostSelectionView.swift */; };
 		FBDDB55E2863807B006B4023 /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */; };
 		FBDDB5602863807C006B4023 /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */; };
+		FBF62588286B71C700283778 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379527CB06BE0010E3D2 /* VideoView.swift */; };
+		FBF6258A286B71DB00283778 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF62589286B71DB00283778 /* VideoView.swift */; };
+		FBF6258B286B71DB00283778 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF62589286B71DB00283778 /* VideoView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -199,6 +205,7 @@
 		E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extensions.swift"; sourceTree = "<group>"; };
 		E7CCF2D1285314B600506E51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E7CCF2D2285315B400506E51 /* Wasserflug-tvOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Wasserflug-tvOS.entitlements"; sourceTree = "<group>"; };
+		FB09BD3B2868C5EC00B52FED /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
 		FB457F8028649753008A82AF /* CreatorSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorSearchView.swift; sourceTree = "<group>"; };
 		FBDDB4D6286339B0006B4023 /* WasserflugApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WasserflugApp.swift; sourceTree = "<group>"; };
 		FBDDB4D7286339B0006B4023 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -217,6 +224,7 @@
 		FBDDB54E286377B0006B4023 /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
 		FBDDB5522863780E006B4023 /* FPColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPColors.swift; sourceTree = "<group>"; };
 		FBDDB55B28637A03006B4023 /* BlogPostSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogPostSelectionView.swift; sourceTree = "<group>"; };
+		FBF62589286B71DB00283778 /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -448,6 +456,7 @@
 				FBDDB53428635E05006B4023 /* CreatorContentView.swift */,
 				FBDDB549286376FB006B4023 /* BlogPostView.swift */,
 				FB457F8028649753008A82AF /* CreatorSearchView.swift */,
+				FBF62589286B71DB00283778 /* VideoView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -464,6 +473,7 @@
 			children = (
 				FBDDB54E286377B0006B4023 /* VisualEffectView.swift */,
 				FBDDB55B28637A03006B4023 /* BlogPostSelectionView.swift */,
+				FB09BD3B2868C5EC00B52FED /* VideoPlayerView.swift */,
 			);
 			path = SupplementalViews;
 			sourceTree = "<group>";
@@ -711,12 +721,12 @@
 				E753377F27CB06800010E3D2 /* Wasserflug_tvOSApp.swift in Sources */,
 				E75337A927CB06BE0010E3D2 /* AuthViewModel.swift in Sources */,
 				E75337AA27CB06BE0010E3D2 /* ViewModelState.swift in Sources */,
-				E75337B027CB06BE0010E3D2 /* VideoView.swift in Sources */,
 				E753379E27CB06BE0010E3D2 /* BlogPostContentView.swift in Sources */,
 				E75337A027CB06BE0010E3D2 /* PlayButton.swift in Sources */,
 				FBDDB55528637814006B4023 /* FPColors.swift in Sources */,
 				E75337A527CB06BE0010E3D2 /* HomeViewModel.swift in Sources */,
 				E75337AD27CB06BE0010E3D2 /* CreatorSearchView.swift in Sources */,
+				FBF62588286B71C700283778 /* VideoView.swift in Sources */,
 				E71FDB7927E66D7E00A9C88B /* Persistence.swift in Sources */,
 				E753377D27CB066E0010E3D2 /* OSLoggingLogger.swift in Sources */,
 				E75337A727CB06BE0010E3D2 /* BaseViewModel.swift in Sources */,
@@ -754,8 +764,8 @@
 			files = (
 				FBDDB52928635D04006B4023 /* HomeViewModel.swift in Sources */,
 				FBDDB557286378D0006B4023 /* Swift+Extensions.swift in Sources */,
-				FBDDB54A286376FB006B4023 /* BlogPostView.swift in Sources */,
 				FBDDB53528635E05006B4023 /* CreatorContentView.swift in Sources */,
+				FB18ED6F286880F100F53433 /* BlogPostView.swift in Sources */,
 				FBDDB55E2863807B006B4023 /* SwiftUI+Extensions.swift in Sources */,
 				FB457F8128649753008A82AF /* CreatorSearchView.swift in Sources */,
 				FBDDB4FF28633A89006B4023 /* FPAPIService.swift in Sources */,
@@ -773,6 +783,8 @@
 				FBDDB50728633C45006B4023 /* ErrorView.swift in Sources */,
 				FBDDB50E28633E7C006B4023 /* OSLoggingLogger.swift in Sources */,
 				FBDDB51328633F36006B4023 /* Wasserflug.swift in Sources */,
+				FB09BD342868B74A00B52FED /* VideoViewModel.swift in Sources */,
+				FBF6258A286B71DB00283778 /* VideoView.swift in Sources */,
 				FBDDB4E5286339B2006B4023 /* WasserflugApp.swift in Sources */,
 				FBDDB50528633C04006B4023 /* BaseViewModel.swift in Sources */,
 				FBDDB54F286377B0006B4023 /* VisualEffectView.swift in Sources */,
@@ -783,6 +795,7 @@
 				FBDDB5192863400A006B4023 /* Authentication.swift in Sources */,
 				FB457F832864AB0D008A82AF /* LivestreamPlayerView.swift in Sources */,
 				FBDDB52F28635DA7006B4023 /* SettingsView.swift in Sources */,
+				FB09BD3C2868C5EC00B52FED /* VideoPlayerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -811,6 +824,8 @@
 				FBDDB50928633C47006B4023 /* ErrorView.swift in Sources */,
 				FBDDB51028633E7E006B4023 /* OSLoggingLogger.swift in Sources */,
 				FBDDB51428633F36006B4023 /* Wasserflug.swift in Sources */,
+				FB09BD352868B74A00B52FED /* VideoViewModel.swift in Sources */,
+				FBF6258B286B71DB00283778 /* VideoView.swift in Sources */,
 				FBDDB4E6286339B2006B4023 /* WasserflugApp.swift in Sources */,
 				FBDDB50628633C05006B4023 /* BaseViewModel.swift in Sources */,
 				FBDDB550286377B0006B4023 /* VisualEffectView.swift in Sources */,
@@ -821,6 +836,7 @@
 				FBDDB51B2863400C006B4023 /* Authentication.swift in Sources */,
 				FB457F842864AB0D008A82AF /* LivestreamPlayerView.swift in Sources */,
 				FBDDB53028635DA7006B4023 /* SettingsView.swift in Sources */,
+				FB09BD3D2868C5EC00B52FED /* VideoPlayerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1102,6 +1118,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "Wasserflug-tvOS/Assets.xcassets Wasserflug-tvOS/Preview\\ Content/Preview\\ Assets.xcassets";
+				DEVELOPMENT_TEAM = P88CDRP8CR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wasserflug--iOS--Info.plist";
@@ -1133,6 +1150,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "Wasserflug-tvOS/Assets.xcassets Wasserflug-tvOS/Preview\\ Content/Preview\\ Assets.xcassets";
+				DEVELOPMENT_TEAM = P88CDRP8CR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wasserflug--iOS--Info.plist";
@@ -1284,7 +1302,7 @@
 			repositoryURL = "https://github.com/vapor/vapor";
 			requirement = {
 				kind = exactVersion;
-				version = 4.55.0;
+				version = 4.62.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

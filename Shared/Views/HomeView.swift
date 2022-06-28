@@ -17,36 +17,39 @@ struct HomeView: View {
     }
     
     var body: some View {
-        switch viewModel.state {
-        case .idle:
-            Color.clear.onAppear(perform: {
-                viewModel.load()
-            })
-        case .loading:
-            ProgressView()
-        case let .failed(error):
-            ErrorView(error: error)
-        case let .loaded(response):
-            ScrollView {
-                LazyVGrid(columns: gridColumns, spacing: 20) {
-                    ForEach(response.blogPosts) { blogPost in
-                        BlogPostSelectionView(
-                            blogPost: blogPost,
-                            viewOrigin: .home(userInfo.creatorOwners[blogPost.creator.owner.id]),
-                            watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", blogPost.id), animation: .default)
-                        )
-                            .onAppear(perform: {
-                                viewModel.itemDidAppear(blogPost)
-                            })
+        NavigationView {
+            switch viewModel.state {
+            case .idle:
+                Color.clear.onAppear(perform: {
+                    viewModel.load()
+                })
+            case .loading:
+                ProgressView()
+            case let .failed(error):
+                ErrorView(error: error)
+            case let .loaded(response):
+                ScrollView {
+                    LazyVGrid(columns: gridColumns, spacing: 20) {
+                        ForEach(response.blogPosts) { blogPost in
+                            BlogPostSelectionView(
+                                blogPost: blogPost,
+                                viewOrigin: .home(userInfo.creatorOwners[blogPost.creator.owner.id]),
+                                watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", blogPost.id), animation: .default)
+                            )
+                                .onAppear(perform: {
+                                    viewModel.itemDidAppear(blogPost)
+                                })
+                        }
                     }
+                    .padding()
+                }.onDisappear {
+                    viewModel.homeDidDisappear()
+                }.onAppear {
+                    viewModel.homeDidAppearAgain()
                 }
-                .padding()
-            }.onDisappear {
-                viewModel.homeDidDisappear()
-            }.onAppear {
-                viewModel.homeDidAppearAgain()
             }
         }
+        .navigationViewStyle(.stack)
     }
 }
 
