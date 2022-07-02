@@ -20,9 +20,9 @@ struct CreatorContentView: View {
     @State var isShowingSearch = false
     @State var isShowingLive = false
     
-    private var gridColumns: [GridItem] {
-        return Array(repeating: GridItem(.flexible(minimum: 0, maximum: .infinity), alignment: .top), count: UIDevice.current.userInterfaceIdiom == .pad ? 2 : 1)
-    }
+    var gridColumns: [GridItem] = [
+        GridItem(.adaptive(minimum: 370))
+    ]
     
     var body: some View {
         VStack {
@@ -150,7 +150,7 @@ struct CreatorContentView: View {
                     
                     // Videos
                     
-                    LazyVGrid(columns: gridColumns, spacing: 20) {
+                    LazyVGrid(columns: gridColumns, alignment: .center, spacing: 15) {
                         ForEach(content) { blogPost in
                             BlogPostSelectionView(
                                 blogPost: blogPost,

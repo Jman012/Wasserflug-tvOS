@@ -104,6 +104,7 @@ If you have forgotten your password, please reset it via https://www.floatplane.
 """)
             }
         })
+        .navigationViewStyle(.stack)
     }
     
     func login() {

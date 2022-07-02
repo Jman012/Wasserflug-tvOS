@@ -15,6 +15,8 @@ struct ContentView: View {
     
     @State var hasInitiallyLoaded = false
     
+    @State var width = UIScreen.main.bounds.width
+    
     @Environment(\.colorScheme) var colorScheme
     
     enum Notifications {
@@ -23,20 +25,35 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            if viewModel.isLoadingAuthStatus {
-                Image("wasserflug-logo")
-                    .resizable()
-                    .foregroundColor(colorScheme == .dark ? .white : .black)
-                    .scaledToFit()
-                    .frame(maxWidth: 250)
-                ProgressView()
-            } else if !viewModel.isLoggedIn {
-                LoginView(viewModel: viewModel)
-            } else {
-                RootTabView()
+            ZStack {
+                if viewModel.isLoadingAuthStatus {
+                    Image("wasserflug-logo")
+                        .resizable()
+                        .foregroundColor(colorScheme == .dark ? .white : .black)
+                        .scaledToFit()
+                        .frame(maxWidth: 250)
+                    ProgressView()
+                } else if !viewModel.isLoggedIn {
+                    LoginView(viewModel: viewModel)
+                } else {
+                    RootTabView()
+                }
+                GeometryReader { proxy in
+                    Color.clear.onChange(of: proxy.size.width) { newValue in
+                        DispatchQueue.main.async {
+                            self.width = newValue
+                        }
+                    }.onAppear {
+                        DispatchQueue.main.async {
+                            self.width = proxy.size.width
+                        }
+                    }
+                }
+                .hidden()
             }
         }
         .environmentObject(viewModel.userInfo)
+        .environment(\.screenWidth, self.width)
         .onAppear(perform: {
             if !hasInitiallyLoaded {
                 hasInitiallyLoaded = true

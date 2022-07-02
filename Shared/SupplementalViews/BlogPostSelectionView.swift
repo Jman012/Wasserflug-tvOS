@@ -42,12 +42,11 @@ struct BlogPostSelectionView: View {
     var body: some View {
         let meta = blogPost.metadata
         
-        NavigationLink("Link to Video", isActive: $clickedOnVideo) {
-            BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService, id: blogPost.id), watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", blogPost.id, blogPost.videoAttachments?.first ?? "")), shouldAutoPlay: true)
-        }
-            .hidden()
-        
         VStack {
+            NavigationLink("Link to Video", isActive: $clickedOnVideo) {
+                BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService, id: blogPost.id), watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", blogPost.id, blogPost.videoAttachments?.first ?? "")), shouldAutoPlay: true)
+            }
+                .hidden()
             CachedAsyncImage(url: blogPost.thumbnail.pathUrlOrNil, content: { image in
                 ZStack(alignment: .bottomLeading) {
                     image

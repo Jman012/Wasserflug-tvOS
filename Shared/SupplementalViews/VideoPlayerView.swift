@@ -12,7 +12,7 @@ import AVKit
 struct VideoPlayerView: View {
     @ObservedObject var viewModel: VideoViewModel
     
-    @State var videoWidth: CGFloat = UIScreen.main.bounds.width
+    @Environment(\.screenWidth) var videoWidth: CGFloat
 
     let orientationChanged = NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
         .makeConnectable()
@@ -30,15 +30,8 @@ struct VideoPlayerView: View {
     }
     
     var body: some View {
-        VStack {
-            VideoPlayerViewWrapped(viewModel: viewModel, content: content, beginningWatchTime: beginningWatchTime)
-                .frame(width: videoWidth, height: aspectRatio * videoWidth)
-        }
-        .onReceive(orientationChanged) { _ in
-            DispatchQueue.main.async {
-                self.videoWidth = UIScreen.main.bounds.width
-            }
-        }
+        VideoPlayerViewWrapped(viewModel: viewModel, content: content, beginningWatchTime: beginningWatchTime)
+            .frame(width: self.videoWidth, height: aspectRatio * self.videoWidth)
     }
 }
 

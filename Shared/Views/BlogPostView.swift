@@ -152,6 +152,7 @@ struct BlogPostView: View {
                 }
             }
         }
+        .navigationViewStyle(.stack)
     }
 }
 
