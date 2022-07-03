@@ -83,7 +83,7 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 						])
 						let baseCdn = response.cdn
 						let pathTemplate = response.resource.uri!
-						let screen = UIScreen.main
+						let screenNativeBounds = UIScreen.main.nativeBounds
 						let levels = response.resource.data.qualityLevels?
 							.filter({ qualityLevel in
 								// Filter out resolutions larger than the device's screen resolution to save
@@ -93,9 +93,9 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 								// and 4K is 4320x2160 instead of 3480x2160) which makes screen size comparisons
 								// difficult to do correctly.
 								// Just in case some creators have funny heights, allow for a 15% tolerance.
-								let result = CGFloat(qualityLevel.height) <= (screen.bounds.height * 1.15)
+								let result = CGFloat(qualityLevel.height) <= (screenNativeBounds.height * 1.15)
 								if !result {
-									self.logger.warning("Ignoring quality level \(String(describing: qualityLevel)) (\(qualityLevel.width) x \(qualityLevel.height)) due to larger-than-screen height of \(screen.bounds.height).")
+									self.logger.warning("Ignoring quality level \(String(describing: qualityLevel)) (\(qualityLevel.width) x \(qualityLevel.height)) due to larger-than-screen height of \(screenNativeBounds.height).")
 								}
 								return result
 							})
