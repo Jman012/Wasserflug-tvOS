@@ -27,9 +27,9 @@ public struct BlogPostModelV3Creator: Content, Hashable {
     public var discoverable: Bool
     public var subscriberCountDisplay: String
     public var incomeDisplay: Bool
-    public var card: ImageModel
+    public var card: ImageModel?
 
-    public init(id: String, owner: BlogPostModelV3CreatorOwner, title: String, urlname: String, description: String, about: String, category: BlogPostModelV3CreatorCategory, cover: ImageModel, icon: ImageModel, liveStream: LiveStreamModel? = nil, subscriptionPlans: [SubscriptionPlanModel], discoverable: Bool, subscriberCountDisplay: String, incomeDisplay: Bool, card: ImageModel) {
+    public init(id: String, owner: BlogPostModelV3CreatorOwner, title: String, urlname: String, description: String, about: String, category: BlogPostModelV3CreatorCategory, cover: ImageModel, icon: ImageModel, liveStream: LiveStreamModel? = nil, subscriptionPlans: [SubscriptionPlanModel], discoverable: Bool, subscriberCountDisplay: String, incomeDisplay: Bool, card: ImageModel? = nil) {
         self.id = id
         self.owner = owner
         self.title = title
@@ -83,7 +83,7 @@ public struct BlogPostModelV3Creator: Content, Hashable {
         try container.encode(discoverable, forKey: .discoverable)
         try container.encode(subscriberCountDisplay, forKey: .subscriberCountDisplay)
         try container.encode(incomeDisplay, forKey: .incomeDisplay)
-        try container.encode(card, forKey: .card)
+        try container.encodeIfPresent(card, forKey: .card)
     }
 }
 
