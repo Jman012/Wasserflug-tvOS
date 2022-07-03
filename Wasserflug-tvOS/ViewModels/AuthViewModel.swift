@@ -59,12 +59,13 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 							self.userInfo.userSelf = userSelfResponse
 							self.userInfo.userSubscriptions = userSubscriptionsResponse
 							
-							// With the subscriptions, get the creators of the subscriptions
-							let creatorGuids = self.userInfo.userSubscriptions.map({ $0.creator })
+							// With the subscriptions, get the creators of the subscriptions.
+							// Convert to Set to remove possible duplicates (which is possible).
+							let creatorGuids = Set<String>(self.userInfo.userSubscriptions.map({ $0.creator }))
 							self.logger.info("Loading creator(s) information from subscriptions", metadata: [
 								"creatorGuids": "\(creatorGuids)",
 							])
-							self.fpApiService.getInfo(creatorGUID: creatorGuids)
+							self.fpApiService.getInfo(creatorGUID: Array<String>(creatorGuids))
 								.whenComplete { result in
 									DispatchQueue.main.async {
 										switch result {
@@ -250,5 +251,20 @@ class UserInfo: ObservableObject {
 	@Published var userSelf: UserSelfV3Response?
 	@Published var userSubscriptions: [UserSubscriptionModel] = []
 	@Published var creators: [String: CreatorModelV2] = [:]
-	@Published var creatorOwners: [String: UserModel] = [:]
+	@Published var creatorOwners: [String: UserModel] = [:] {
+		didSet {
+			setCreatorsInOrder()
+		}
+	}
+	@Published var creatorsInOrder: [(CreatorModelV2, UserModel)] = []
+	
+	private func setCreatorsInOrder() {
+		for sub in userSubscriptions {
+			if !creatorsInOrder.contains(where: { $0.0.id == sub.creator }) {
+				if let creator = creators[sub.creator], let creatorOwner = creatorOwners[creator.owner] {
+					creatorsInOrder.append((creator, creatorOwner))
+				}
+			}
+		}
+	}
 }

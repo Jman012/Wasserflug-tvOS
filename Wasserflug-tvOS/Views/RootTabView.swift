@@ -20,9 +20,10 @@ struct RootTabView: View {
 				.tabItem {
 					Text("Home")
 				}
-			ForEach(userInfo.userSubscriptions) { sub in
-				let creator = userInfo.creators[sub.creator]!
-				let creatorOwner = userInfo.creatorOwners[creator.owner]!
+			
+			// There is an issue where multiple subscriptions for one creator might be active.
+			// Instead of showing one tab per subscription, show one per creator.
+			ForEach(userInfo.creatorsInOrder, id: \.0.id) { (creator, creatorOwner) in
 				CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, creator: creator, creatorOwner: creatorOwner), livestreamViewModel: LivestreamViewModel(fpApiService: fpApiService, creator: creator))
 					.tag(Selection.creator(creator.id))
 					.tabItem {
