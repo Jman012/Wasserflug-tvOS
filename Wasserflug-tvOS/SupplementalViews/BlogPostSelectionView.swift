@@ -130,12 +130,14 @@ struct BlogPostSelectionView: View {
 				.padding()
 		})
 			.buttonStyle(.plain)
+            #if os(tvOS)
 			.onPlayPauseCommand(perform: {
 				if blogPost.isAccessible {
 					shouldAutoPlay = true
 					isSelected = true
 				}
 			})
+            #endif
 			.sheet(isPresented: $isSelected, onDismiss: {
 				shouldAutoPlay = false
 				isSelected = false

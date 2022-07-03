@@ -3,11 +3,6 @@ import FloatplaneAPIClient
 import NIO
 import Network
 
-enum FPColors {
-	static let blue = Color(.sRGB, red: 0, green: 175.0/256.0, blue: 236.0/256.0, opacity: 1.0)
-	static let darkBlue = Color(.sRGB, red: 0, green: 175.0/256.0, blue: 236.0/256.0, opacity: 1.0)
-}
-
 struct ContentView: View {
 	
 	@ObservedObject var viewModel: AuthViewModel
@@ -127,10 +122,4 @@ struct ContentView_Previews: PreviewProvider {
 	static var previews: some View {
 		ContentView(viewModel: AuthViewModel(fpApiService: MockFPAPIService()))
 	}
-}
-
-struct VisualEffectView: UIViewRepresentable {
-	var effect: UIVisualEffect?
-	func makeUIView(context: UIViewRepresentableContext<Self>) -> UIVisualEffectView { UIVisualEffectView() }
-	func updateUIView(_ uiView: UIVisualEffectView, context: UIViewRepresentableContext<Self>) { uiView.effect = effect }
 }

@@ -28,6 +28,16 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E753375227CAFAFF0010E3D2"
+               BuildableName = "Wasserflug-tvOSUITests.xctest"
+               BlueprintName = "Wasserflug-tvOSUITests"
+               ReferencedContainer = "container:Wasserflug-tvOS.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

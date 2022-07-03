@@ -83,7 +83,10 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 						])
 						let baseCdn = response.cdn
 						let pathTemplate = response.resource.uri!
-						let screen = UIScreen.main
+                        var screenWidth = UIScreen.main.bounds.width
+                        if screenWidth < UIScreen.main.bounds.height {
+                            screenWidth = UIScreen.main.bounds.height
+                        }
 						let levels = response.resource.data.qualityLevels?
 							.filter({ qualityLevel in
 								// Filter out resolutions larger than the device's screen resolution.
@@ -93,9 +96,9 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 								// will allow for actually getting 1080p on 1080p screens, with only a little bit of downsampling.
 								// But, it wouldn't make sense to show 4k on a 1080p screen. Waste of bandwidth, and the
 								// hardware may not like the massive downsampling.
-								let result = CGFloat(qualityLevel.width) <= (screen.bounds.width * 1.15)
+								let result = CGFloat(qualityLevel.width) <= (screenWidth * 1.15)
 								if !result {
-									self.logger.warning("Ignoring quality level \(String(describing: qualityLevel)) due to larger-than-screen width of \(screen.bounds.width)")
+									self.logger.warning("Ignoring quality level \(String(describing: qualityLevel)) due to larger-than-screen width of \(screenWidth)")
 								}
 								return result
 							})

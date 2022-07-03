@@ -9,7 +9,7 @@ struct WaveformView: View {
 	let height: CGFloat
 	
 	let logger: Logger = {
-		var logger = Wasserflug_tvOSApp.logger
+		var logger = Wasserflug.logger
 		logger[metadataKey: "class"] = "\(Self.Type.self)"
 		return logger
 	}()
