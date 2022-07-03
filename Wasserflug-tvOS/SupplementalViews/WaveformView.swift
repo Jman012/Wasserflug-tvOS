@@ -31,7 +31,7 @@ struct WaveformView: View {
 	var body: some View {
 		let (spacing, range, waveWidth, data, heightScale) = compute()
 		HStack(spacing: spacing) {
-			ForEach(range) {
+			ForEach(range, id: \.self) {
 				Rectangle()
 					.fill(.white)
 					.frame(width: waveWidth, height: CGFloat(data[$0]) * heightScale)

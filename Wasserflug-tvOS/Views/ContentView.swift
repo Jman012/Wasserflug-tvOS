@@ -112,6 +112,9 @@ Logging in was successful, but an error was encountered while loading your user 
 		.alert("Application Error", isPresented: $showErrorMoreDetails, presenting: viewModel.authenticationCheckError, actions: { _ in }, message: { error in
 			Text("\(String(describing: error))")
 		})
+		.alert("Subscriptions", isPresented: $viewModel.showNoSubscriptionsAlert, actions: {}, message: {
+			Text("Logging in was successful, but the account does not have any subscriptions at this time. Wasserflug requires at least one subscription in order to work properly. Please try again later.")
+		})
 	}
 }
 
