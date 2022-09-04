@@ -41,14 +41,18 @@ struct BlogPostSelectionView: View {
 			}
 		}, label: {
 			VStack(alignment: .leading, spacing: 2) {
-				
 				ZStack(alignment: .center) {
 					CachedAsyncImage(url: blogPost.thumbnail.pathUrlOrNil, content: { image in
+						// Thumbnail image with watch progress indicator overlaid on
+						// the bottom of the image
 						ZStack(alignment: .bottomLeading) {
+							// Thumbnail image
 							image
 								.resizable()
 								.scaledToFit()
 								.frame(maxWidth: .infinity, maxHeight: .infinity)
+							
+							// Watch progress indicator
 							GeometryReader { geometry in
 								Rectangle()
 									.fill(FPColors.blue)
@@ -67,6 +71,7 @@ struct BlogPostSelectionView: View {
 						}
 					})
 					
+					// Optional lock icon if the post is inaccessible.
 					if (!blogPost.isAccessible) {
 						VisualEffectView(effect: UIBlurEffect(style: .dark))
 							.frame(width: 150, height: 150)
@@ -80,8 +85,11 @@ struct BlogPostSelectionView: View {
 					}
 				}
 				
+				// Below the image: title, length, tags, etc.
 				HStack(alignment: .top, spacing: 0) {
 					let profileImageSize: CGFloat = 35
+					// For the home screen, show the icon/profile picture of the
+					// creator that published the blog post.
 					if case let .home(creatorOwner) = viewOrigin,
 					   let profileImagePath = creatorOwner?.profileImage.path,
 					   let profileImageUrl = URL(string: profileImagePath) {
@@ -97,19 +105,33 @@ struct BlogPostSelectionView: View {
 						})
 							.padding([.all], 5)
 					}
+					
 					VStack(alignment: .leading, spacing: 4) {
+						// Blog post title
 						Text(verbatim: blogPost.title)
 							.font(.caption2)
 							.lineLimit(2)
+						
+						// Video/Audio/Gallery/Picture tags
 						HStack(spacing: 10) {
 							let meta = blogPost.metadata
-							Text("\(meta.hasVideo ? "Video" : meta.hasAudio ? "Audio" : meta.hasGallery ? "Gallery" : "Picture")")
-		//						.font(.caption2)
-								.padding([.all], 5)
-								.foregroundColor(.white)
-								.background(.gray)
-								.cornerRadius(10)
+							if meta.hasVideo {
+								AttachmentPill(text: "Video")
+							}
+							if meta.hasAudio {
+								AttachmentPill(text: "Audio")
+							}
+							if meta.hasPicture {
+								AttachmentPill(text: "Picture")
+							}
+							if meta.hasGallery {
+								AttachmentPill(text: "Gallery")
+							}
+							if !meta.hasVideo && !meta.hasAudio && !meta.hasPicture && !meta.hasGallery {
+								AttachmentPill(text: "Text")
+							}
 							
+							// Video/audio duration with clock icon
 							let duration: TimeInterval = meta.hasVideo ? meta.videoDuration : meta.hasAudio ? meta.audioDuration : 0.0
 							if duration != 0 {
 								Image(systemName: "clock")
@@ -120,6 +142,8 @@ struct BlogPostSelectionView: View {
 								.lineLimit(1)
 						}
 							.font(.system(size: 18, weight: .light))
+						
+						// Creator name on bottom of card
 						if case .home(_) = viewOrigin {
 							Text(verbatim: blogPost.creator.title)
 								.font(.system(size: 18, weight: .light))
@@ -154,7 +178,7 @@ struct BlogPostSelectionView_Previews: PreviewProvider {
 		)
 			.environment(\.fpApiService, MockFPAPIService())
 			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-			.previewLayout(.fixed(width: 1000, height: 600))
+			.previewLayout(.fixed(width: 600, height: 400))
 //			.preferredColorScheme(.light)
 		BlogPostSelectionView(
 			blogPost: MockData.blogPosts.blogPosts.first!,
@@ -162,7 +186,7 @@ struct BlogPostSelectionView_Previews: PreviewProvider {
 			watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
 		)
 			.environment(\.fpApiService, MockFPAPIService())
-			.previewLayout(.fixed(width: 1000, height: 600))
+			.previewLayout(.fixed(width: 600, height: 400))
 //			.preferredColorScheme(.light)
 	}
 }

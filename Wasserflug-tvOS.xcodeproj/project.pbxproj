@@ -11,6 +11,7 @@
 		E71FDB3C27D3F89200A9C88B /* Swift+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB3B27D3F89200A9C88B /* Swift+Extensions.swift */; };
 		E71FDB7927E66D7E00A9C88B /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB7827E66D7E00A9C88B /* Persistence.swift */; };
 		E71FDB7C27E66DB100A9C88B /* Wasserflug.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB7A27E66DB100A9C88B /* Wasserflug.xcdatamodeld */; };
+		E731AF0F289B22AC00A2DAD7 /* AttachmentPills.swift in Sources */ = {isa = PBXBuildFile; fileRef = E731AF0E289B22AC00A2DAD7 /* AttachmentPills.swift */; };
 		E753374127CAFAFF0010E3D2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E753374027CAFAFF0010E3D2 /* Assets.xcassets */; };
 		E753374427CAFAFF0010E3D2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E753374327CAFAFF0010E3D2 /* Preview Assets.xcassets */; };
 		E753374E27CAFAFF0010E3D2 /* Wasserflug_tvOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753374D27CAFAFF0010E3D2 /* Wasserflug_tvOSTests.swift */; };
@@ -77,6 +78,7 @@
 		E71FDB3B27D3F89200A9C88B /* Swift+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Swift+Extensions.swift"; sourceTree = "<group>"; };
 		E71FDB7827E66D7E00A9C88B /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		E71FDB7B27E66DB100A9C88B /* Wasserflug.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Wasserflug.xcdatamodel; sourceTree = "<group>"; };
+		E731AF0E289B22AC00A2DAD7 /* AttachmentPills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentPills.swift; sourceTree = "<group>"; };
 		E753373927CAFAFE0010E3D2 /* Wasserflug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wasserflug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E753374027CAFAFF0010E3D2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E753374327CAFAFF0010E3D2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 				E753378527CB06BE0010E3D2 /* BlogPostSelectionView.swift */,
 				E753378627CB06BE0010E3D2 /* ErrorView.swift */,
 				E70448E12803A9110045A1AE /* WaveformView.swift */,
+				E731AF0E289B22AC00A2DAD7 /* AttachmentPills.swift */,
 			);
 			path = SupplementalViews;
 			sourceTree = "<group>";
@@ -456,6 +459,7 @@
 				E75337B727CB06BE0010E3D2 /* ContentView.swift in Sources */,
 				E753377727CB066E0010E3D2 /* Authentication.swift in Sources */,
 				E753377F27CB06800010E3D2 /* Wasserflug_tvOSApp.swift in Sources */,
+				E731AF0F289B22AC00A2DAD7 /* AttachmentPills.swift in Sources */,
 				E75337A927CB06BE0010E3D2 /* AuthViewModel.swift in Sources */,
 				E75337AA27CB06BE0010E3D2 /* ViewModelState.swift in Sources */,
 				E75337B027CB06BE0010E3D2 /* VideoView.swift in Sources */,
