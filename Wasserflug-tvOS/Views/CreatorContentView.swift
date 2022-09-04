@@ -86,9 +86,9 @@ struct CreatorContentView: View {
 							Button(action: {
 								isShowingLive = true
 							}, label: {
-								Label("Livestream", systemImage: livestreamViewModel.isLive ? "play.tv" : "bolt.horizontal")
+								Label("Livestream", systemImage: livestreamViewModel.isLive ? "play.tv" : "play.slash")
 							})
-								.disabled(!livestreamViewModel.isLive)
+								.disabled((livestreamViewModel.path ?? "") == "")
 								.sheet(isPresented: $isShowingLive, onDismiss: {
 									self.isShowingLive = false
 								}, content: {
