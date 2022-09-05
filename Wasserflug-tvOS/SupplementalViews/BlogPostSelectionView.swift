@@ -12,6 +12,7 @@ struct BlogPostSelectionView: View {
 	let blogPost: BlogPostModelV3
 	let viewOrigin: ViewOrigin
 	@FetchRequest var watchProgresses: FetchedResults<WatchProgress>
+	@State var geometrySize: CGSize?
 	
 	@Environment(\.fpApiService) var fpApiService
 	@Environment(\.managedObjectContext) private var viewContext
@@ -42,7 +43,7 @@ struct BlogPostSelectionView: View {
 		}, label: {
 			VStack(alignment: .leading, spacing: 2) {
 				ZStack(alignment: .center) {
-					CachedAsyncImage(url: blogPost.thumbnail.pathUrlOrNil, content: { image in
+					CachedAsyncImage(url: blogPost.thumbnail.bestImage(for: geometrySize), content: { image in
 						// Thumbnail image with watch progress indicator overlaid on
 						// the bottom of the image
 						ZStack(alignment: .bottomLeading) {
@@ -68,6 +69,13 @@ struct BlogPostSelectionView: View {
 								.fill(.clear)
 								.frame(maxWidth: .infinity, maxHeight: .infinity)
 								.aspectRatio(blogPost.thumbnail?.aspectRatio ?? 1.0, contentMode: .fit)
+						}
+					})
+					.overlay(GeometryReader() { geometry in
+						ExecuteCode {
+							if geometry.size.width > 40 && geometry.size.height > 40 {
+								self.geometrySize = geometry.size
+							}
 						}
 					})
 					

@@ -53,6 +53,7 @@
 		E75337B827CB06BE0010E3D2 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379D27CB06BE0010E3D2 /* RootTabView.swift */; };
 		E75337BC27CB07900010E3D2 /* FloatplaneAPIClient in Frameworks */ = {isa = PBXBuildFile; productRef = E75337BB27CB07900010E3D2 /* FloatplaneAPIClient */; };
 		E75337BE27CB08990010E3D2 /* EnvironmentKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75337BD27CB08990010E3D2 /* EnvironmentKeys.swift */; };
+		E7A2F42A28C58E0300583294 /* ExecuteCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A2F42928C58E0300583294 /* ExecuteCode.swift */; };
 		E7A447E92815E1C0009BCE2E /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -121,6 +122,7 @@
 		E753379C27CB06BE0010E3D2 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		E753379D27CB06BE0010E3D2 /* RootTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
 		E75337BD27CB08990010E3D2 /* EnvironmentKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentKeys.swift; sourceTree = "<group>"; };
+		E7A2F42928C58E0300583294 /* ExecuteCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecuteCode.swift; sourceTree = "<group>"; };
 		E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extensions.swift"; sourceTree = "<group>"; };
 		E7CCF2D1285314B600506E51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E7CCF2D2285315B400506E51 /* Wasserflug-tvOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Wasserflug-tvOS.entitlements"; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 				E753378627CB06BE0010E3D2 /* ErrorView.swift */,
 				E70448E12803A9110045A1AE /* WaveformView.swift */,
 				E731AF0E289B22AC00A2DAD7 /* AttachmentPills.swift */,
+				E7A2F42928C58E0300583294 /* ExecuteCode.swift */,
 			);
 			path = SupplementalViews;
 			sourceTree = "<group>";
@@ -450,6 +453,7 @@
 				E75337B127CB06BE0010E3D2 /* HomeView.swift in Sources */,
 				E71FDB3C27D3F89200A9C88B /* Swift+Extensions.swift in Sources */,
 				E7A447E92815E1C0009BCE2E /* SwiftUI+Extensions.swift in Sources */,
+				E7A2F42A28C58E0300583294 /* ExecuteCode.swift in Sources */,
 				E75337AB27CB06BE0010E3D2 /* CreatorContentViewModel.swift in Sources */,
 				E75337AF27CB06BE0010E3D2 /* LoginView.swift in Sources */,
 				E753377B27CB066E0010E3D2 /* FPAPIService.swift in Sources */,
