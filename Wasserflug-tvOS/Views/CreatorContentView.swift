@@ -6,6 +6,7 @@ struct CreatorContentView: View {
 	@EnvironmentObject var userInfo: UserInfo
 	@Environment(\.fpApiService) var fpApiService
 	@Environment(\.colorScheme) var colorScheme
+	@Environment(\.scenePhase) var scenePhase
 	
 	@StateObject var viewModel: CreatorContentViewModel
 	@StateObject var livestreamViewModel: LivestreamViewModel
@@ -125,10 +126,24 @@ struct CreatorContentView: View {
 					}
 				}.onDisappear {
 					viewModel.creatorContentDidDisappear()
-				 }.onAppear {
+				}.onAppear {
+					// Load new content when the view re-appears, like when switching
+					// tabs. There is no refresh button.
 					viewModel.creatorContentDidAppearAgain()
 					livestreamViewModel.loadLiveStatus()
-				 }
+				}.onChange(of: scenePhase, perform: { phase in
+					switch phase {
+					case .active:
+						// Similarly, load new content if the app wakes up from
+						// inactive/background activity.
+						viewModel.creatorContentDidAppearAgain()
+						livestreamViewModel.loadLiveStatus()
+					case .inactive, .background:
+						viewModel.creatorContentDidDisappear()
+					@unknown default:
+						break
+					}
+				})
 			}
 		}
 	}

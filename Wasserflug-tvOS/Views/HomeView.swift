@@ -4,6 +4,7 @@ import FloatplaneAPIClient
 struct HomeView: View {
 	@StateObject var viewModel: HomeViewModel
 	
+	@Environment(\.scenePhase) var scenePhase
 	@EnvironmentObject var userInfo: UserInfo
 	
 	private let gridColumns: [GridItem] = [
@@ -41,8 +42,21 @@ struct HomeView: View {
 			}.onDisappear {
 				viewModel.homeDidDisappear()
 			}.onAppear {
+				// Load new content when the view re-appears, like when switching
+				// tabs. There is no refresh button.
 				viewModel.homeDidAppearAgain()
-			}
+			}.onChange(of: scenePhase, perform: { phase in
+				switch phase {
+				case .active:
+					// Similarly, load new content if the app wakes up from
+					// inactive/background activity.
+					viewModel.homeDidAppearAgain()
+				case .inactive, .background:
+					viewModel.homeDidDisappear()
+				@unknown default:
+					break
+				}
+			})
 		}
 	}
 }
