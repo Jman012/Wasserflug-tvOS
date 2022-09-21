@@ -11,32 +11,34 @@ import AnyCodable
 #endif
 import Vapor
 
-public struct CdnDeliveryV2Response: Content, Hashable {
-
-    /** The domain of the CDN server to use. */
-    public var cdn: String
-    public var strategy: String
-    public var resource: CdnDeliveryV2ResponseResource
-
-    public init(cdn: String, strategy: String, resource: CdnDeliveryV2ResponseResource) {
-        self.cdn = cdn
-        self.strategy = strategy
-        self.resource = resource
-    }
-
-    public enum CodingKeys: String, CodingKey, CaseIterable {
-        case cdn
-        case strategy
-        case resource
-    }
-
-    // Encodable protocol methods
+public enum CdnDeliveryV2Response: Content {
+    case typeCdnDeliveryV2DownloadResponse(CdnDeliveryV2DownloadResponse)
+    case typeCdnDeliveryV2LivestreamResponse(CdnDeliveryV2LivestreamResponse)
+    case typeCdnDeliveryV2VodResponse(CdnDeliveryV2VodResponse)
 
     public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(cdn, forKey: .cdn)
-        try container.encode(strategy, forKey: .strategy)
-        try container.encode(resource, forKey: .resource)
+        var container = encoder.singleValueContainer()
+        switch self {
+        case .typeCdnDeliveryV2DownloadResponse(let value):
+            try container.encode(value)
+        case .typeCdnDeliveryV2LivestreamResponse(let value):
+            try container.encode(value)
+        case .typeCdnDeliveryV2VodResponse(let value):
+            try container.encode(value)
+        }
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        if let value = try? container.decode(CdnDeliveryV2DownloadResponse.self) {
+            self = .typeCdnDeliveryV2DownloadResponse(value)
+        } else if let value = try? container.decode(CdnDeliveryV2LivestreamResponse.self) {
+            self = .typeCdnDeliveryV2LivestreamResponse(value)
+        } else if let value = try? container.decode(CdnDeliveryV2VodResponse.self) {
+            self = .typeCdnDeliveryV2VodResponse(value)
+        } else {
+            throw DecodingError.typeMismatch(Self.Type.self, .init(codingPath: decoder.codingPath, debugDescription: "Unable to decode instance of CdnDeliveryV2Response"))
+        }
     }
 }
 

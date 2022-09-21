@@ -27,8 +27,6 @@ struct CreatorContentView: View {
 			case .idle:
 				ProgressView().onAppear(perform: {
 					viewModel.load()
-					livestreamViewModel.load()
-					livestreamViewModel.startLoadingLiveStatus()
 				})
 			case .loading:
 				ProgressView()
@@ -87,14 +85,12 @@ struct CreatorContentView: View {
 							Button(action: {
 								isShowingLive = true
 							}, label: {
-								Label("Livestream", systemImage: livestreamViewModel.isLive ? "play.tv" : "play.slash")
+								Label("Livestream", systemImage: "play.tv")
 							})
-								.disabled((livestreamViewModel.path ?? "") == "")
 								.sheet(isPresented: $isShowingLive, onDismiss: {
 									self.isShowingLive = false
 								}, content: {
-									LivestreamPlayerView(viewModel: self.livestreamViewModel)
-										.edgesIgnoringSafeArea(.all)
+									LivestreamView(viewModel: self.livestreamViewModel)
 								})
 							
 							// Creator "about" information
@@ -130,14 +126,12 @@ struct CreatorContentView: View {
 					// Load new content when the view re-appears, like when switching
 					// tabs. There is no refresh button.
 					viewModel.creatorContentDidAppearAgain()
-					livestreamViewModel.loadLiveStatus()
 				}.onChange(of: scenePhase, perform: { phase in
 					switch phase {
 					case .active:
 						// Similarly, load new content if the app wakes up from
 						// inactive/background activity.
 						viewModel.creatorContentDidAppearAgain()
-						livestreamViewModel.loadLiveStatus()
 					case .inactive, .background:
 						viewModel.creatorContentDidDisappear()
 					@unknown default:
@@ -160,10 +154,10 @@ struct CreatorContentView_Previews: PreviewProvider {
 			CreatorContentView(viewModel: CreatorContentViewModel(
 				fpApiService: MockFPAPIService(),
 				creator: MockData.creators[0],
-				creatorOwner: MockData.creatorOwners.users[0].user
+				creatorOwner: MockData.creatorOwners.users[0].user.userModelShared
 			), livestreamViewModel: LivestreamViewModel(
 				fpApiService: MockFPAPIService(),
-				creator: MockData.creators[0])
+				creatorId: MockData.creators[0].id)
 			)
 				.tag(RootTabView.Selection.creator(MockData.creators[0].id))
 				.tabItem {

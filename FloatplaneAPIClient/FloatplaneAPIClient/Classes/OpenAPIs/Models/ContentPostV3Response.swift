@@ -23,7 +23,7 @@ public struct ContentPostV3Response: Content, Hashable {
     public var id: String
     public var guid: String
     public var title: String
-    /** Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML.. */
+    /** Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML. */
     public var text: String
     public var type: ModelType
     public var tags: [String]
@@ -36,16 +36,20 @@ public struct ContentPostV3Response: Content, Hashable {
     public var comments: Int
     public var creator: CreatorModelV2
     public var wasReleasedSilently: Bool
-    public var thumbnail: ImageModel?
+    public var thumbnail: ContentPostV3ResponseThumbnail?
     /** If false, the post should be marked as locked and not viewable by the user. */
     public var isAccessible: Bool
     public var userInteraction: [UserInteraction]?
+    /** May be undefined when the post is locked. */
     public var videoAttachments: [VideoAttachmentModel]?
+    /** May be undefined when the post is locked. */
     public var audioAttachments: [AudioAttachmentModel]?
+    /** May be undefined when the post is locked. */
     public var pictureAttachments: [PictureAttachmentModel]?
+    /** May be undefined when the post is locked. */
     public var galleryAttachments: [AnyCodable]?
 
-    public init(id: String, guid: String, title: String, text: String, type: ModelType, tags: [String], attachmentOrder: [String], metadata: PostMetadataModel, releaseDate: Date, likes: Int, dislikes: Int, score: Int, comments: Int, creator: CreatorModelV2, wasReleasedSilently: Bool, thumbnail: ImageModel? = nil, isAccessible: Bool, userInteraction: [UserInteraction]? = nil, videoAttachments: [VideoAttachmentModel]? = nil, audioAttachments: [AudioAttachmentModel]? = nil, pictureAttachments: [PictureAttachmentModel]? = nil, galleryAttachments: [AnyCodable]? = nil) {
+    public init(id: String, guid: String, title: String, text: String, type: ModelType, tags: [String], attachmentOrder: [String], metadata: PostMetadataModel, releaseDate: Date, likes: Int, dislikes: Int, score: Int, comments: Int, creator: CreatorModelV2, wasReleasedSilently: Bool, thumbnail: ContentPostV3ResponseThumbnail?, isAccessible: Bool, userInteraction: [UserInteraction]?, videoAttachments: [VideoAttachmentModel]? = nil, audioAttachments: [AudioAttachmentModel]? = nil, pictureAttachments: [PictureAttachmentModel]? = nil, galleryAttachments: [AnyCodable]? = nil) {
         self.id = id
         self.guid = guid
         self.title = title
@@ -114,9 +118,9 @@ public struct ContentPostV3Response: Content, Hashable {
         try container.encode(comments, forKey: .comments)
         try container.encode(creator, forKey: .creator)
         try container.encode(wasReleasedSilently, forKey: .wasReleasedSilently)
-        try container.encodeIfPresent(thumbnail, forKey: .thumbnail)
+        try container.encode(thumbnail, forKey: .thumbnail)
         try container.encode(isAccessible, forKey: .isAccessible)
-        try container.encodeIfPresent(userInteraction, forKey: .userInteraction)
+        try container.encode(userInteraction, forKey: .userInteraction)
         try container.encodeIfPresent(videoAttachments, forKey: .videoAttachments)
         try container.encodeIfPresent(audioAttachments, forKey: .audioAttachments)
         try container.encodeIfPresent(pictureAttachments, forKey: .pictureAttachments)

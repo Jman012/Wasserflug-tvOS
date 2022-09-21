@@ -15,7 +15,7 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 	private var isVisible = true
 	private let fpApiService: FPAPIService
 	let creator: CreatorModelV2
-	let creatorOwner: UserModel
+	let creatorOwner: UserModelShared
 	var searchDebounce: AnyCancellable? = nil
 	
 	var hasCover: Bool {
@@ -40,7 +40,7 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 	lazy var creatorAboutHeader: AttributedString = (try? AttributedString(markdown: String(creator.about[..<creatorAboutFirstNewlineIndex]))) ?? AttributedString("")
 	lazy var creatorAboutBody: AttributedString = (try? AttributedString(markdown: String(creator.about[creatorAboutFirstNewlineIndex...]))) ?? AttributedString("")
 	
-	init(fpApiService: FPAPIService, creator: CreatorModelV2, creatorOwner: UserModel) {
+	init(fpApiService: FPAPIService, creator: CreatorModelV2, creatorOwner: UserModelShared) {
 		self.fpApiService = fpApiService
 		self.creator = creator
 		self.creatorOwner = creatorOwner

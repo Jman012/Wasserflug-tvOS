@@ -16,12 +16,12 @@ public struct LiveStreamModel: Content, Hashable {
     public var id: String
     public var title: String
     public var description: String
-    public var thumbnail: ImageModel?
+    public var thumbnail: ContentPostV3ResponseThumbnail?
     public var owner: String
     public var streamPath: String
     public var offline: LiveStreamModelOffline
 
-    public init(id: String, title: String, description: String, thumbnail: ImageModel? = nil, owner: String, streamPath: String, offline: LiveStreamModelOffline) {
+    public init(id: String, title: String, description: String, thumbnail: ContentPostV3ResponseThumbnail?, owner: String, streamPath: String, offline: LiveStreamModelOffline) {
         self.id = id
         self.title = title
         self.description = description
@@ -48,7 +48,7 @@ public struct LiveStreamModel: Content, Hashable {
         try container.encode(id, forKey: .id)
         try container.encode(title, forKey: .title)
         try container.encode(description, forKey: .description)
-        try container.encodeIfPresent(thumbnail, forKey: .thumbnail)
+        try container.encode(thumbnail, forKey: .thumbnail)
         try container.encode(owner, forKey: .owner)
         try container.encode(streamPath, forKey: .streamPath)
         try container.encode(offline, forKey: .offline)

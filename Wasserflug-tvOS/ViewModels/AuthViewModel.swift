@@ -91,9 +91,9 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 																case let .http200(value: response, raw: clientResponseCreatorOwners):
 																	self.logger.debug("Creator owner(s) raw response: \(clientResponseCreatorOwners.plaintextDebugContent)")
 																	self.logger.notice("Retrieved creator owner(s) information", metadata: [
-																		"names": "\(response.users.map({ $0.user.username }))",
+																		"names": "\(response.users.map({ $0.user.userModelShared.username }))",
 																	])
-																	self.userInfo.creatorOwners = Dictionary(uniqueKeysWithValues: response.users.map({ ($0.user.id, $0.user) }))
+																	self.userInfo.creatorOwners = Dictionary(uniqueKeysWithValues: response.users.map({ ($0.user.userModelShared.id, $0.user.userModelShared) }))
 																case let .http0(value: errorModel, raw: clientResponse),
 																	let .http400(value: errorModel, raw: clientResponse),
 																	let .http401(value: errorModel, raw: clientResponse),
@@ -251,12 +251,12 @@ class UserInfo: ObservableObject {
 	@Published var userSelf: UserSelfV3Response?
 	@Published var userSubscriptions: [UserSubscriptionModel] = []
 	@Published var creators: [String: CreatorModelV2] = [:]
-	@Published var creatorOwners: [String: UserModel] = [:] {
+	@Published var creatorOwners: [String: UserModelShared] = [:] {
 		didSet {
 			setCreatorsInOrder()
 		}
 	}
-	@Published var creatorsInOrder: [(CreatorModelV2, UserModel)] = []
+	@Published var creatorsInOrder: [(CreatorModelV2, UserModelShared)] = []
 	
 	private func setCreatorsInOrder() {
 		for sub in userSubscriptions {

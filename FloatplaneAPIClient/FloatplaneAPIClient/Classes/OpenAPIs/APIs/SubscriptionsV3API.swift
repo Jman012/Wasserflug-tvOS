@@ -75,5 +75,4 @@ open class SubscriptionsV3API {
             }
         }
     }
-
 }

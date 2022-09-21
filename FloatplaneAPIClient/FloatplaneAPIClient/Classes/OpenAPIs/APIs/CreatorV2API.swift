@@ -48,7 +48,7 @@ open class CreatorV2API {
     }
 
     public enum GetCreatorInfoByName {
-        case http200(value: [CreatorModelV2], raw: ClientResponse)
+        case http200(value: [CreatorModelV2Extended], raw: ClientResponse)
         case http400(value: ErrorModel, raw: ClientResponse)
         case http401(value: ErrorModel, raw: ClientResponse)
         case http403(value: ErrorModel, raw: ClientResponse)
@@ -70,7 +70,7 @@ open class CreatorV2API {
         return getCreatorInfoByNameRaw(creatorURL: creatorURL, headers: headers, beforeSend: beforeSend).flatMapThrowing { response -> GetCreatorInfoByName in
             switch response.status.code {
             case 200:
-                return .http200(value: try response.content.decode([CreatorModelV2].self, using: Configuration.contentConfiguration.requireDecoder(for: [CreatorModelV2].defaultContentType)), raw: response)
+                return .http200(value: try response.content.decode([CreatorModelV2Extended].self, using: Configuration.contentConfiguration.requireDecoder(for: [CreatorModelV2Extended].defaultContentType)), raw: response)
             case 400:
                 return .http400(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             case 401:
@@ -84,7 +84,6 @@ open class CreatorV2API {
             }
         }
     }
-
 
     /**
      Get Info
@@ -157,5 +156,4 @@ open class CreatorV2API {
             }
         }
     }
-
 }

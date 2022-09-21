@@ -69,5 +69,4 @@ open class FAQV2API {
             }
         }
     }
-
 }

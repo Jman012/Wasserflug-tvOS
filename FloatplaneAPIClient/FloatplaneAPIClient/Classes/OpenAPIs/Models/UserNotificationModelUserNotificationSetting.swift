@@ -14,7 +14,7 @@ import Vapor
 public struct UserNotificationModelUserNotificationSetting: Content, Hashable {
 
     public var createdAt: Date
-    public var updatedAt: Date
+    public var updatedAt: Date?
     public var id: String
     public var contentEmail: Bool
     public var contentFirebase: Bool
@@ -22,7 +22,7 @@ public struct UserNotificationModelUserNotificationSetting: Content, Hashable {
     public var user: String
     public var creator: String
 
-    public init(createdAt: Date, updatedAt: Date, id: String, contentEmail: Bool, contentFirebase: Bool, creatorMessageEmail: Bool, user: String, creator: String) {
+    public init(createdAt: Date, updatedAt: Date?, id: String, contentEmail: Bool, contentFirebase: Bool, creatorMessageEmail: Bool, user: String, creator: String) {
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.id = id

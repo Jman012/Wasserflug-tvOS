@@ -13,10 +13,10 @@ import Vapor
 
 public struct UserActivityV3Response: Content, Hashable {
 
-    public var activity: [UserActivityV3ResponseActivity]
+    public var activity: [UserActivityV3ResponseActivityInner]
     public var visibility: String
 
-    public init(activity: [UserActivityV3ResponseActivity], visibility: String) {
+    public init(activity: [UserActivityV3ResponseActivityInner], visibility: String) {
         self.activity = activity
         self.visibility = visibility
     }

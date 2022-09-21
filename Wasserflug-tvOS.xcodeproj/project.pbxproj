@@ -54,6 +54,7 @@
 		E75337BC27CB07900010E3D2 /* FloatplaneAPIClient in Frameworks */ = {isa = PBXBuildFile; productRef = E75337BB27CB07900010E3D2 /* FloatplaneAPIClient */; };
 		E75337BE27CB08990010E3D2 /* EnvironmentKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75337BD27CB08990010E3D2 /* EnvironmentKeys.swift */; };
 		E7A2F42A28C58E0300583294 /* ExecuteCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A2F42928C58E0300583294 /* ExecuteCode.swift */; };
+		E7A2F42C28CE43D800583294 /* LivestreamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A2F42B28CE43D800583294 /* LivestreamView.swift */; };
 		E7A447E92815E1C0009BCE2E /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -123,6 +124,7 @@
 		E753379D27CB06BE0010E3D2 /* RootTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
 		E75337BD27CB08990010E3D2 /* EnvironmentKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentKeys.swift; sourceTree = "<group>"; };
 		E7A2F42928C58E0300583294 /* ExecuteCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecuteCode.swift; sourceTree = "<group>"; };
+		E7A2F42B28CE43D800583294 /* LivestreamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivestreamView.swift; sourceTree = "<group>"; };
 		E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extensions.swift"; sourceTree = "<group>"; };
 		E7CCF2D1285314B600506E51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E7CCF2D2285315B400506E51 /* Wasserflug-tvOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Wasserflug-tvOS.entitlements"; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 				E753379527CB06BE0010E3D2 /* VideoView.swift */,
 				E753379727CB06BE0010E3D2 /* PictureView.swift */,
 				E753379A27CB06BE0010E3D2 /* LivestreamPlayerView.swift */,
+				E7A2F42B28CE43D800583294 /* LivestreamView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -446,6 +449,7 @@
 				E75337A427CB06BE0010E3D2 /* BlogPostViewModel.swift in Sources */,
 				E75337AC27CB06BE0010E3D2 /* PictureViewModel.swift in Sources */,
 				E75337B827CB06BE0010E3D2 /* RootTabView.swift in Sources */,
+				E7A2F42C28CE43D800583294 /* LivestreamView.swift in Sources */,
 				E75337A127CB06BE0010E3D2 /* PlayMediaView.swift in Sources */,
 				E70448E22803A9110045A1AE /* WaveformView.swift in Sources */,
 				E75337B227CB06BE0010E3D2 /* PictureView.swift in Sources */,
@@ -820,7 +824,7 @@
 			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image";
 			requirement = {
 				kind = exactVersion;
-				version = 2.0.0;
+				version = 2.1.1;
 			};
 		};
 		E753376927CB01FD0010E3D2 /* XCRemoteSwiftPackageReference "vapor" */ = {
@@ -828,7 +832,7 @@
 			repositoryURL = "https://github.com/vapor/vapor";
 			requirement = {
 				kind = exactVersion;
-				version = 4.55.0;
+				version = 4.65.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

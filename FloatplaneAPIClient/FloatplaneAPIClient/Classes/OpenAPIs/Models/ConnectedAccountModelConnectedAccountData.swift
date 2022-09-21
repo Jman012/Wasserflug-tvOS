@@ -13,9 +13,9 @@ import Vapor
 
 public struct ConnectedAccountModelConnectedAccountData: Content, Hashable {
 
-    public var canJoinGuilds: Bool?
+    public var canJoinGuilds: Bool
 
-    public init(canJoinGuilds: Bool? = nil) {
+    public init(canJoinGuilds: Bool) {
         self.canJoinGuilds = canJoinGuilds
     }
 
@@ -27,7 +27,7 @@ public struct ConnectedAccountModelConnectedAccountData: Content, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(canJoinGuilds, forKey: .canJoinGuilds)
+        try container.encode(canJoinGuilds, forKey: .canJoinGuilds)
     }
 }
 

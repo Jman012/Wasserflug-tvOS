@@ -26,7 +26,7 @@ public struct SubscriptionPlanModel: Content, Hashable {
     public var discordServers: [DiscordServerModel]
     public var discordRoles: [DiscordRoleModel]
 
-    public init(id: String, title: String, description: String, price: String? = nil, priceYearly: String? = nil, currency: String, logo: String? = nil, interval: String, featured: Bool, allowGrandfatheredAccess: Bool? = nil, discordServers: [DiscordServerModel], discordRoles: [DiscordRoleModel]) {
+    public init(id: String, title: String, description: String, price: String?, priceYearly: String?, currency: String, logo: String?, interval: String, featured: Bool, allowGrandfatheredAccess: Bool?, discordServers: [DiscordServerModel], discordRoles: [DiscordRoleModel]) {
         self.id = id
         self.title = title
         self.description = description
@@ -63,13 +63,13 @@ public struct SubscriptionPlanModel: Content, Hashable {
         try container.encode(id, forKey: .id)
         try container.encode(title, forKey: .title)
         try container.encode(description, forKey: .description)
-        try container.encodeIfPresent(price, forKey: .price)
-        try container.encodeIfPresent(priceYearly, forKey: .priceYearly)
+        try container.encode(price, forKey: .price)
+        try container.encode(priceYearly, forKey: .priceYearly)
         try container.encode(currency, forKey: .currency)
-        try container.encodeIfPresent(logo, forKey: .logo)
+        try container.encode(logo, forKey: .logo)
         try container.encode(interval, forKey: .interval)
         try container.encode(featured, forKey: .featured)
-        try container.encodeIfPresent(allowGrandfatheredAccess, forKey: .allowGrandfatheredAccess)
+        try container.encode(allowGrandfatheredAccess, forKey: .allowGrandfatheredAccess)
         try container.encode(discordServers, forKey: .discordServers)
         try container.encode(discordRoles, forKey: .discordRoles)
     }

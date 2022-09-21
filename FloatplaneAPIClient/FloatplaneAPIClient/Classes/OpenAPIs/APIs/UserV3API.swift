@@ -85,7 +85,6 @@ open class UserV3API {
         }
     }
 
-
     /**
      Get External Links
      GET /api/v3/user/links
@@ -121,7 +120,7 @@ open class UserV3API {
     }
 
     public enum GetExternalLinksV3 {
-        case http200(value: [String: AnyCodable], raw: ClientResponse)
+        case http200(value: [String: UserLinksV3ResponseValue], raw: ClientResponse)
         case http400(value: ErrorModel, raw: ClientResponse)
         case http401(value: ErrorModel, raw: ClientResponse)
         case http403(value: ErrorModel, raw: ClientResponse)
@@ -143,7 +142,7 @@ open class UserV3API {
         return getExternalLinksV3Raw(id: id, headers: headers, beforeSend: beforeSend).flatMapThrowing { response -> GetExternalLinksV3 in
             switch response.status.code {
             case 200:
-                return .http200(value: try response.content.decode([String: AnyCodable].self, using: Configuration.contentConfiguration.requireDecoder(for: [String: AnyCodable].defaultContentType)), raw: response)
+                return .http200(value: try response.content.decode([String: UserLinksV3ResponseValue].self, using: Configuration.contentConfiguration.requireDecoder(for: [String: UserLinksV3ResponseValue].defaultContentType)), raw: response)
             case 400:
                 return .http400(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             case 401:
@@ -157,7 +156,6 @@ open class UserV3API {
             }
         }
     }
-
 
     /**
      Get Self
@@ -222,7 +220,6 @@ open class UserV3API {
         }
     }
 
-
     /**
      Get User Notification Settings
      GET /api/v3/user/notification/list
@@ -285,7 +282,6 @@ open class UserV3API {
             }
         }
     }
-
 
     /**
      Update User Notification Settings
@@ -352,5 +348,4 @@ open class UserV3API {
             }
         }
     }
-
 }

@@ -75,5 +75,4 @@ open class ConnectedAccountsV2API {
             }
         }
     }
-
 }

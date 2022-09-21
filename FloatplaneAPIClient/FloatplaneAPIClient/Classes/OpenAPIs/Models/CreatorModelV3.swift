@@ -20,16 +20,16 @@ public struct CreatorModelV3: Content, Hashable {
     public var description: String
     public var about: String
     public var category: CreatorModelV3Category
-    public var cover: ImageModel
+    public var cover: ContentPostV3ResponseThumbnail?
     public var icon: ImageModel
-    public var liveStream: LiveStreamModel?
-    public var subscriptionPlans: [SubscriptionPlanModel]
+    public var liveStream: CreatorModelV2LiveStream?
+    public var subscriptionPlans: [SubscriptionPlanModel]?
     public var discoverable: Bool
     public var subscriberCountDisplay: String
     public var incomeDisplay: Bool
-    public var socialLinks: SocialLinksModel
+    public var socialLinks: [String: String]
 
-    public init(id: String, owner: String, title: String, urlname: String, description: String, about: String, category: CreatorModelV3Category, cover: ImageModel, icon: ImageModel, liveStream: LiveStreamModel? = nil, subscriptionPlans: [SubscriptionPlanModel], discoverable: Bool, subscriberCountDisplay: String, incomeDisplay: Bool, socialLinks: SocialLinksModel) {
+    public init(id: String, owner: String, title: String, urlname: String, description: String, about: String, category: CreatorModelV3Category, cover: ContentPostV3ResponseThumbnail?, icon: ImageModel, liveStream: CreatorModelV2LiveStream?, subscriptionPlans: [SubscriptionPlanModel]?, discoverable: Bool, subscriberCountDisplay: String, incomeDisplay: Bool, socialLinks: [String: String]) {
         self.id = id
         self.owner = owner
         self.title = title
@@ -78,7 +78,7 @@ public struct CreatorModelV3: Content, Hashable {
         try container.encode(category, forKey: .category)
         try container.encode(cover, forKey: .cover)
         try container.encode(icon, forKey: .icon)
-        try container.encodeIfPresent(liveStream, forKey: .liveStream)
+        try container.encode(liveStream, forKey: .liveStream)
         try container.encode(subscriptionPlans, forKey: .subscriptionPlans)
         try container.encode(discoverable, forKey: .discoverable)
         try container.encode(subscriberCountDisplay, forKey: .subscriberCountDisplay)

@@ -5,7 +5,7 @@ import CachedAsyncImage
 struct BlogPostSelectionView: View {
 	
 	enum ViewOrigin: Equatable {
-		case home(UserModel?)
+		case home(AnyUserModelShared?)
 		case creator
 	}
 	
@@ -35,6 +35,14 @@ struct BlogPostSelectionView: View {
 		}
 	}
 	
+	var isTvOS16: Bool {
+		if #available(tvOS 16, *) {
+			return true
+		} else {
+			return false
+		}
+	}
+	
 	var body: some View {
 		Button(action: {
 			if blogPost.isAccessible {
@@ -43,7 +51,7 @@ struct BlogPostSelectionView: View {
 		}, label: {
 			VStack(alignment: .leading, spacing: 2) {
 				ZStack(alignment: .center) {
-					CachedAsyncImage(url: blogPost.thumbnail.bestImage(for: geometrySize), content: { image in
+					CachedAsyncImage(url: (blogPost.thumbnail as ImageModelShared?).bestImage(for: geometrySize), content: { image in
 						// Thumbnail image with watch progress indicator overlaid on
 						// the bottom of the image
 						ZStack(alignment: .bottomLeading) {
@@ -51,7 +59,7 @@ struct BlogPostSelectionView: View {
 							image
 								.resizable()
 								.scaledToFit()
-								.frame(maxWidth: .infinity, maxHeight: .infinity)
+								.frame(maxWidth: .infinity)
 							
 							// Watch progress indicator
 							GeometryReader { geometry in
@@ -67,14 +75,16 @@ struct BlogPostSelectionView: View {
 							ProgressView()
 							Rectangle()
 								.fill(.clear)
-								.frame(maxWidth: .infinity, maxHeight: .infinity)
+								.frame(maxWidth: .infinity)
 								.aspectRatio(blogPost.thumbnail?.aspectRatio ?? 1.0, contentMode: .fit)
 						}
 					})
 					.overlay(GeometryReader() { geometry in
 						ExecuteCode {
 							if geometry.size.width > 40 && geometry.size.height > 40 {
-								self.geometrySize = geometry.size
+								DispatchQueue.main.async {
+									self.geometrySize = geometry.size
+								}
 							}
 						}
 					})
@@ -144,23 +154,27 @@ struct BlogPostSelectionView: View {
 							if duration != 0 {
 								Image(systemName: "clock")
 								Text("\(TimeInterval(duration).floatplaneTimestamp)")
+									.lineLimit(1)
 							}
-							Spacer()
+						}
+							.font(.system(size: 18, weight: .light))
+						
+						HStack {
+							// Creator name on bottom of card
+							Text(verbatim: blogPost.creator.title)
+							
+							Spacer(minLength: 0)
+							
 							Text("\(relativeTimeConverter.localizedString(for: blogPost.releaseDate, relativeTo: Date()))")
 								.lineLimit(1)
 						}
 							.font(.system(size: 18, weight: .light))
-						
-						// Creator name on bottom of card
-						if case .home(_) = viewOrigin {
-							Text(verbatim: blogPost.creator.title)
-								.font(.system(size: 18, weight: .light))
-						}
 					}
 				}
 			}
-				.padding()
+			.padding(isTvOS16 ? 0 : 16)
 		})
+//			.buttonStyle(TruePlainButtonStyle())
 			.buttonStyle(.plain)
 			.onPlayPauseCommand(perform: {
 				if blogPost.isAccessible {
@@ -181,20 +195,41 @@ struct BlogPostSelectionView_Previews: PreviewProvider {
 	static var previews: some View {
 		BlogPostSelectionView(
 			blogPost: MockData.blogPosts.blogPosts.first!,
-			viewOrigin: .home(MockData.creatorOwners.users.first!.user),
+			viewOrigin: .home(MockData.creatorOwners.users.first!.user.userModelShared.asAnyUserModelShared()),
 			watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
 		)
 			.environment(\.fpApiService, MockFPAPIService())
 			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-			.previewLayout(.fixed(width: 600, height: 400))
-//			.preferredColorScheme(.light)
+			.previewLayout(.fixed(width: 600, height: 500))
 		BlogPostSelectionView(
 			blogPost: MockData.blogPosts.blogPosts.first!,
 			viewOrigin: .creator,
 			watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
 		)
 			.environment(\.fpApiService, MockFPAPIService())
-			.previewLayout(.fixed(width: 600, height: 400))
-//			.preferredColorScheme(.light)
+			.previewLayout(.fixed(width: 600, height: 500))
+	}
+}
+
+struct TruePlainButtonStyle: ButtonStyle {
+	func makeBody(configuration: Self.Configuration) -> some View {
+		FocusedTruePlainButtonStyleView(configuration: configuration)
+	}
+}
+
+struct FocusedTruePlainButtonStyleView: View {
+	@Environment(\.isFocused) var focused: Bool
+	let configuration: ButtonStyle.Configuration
+	var body: some View {
+		configuration.label
+			.scaleEffect(focused ? 1.1 : 1.0)
+			.padding()
+	}
+}
+
+struct ModifiedPlainButtonStyle: PrimitiveButtonStyle {
+	func makeBody(configuration: Self.Configuration) -> some View {
+		PlainButtonStyle.plain.makeBody(configuration: configuration)
+			.padding(0)
 	}
 }

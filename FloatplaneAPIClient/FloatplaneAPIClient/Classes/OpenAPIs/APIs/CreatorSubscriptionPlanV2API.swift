@@ -84,5 +84,4 @@ open class CreatorSubscriptionPlanV2API {
             }
         }
     }
-
 }

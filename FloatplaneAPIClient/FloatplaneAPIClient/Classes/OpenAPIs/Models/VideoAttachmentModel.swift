@@ -30,7 +30,7 @@ public struct VideoAttachmentModel: Content, Hashable {
     /** If false, the post should be marked as locked and not viewable by the user. */
     public var isAccessible: Bool
 
-    public init(id: String, guid: String, title: String, type: String, description: String, releaseDate: Date? = nil, duration: Double, creator: String, likes: Int, dislikes: Int, score: Int, isProcessing: Bool, primaryBlogPost: String, thumbnail: ImageModel, isAccessible: Bool) {
+    public init(id: String, guid: String, title: String, type: String, description: String, releaseDate: Date?, duration: Double, creator: String, likes: Int, dislikes: Int, score: Int, isProcessing: Bool, primaryBlogPost: String, thumbnail: ImageModel, isAccessible: Bool) {
         self.id = id
         self.guid = guid
         self.title = title
@@ -75,7 +75,7 @@ public struct VideoAttachmentModel: Content, Hashable {
         try container.encode(title, forKey: .title)
         try container.encode(type, forKey: .type)
         try container.encode(description, forKey: .description)
-        try container.encodeIfPresent(releaseDate, forKey: .releaseDate)
+        try container.encode(releaseDate, forKey: .releaseDate)
         try container.encode(duration, forKey: .duration)
         try container.encode(creator, forKey: .creator)
         try container.encode(likes, forKey: .likes)

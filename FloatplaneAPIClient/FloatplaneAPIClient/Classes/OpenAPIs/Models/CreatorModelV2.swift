@@ -20,17 +20,15 @@ public struct CreatorModelV2: Content, Hashable {
     public var description: String
     public var about: String
     public var category: String
-    public var cover: ImageModel?
+    public var cover: ContentPostV3ResponseThumbnail?
     public var icon: ImageModel
-    public var liveStream: LiveStreamModel?
+    public var liveStream: CreatorModelV2LiveStream?
     public var subscriptionPlans: [AnyCodable]?
     public var discoverable: Bool
     public var subscriberCountDisplay: String
     public var incomeDisplay: Bool
-    public var socialLinks: SocialLinksModel?
-    public var discordServers: [DiscordServerModel]?
 
-    public init(id: String, owner: String, title: String, urlname: String, description: String, about: String, category: String, cover: ImageModel? = nil, icon: ImageModel, liveStream: LiveStreamModel? = nil, subscriptionPlans: [AnyCodable]? = nil, discoverable: Bool, subscriberCountDisplay: String, incomeDisplay: Bool, socialLinks: SocialLinksModel? = nil, discordServers: [DiscordServerModel]? = nil) {
+    public init(id: String, owner: String, title: String, urlname: String, description: String, about: String, category: String, cover: ContentPostV3ResponseThumbnail?, icon: ImageModel, liveStream: CreatorModelV2LiveStream?, subscriptionPlans: [AnyCodable]?, discoverable: Bool, subscriberCountDisplay: String, incomeDisplay: Bool) {
         self.id = id
         self.owner = owner
         self.title = title
@@ -45,8 +43,6 @@ public struct CreatorModelV2: Content, Hashable {
         self.discoverable = discoverable
         self.subscriberCountDisplay = subscriberCountDisplay
         self.incomeDisplay = incomeDisplay
-        self.socialLinks = socialLinks
-        self.discordServers = discordServers
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -64,8 +60,6 @@ public struct CreatorModelV2: Content, Hashable {
         case discoverable
         case subscriberCountDisplay
         case incomeDisplay
-        case socialLinks
-        case discordServers
     }
 
     // Encodable protocol methods
@@ -79,15 +73,13 @@ public struct CreatorModelV2: Content, Hashable {
         try container.encode(description, forKey: .description)
         try container.encode(about, forKey: .about)
         try container.encode(category, forKey: .category)
-        try container.encodeIfPresent(cover, forKey: .cover)
+        try container.encode(cover, forKey: .cover)
         try container.encode(icon, forKey: .icon)
-        try container.encodeIfPresent(liveStream, forKey: .liveStream)
-        try container.encodeIfPresent(subscriptionPlans, forKey: .subscriptionPlans)
+        try container.encode(liveStream, forKey: .liveStream)
+        try container.encode(subscriptionPlans, forKey: .subscriptionPlans)
         try container.encode(discoverable, forKey: .discoverable)
         try container.encode(subscriberCountDisplay, forKey: .subscriberCountDisplay)
         try container.encode(incomeDisplay, forKey: .incomeDisplay)
-        try container.encodeIfPresent(socialLinks, forKey: .socialLinks)
-        try container.encodeIfPresent(discordServers, forKey: .discordServers)
     }
 }
 

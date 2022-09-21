@@ -5,4 +5,5 @@ openapi-generator generate \
  -o FloatplaneAPIClient \
  -g swift5 \
  --library vapor \
+ --global-property=apiDocs=false,modelDocs=false,apiTests=false,modelTests=false \
  --additional-properties=projectName=FloatplaneAPIClient

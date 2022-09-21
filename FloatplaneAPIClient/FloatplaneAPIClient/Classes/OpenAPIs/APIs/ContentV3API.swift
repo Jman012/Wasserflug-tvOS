@@ -79,7 +79,6 @@ open class ContentV3API {
         }
     }
 
-
     /**
      Get Blog Post
      GET /api/v3/content/post
@@ -151,7 +150,6 @@ open class ContentV3API {
             }
         }
     }
-
 
     /**
      Get Content Tags
@@ -225,22 +223,38 @@ open class ContentV3API {
         }
     }
 
+    /**
+     * enum for parameter sort
+     */
+    public enum Sort_getCreatorBlogPosts: String, CaseIterable, Content {
+        case asc = "ASC"
+        case desc = "DESC"
+    }
 
     /**
      Get Creator Blog Posts
      GET /api/v3/content/creator
-     Retrieve a paginated list of blog posts from a creator. Or search for blog posts from a creator.  Example query: https://www.floatplane.com/api/v3/content/creator?id=59f94c0bdd241b70349eb72b&search=illegal&tags[0]=battery
+     Retrieve a paginated list of blog posts from a creator. Or search for blog posts from a creator.  Example query: https://www.floatplane.com/api/v3/content/creator?id=59f94c0bdd241b70349eb72b&fromDate=2021-07-24T07:00:00.001Z&toDate=2022-07-27T06:59:59.099Z&hasVideo=true&hasAudio=true&hasPicture=false&hasText=false&fromDuration=1020&toDuration=9900&sort=DESC&search=thor&tags[0]=tjm
      - API Key:
        - type: apiKey sails.sid 
        - name: CookieAuth
      - parameter id: (query) The GUID of the creator to retrieve posts from. 
-     - parameter limit: (query) The maximum number of posts to return. 
+     - parameter limit: (query) The maximum number of posts to return. (optional)
      - parameter fetchAfter: (query) The number of posts to skip. Usually a multiple of `limit`, to get the next \"page\" of results. (optional)
      - parameter search: (query) Search filter to look for specific posts. (optional)
      - parameter tags: (query) An array of tags to search against, possibly in addition to `search`. (optional)
+     - parameter hasVideo: (query) If true, include blog posts with video attachments. (optional)
+     - parameter hasAudio: (query) If true, include blog posts with audio attachments. (optional)
+     - parameter hasPicture: (query) If true, include blog posts with picture attachments. (optional)
+     - parameter hasText: (query) If true, only include blog posts that are text-only. Text-only posts are ones without any attachments, such as video, audio, picture, and gallery.  This filter and `hasVideo`, `hasAudio`, and `hasPicture` should be mutually exclusive. That is, if `hasText` is true then the other three should all be false. Conversely, if any of the other three are true, then `hasText` should be false. Otherwise, the filter would produce no results. (optional)
+     - parameter sort: (query) `DESC` = Newest First. `ASC` = Oldest First. (optional)
+     - parameter fromDuration: (query) Include video posts where the duration of the video is at minimum `fromDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`. (optional)
+     - parameter toDuration: (query) Include video posts where the duration of the video is at maximum `toDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`. (optional)
+     - parameter fromDate: (query) Include posts where the publication date is on or after this filter date. (optional)
+     - parameter toDate: (query) Include posts where the publication date is on or before this filter date. (optional)
      - returns: `EventLoopFuture` of `ClientResponse` 
      */
-    open class func getCreatorBlogPostsRaw(id: String, limit: Int, fetchAfter: Int? = nil, search: String? = nil, tags: [String]? = nil, headers: HTTPHeaders = FloatplaneAPIClientAPI.customHeaders, beforeSend: (inout ClientRequest) throws -> () = { _ in }) -> EventLoopFuture<ClientResponse> {
+    open class func getCreatorBlogPostsRaw(id: String, limit: Int? = nil, fetchAfter: Int? = nil, search: String? = nil, tags: [String]? = nil, hasVideo: Bool? = nil, hasAudio: Bool? = nil, hasPicture: Bool? = nil, hasText: Bool? = nil, sort: Sort_getCreatorBlogPosts? = nil, fromDuration: Int? = nil, toDuration: Int? = nil, fromDate: Date? = nil, toDate: Date? = nil, headers: HTTPHeaders = FloatplaneAPIClientAPI.customHeaders, beforeSend: (inout ClientRequest) throws -> () = { _ in }) -> EventLoopFuture<ClientResponse> {
         let localVariablePath = "/api/v3/content/creator"
         let localVariableURLString = FloatplaneAPIClientAPI.basePath + localVariablePath
 
@@ -253,10 +267,19 @@ open class ContentV3API {
             
             struct QueryParams: Content {
                 var id: String
-                var limit: Int
+                var limit: Int?
                 var fetchAfter: Int?
                 var search: String?
                 var tags: [String]?
+                var hasVideo: Bool?
+                var hasAudio: Bool?
+                var hasPicture: Bool?
+                var hasText: Bool?
+                var sort: Sort_getCreatorBlogPosts?
+                var fromDuration: Int?
+                var toDuration: Int?
+                var fromDate: Date?
+                var toDate: Date?
 
                 enum CodingKeys: String, CodingKey {
                     case id = "id"
@@ -264,9 +287,18 @@ open class ContentV3API {
                     case fetchAfter = "fetchAfter"
                     case search = "search"
                     case tags = "tags"
+                    case hasVideo = "hasVideo"
+                    case hasAudio = "hasAudio"
+                    case hasPicture = "hasPicture"
+                    case hasText = "hasText"
+                    case sort = "sort"
+                    case fromDuration = "fromDuration"
+                    case toDuration = "toDuration"
+                    case fromDate = "fromDate"
+                    case toDate = "toDate"
                 }
             }
-            try localVariableRequest.query.encode(QueryParams(id: id, limit: limit, fetchAfter: fetchAfter, search: search, tags: tags))
+            try localVariableRequest.query.encode(QueryParams(id: id, limit: limit, fetchAfter: fetchAfter, search: search, tags: tags, hasVideo: hasVideo, hasAudio: hasAudio, hasPicture: hasPicture, hasText: hasText, sort: sort, fromDuration: fromDuration, toDuration: toDuration, fromDate: fromDate, toDate: toDate))
             
             try beforeSend(&localVariableRequest)
         }
@@ -284,19 +316,28 @@ open class ContentV3API {
     /**
      Get Creator Blog Posts
      GET /api/v3/content/creator
-     Retrieve a paginated list of blog posts from a creator. Or search for blog posts from a creator.  Example query: https://www.floatplane.com/api/v3/content/creator?id=59f94c0bdd241b70349eb72b&search=illegal&tags[0]=battery
+     Retrieve a paginated list of blog posts from a creator. Or search for blog posts from a creator.  Example query: https://www.floatplane.com/api/v3/content/creator?id=59f94c0bdd241b70349eb72b&fromDate=2021-07-24T07:00:00.001Z&toDate=2022-07-27T06:59:59.099Z&hasVideo=true&hasAudio=true&hasPicture=false&hasText=false&fromDuration=1020&toDuration=9900&sort=DESC&search=thor&tags[0]=tjm
      - API Key:
        - type: apiKey sails.sid 
        - name: CookieAuth
      - parameter id: (query) The GUID of the creator to retrieve posts from. 
-     - parameter limit: (query) The maximum number of posts to return. 
+     - parameter limit: (query) The maximum number of posts to return. (optional)
      - parameter fetchAfter: (query) The number of posts to skip. Usually a multiple of `limit`, to get the next \"page\" of results. (optional)
      - parameter search: (query) Search filter to look for specific posts. (optional)
      - parameter tags: (query) An array of tags to search against, possibly in addition to `search`. (optional)
+     - parameter hasVideo: (query) If true, include blog posts with video attachments. (optional)
+     - parameter hasAudio: (query) If true, include blog posts with audio attachments. (optional)
+     - parameter hasPicture: (query) If true, include blog posts with picture attachments. (optional)
+     - parameter hasText: (query) If true, only include blog posts that are text-only. Text-only posts are ones without any attachments, such as video, audio, picture, and gallery.  This filter and `hasVideo`, `hasAudio`, and `hasPicture` should be mutually exclusive. That is, if `hasText` is true then the other three should all be false. Conversely, if any of the other three are true, then `hasText` should be false. Otherwise, the filter would produce no results. (optional)
+     - parameter sort: (query) `DESC` = Newest First. `ASC` = Oldest First. (optional)
+     - parameter fromDuration: (query) Include video posts where the duration of the video is at minimum `fromDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`. (optional)
+     - parameter toDuration: (query) Include video posts where the duration of the video is at maximum `toDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`. (optional)
+     - parameter fromDate: (query) Include posts where the publication date is on or after this filter date. (optional)
+     - parameter toDate: (query) Include posts where the publication date is on or before this filter date. (optional)
      - returns: `EventLoopFuture` of `GetCreatorBlogPosts` 
      */
-    open class func getCreatorBlogPosts(id: String, limit: Int, fetchAfter: Int? = nil, search: String? = nil, tags: [String]? = nil, headers: HTTPHeaders = FloatplaneAPIClientAPI.customHeaders, beforeSend: (inout ClientRequest) throws -> () = { _ in }) -> EventLoopFuture<GetCreatorBlogPosts> {
-        return getCreatorBlogPostsRaw(id: id, limit: limit, fetchAfter: fetchAfter, search: search, tags: tags, headers: headers, beforeSend: beforeSend).flatMapThrowing { response -> GetCreatorBlogPosts in
+    open class func getCreatorBlogPosts(id: String, limit: Int? = nil, fetchAfter: Int? = nil, search: String? = nil, tags: [String]? = nil, hasVideo: Bool? = nil, hasAudio: Bool? = nil, hasPicture: Bool? = nil, hasText: Bool? = nil, sort: Sort_getCreatorBlogPosts? = nil, fromDuration: Int? = nil, toDuration: Int? = nil, fromDate: Date? = nil, toDate: Date? = nil, headers: HTTPHeaders = FloatplaneAPIClientAPI.customHeaders, beforeSend: (inout ClientRequest) throws -> () = { _ in }) -> EventLoopFuture<GetCreatorBlogPosts> {
+        return getCreatorBlogPostsRaw(id: id, limit: limit, fetchAfter: fetchAfter, search: search, tags: tags, hasVideo: hasVideo, hasAudio: hasAudio, hasPicture: hasPicture, hasText: hasText, sort: sort, fromDuration: fromDuration, toDuration: toDuration, fromDate: fromDate, toDate: toDate, headers: headers, beforeSend: beforeSend).flatMapThrowing { response -> GetCreatorBlogPosts in
             switch response.status.code {
             case 200:
                 return .http200(value: try response.content.decode([BlogPostModelV3].self, using: Configuration.contentConfiguration.requireDecoder(for: [BlogPostModelV3].defaultContentType)), raw: response)
@@ -313,7 +354,6 @@ open class ContentV3API {
             }
         }
     }
-
 
     /**
      Get Multi Creator Blog Posts
@@ -395,7 +435,6 @@ open class ContentV3API {
         }
     }
 
-
     /**
      Get Picture Content
      GET /api/v3/content/picture
@@ -467,7 +506,6 @@ open class ContentV3API {
             }
         }
     }
-
 
     /**
      Get Related Blog Posts
@@ -541,7 +579,6 @@ open class ContentV3API {
         }
     }
 
-
     /**
      Get Video Content
      GET /api/v3/content/video
@@ -614,7 +651,6 @@ open class ContentV3API {
         }
     }
 
-
     /**
      Like Content
      POST /api/v3/content/like
@@ -680,5 +716,4 @@ open class ContentV3API {
             }
         }
     }
-
 }

@@ -102,7 +102,7 @@ class MockFPAPIService: FPAPIService {
 		return eventLoop.makeSucceededFuture(.http200(value: .init(user: nil, needs2FA: true), raw: ClientResponse()))
 	}
 	func secondFactor(token: String) -> EventLoopFuture<AuthV2API.CheckFor2faLogin> {
-		return eventLoop.makeSucceededFuture(.http200(value: .init(user: .init(id: "1", username: "my_username", profileImage: .init(width: 1, height: 1, path: "", size: nil, childImages: nil)), needs2FA: false), raw: ClientResponse()))
+		return eventLoop.makeSucceededFuture(.http200(value: .init(user: .init(id: "1", username: "my_username", profileImage: .init(width: 1, height: 1, path: "", childImages: nil)), needs2FA: false), raw: ClientResponse()))
 	}
 	func getHomeContent(ids: [String], limit: Int, lastItems: [ContentCreatorListLastItems]?) -> EventLoopFuture<ContentV3API.GetMultiCreatorBlogPosts> {
 		return eventLoop.makeSucceededFuture(.http200(value: MockData.blogPosts, raw: ClientResponse()))
@@ -120,7 +120,12 @@ class MockFPAPIService: FPAPIService {
 		return eventLoop.makeSucceededFuture(.http200(value: MockData.getVideoContent, raw: ClientResponse()))
 	}
 	func getCdn(type: CDNV2API.ModelType_getDeliveryInfo, id: String) -> EventLoopFuture<CDNV2API.GetDeliveryInfo> {
-		return eventLoop.makeSucceededFuture(.http200(value: MockData.getCdn, raw: ClientResponse()))
+		switch type {
+		case .live:
+			return eventLoop.makeSucceededFuture(.http200(value: MockData.getCdnLive, raw: ClientResponse()))
+		default:
+			return eventLoop.makeSucceededFuture(.http200(value: MockData.getCdn, raw: ClientResponse()))
+		}
 	}
 	func getPictureContent(id: String) -> EventLoopFuture<ContentV3API.GetPictureContent> {
 		return eventLoop.makeSucceededFuture(.http200(value: MockData.getPictureContent, raw: ClientResponse()))
@@ -157,7 +162,7 @@ enum MockData {
 		a.userSelf = userSelf
 		a.userSubscriptions = userSubscriptions
 		a.creators = Dictionary(uniqueKeysWithValues: creators.map({ ($0.id, $0) }))
-		a.creatorOwners = Dictionary(uniqueKeysWithValues: creatorOwners.users.map({ ($0.user.id, $0.user) }))
+		a.creatorOwners = Dictionary(uniqueKeysWithValues: creatorOwners.users.map({ ($0.user.userModelShared.id, $0.user.userModelShared) }))
 		return a
 	}()
 	
@@ -176,6 +181,10 @@ enum MockData {
 	
 	static let getCdn: CdnDeliveryV2Response = {
 		return try! decoder.decode(CdnDeliveryV2Response.self, from: ByteBuffer(string: MockStaticData.getCdn), headers: .init())
+	}()
+	
+	static let getCdnLive: CdnDeliveryV2Response = {
+		return try! decoder.decode(CdnDeliveryV2Response.self, from: ByteBuffer(string: MockStaticData.getCdnLive), headers: .init())
 	}()
 	
 	static let getPictureContent: ContentPictureV3Response = {
@@ -5491,6 +5500,7 @@ enum MockStaticData {
 	]
 }
 """#
+	
 	static let getCdn: String = #"""
 {
 	"cdn": "https://cdn-vod-drm2.floatplane.com",
@@ -5542,6 +5552,19 @@ enum MockStaticData {
 					"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNzb3VyY2VQYXRoIjoiL1ZpZGVvcy9UVmlHemt1SWljLzEwODAubXA0L2NodW5rLm0zdTgiLCJ1c2VySWQiOiIwMTIzNDU2Nzg5YWJjZGVmMDEyMzQ1NjciLCJpYXQiOjE2MzM3OTczMTEsImV4cCI6MTYzMzgxODkxMX0.E-bw_gnUzKUpYeL2l-kTmj5CbwmDb519ohjf5LlLyQg"
 				}
 			}
+		}
+	}
+}
+"""#
+	
+	static let getCdnLive: String = #"""
+{
+	"cdn": "https://de488bcb61af.us-east-1.playback.live-video.net",
+	"strategy": "cdn",
+	"resource": {
+		"uri": "/api/video/v1/us-east-1.758417551536.channel.yKkxur4ukc0B.m3u8?token={token}&allow_source=false",
+		"data": {
+			"token": "eyJhbGciOiJFUzM4NCIsInR5cCI6IkpXVCJ9.eyJhd3M6Y2hhbm5lbC1hcm4iOiJhcm46YXdzOml2czp1cy1lYXN0LTE6NzU4NDE3NTUxNTM2OmNoYW5uZWwveUtreHVyNHVrYzBCIiwiYXdzOmFjY2Vzcy1jb250cm9sLWFsbG93LW9yaWdpbiI6Imh0dHBzOi8vd3d3LmZsb2F0cGxhbmUuY29tIiwiaWF0IjoxNjYyOTM5NTcwLCJleHAiOjE2NjMwMjU5NzB9.Zu1UavMfLOmAQ6m-hX1h5dkNdqGgRpRe-hGwhEs57tu8aMg0Ey_Oi-z2hdV3sHiUNFygmNHhqKj_JYDjRHWJtc0O1wxIzSYI_soQm4ldOspJGIzZEjBNNgxg9ljOqUil"
 		}
 	}
 }

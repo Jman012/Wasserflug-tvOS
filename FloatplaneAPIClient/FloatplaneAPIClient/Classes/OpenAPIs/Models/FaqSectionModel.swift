@@ -16,16 +16,16 @@ public struct FaqSectionModel: Content, Hashable {
     public enum Status: String, Content, Hashable, CaseIterable {
         case _public = "public"
     }
-    public var faqs: [FaqSectionModelFaqs]
+    public var faqs: [FaqSectionModelFaqsInner]
     public var createdAt: Date
-    public var updatedAt: Date
+    public var updatedAt: Date?
     public var id: String
     public var name: String
     public var description: String
     public var status: Status
     public var order: Double
 
-    public init(faqs: [FaqSectionModelFaqs], createdAt: Date, updatedAt: Date, id: String, name: String, description: String, status: Status, order: Double) {
+    public init(faqs: [FaqSectionModelFaqsInner], createdAt: Date, updatedAt: Date?, id: String, name: String, description: String, status: Status, order: Double) {
         self.faqs = faqs
         self.createdAt = createdAt
         self.updatedAt = updatedAt

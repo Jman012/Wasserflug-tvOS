@@ -14,9 +14,9 @@ import Vapor
 public struct CheckFor2faLoginRequest: Content, Hashable {
 
     /** The two-factor authentication token that the user inputs to complete the login process. */
-    public var token: String?
+    public var token: String
 
-    public init(token: String? = nil) {
+    public init(token: String) {
         self.token = token
     }
 
@@ -28,7 +28,7 @@ public struct CheckFor2faLoginRequest: Content, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(token, forKey: .token)
+        try container.encode(token, forKey: .token)
     }
 }
 

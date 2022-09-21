@@ -79,7 +79,6 @@ open class CommentV3API {
         }
     }
 
-
     /**
      Get Comment Replies
      GET /api/v3/comment/replies
@@ -164,7 +163,6 @@ open class CommentV3API {
         }
     }
 
-
     /**
      Get Comments
      GET /api/v3/comment
@@ -245,7 +243,6 @@ open class CommentV3API {
         }
     }
 
-
     /**
      Like Comment
      POST /api/v3/comment/like
@@ -312,7 +309,6 @@ open class CommentV3API {
         }
     }
 
-
     /**
      Post Comment
      POST /api/v3/comment
@@ -378,5 +374,4 @@ open class CommentV3API {
             }
         }
     }
-
 }

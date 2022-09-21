@@ -76,7 +76,6 @@ open class PaymentsV2API {
         }
     }
 
-
     /**
      List Invoices
      GET /api/v2/payment/invoice/list
@@ -140,7 +139,6 @@ open class PaymentsV2API {
         }
     }
 
-
     /**
      List Payment Methods
      GET /api/v2/payment/method/list
@@ -203,5 +201,4 @@ open class PaymentsV2API {
             }
         }
     }
-
 }

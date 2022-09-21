@@ -13,9 +13,9 @@ import Vapor
 
 public struct UserInfoV2Response: Content, Hashable {
 
-    public var users: [UserInfoV2ResponseUsers]
+    public var users: [UserInfoV2ResponseUsersInner]
 
-    public init(users: [UserInfoV2ResponseUsers]) {
+    public init(users: [UserInfoV2ResponseUsersInner]) {
         self.users = users
     }
 

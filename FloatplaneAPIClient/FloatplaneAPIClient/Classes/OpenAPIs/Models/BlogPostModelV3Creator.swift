@@ -19,17 +19,17 @@ public struct BlogPostModelV3Creator: Content, Hashable {
     public var urlname: String
     public var description: String
     public var about: String
-    public var category: BlogPostModelV3CreatorCategory
+    public var category: CreatorModelV3Category
     public var cover: ImageModel
     public var icon: ImageModel
-    public var liveStream: LiveStreamModel?
+    public var liveStream: CreatorModelV2LiveStream?
     public var subscriptionPlans: [SubscriptionPlanModel]
     public var discoverable: Bool
     public var subscriberCountDisplay: String
     public var incomeDisplay: Bool
-    public var card: ImageModel?
+    public var card: ContentPostV3ResponseThumbnail?
 
-    public init(id: String, owner: BlogPostModelV3CreatorOwner, title: String, urlname: String, description: String, about: String, category: BlogPostModelV3CreatorCategory, cover: ImageModel, icon: ImageModel, liveStream: LiveStreamModel? = nil, subscriptionPlans: [SubscriptionPlanModel], discoverable: Bool, subscriberCountDisplay: String, incomeDisplay: Bool, card: ImageModel? = nil) {
+    public init(id: String, owner: BlogPostModelV3CreatorOwner, title: String, urlname: String, description: String, about: String, category: CreatorModelV3Category, cover: ImageModel, icon: ImageModel, liveStream: CreatorModelV2LiveStream?, subscriptionPlans: [SubscriptionPlanModel], discoverable: Bool, subscriberCountDisplay: String, incomeDisplay: Bool, card: ContentPostV3ResponseThumbnail?) {
         self.id = id
         self.owner = owner
         self.title = title
@@ -78,12 +78,12 @@ public struct BlogPostModelV3Creator: Content, Hashable {
         try container.encode(category, forKey: .category)
         try container.encode(cover, forKey: .cover)
         try container.encode(icon, forKey: .icon)
-        try container.encodeIfPresent(liveStream, forKey: .liveStream)
+        try container.encode(liveStream, forKey: .liveStream)
         try container.encode(subscriptionPlans, forKey: .subscriptionPlans)
         try container.encode(discoverable, forKey: .discoverable)
         try container.encode(subscriberCountDisplay, forKey: .subscriberCountDisplay)
         try container.encode(incomeDisplay, forKey: .incomeDisplay)
-        try container.encodeIfPresent(card, forKey: .card)
+        try container.encode(card, forKey: .card)
     }
 }
 

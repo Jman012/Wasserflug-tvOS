@@ -100,8 +100,6 @@ extension UUID: Content { }
 
 extension URL: Content { }
 
-extension Bool: Content { }
-
 extension Set: ResponseEncodable where Element: Content {
     public func encodeResponse(for request: Vapor.Request) -> EventLoopFuture<Vapor.Response> {
         let response = Vapor.Response()

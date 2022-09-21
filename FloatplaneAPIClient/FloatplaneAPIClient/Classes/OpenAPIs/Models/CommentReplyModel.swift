@@ -25,14 +25,14 @@ public struct CommentReplyModel: Content, Hashable {
     public var text: String
     public var replying: String
     public var postDate: Date
-    public var editDate: Date
+    public var editDate: Date?
     public var likes: Int
     public var dislikes: Int
     public var score: Int
-    public var interactionCounts: CommentModelInteractionCounts
+    public var interactionCounts: CommentV3PostResponseInteractionCounts
     public var userInteraction: [UserInteraction]?
 
-    public init(id: String, blogPost: String, user: UserModel, contentReference: String, contentReferenceType: String, text: String, replying: String, postDate: Date, editDate: Date, likes: Int, dislikes: Int, score: Int, interactionCounts: CommentModelInteractionCounts, userInteraction: [UserInteraction]? = nil) {
+    public init(id: String, blogPost: String, user: UserModel, contentReference: String, contentReferenceType: String, text: String, replying: String, postDate: Date, editDate: Date?, likes: Int, dislikes: Int, score: Int, interactionCounts: CommentV3PostResponseInteractionCounts, userInteraction: [UserInteraction]?) {
         self.id = id
         self.blogPost = blogPost
         self.user = user
@@ -83,7 +83,7 @@ public struct CommentReplyModel: Content, Hashable {
         try container.encode(dislikes, forKey: .dislikes)
         try container.encode(score, forKey: .score)
         try container.encode(interactionCounts, forKey: .interactionCounts)
-        try container.encodeIfPresent(userInteraction, forKey: .userInteraction)
+        try container.encode(userInteraction, forKey: .userInteraction)
     }
 }
 

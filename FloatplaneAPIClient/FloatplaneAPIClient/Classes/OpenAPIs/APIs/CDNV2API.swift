@@ -102,5 +102,4 @@ open class CDNV2API {
             }
         }
     }
-
 }

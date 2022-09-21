@@ -75,5 +75,4 @@ open class LoyaltyRewardsV3API {
             }
         }
     }
-
 }

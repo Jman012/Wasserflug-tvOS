@@ -32,9 +32,9 @@ public struct ContentPictureV3Response: Content, Hashable {
     public var thumbnail: ImageModel
     /** If false, the post should be marked as locked and not viewable by the user. */
     public var isAccessible: Bool
-    public var imageFiles: [ImageModel]
+    public var imageFiles: [ImageFileModel]
 
-    public init(id: String, guid: String, title: String, type: String, description: String, likes: Int, dislikes: Int, score: Int, isProcessing: Bool, creator: String, primaryBlogPost: String, userInteraction: [UserInteraction]? = nil, thumbnail: ImageModel, isAccessible: Bool, imageFiles: [ImageModel]) {
+    public init(id: String, guid: String, title: String, type: String, description: String, likes: Int, dislikes: Int, score: Int, isProcessing: Bool, creator: String, primaryBlogPost: String, userInteraction: [UserInteraction]?, thumbnail: ImageModel, isAccessible: Bool, imageFiles: [ImageFileModel]) {
         self.id = id
         self.guid = guid
         self.title = title
@@ -85,7 +85,7 @@ public struct ContentPictureV3Response: Content, Hashable {
         try container.encode(isProcessing, forKey: .isProcessing)
         try container.encode(creator, forKey: .creator)
         try container.encode(primaryBlogPost, forKey: .primaryBlogPost)
-        try container.encodeIfPresent(userInteraction, forKey: .userInteraction)
+        try container.encode(userInteraction, forKey: .userInteraction)
         try container.encode(thumbnail, forKey: .thumbnail)
         try container.encode(isAccessible, forKey: .isAccessible)
         try container.encode(imageFiles, forKey: .imageFiles)

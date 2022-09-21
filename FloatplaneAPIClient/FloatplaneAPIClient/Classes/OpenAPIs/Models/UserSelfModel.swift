@@ -16,10 +16,10 @@ public struct UserSelfModel: Content, Hashable {
     public var id: String
     public var username: String
     public var profileImage: ImageModel
-    public var email: String?
-    public var displayName: String?
+    public var email: String
+    public var displayName: String
 
-    public init(id: String, username: String, profileImage: ImageModel, email: String? = nil, displayName: String? = nil) {
+    public init(id: String, username: String, profileImage: ImageModel, email: String, displayName: String) {
         self.id = id
         self.username = username
         self.profileImage = profileImage
@@ -42,8 +42,8 @@ public struct UserSelfModel: Content, Hashable {
         try container.encode(id, forKey: .id)
         try container.encode(username, forKey: .username)
         try container.encode(profileImage, forKey: .profileImage)
-        try container.encodeIfPresent(email, forKey: .email)
-        try container.encodeIfPresent(displayName, forKey: .displayName)
+        try container.encode(email, forKey: .email)
+        try container.encode(displayName, forKey: .displayName)
     }
 }
 

@@ -76,7 +76,6 @@ open class UserV2API {
         }
     }
 
-
     /**
      Info
      GET /api/v2/user/info
@@ -148,7 +147,6 @@ open class UserV2API {
             }
         }
     }
-
 
     /**
      Get Info By Name
@@ -222,7 +220,6 @@ open class UserV2API {
         }
     }
 
-
     /**
      User Creator Ban Status
      GET /api/v2/user/ban/status
@@ -294,5 +291,4 @@ open class UserV2API {
             }
         }
     }
-
 }

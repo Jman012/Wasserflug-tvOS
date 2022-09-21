@@ -5,6 +5,7 @@ struct AttachmentPill: View {
 	
 	var body: some View {
 		Text(text)
+			.lineLimit(1)
 			.padding([.all], 5)
 			.foregroundColor(.white)
 			.background(.gray)

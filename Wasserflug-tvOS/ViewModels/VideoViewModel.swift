@@ -6,18 +6,21 @@ import SwiftUI
 
 class VideoViewModel: BaseViewModel, ObservableObject {
 	
-	enum VideoError: Error {
+	enum VideoError: Error, CustomStringConvertible {
+		case badResponse
 		case noQualityLevelsFound
 		
 		var description: String {
 			switch self {
+			case .badResponse:
+				return "There was an error retrieving the livestream information. Please try again."
 			case .noQualityLevelsFound:
 				return "Unable to find any playable content from this video for your device."
 			}
 		}
 	}
 	
-	@Published var state: ViewModelState<CdnDeliveryV2Response> = .idle
+	@Published var state: ViewModelState<CdnDeliveryV2VodResponse> = .idle
 	
 	private let fpApiService: FPAPIService
 	let videoAttachment: VideoAttachmentModel
@@ -78,13 +81,17 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 				DispatchQueue.main.async {
 					switch result {
 					case let .success(response):
+						guard case let .typeCdnDeliveryV2VodResponse(cdnVod) = response else {
+							self.state = .failed(VideoError.noQualityLevelsFound)
+							return
+						}
 						self.logger.notice("Received video information.", metadata: [
-							"cdn": "\(response.cdn)",
+							"cdn": "\(cdnVod.cdn)",
 						])
-						let baseCdn = response.cdn
-						let pathTemplate = response.resource.uri!
+						let baseCdn = cdnVod.cdn
+						let pathTemplate = cdnVod.resource.uri
 						let screenNativeBounds = UIScreen.main.nativeBounds
-						let levels = response.resource.data.qualityLevels?
+						let levels = cdnVod.resource.data.qualityLevels
 							.filter({ qualityLevel in
 								// Filter out resolutions larger than the device's screen resolution to save
 								// on bandwidth and downscaling performance.
@@ -101,7 +108,7 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 							})
 							.compactMap({ (qualityLevel) -> (String, URL)? in
 								// Map the quality levels to the correct URL
-								guard let param = response.resource.data.qualityLevelParams?[qualityLevel.name] else {
+								guard let param = cdnVod.resource.data.qualityLevelParams[qualityLevel.name] else {
 									self.logger.warning("Ignoring quality level \(qualityLevel.name) because no parameter information was found.")
 									return nil
 								}
@@ -110,19 +117,18 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 									.replacingOccurrences(of: "{qualityLevelParams.token}", with: param.token)
 								return (qualityLevel.name, URL(string: baseCdn + path)!)
 							})
-							?? [(String, URL)]()
 						self.qualityLevels = Dictionary(uniqueKeysWithValues: levels)
 						
 						if self.qualityLevels.isEmpty {
 							self.logger.warning("No quality levels were able to be parsed from the video response. Showing an error to the user.", metadata: [
 								"id": "\(self.videoAttachment.guid)",
-								"qualityLevelNames": "\(response.resource.data.qualityLevels?.map({ $0.name }).joined(separator: ", ") ?? "no quality levels found")",
-								"qualityLevelParams": "\(response.resource.data.qualityLevelParams?.keys.joined(separator: ", ") ?? "no params found")",
+								"qualityLevelNames": "\(cdnVod.resource.data.qualityLevels.map({ $0.name }).joined(separator: ", "))",
+								"qualityLevelParams": "\(cdnVod.resource.data.qualityLevelParams.keys.joined(separator: ", "))",
 							])
 							self.state = .failed(VideoError.noQualityLevelsFound)
 						}
 						
-						self.state = .loaded(response)
+						self.state = .loaded(cdnVod)
 					case let .failure(error):
 						self.logger.error("Encountered an unexpected error while loading video information. Reporting the error to the user. Error: \(String(reflecting: error))")
 						self.state = .failed(error)

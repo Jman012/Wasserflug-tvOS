@@ -81,7 +81,6 @@ open class AuthV2API {
         }
     }
 
-
     /**
      Login
      POST /api/v2/auth/login
@@ -143,7 +142,6 @@ open class AuthV2API {
             }
         }
     }
-
 
     /**
      Logout
@@ -209,5 +207,4 @@ open class AuthV2API {
             }
         }
     }
-
 }

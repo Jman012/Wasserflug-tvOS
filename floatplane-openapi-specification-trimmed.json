@@ -2,7 +2,7 @@
     "openapi": "3.0.3",
     "info": {
         "title": "Floatplane REST API",
-        "version": "3.8.9",
+        "version": "3.9.10",
         "description": "Homepage: [https://jman012.github.io/FloatplaneAPIDocs](https://jman012.github.io/FloatplaneAPIDocs)\r\n\r\nThis document describes the REST API layer of [https://www.floatplane.com](https://www.floatplane.com), a content creation and video streaming website created by Floatplane Media Inc. and Linus Media Group, where users can support their favorite creates via paid subscriptions in order to watch their video and livestream content in higher quality and other perks.\r\n\r\nWhile this document contains stubs for all of the Floatplane APIs for this version, many are not filled out because they are related only to content creation, moderation, or administration and are not needed for regular use. These have \"TODO\" as the description, and are automatically removed before document generation. If you are viewing the \"Trimmed\" version of this document, they have been removed for brevity.\r\n\r\n## API Object Organization\r\n\r\n- **Users** and **Creators** exist on Floatplane at the highest level\r\n\t- The highest-level object in Floatplane is the Creator. This is an entity, such as Linus Tech Tips, that produces media for Users.\r\n- A Creator owns one or more **Subscription Plans**\r\n- A User can view a Creator's Content if they are subscribed to them\r\n- A Creator publishes **Content**, in the form of **Blog Posts**\r\n\t- Content is produced by Creators, and show up for subscribed Users to view when it is released. A piece of Content is meant to be generic, and may contain different types of sub-Content. Currently, the only type is a Blog Post.\r\n\t- A Blog Post is the main type of Content that a Creator produces. Blog Posts are how a Creator can share text and/or media attachments with their subscribers.\r\n- A Blog Post is comprised of one or more of: video, audio, picture, or gallery **Attachments**\r\n\t- A media Attachment may be: video, audio, picture, gallery. Attachments are a part of Blog Posts, and are in a particular order.\r\n- A Creator may also have a single **Livestream**\r\n\r\n## API Flow\r\n\r\nAs of Floatplane version 3.5.1, these are the recommended endpoints to use for normal operations.\r\n\r\n1. Login\r\n\t1. `/api/v3/auth/captcha/info` - Get captcha information\r\n\t1. `/api/v2/auth/login` - Login with username, password, and optional captcha token\r\n\t1. `/api/v2/auth/checkFor2faLogin` - Optionally provide 2FA token to complete login\r\n\t1. `/api/v2/auth/logout` - Logout at a later point in time\r\n1. Home page\r\n\t1. `/api/v3/user/subscriptions` - Get the user's active subscriptions\r\n\t1. `/api/v3/content/creator/list` - Using the subscriptions, show a home page with content from all subscriptions\r\n\t\t1. Supply all creator identifiers from the subscriptions\r\n\t\t1. This should be paginated\r\n\t1. `/api/v2/creator/info` - Also show a list of creators that the user can select\r\n\t\t1. Note that this can search and return multiple creators. The V3 version only works for a single creator at a time.\r\n1. Creator page\r\n\t1. `/api/v3/creator/info` - Get more details for the creator to display, including if livestreams are available\r\n\t1. `/api/v3/content/creator` - Show recent content by the creator\r\n\t1. `/api/v2/plan/info` - Show available plans the user can subscribe to for the creator\r\n1. Content page\r\n\t1. `/api/v3/content/post` - Show more detailed information about a piece of content, including text description, available attachments, metadata, interactions, etc.\r\n\t1. `/api/v3/content/related` - List some related content for the user to watch next\r\n\t1. `/api/v3/comment` - Load comments for the content for the user to read\r\n\t\t1. There are several more comment APIs to post, like, dislike, etc.\r\n\t1. `/api/v2/user/ban/status` - Determine if the user is banned from this creator\r\n\t1. `/api/v3/content/{video|audio|picture|gallery}` - Load the attached media for the post. This is usually video, but audio, pictures, and galleries are also available.\r\n\t1. `/api/v2/cdn/delivery` - For video and audio, this is required to get the information to stream or download the content in media players\r\n1. Livestream\r\n\t1. `/api/v2/cdn/delivery` - Using the type \"livestream\" to load the livestream media in a media player\r\n\t1. `wss://chat.floatplane.com/sails.io/?...` - To connect to the livestream chat over websocket. TODO: Map out the WebSocket API.\r\n1. User Profile\r\n\t1. `/api/v3/user/self` - Display username, name, email, and profile pictures\r\n\r\n## API Organization\r\n\r\nThe organization of APIs into categories in this document are reflected from the internal organization of the Floatplane website bundled code, from `frontend.floatplane.com/{version}/vendor.js`. This is in order to use the best organization from the original developers' point of view.\r\n\r\nFor instance, Floatplane's authentication endpoints are organized into `Auth.v2.login(...)`, `Auth.v2.logout()`, and `Auth.v3.getCaptchaInfo()`. A limitation in OpenAPI is the lack of nested tagging/structure, so this document splits `Auth` into `AuthV2` and `AuthV3` to emulate the nested structure.\r\n\r\n## Notes\r\n\r\nNote that the Floatplane API does support the use of [ETags](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag) for retrieving some information, such as retrieving information about creators, users, etc. Expect an HTTP 304 if the content has not changed, and to re-use cached responses. This is useful to ease the strain on Floatplane's API server.\r\n\r\nThe date-time format used by Floatplane API is not standard ISO 8601 format. The dates/times given by Floatplane include milliseconds. Depending on your code generator, you may need to override the date-time format to something similar to `yyyy-MM-dd'T'HH:mm:ss.SSSZ`, for both encoding and decoding.",
         "license": {
             "name": "MIT",
@@ -48,12 +48,20 @@
             "description": "Manage creator subscription plans."
         },
         {
+            "name": "EdgesV2",
+            "description": "Get edge server information for media playback."
+        },
+        {
             "name": "FAQV2",
             "description": "Get FAQs."
         },
         {
             "name": "PaymentsV2",
             "description": "User payment method/address/invoice management."
+        },
+        {
+            "name": "SocketV3",
+            "description": "Socket subscriptions and connections."
         },
         {
             "name": "SubscriptionsV3",
@@ -76,6 +84,14 @@
             "description": "Content retrieval and interacting."
         },
         {
+            "name": "PollV3",
+            "description": "Poll voting and management."
+        },
+        {
+            "name": "RedirectV3",
+            "description": "Channel-level redirection to Youtube or other sites for latest videos outside of Floatplane."
+        },
+        {
             "name": "LoyaltyRewardsV3",
             "description": "Loyalty rewards information and claiming."
         }
@@ -93,18 +109,21 @@
                     },
                     "captchaToken": {
                         "type": "string",
-                        "description": "The Google Recaptcha v2/v3 token to verify the request. On web browsers, this is required. For mobile or TV applications, this is not required only if the User-Agent indicates so (e.g., if the User-Agent contains \"CFNetwork\" in its value). Otherwise, the application would have to supply a valid captcha token, which can be difficult to obtain dynamically in some scenarios."
+                        "description": "The Google Recaptcha v2/v3 token to verify the request. On web browsers, this is required. For mobile or TV applications, this is not required only if the User-Agent indicates so (e.g., if the User-Agent contains \"CFNetwork\" in its value). Otherwise, the application would have to supply a valid captcha token, which can be difficult to obtain dynamically in some scenarios.",
+                        "nullable": true
                     }
                 },
                 "required": [
                     "username",
-                    "password"
+                    "password",
+                    "captchaToken"
                 ]
             },
             "AuthLoginV2Response": {
                 "type": "object",
                 "properties": {
                     "user": {
+                        "description": "Identifying information about the new-logged-in user upon success. May be undefined when `needs2FA` is `true`.",
                         "$ref": "#/components/schemas/UserModel"
                     },
                     "needs2FA": {
@@ -123,18 +142,59 @@
                         "type": "string",
                         "description": "The two-factor authentication token that the user inputs to complete the login process."
                     }
-                }
+                },
+                "required": [
+                    "token"
+                ]
             },
-            "CdnDeliveryV2Response": {
+            "CdnDeliveryV2QualityLevelModel": {
+                "type": "object",
+                "description": "Represents a quality of video to download/stream.",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Used to identify this level of quality, and to refer to the `qualityLevelParams` object below by the property key."
+                    },
+                    "width": {
+                        "type": "integer",
+                        "description": "The video quality's resolution's width in pixels."
+                    },
+                    "height": {
+                        "type": "integer",
+                        "description": "The video quality resolution's height in pixels."
+                    },
+                    "label": {
+                        "type": "string",
+                        "description": "The display-friendly version of `name`."
+                    },
+                    "order": {
+                        "type": "integer",
+                        "description": "The display order to be shown to the user."
+                    }
+                },
+                "required": [
+                    "name",
+                    "width",
+                    "height",
+                    "label",
+                    "order"
+                ]
+            },
+            "CdnDeliveryV2VodResponse": {
                 "type": "object",
                 "properties": {
                     "cdn": {
                         "type": "string",
                         "format": "uri",
-                        "description": "The domain of the CDN server to use."
+                        "description": "The domain of the CDN server to use. Combine with data from the `resource` object to create a full URL."
                     },
                     "strategy": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "Which download/streaming strategy to use. If `cdn`, then a `cdn` property will be included with the response. Otherwise, if set to `client`, then a `client` property will be included with the response. The cdn or client property should be combined with the `resource` property to perform the download/stream.",
+                        "enum": [
+                            "cdn",
+                            "client"
+                        ]
                     },
                     "resource": {
                         "type": "object",
@@ -149,41 +209,12 @@
                                     "qualityLevels": {
                                         "type": "array",
                                         "items": {
-                                            "type": "object",
-                                            "description": "Represents a quality of video to download",
-                                            "properties": {
-                                                "name": {
-                                                    "type": "string",
-                                                    "description": "Used to identify this level of quality, and to refer to the `qualityLevelParams` object below by the property key."
-                                                },
-                                                "width": {
-                                                    "type": "integer",
-                                                    "description": "The video quality's resolution's width in pixels."
-                                                },
-                                                "height": {
-                                                    "type": "integer",
-                                                    "description": "The video quality resolution's height in pixels."
-                                                },
-                                                "label": {
-                                                    "type": "string",
-                                                    "description": "The display-friendly version of `name`."
-                                                },
-                                                "order": {
-                                                    "type": "integer",
-                                                    "description": "The display order to be shown to the user."
-                                                }
-                                            },
-                                            "required": [
-                                                "name",
-                                                "width",
-                                                "height",
-                                                "label",
-                                                "order"
-                                            ]
+                                            "$ref": "#/components/schemas/CdnDeliveryV2QualityLevelModel"
                                         }
                                     },
                                     "qualityLevelParams": {
                                         "type": "object",
+                                        "description": "For each `qualityLevel` above, there will be an entry in this map where the property name matches the `qulityLevel[].name` containing a token to apply to the URL.",
                                         "additionalProperties": {
                                             "type": "object",
                                             "properties": {
@@ -195,15 +226,16 @@
                                                 "token"
                                             ]
                                         }
-                                    },
-                                    "token": {
-                                        "type": "string"
                                     }
-                                }
+                                },
+                                "required": [
+                                    "qualityLevels",
+                                    "qualityLevelParams"
+                                ]
                             }
                         },
                         "required": [
-                            "url",
+                            "uri",
                             "data"
                         ]
                     }
@@ -212,6 +244,121 @@
                     "cdn",
                     "strategy",
                     "resource"
+                ]
+            },
+            "CdnDeliveryV2DownloadResponse": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/EdgesModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "strategy": {
+                                "type": "string",
+                                "description": "Which download/streaming strategy to use. If `cdn`, then a `cdn` property will be included with the response. Otherwise, if set to `client`, then a `client` property will be included with the response. The cdn or client property should be combined with the `resource` property to perform the download/stream.",
+                                "enum": [
+                                    "cdn",
+                                    "client"
+                                ]
+                            },
+                            "resource": {
+                                "type": "object",
+                                "properties": {
+                                    "uri": {
+                                        "type": "string",
+                                        "description": "The path to attach to the `cdn` property above. Replace the items surrounded by curly braces (`{`, `}`) with the appropriate values from the `data` property, depending on chosen resolution. First, choose the `qualityLevel`, then use the given token from the `qualityLevelParam` for that `qualityLevel`'s `name`."
+                                    },
+                                    "data": {
+                                        "type": "object",
+                                        "properties": {
+                                            "qualityLevels": {
+                                                "type": "array",
+                                                "items": {
+                                                    "$ref": "#/components/schemas/CdnDeliveryV2QualityLevelModel"
+                                                }
+                                            },
+                                            "token": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "qualityLevels",
+                                            "token"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "uri",
+                                    "data"
+                                ]
+                            }
+                        },
+                        "required": [
+                            "strategy",
+                            "resource"
+                        ]
+                    }
+                ]
+            },
+            "CdnDeliveryV2LivestreamResponse": {
+                "type": "object",
+                "properties": {
+                    "cdn": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "The domain of the CDN server to use. Combine with data from the `resource` object to create a full URL."
+                    },
+                    "strategy": {
+                        "type": "string",
+                        "description": "Which download/streaming strategy to use. If `cdn`, then a `cdn` property will be included with the response. Otherwise, if set to `client`, then a `client` property will be included with the response. The cdn or client property should be combined with the `resource` property to perform the download/stream.",
+                        "enum": [
+                            "cdn",
+                            "client"
+                        ]
+                    },
+                    "resource": {
+                        "type": "object",
+                        "properties": {
+                            "uri": {
+                                "type": "string",
+                                "description": "The path to attach to the `cdn` property above. Replace the items surrounded by curly braces (`{`, `}`) with the appropriate values from the `data` property."
+                            },
+                            "data": {
+                                "type": "object",
+                                "properties": {
+                                    "token": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "token"
+                                ]
+                            }
+                        },
+                        "required": [
+                            "uri",
+                            "data"
+                        ]
+                    }
+                },
+                "required": [
+                    "cdn",
+                    "strategy",
+                    "resource"
+                ]
+            },
+            "CdnDeliveryV2Response": {
+                "oneOf": [
+                    {
+                        "$ref": "#/components/schemas/CdnDeliveryV2VodResponse"
+                    },
+                    {
+                        "$ref": "#/components/schemas/CdnDeliveryV2DownloadResponse"
+                    },
+                    {
+                        "$ref": "#/components/schemas/CdnDeliveryV2LivestreamResponse"
+                    }
                 ]
             },
             "PaymentInvoiceListV2Response": {
@@ -243,7 +390,8 @@
                                 },
                                 "dateDue": {
                                     "type": "string",
-                                    "format": "date-time"
+                                    "format": "date-time",
+                                    "nullable": true
                                 },
                                 "periodStart": {
                                     "type": "string",
@@ -255,7 +403,8 @@
                                 },
                                 "nextPaymentAttempt": {
                                     "type": "string",
-                                    "format": "date-time"
+                                    "format": "date-time",
+                                    "nullable": true
                                 },
                                 "paid": {
                                     "type": "boolean"
@@ -269,6 +418,7 @@
                                 "subscriptions": {
                                     "type": "array",
                                     "description": "The subscriptions this invoice is in reference to.",
+                                    "nullable": true,
                                     "items": {
                                         "type": "object",
                                         "properties": {
@@ -280,11 +430,13 @@
                                             },
                                             "periodStart": {
                                                 "type": "string",
-                                                "format": "date-time"
+                                                "format": "date-time",
+                                                "nullable": true
                                             },
                                             "periodEnd": {
                                                 "type": "string",
-                                                "format": "date-time"
+                                                "format": "date-time",
+                                                "nullable": true
                                             },
                                             "value": {
                                                 "type": "number"
@@ -359,12 +511,14 @@
                                 "attemptCount",
                                 "currency",
                                 "date",
+                                "dateDue",
                                 "periodStart",
                                 "periodEnd",
                                 "nextPaymentAttempt",
                                 "paid",
                                 "forgiven",
-                                "refunded"
+                                "refunded",
+                                "subscriptions"
                             ]
                         }
                     }
@@ -382,112 +536,69 @@
                     },
                     "totalIncome": {
                         "type": "string",
-                        "description": "The total amount of monthly income for this creator. This field tends to always be $0 for regular users."
+                        "description": "The total amount of monthly income for this creator. This field tends to always be $0 for regular users.",
+                        "nullable": true
                     },
                     "plans": {
                         "type": "array",
                         "items": {
-                            "type": "object",
-                            "properties": {
-                                "discordRoles": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/DiscordRoleModel"
+                            "allOf": [
+                                {
+                                    "$ref": "#/components/schemas/SubscriptionPlanModel"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "createdAt": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updatedAt": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "nullable": true
+                                        },
+                                        "enabled": {
+                                            "type": "boolean"
+                                        },
+                                        "paymentID": {
+                                            "type": "integer"
+                                        },
+                                        "trialPeriod": {
+                                            "type": "number"
+                                        },
+                                        "creator": {
+                                            "type": "string"
+                                        },
+                                        "userIsSubscribed": {
+                                            "type": "boolean"
+                                        },
+                                        "userIsGrandfathered": {
+                                            "type": "boolean"
+                                        },
+                                        "enabledGlobal": {
+                                            "type": "boolean"
+                                        }
                                     },
-                                    "description": "The available roles for the associated Discord servers that are available with this plan."
-                                },
-                                "createdAt": {
-                                    "type": "string",
-                                    "format": "date-time"
-                                },
-                                "updatedAt": {
-                                    "type": "string",
-                                    "format": "date-time"
-                                },
-                                "id": {
-                                    "type": "string"
-                                },
-                                "title": {
-                                    "type": "string"
-                                },
-                                "enabled": {
-                                    "type": "boolean"
-                                },
-                                "featured": {
-                                    "type": "boolean"
-                                },
-                                "description": {
-                                    "type": "string"
-                                },
-                                "price": {
-                                    "type": "string"
-                                },
-                                "priceYearly": {
-                                    "type": "string"
-                                },
-                                "paymentID": {
-                                    "type": "integer"
-                                },
-                                "currency": {
-                                    "type": "string"
-                                },
-                                "trialPeriod": {
-                                    "type": "number"
-                                },
-                                "allowGrandfatheredAccess": {
-                                    "type": "boolean"
-                                },
-                                "logo": {
-                                    "type": "string"
-                                },
-                                "creator": {
-                                    "type": "string"
-                                },
-                                "discordServers": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/DiscordServerModel"
-                                    }
-                                },
-                                "userIsSubscribed": {
-                                    "type": "boolean"
-                                },
-                                "userIsGrandfathered": {
-                                    "type": "boolean"
-                                },
-                                "enabledGlobal": {
-                                    "type": "boolean"
-                                },
-                                "interval": {
-                                    "type": "string"
+                                    "required": [
+                                        "createdAt",
+                                        "updatedAt",
+                                        "enabled",
+                                        "paymentID",
+                                        "trialPeriod",
+                                        "creator",
+                                        "userIsSubscribed",
+                                        "userIsGrandfathered",
+                                        "enabledGlobal"
+                                    ]
                                 }
-                            },
-                            "required": [
-                                "discordRoles",
-                                "createdAt",
-                                "updatedAt",
-                                "id",
-                                "title",
-                                "enabled",
-                                "featured",
-                                "description",
-                                "price",
-                                "paymentID",
-                                "currency",
-                                "trialPeriod",
-                                "logo",
-                                "creator",
-                                "discordServers",
-                                "userIsSubscribed",
-                                "userIsGrandfathered",
-                                "enabledGlobal",
-                                "interval"
                             ]
                         }
                     }
                 },
                 "required": [
-                    "totalSuscriberCount",
+                    "totalSubscriberCount",
+                    "totalIncome",
                     "plans"
                 ]
             },
@@ -503,7 +614,14 @@
                                     "type": "string"
                                 },
                                 "user": {
-                                    "$ref": "#/components/schemas/UserModel"
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/UserModel"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/UserSelfModel"
+                                        }
+                                    ]
                                 }
                             },
                             "required": [
@@ -529,7 +647,14 @@
                                     "type": "string"
                                 },
                                 "user": {
-                                    "$ref": "#/components/schemas/UserSelfModel"
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/UserModel"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/UserSelfModel"
+                                        }
+                                    ]
                                 }
                             },
                             "required": [
@@ -693,7 +818,8 @@
                     },
                     "blogPostId": {
                         "type": "string",
-                        "description": "This may be returned as `null` if no blog posts for this creator appeared yet on this page of blog posts. However, Floatplane will complain if this is sent with a `null` value."
+                        "description": "This may be returned as `null` if no blog posts for this creator appeared yet on this page of blog posts. However, Floatplane will complain if this is sent with a `null` value.",
+                        "nullable": true
                     },
                     "moreFetchable": {
                         "type": "boolean"
@@ -701,6 +827,7 @@
                 },
                 "required": [
                     "creatorId",
+                    "blogPostId",
                     "moreFetchable"
                 ]
             },
@@ -718,7 +845,7 @@
                     },
                     "text": {
                         "type": "string",
-                        "description": "Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML.."
+                        "description": "Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML."
                     },
                     "type": {
                         "type": "string",
@@ -764,7 +891,12 @@
                         "type": "boolean"
                     },
                     "thumbnail": {
-                        "$ref": "#/components/schemas/ImageModel"
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ImageModel"
+                            }
+                        ],
+                        "nullable": true
                     },
                     "isAccessible": {
                         "type": "boolean",
@@ -775,24 +907,28 @@
                     },
                     "videoAttachments": {
                         "type": "array",
+                        "description": "May be undefined when the post is locked.",
                         "items": {
                             "$ref": "#/components/schemas/VideoAttachmentModel"
                         }
                     },
                     "audioAttachments": {
                         "type": "array",
+                        "description": "May be undefined when the post is locked.",
                         "items": {
                             "$ref": "#/components/schemas/AudioAttachmentModel"
                         }
                     },
                     "pictureAttachments": {
                         "type": "array",
+                        "description": "May be undefined when the post is locked.",
                         "items": {
                             "$ref": "#/components/schemas/PictureAttachmentModel"
                         }
                     },
                     "galleryAttachments": {
                         "type": "array",
+                        "description": "May be undefined when the post is locked.",
                         "items": {}
                     }
                 },
@@ -812,7 +948,9 @@
                     "comments",
                     "creator",
                     "wasReleasedSilently",
-                    "isAccessible"
+                    "thumbnail",
+                    "isAccessible",
+                    "userInteraction"
                 ]
             },
             "ContentVideoV3Response": {
@@ -835,7 +973,8 @@
                     },
                     "releaseDate": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "nullable": true
                     },
                     "duration": {
                         "type": "number",
@@ -927,6 +1066,7 @@
                     "isAccessible",
                     "blogPosts",
                     "timelineSprite",
+                    "userInteraction",
                     "levels"
                 ]
             },
@@ -979,7 +1119,7 @@
                     "imageFiles": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/ImageModel"
+                            "$ref": "#/components/schemas/ImageFileModel"
                         }
                     }
                 },
@@ -994,6 +1134,7 @@
                     "isProcessing",
                     "likes",
                     "primaryBlogPost",
+                    "userInteraction",
                     "score",
                     "thumbnail",
                     "title",
@@ -1031,7 +1172,7 @@
                             "required": [
                                 "time",
                                 "comment",
-                                "posttitle",
+                                "postTitle",
                                 "postId",
                                 "creatorTitle",
                                 "creatorUrl"
@@ -1072,9 +1213,18 @@
                                     "type": "string",
                                     "description": "The hostname that should be a part of the URL."
                                 }
-                            }
+                            },
+                            "required": [
+                                "name",
+                                "displayName",
+                                "hostName"
+                            ]
                         }
-                    }
+                    },
+                    "required": [
+                        "url",
+                        "type"
+                    ]
                 }
             },
             "UserNotificationUpdateV3PostRequest": {
@@ -1124,13 +1274,19 @@
                         "items": {}
                     },
                     "scheduledDeletionDate": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
                     }
                 },
                 "required": [
                     "id",
                     "username",
-                    "profileImage"
+                    "profileImage",
+                    "email",
+                    "displayName",
+                    "creators",
+                    "scheduledDeletionDate"
                 ]
             },
             "ContentLikeV3Request": {
@@ -1256,10 +1412,14 @@
                                     "type": "string"
                                 },
                                 "message": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "May be undefined.",
+                                    "nullable": true
                                 },
                                 "data": {
                                     "type": "object",
+                                    "description": "May be undefined.",
+                                    "nullable": true,
                                     "additionalProperties": true
                                 }
                             },
@@ -1270,7 +1430,8 @@
                         }
                     },
                     "message": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "May be undefined."
                     }
                 },
                 "required": [
@@ -1389,16 +1550,27 @@
                         "type": "string"
                     },
                     "cover": {
-                        "$ref": "#/components/schemas/ImageModel"
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ImageModel"
+                            }
+                        ],
+                        "nullable": true
                     },
                     "icon": {
                         "$ref": "#/components/schemas/ImageModel"
                     },
                     "liveStream": {
-                        "$ref": "#/components/schemas/LiveStreamModel"
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/LiveStreamModel"
+                            }
+                        ],
+                        "nullable": true
                     },
                     "subscriptionPlans": {
                         "type": "array",
+                        "nullable": true,
                         "items": {
                             "type": "object"
                         }
@@ -1411,15 +1583,6 @@
                     },
                     "incomeDisplay": {
                         "type": "boolean"
-                    },
-                    "socialLinks": {
-                        "$ref": "#/components/schemas/SocialLinksModel"
-                    },
-                    "discordServers": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/DiscordServerModel"
-                        }
                     }
                 },
                 "required": [
@@ -1430,10 +1593,38 @@
                     "description",
                     "about",
                     "category",
+                    "cover",
                     "icon",
+                    "liveStream",
+                    "subscriptionPlans",
                     "discoverable",
                     "subscriberCountDisplay",
                     "incomeDisplay"
+                ]
+            },
+            "CreatorModelV2Extended": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/CreatorModelV2"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "socialLinks": {
+                                "$ref": "#/components/schemas/SocialLinksModel"
+                            },
+                            "discordServers": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/DiscordServerModel"
+                                }
+                            }
+                        },
+                        "required": [
+                            "socialLinks",
+                            "discordServers"
+                        ]
+                    }
                 ]
             },
             "CreatorModelV3": {
@@ -1469,16 +1660,27 @@
                         ]
                     },
                     "cover": {
-                        "$ref": "#/components/schemas/ImageModel"
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ImageModel"
+                            }
+                        ],
+                        "nullable": true
                     },
                     "icon": {
                         "$ref": "#/components/schemas/ImageModel"
                     },
                     "liveStream": {
-                        "$ref": "#/components/schemas/LiveStreamModel"
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/LiveStreamModel"
+                            }
+                        ],
+                        "nullable": true
                     },
                     "subscriptionPlans": {
                         "type": "array",
+                        "nullable": true,
                         "items": {
                             "$ref": "#/components/schemas/SubscriptionPlanModel"
                         }
@@ -1506,6 +1708,7 @@
                     "category",
                     "cover",
                     "icon",
+                    "liveStream",
                     "subscriptionPlans",
                     "discoverable",
                     "subscriberCountDisplay",
@@ -1605,7 +1808,10 @@
                                     "title": {
                                         "type": "string"
                                     }
-                                }
+                                },
+                                "required": [
+                                    "title"
+                                ]
                             },
                             "cover": {
                                 "$ref": "#/components/schemas/ImageModel"
@@ -1614,7 +1820,12 @@
                                 "$ref": "#/components/schemas/ImageModel"
                             },
                             "liveStream": {
-                                "$ref": "#/components/schemas/LiveStreamModel"
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/LiveStreamModel"
+                                    }
+                                ],
+                                "nullable": true
                             },
                             "subscriptionPlans": {
                                 "type": "array",
@@ -1632,7 +1843,12 @@
                                 "type": "boolean"
                             },
                             "card": {
-                                "$ref": "#/components/schemas/ImageModel"
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/ImageModel"
+                                    }
+                                ],
+                                "nullable": true
                             }
                         },
                         "required": [
@@ -1645,17 +1861,24 @@
                             "category",
                             "cover",
                             "icon",
+                            "liveStream",
                             "subscriptionPlans",
                             "discoverable",
                             "subscriberCountDisplay",
-                            "incomeDisplay"
+                            "incomeDisplay",
+                            "card"
                         ]
                     },
                     "wasReleasedSilently": {
                         "type": "boolean"
                     },
                     "thumbnail": {
-                        "$ref": "#/components/schemas/ImageModel"
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ImageModel"
+                            }
+                        ],
+                        "nullable": true
                     },
                     "isAccessible": {
                         "type": "boolean",
@@ -1663,24 +1886,28 @@
                     },
                     "videoAttachments": {
                         "type": "array",
+                        "description": "May be undefined, usually when `isAccessible` is `false`.",
                         "items": {
                             "type": "string"
                         }
                     },
                     "audioAttachments": {
                         "type": "array",
+                        "description": "May be undefined, usually when `isAccessible` is `false`.",
                         "items": {
                             "type": "string"
                         }
                     },
                     "pictureAttachments": {
                         "type": "array",
+                        "description": "May be undefined, usually when `isAccessible` is `false`.",
                         "items": {
                             "type": "string"
                         }
                     },
                     "galleryAttachments": {
                         "type": "array",
+                        "description": "May be undefined, usually when `isAccessible` is `false`.",
                         "items": {
                             "type": "string"
                         }
@@ -1702,6 +1929,7 @@
                     "comments",
                     "creator",
                     "wasReleasedSilently",
+                    "thumbnail",
                     "isAccessible"
                 ]
             },
@@ -1718,16 +1946,19 @@
                         "type": "string"
                     },
                     "price": {
-                        "type": "string"
+                        "type": "string",
+                        "nullable": true
                     },
                     "priceYearly": {
-                        "type": "string"
+                        "type": "string",
+                        "nullable": true
                     },
                     "currency": {
                         "type": "string"
                     },
                     "logo": {
-                        "type": "string"
+                        "type": "string",
+                        "nullable": true
                     },
                     "interval": {
                         "type": "string"
@@ -1736,7 +1967,8 @@
                         "type": "boolean"
                     },
                     "allowGrandfatheredAccess": {
-                        "type": "boolean"
+                        "type": "boolean",
+                        "nullable": true
                     },
                     "discordServers": {
                         "type": "array",
@@ -1755,9 +1987,13 @@
                     "id",
                     "title",
                     "description",
+                    "price",
+                    "priceYearly",
                     "currency",
+                    "logo",
                     "interval",
                     "featured",
+                    "allowGrandfatheredAccess",
                     "discordServers",
                     "discordRoles"
                 ]
@@ -1833,7 +2069,8 @@
                     },
                     "releaseDate": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "nullable": true
                     },
                     "duration": {
                         "type": "number"
@@ -1870,6 +2107,7 @@
                     "title",
                     "type",
                     "description",
+                    "releaseDate",
                     "duration",
                     "creator",
                     "likes",
@@ -2041,11 +2279,9 @@
                         "type": "string",
                         "format": "uri"
                     },
-                    "size": {
-                        "type": "integer"
-                    },
                     "childImages": {
                         "type": "array",
+                        "nullable": true,
                         "items": {
                             "$ref": "#/components/schemas/ChildImageModel"
                         }
@@ -2054,7 +2290,8 @@
                 "required": [
                     "width",
                     "height",
-                    "path"
+                    "path",
+                    "childImages"
                 ]
             },
             "ChildImageModel": {
@@ -2077,6 +2314,30 @@
                     "path"
                 ]
             },
+            "ImageFileModel": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "width": {
+                        "type": "integer"
+                    },
+                    "height": {
+                        "type": "integer"
+                    },
+                    "size": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "path",
+                    "width",
+                    "height",
+                    "size"
+                ]
+            },
             "LiveStreamModel": {
                 "type": "object",
                 "properties": {
@@ -2090,7 +2351,12 @@
                         "type": "string"
                     },
                     "thumbnail": {
-                        "$ref": "#/components/schemas/ImageModel"
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ImageModel"
+                            }
+                        ],
+                        "nullable": true
                     },
                     "owner": {
                         "type": "string"
@@ -2110,13 +2376,19 @@
                             "thumbnail": {
                                 "$ref": "#/components/schemas/ImageModel"
                             }
-                        }
+                        },
+                        "required": [
+                            "title",
+                            "description",
+                            "thumbnail"
+                        ]
                     }
                 },
                 "required": [
                     "id",
                     "title",
                     "description",
+                    "thumbnail",
                     "owner",
                     "streamPath",
                     "offline"
@@ -2124,27 +2396,9 @@
             },
             "SocialLinksModel": {
                 "type": "object",
-                "properties": {
-                    "instagram": {
-                        "type": "string",
-                        "format": "uri"
-                    },
-                    "twitter": {
-                        "type": "string",
-                        "format": "uri"
-                    },
-                    "website": {
-                        "type": "string",
-                        "format": "uri"
-                    },
-                    "facebook": {
-                        "type": "string",
-                        "format": "uri"
-                    },
-                    "youtube": {
-                        "type": "string",
-                        "format": "uri"
-                    }
+                "additionalProperties": {
+                    "type": "string",
+                    "format": "uri"
                 }
             },
             "DiscordServerModel": {
@@ -2232,7 +2486,9 @@
                 "required": [
                     "id",
                     "username",
-                    "profileImage"
+                    "profileImage",
+                    "email",
+                    "displayName"
                 ]
             },
             "ConnectedAccountModel": {
@@ -2271,7 +2527,10 @@
                                     "canJoinGuilds": {
                                         "type": "boolean"
                                     }
-                                }
+                                },
+                                "required": [
+                                    "canJoinGuilds"
+                                ]
                             }
                         },
                         "required": [
@@ -2347,7 +2606,11 @@
                             "dislike": {
                                 "type": "integer"
                             }
-                        }
+                        },
+                        "required": [
+                            "like",
+                            "dislike"
+                        ]
                     },
                     "totalReplies": {
                         "type": "integer"
@@ -2377,7 +2640,8 @@
                     "score",
                     "interactionCounts",
                     "totalReplies",
-                    "replies"
+                    "replies",
+                    "userInteraction"
                 ]
             },
             "CommentReplyModel": {
@@ -2410,7 +2674,8 @@
                     },
                     "editDate": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "nullable": true
                     },
                     "likes": {
                         "type": "integer"
@@ -2430,7 +2695,11 @@
                             "dislike": {
                                 "type": "integer"
                             }
-                        }
+                        },
+                        "required": [
+                            "like",
+                            "dislike"
+                        ]
                     },
                     "userInteraction": {
                         "$ref": "#/components/schemas/UserInteractionModel"
@@ -2449,7 +2718,8 @@
                     "likes",
                     "dislikes",
                     "score",
-                    "interactionCounts"
+                    "interactionCounts",
+                    "userInteraction"
                 ]
             },
             "UserNotificationModel": {
@@ -2467,7 +2737,8 @@
                             },
                             "updatedAt": {
                                 "type": "string",
-                                "format": "date-time"
+                                "format": "date-time",
+                                "nullable": true
                             },
                             "id": {
                                 "type": "string"
@@ -2514,7 +2785,8 @@
                     },
                     "endDate": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "nullable": true
                     },
                     "paymentID": {
                         "type": "integer"
@@ -2526,61 +2798,7 @@
                         "type": "boolean"
                     },
                     "plan": {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "string"
-                            },
-                            "title": {
-                                "type": "string"
-                            },
-                            "description": {
-                                "type": "string"
-                            },
-                            "price": {
-                                "type": "string"
-                            },
-                            "priceYearly": {
-                                "type": "string"
-                            },
-                            "currency": {
-                                "type": "string"
-                            },
-                            "logo": {
-                                "type": "string"
-                            },
-                            "interval": {
-                                "type": "string"
-                            },
-                            "featured": {
-                                "type": "boolean"
-                            },
-                            "allowGrandfatheredAccess": {
-                                "type": "boolean"
-                            },
-                            "discordServers": {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/DiscordServerModel"
-                                }
-                            },
-                            "discordRoles": {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/DiscordRoleModel"
-                                }
-                            }
-                        },
-                        "required": [
-                            "id",
-                            "title",
-                            "description",
-                            "currency",
-                            "interval",
-                            "featured",
-                            "discordServers",
-                            "discordRoles"
-                        ]
+                        "$ref": "#/components/schemas/SubscriptionPlanModel"
                     },
                     "creator": {
                         "type": "string"
@@ -2610,7 +2828,8 @@
                                 },
                                 "updatedAt": {
                                     "type": "string",
-                                    "format": "date-time"
+                                    "format": "date-time",
+                                    "nullable": true
                                 },
                                 "id": {
                                     "type": "string"
@@ -2657,7 +2876,8 @@
                     },
                     "updatedAt": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "nullable": true
                     },
                     "id": {
                         "type": "string"
@@ -2691,6 +2911,7 @@
             },
             "UserInteractionModel": {
                 "type": "array",
+                "nullable": true,
                 "items": {
                     "type": "string",
                     "enum": [
@@ -2698,6 +2919,77 @@
                         "dislike"
                     ]
                 }
+            },
+            "EdgesModel": {
+                "type": "object",
+                "properties": {
+                    "edges": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EdgeModel"
+                        }
+                    },
+                    "client": {
+                        "type": "object",
+                        "additionalProperties": true
+                    }
+                },
+                "required": [
+                    "edges",
+                    "client"
+                ]
+            },
+            "EdgeModel": {
+                "type": "object",
+                "properties": {
+                    "hostname": {
+                        "type": "string"
+                    },
+                    "queryPort": {
+                        "type": "integer"
+                    },
+                    "bandwidth": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "allowDownload": {
+                        "type": "boolean"
+                    },
+                    "allowStreaming": {
+                        "type": "boolean"
+                    },
+                    "datacenter": {
+                        "type": "object",
+                        "properties": {
+                            "countryCode": {
+                                "type": "string"
+                            },
+                            "regionCode": {
+                                "type": "string"
+                            },
+                            "latitude": {
+                                "type": "number"
+                            },
+                            "longitude": {
+                                "type": "number"
+                            }
+                        },
+                        "required": [
+                            "countryCode",
+                            "regionCode",
+                            "latitude",
+                            "longitude"
+                        ]
+                    }
+                },
+                "required": [
+                    "hostname",
+                    "queryPort",
+                    "bandwidth",
+                    "allowDownload",
+                    "allowStreaming",
+                    "datacenter"
+                ]
             }
         },
         "securitySchemes": {
@@ -3521,7 +3813,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/CreatorModelV2"
+                                        "$ref": "#/components/schemas/CreatorModelV2Extended"
                                     }
                                 },
                                 "example": [
@@ -4349,6 +4641,142 @@
                 }
             }
         },
+        "/api/v2/edges": {
+            "get": {
+                "deprecated": true,
+                "security": [],
+                "operationId": "getEdges",
+                "summary": "Get Edges",
+                "description": "Retrieve a list of edge servers from which to stream or download videos. This is deprecated, and using the CDN endpoint is recommended as a replacement.",
+                "tags": [
+                    "EdgesV2"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EdgesModel"
+                                },
+                                "example": {
+                                    "edges": [
+                                        {
+                                            "hostname": "edge01-na.floatplane.com",
+                                            "queryPort": 8090,
+                                            "bandwidth": 1000000000,
+                                            "allowDownload": true,
+                                            "allowStreaming": true,
+                                            "datacenter": {
+                                                "countryCode": "CA",
+                                                "regionCode": "QC",
+                                                "latitude": 45.3168,
+                                                "longitude": -73.8659
+                                            }
+                                        },
+                                        {
+                                            "hostname": "edge02-na.floatplane.com",
+                                            "queryPort": 8090,
+                                            "bandwidth": 500000000,
+                                            "allowDownload": true,
+                                            "allowStreaming": true,
+                                            "datacenter": {
+                                                "countryCode": "CA",
+                                                "regionCode": "QC",
+                                                "latitude": 45.3168,
+                                                "longitude": -73.8659
+                                            }
+                                        },
+                                        {
+                                            "hostname": "edge01-eu.floatplane.com",
+                                            "queryPort": 8090,
+                                            "bandwidth": 1000000000,
+                                            "allowDownload": false,
+                                            "allowStreaming": true,
+                                            "datacenter": {
+                                                "countryCode": "FR",
+                                                "regionCode": "A",
+                                                "latitude": 48.5873,
+                                                "longitude": 7.79821
+                                            }
+                                        },
+                                        {
+                                            "hostname": "edge01-au.floatplane.com",
+                                            "queryPort": 8090,
+                                            "bandwidth": 250000000,
+                                            "allowDownload": false,
+                                            "allowStreaming": true,
+                                            "datacenter": {
+                                                "countryCode": "AU",
+                                                "regionCode": "NSW",
+                                                "latitude": -33.8401,
+                                                "longitude": 151.209
+                                            }
+                                        },
+                                        {
+                                            "hostname": "edge1-na-south.floatplane.com",
+                                            "queryPort": 0,
+                                            "bandwidth": 1000000000,
+                                            "allowDownload": false,
+                                            "allowStreaming": true,
+                                            "datacenter": {
+                                                "countryCode": "US",
+                                                "regionCode": "FL",
+                                                "latitude": 25.8124,
+                                                "longitude": -80.2401
+                                            }
+                                        },
+                                        {
+                                            "hostname": "edge1-na-sv.floatplane.com",
+                                            "queryPort": 0,
+                                            "bandwidth": 1000000000,
+                                            "allowDownload": false,
+                                            "allowStreaming": true,
+                                            "datacenter": {
+                                                "countryCode": "US",
+                                                "regionCode": "CA",
+                                                "latitude": 37.3387,
+                                                "longitude": -121.8914
+                                            }
+                                        },
+                                        {
+                                            "hostname": "edge03-na.floatplane.com",
+                                            "queryPort": 0,
+                                            "bandwidth": 3000000000,
+                                            "allowDownload": false,
+                                            "allowStreaming": true,
+                                            "datacenter": {
+                                                "countryCode": "CA",
+                                                "regionCode": "QC",
+                                                "latitude": 45.3168,
+                                                "longitude": -73.8659
+                                            }
+                                        }
+                                    ],
+                                    "client": {}
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401Unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/403Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404NotFound"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/Unexpected"
+                    }
+                }
+            }
+        },
         "/api/v2/faq/list": {
             "get": {
                 "security": [],
@@ -4619,6 +5047,80 @@
                                         }
                                     ]
                                 }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401Unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/403Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404NotFound"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/Unexpected"
+                    }
+                }
+            }
+        },
+        "/api/v3/socket/connect": {
+            "post": {
+                "operationId": "socketConnect",
+                "summary": "Connect",
+                "description": "Used in Socket.IO/WebSocket connections. See the AsyncAPI documentation for more information. This should not be used on a raw HTTP connection.",
+                "tags": [
+                    "SocketV3"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401Unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/403Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404NotFound"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/Unexpected"
+                    }
+                }
+            }
+        },
+        "/api/v3/socket/disconnect": {
+            "post": {
+                "operationId": "disconnectSocket",
+                "summary": "Disconnect",
+                "description": "Used in Socket.IO/WebSocket connections. See the AsyncAPI documentation for more information. This should not be used on a raw HTTP connection.",
+                "tags": [
+                    "SocketV3"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {}
                             }
                         }
                     },
@@ -5729,7 +6231,7 @@
             "get": {
                 "operationId": "getCreatorBlogPosts",
                 "summary": "Get Creator Blog Posts",
-                "description": "Retrieve a paginated list of blog posts from a creator. Or search for blog posts from a creator.\n\nExample query: https://www.floatplane.com/api/v3/content/creator?id=59f94c0bdd241b70349eb72b&search=illegal&tags[0]=battery",
+                "description": "Retrieve a paginated list of blog posts from a creator. Or search for blog posts from a creator.\n\nExample query: https://www.floatplane.com/api/v3/content/creator?id=59f94c0bdd241b70349eb72b&fromDate=2021-07-24T07:00:00.001Z&toDate=2022-07-27T06:59:59.099Z&hasVideo=true&hasAudio=true&hasPicture=false&hasText=false&fromDuration=1020&toDuration=9900&sort=DESC&search=thor&tags[0]=tjm",
                 "tags": [
                     "ContentV3"
                 ],
@@ -5751,7 +6253,7 @@
                             "minimum": 1,
                             "maximum": 20
                         },
-                        "required": true,
+                        "required": false,
                         "description": "The maximum number of posts to return."
                     },
                     {
@@ -5784,6 +6286,95 @@
                         },
                         "required": false,
                         "description": "An array of tags to search against, possibly in addition to `search`."
+                    },
+                    {
+                        "in": "query",
+                        "name": "hasVideo",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "required": false,
+                        "description": "If true, include blog posts with video attachments."
+                    },
+                    {
+                        "in": "query",
+                        "name": "hasAudio",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "required": false,
+                        "description": "If true, include blog posts with audio attachments."
+                    },
+                    {
+                        "in": "query",
+                        "name": "hasPicture",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "required": false,
+                        "description": "If true, include blog posts with picture attachments."
+                    },
+                    {
+                        "in": "query",
+                        "name": "hasText",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "required": false,
+                        "description": "If true, only include blog posts that are text-only. Text-only posts are ones without any attachments, such as video, audio, picture, and gallery.\n\nThis filter and `hasVideo`, `hasAudio`, and `hasPicture` should be mutually exclusive. That is, if `hasText` is true then the other three should all be false. Conversely, if any of the other three are true, then `hasText` should be false. Otherwise, the filter would produce no results."
+                    },
+                    {
+                        "in": "query",
+                        "name": "sort",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "ASC",
+                                "DESC"
+                            ]
+                        },
+                        "required": false,
+                        "description": "`DESC` = Newest First. `ASC` = Oldest First."
+                    },
+                    {
+                        "in": "query",
+                        "name": "fromDuration",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": false,
+                        "description": "Include video posts where the duration of the video is at minimum `fromDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`."
+                    },
+                    {
+                        "in": "query",
+                        "name": "toDuration",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": false,
+                        "description": "Include video posts where the duration of the video is at maximum `toDuration` seconds long. Usually in multiples of 60 seconds. Implies `hasVideo=true`."
+                    },
+                    {
+                        "in": "query",
+                        "name": "fromDate",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "required": false,
+                        "description": "Include posts where the publication date is on or after this filter date.",
+                        "example": "2022-07-24T07:00:00.001Z"
+                    },
+                    {
+                        "in": "query",
+                        "name": "toDate",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "required": false,
+                        "description": "Include posts where the publication date is on or before this filter date.",
+                        "example": "2022-07-24T07:00:00.001Z"
                     }
                 ],
                 "responses": {
@@ -7731,6 +8322,194 @@
                                 "example": [
                                     "dislike"
                                 ]
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401Unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/403Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404NotFound"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/Unexpected"
+                    }
+                }
+            }
+        },
+        "/api/v3/poll/live/joinroom": {
+            "post": {
+                "operationId": "joinLiveRoom",
+                "summary": "Poll Join Live Room",
+                "description": "Used in Socket.IO/WebSocket connections. See the AsyncAPI documentation for more information. This should not be used on a raw HTTP connection.",
+                "tags": [
+                    "PollV3"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401Unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/403Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404NotFound"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/Unexpected"
+                    }
+                }
+            }
+        },
+        "/api/v3/poll/live/leaveLiveRoom": {
+            "post": {
+                "operationId": "leaveLiveRoom",
+                "summary": "Poll Leave Live Room",
+                "description": "Used in Socket.IO/WebSocket connections. See the AsyncAPI documentation for more information. This should not be used on a raw HTTP connection.",
+                "tags": [
+                    "PollV3"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401Unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/403Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404NotFound"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/Unexpected"
+                    }
+                }
+            }
+        },
+        "/api/v3/poll/votePoll": {
+            "post": {
+                "operationId": "votePoll",
+                "summary": "Vote Poll",
+                "description": "Vote on an option of a poll. Voting a second time or attempting to change a choice may result in an error.",
+                "tags": [
+                    "PollV3"
+                ],
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "pollId": {
+                                        "type": "string",
+                                        "description": "The id of the poll to vote on."
+                                    },
+                                    "optionIndex": {
+                                        "type": "integer",
+                                        "description": "The index of the options of the poll for which to vote. This should not be outside the bounds of the poll options."
+                                    }
+                                },
+                                "required": [
+                                    "pollId",
+                                    "optionIndex"
+                                ]
+                            },
+                            "example": {
+                                "pollId": "62c8c1dd968bc0899bbb4b92",
+                                "optionIndex": 1
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401Unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/403Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404NotFound"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/Unexpected"
+                    }
+                }
+            }
+        },
+        "/api/v3/redirect-yt-latest/{channelKey}": {
+            "post": {
+                "operationId": "redirectYTLatest",
+                "summary": "Redirect to YouTube Latest Video",
+                "description": "Redirects (HTTP 302) the user to the latest LMG video for a given LMG channel key. For example, visiting this URL with a `channelKey` of `sc`, it will take you directly to the latest Short Circuit video on YouTube. Unknown if this works for non-LMG creators for their channels. Not used in Floatplane code.",
+                "tags": [
+                    "RedirectV3"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "channelKey",
+                        "schema": {
+                            "type": "string",
+                            "description": "Known possible values: `ltt`, `tq`, `sc`, `tl`, `csf`, `tjm`, `lmgc`, `ma`"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "302": {
+                        "description": "Found",
+                        "headers": {
+                            "Location": {
+                                "description": "A YouTube URL for a video.",
+                                "schema": {
+                                    "type": "string"
+                                }
                             }
                         }
                     },

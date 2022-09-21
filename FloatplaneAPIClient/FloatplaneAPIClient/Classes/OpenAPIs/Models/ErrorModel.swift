@@ -14,10 +14,11 @@ import Vapor
 public struct ErrorModel: Content, Hashable {
 
     public var id: String
-    public var errors: [ErrorModelErrors]
+    public var errors: [ErrorModelErrorsInner]
+    /** May be undefined. */
     public var message: String?
 
-    public init(id: String, errors: [ErrorModelErrors], message: String? = nil) {
+    public init(id: String, errors: [ErrorModelErrorsInner], message: String? = nil) {
         self.id = id
         self.errors = errors
         self.message = message

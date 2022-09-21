@@ -22,7 +22,7 @@ public struct ContentVideoV3Response: Content, Hashable {
     public var title: String
     public var type: String
     public var description: String
-    public var releaseDate: Date
+    public var releaseDate: Date?
     /** Unit: seconds. */
     public var duration: Double
     public var creator: String
@@ -37,9 +37,9 @@ public struct ContentVideoV3Response: Content, Hashable {
     public var blogPosts: [String]
     public var timelineSprite: ImageModel
     public var userInteraction: [UserInteraction]?
-    public var levels: [ContentVideoV3ResponseLevels]
+    public var levels: [ContentVideoV3ResponseLevelsInner]
 
-    public init(id: String, guid: String, title: String, type: String, description: String, releaseDate: Date, duration: Double, creator: String, likes: Int, dislikes: Int, score: Int, isProcessing: Bool, primaryBlogPost: String, thumbnail: ImageModel, isAccessible: Bool, blogPosts: [String], timelineSprite: ImageModel, userInteraction: [UserInteraction]? = nil, levels: [ContentVideoV3ResponseLevels]) {
+    public init(id: String, guid: String, title: String, type: String, description: String, releaseDate: Date?, duration: Double, creator: String, likes: Int, dislikes: Int, score: Int, isProcessing: Bool, primaryBlogPost: String, thumbnail: ImageModel, isAccessible: Bool, blogPosts: [String], timelineSprite: ImageModel, userInteraction: [UserInteraction]?, levels: [ContentVideoV3ResponseLevelsInner]) {
         self.id = id
         self.guid = guid
         self.title = title
@@ -104,7 +104,7 @@ public struct ContentVideoV3Response: Content, Hashable {
         try container.encode(isAccessible, forKey: .isAccessible)
         try container.encode(blogPosts, forKey: .blogPosts)
         try container.encode(timelineSprite, forKey: .timelineSprite)
-        try container.encodeIfPresent(userInteraction, forKey: .userInteraction)
+        try container.encode(userInteraction, forKey: .userInteraction)
         try container.encode(levels, forKey: .levels)
     }
 }

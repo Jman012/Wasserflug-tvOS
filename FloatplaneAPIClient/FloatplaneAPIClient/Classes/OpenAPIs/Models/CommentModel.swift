@@ -29,12 +29,12 @@ public struct CommentModel: Content, Hashable {
     public var likes: Int
     public var dislikes: Int
     public var score: Int
-    public var interactionCounts: CommentModelInteractionCounts
+    public var interactionCounts: CommentV3PostResponseInteractionCounts
     public var totalReplies: Int
     public var replies: [CommentReplyModel]
     public var userInteraction: [UserInteraction]?
 
-    public init(id: String, blogPost: String, user: UserModel, contentReference: String, contentReferenceType: String, text: String, replying: String, postDate: String, editDate: String, likes: Int, dislikes: Int, score: Int, interactionCounts: CommentModelInteractionCounts, totalReplies: Int, replies: [CommentReplyModel], userInteraction: [UserInteraction]? = nil) {
+    public init(id: String, blogPost: String, user: UserModel, contentReference: String, contentReferenceType: String, text: String, replying: String, postDate: String, editDate: String, likes: Int, dislikes: Int, score: Int, interactionCounts: CommentV3PostResponseInteractionCounts, totalReplies: Int, replies: [CommentReplyModel], userInteraction: [UserInteraction]?) {
         self.id = id
         self.blogPost = blogPost
         self.user = user
@@ -91,7 +91,7 @@ public struct CommentModel: Content, Hashable {
         try container.encode(interactionCounts, forKey: .interactionCounts)
         try container.encode(totalReplies, forKey: .totalReplies)
         try container.encode(replies, forKey: .replies)
-        try container.encodeIfPresent(userInteraction, forKey: .userInteraction)
+        try container.encode(userInteraction, forKey: .userInteraction)
     }
 }
 

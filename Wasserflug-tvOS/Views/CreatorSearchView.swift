@@ -44,6 +44,6 @@ struct CreatorSearchView: View {
 
 struct CreatorSearchView_Previews: PreviewProvider {
 	static var previews: some View {
-		CreatorSearchView(viewModel: CreatorContentViewModel(fpApiService: MockFPAPIService(), creator: MockData.creators.first!, creatorOwner: MockData.creatorOwners.users[0].user), creatorName: "Linus Tech Tips")
+		CreatorSearchView(viewModel: CreatorContentViewModel(fpApiService: MockFPAPIService(), creator: MockData.creators.first!, creatorOwner: MockData.creatorOwners.users[0].user.userModelShared), creatorName: "Linus Tech Tips")
 	}
 }

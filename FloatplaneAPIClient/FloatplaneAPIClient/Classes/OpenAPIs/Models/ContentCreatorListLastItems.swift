@@ -18,7 +18,7 @@ public struct ContentCreatorListLastItems: Content, Hashable {
     public var blogPostId: String?
     public var moreFetchable: Bool
 
-    public init(creatorId: String, blogPostId: String? = nil, moreFetchable: Bool) {
+    public init(creatorId: String, blogPostId: String?, moreFetchable: Bool) {
         self.creatorId = creatorId
         self.blogPostId = blogPostId
         self.moreFetchable = moreFetchable
@@ -35,7 +35,7 @@ public struct ContentCreatorListLastItems: Content, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(creatorId, forKey: .creatorId)
-        try container.encodeIfPresent(blogPostId, forKey: .blogPostId)
+        try container.encode(blogPostId, forKey: .blogPostId)
         try container.encode(moreFetchable, forKey: .moreFetchable)
     }
 }

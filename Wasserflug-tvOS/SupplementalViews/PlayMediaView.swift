@@ -4,7 +4,7 @@ import CachedAsyncImage
 
 struct PlayMediaView<Content>: View where Content: View {
 	
-	let thumbnail: ImageModel?
+	let thumbnail: ImageModelShared?
 	let showPlayButton: Bool
 	let width: CGFloat?
 	let playButtonSize: PlayButton.Size

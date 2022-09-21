@@ -16,14 +16,12 @@ public struct ImageModel: Content, Hashable {
     public var width: Int
     public var height: Int
     public var path: String
-    public var size: Int?
     public var childImages: [ChildImageModel]?
 
-    public init(width: Int, height: Int, path: String, size: Int? = nil, childImages: [ChildImageModel]? = nil) {
+    public init(width: Int, height: Int, path: String, childImages: [ChildImageModel]?) {
         self.width = width
         self.height = height
         self.path = path
-        self.size = size
         self.childImages = childImages
     }
 
@@ -31,7 +29,6 @@ public struct ImageModel: Content, Hashable {
         case width
         case height
         case path
-        case size
         case childImages
     }
 
@@ -42,8 +39,7 @@ public struct ImageModel: Content, Hashable {
         try container.encode(width, forKey: .width)
         try container.encode(height, forKey: .height)
         try container.encode(path, forKey: .path)
-        try container.encodeIfPresent(size, forKey: .size)
-        try container.encodeIfPresent(childImages, forKey: .childImages)
+        try container.encode(childImages, forKey: .childImages)
     }
 }
 

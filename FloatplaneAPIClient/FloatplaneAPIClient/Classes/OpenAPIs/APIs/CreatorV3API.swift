@@ -85,7 +85,6 @@ open class CreatorV3API {
         }
     }
 
-
     /**
      Get Creators
      GET /api/v3/creator/list
@@ -157,5 +156,4 @@ open class CreatorV3API {
             }
         }
     }
-
 }

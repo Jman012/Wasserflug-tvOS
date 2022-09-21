@@ -13,9 +13,9 @@ import Vapor
 
 public struct PaymentInvoiceListV2Response: Content, Hashable {
 
-    public var invoices: [PaymentInvoiceListV2ResponseInvoices]
+    public var invoices: [PaymentInvoiceListV2ResponseInvoicesInner]
 
-    public init(invoices: [PaymentInvoiceListV2ResponseInvoices]) {
+    public init(invoices: [PaymentInvoiceListV2ResponseInvoicesInner]) {
         self.invoices = invoices
     }
 
