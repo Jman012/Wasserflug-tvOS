@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 .swiftformat
 FloatplaneAPIClient/Classes/OpenAPIs/APIs.swift
 FloatplaneAPIClient/Classes/OpenAPIs/APIs/AuthV2API.swift
