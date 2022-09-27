@@ -13,11 +13,11 @@ import Vapor
 
 public struct LiveStreamModelOffline: Content, Hashable {
 
-    public var title: String
-    public var description: String
-    public var thumbnail: ImageModel
+    public var title: String?
+    public var description: String?
+    public var thumbnail: ContentPostV3ResponseThumbnail?
 
-    public init(title: String, description: String, thumbnail: ImageModel) {
+    public init(title: String?, description: String?, thumbnail: ContentPostV3ResponseThumbnail?) {
         self.title = title
         self.description = description
         self.thumbnail = thumbnail

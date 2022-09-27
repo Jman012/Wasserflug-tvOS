@@ -2366,13 +2366,20 @@
                         "type": "object",
                         "properties": {
                             "title": {
-                                "type": "string"
+                                "type": "string",
+                                "nullable": true
                             },
                             "description": {
-                                "type": "string"
+                                "type": "string",
+                                "nullable": true
                             },
                             "thumbnail": {
-                                "$ref": "#/components/schemas/ImageModel"
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/ImageModel"
+                                    }
+                                ],
+                                "nullable": true
                             }
                         },
                         "required": [
