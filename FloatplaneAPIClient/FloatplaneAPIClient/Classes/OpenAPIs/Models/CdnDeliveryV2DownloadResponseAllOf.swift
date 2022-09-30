@@ -19,9 +19,9 @@ public struct CdnDeliveryV2DownloadResponseAllOf: Content, Hashable {
     }
     /** Which download/streaming strategy to use. If `cdn`, then a `cdn` property will be included with the response. Otherwise, if set to `client`, then a `client` property will be included with the response. The cdn or client property should be combined with the `resource` property to perform the download/stream. */
     public var strategy: Strategy
-    public var resource: CdnDeliveryV2DownloadResponseAllOfResource
+    public var resource: CdnDeliveryV2ResourceModel
 
-    public init(strategy: Strategy, resource: CdnDeliveryV2DownloadResponseAllOfResource) {
+    public init(strategy: Strategy, resource: CdnDeliveryV2ResourceModel) {
         self.strategy = strategy
         self.resource = resource
     }

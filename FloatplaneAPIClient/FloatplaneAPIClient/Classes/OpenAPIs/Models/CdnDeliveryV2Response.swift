@@ -13,17 +13,14 @@ import Vapor
 
 public enum CdnDeliveryV2Response: Content {
     case typeCdnDeliveryV2DownloadResponse(CdnDeliveryV2DownloadResponse)
-    case typeCdnDeliveryV2LivestreamResponse(CdnDeliveryV2LivestreamResponse)
-    case typeCdnDeliveryV2VodResponse(CdnDeliveryV2VodResponse)
+    case typeCdnDeliveryV2VodLivestreamResponse(CdnDeliveryV2VodLivestreamResponse)
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         switch self {
         case .typeCdnDeliveryV2DownloadResponse(let value):
             try container.encode(value)
-        case .typeCdnDeliveryV2LivestreamResponse(let value):
-            try container.encode(value)
-        case .typeCdnDeliveryV2VodResponse(let value):
+        case .typeCdnDeliveryV2VodLivestreamResponse(let value):
             try container.encode(value)
         }
     }
@@ -32,10 +29,8 @@ public enum CdnDeliveryV2Response: Content {
         let container = try decoder.singleValueContainer()
         if let value = try? container.decode(CdnDeliveryV2DownloadResponse.self) {
             self = .typeCdnDeliveryV2DownloadResponse(value)
-        } else if let value = try? container.decode(CdnDeliveryV2LivestreamResponse.self) {
-            self = .typeCdnDeliveryV2LivestreamResponse(value)
-        } else if let value = try? container.decode(CdnDeliveryV2VodResponse.self) {
-            self = .typeCdnDeliveryV2VodResponse(value)
+        } else if let value = try? container.decode(CdnDeliveryV2VodLivestreamResponse.self) {
+            self = .typeCdnDeliveryV2VodLivestreamResponse(value)
         } else {
             throw DecodingError.typeMismatch(Self.Type.self, .init(codingPath: decoder.codingPath, debugDescription: "Unable to decode instance of CdnDeliveryV2Response"))
         }

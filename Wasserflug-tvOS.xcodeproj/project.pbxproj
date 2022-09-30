@@ -56,6 +56,7 @@
 		E7A2F42A28C58E0300583294 /* ExecuteCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A2F42928C58E0300583294 /* ExecuteCode.swift */; };
 		E7A2F42C28CE43D800583294 /* LivestreamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A2F42B28CE43D800583294 /* LivestreamView.swift */; };
 		E7A447E92815E1C0009BCE2E /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */; };
+		E7BD7E7528E6682900E1BBE9 /* CDNTemplateRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BD7E7428E6682900E1BBE9 /* CDNTemplateRenderer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -126,6 +127,7 @@
 		E7A2F42928C58E0300583294 /* ExecuteCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecuteCode.swift; sourceTree = "<group>"; };
 		E7A2F42B28CE43D800583294 /* LivestreamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivestreamView.swift; sourceTree = "<group>"; };
 		E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extensions.swift"; sourceTree = "<group>"; };
+		E7BD7E7428E6682900E1BBE9 /* CDNTemplateRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDNTemplateRenderer.swift; sourceTree = "<group>"; };
 		E7CCF2D1285314B600506E51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E7CCF2D2285315B400506E51 /* Wasserflug-tvOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Wasserflug-tvOS.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -296,6 +298,7 @@
 				E75337BD27CB08990010E3D2 /* EnvironmentKeys.swift */,
 				E71FDB3B27D3F89200A9C88B /* Swift+Extensions.swift */,
 				E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */,
+				E7BD7E7428E6682900E1BBE9 /* CDNTemplateRenderer.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -466,6 +469,7 @@
 				E75337BE27CB08990010E3D2 /* EnvironmentKeys.swift in Sources */,
 				E75337B727CB06BE0010E3D2 /* ContentView.swift in Sources */,
 				E753377727CB066E0010E3D2 /* Authentication.swift in Sources */,
+				E7BD7E7528E6682900E1BBE9 /* CDNTemplateRenderer.swift in Sources */,
 				E753377F27CB06800010E3D2 /* Wasserflug_tvOSApp.swift in Sources */,
 				E731AF0F289B22AC00A2DAD7 /* AttachmentPills.swift in Sources */,
 				E75337A927CB06BE0010E3D2 /* AuthViewModel.swift in Sources */,

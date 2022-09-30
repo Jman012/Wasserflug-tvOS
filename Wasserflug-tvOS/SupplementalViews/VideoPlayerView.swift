@@ -10,7 +10,7 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 	@AppStorage("DesiredQuality") var desiredQuality: String = ""
 	@Environment(\.managedObjectContext) var managedObjectContext
 	@ObservedObject var viewModel: VideoViewModel
-	let content: CdnDeliveryV2VodResponse
+	let content: CdnDeliveryV2VodLivestreamResponse
 	let beginningWatchTime: Double
 	
 	let logger: Logger = {
@@ -95,16 +95,16 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 		}
 	}
 	
-	func createQualityAction(content: CdnDeliveryV2VodResponse) -> UIMenu {
+	func createQualityAction(content: CdnDeliveryV2VodLivestreamResponse) -> UIMenu {
 		let sparkleTvImage = UIImage(systemName: "sparkles.tv")
-		let resolutions = content.resource.data.qualityLevels
+		let resolutions: [UIAction] = content.resource.data.qualityLevels?
 			.filter({ viewModel.qualityLevels.keys.contains($0.name) })
 			.sorted(by: { $0.order < $1.order })
 			.map({ (qualityLevel) -> UIAction in
 				return UIAction(title: qualityLevel.label, identifier: UIAction.Identifier(qualityLevel.name), handler: { _ in
 					UserDefaults.standard.set(qualityLevel.name, forKey: "DesiredQuality")
 				})
-		})
+		}) ?? []
 		let submenu = UIMenu(title: "Resolution", options: [.displayInline, .singleSelection], children: resolutions)
 		let menu = UIMenu(title: "Resolution", image: sparkleTvImage, children: [submenu])
 		return menu

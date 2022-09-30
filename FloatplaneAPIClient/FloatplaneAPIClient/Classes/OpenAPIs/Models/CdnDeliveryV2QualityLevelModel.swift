@@ -17,20 +17,24 @@ public struct CdnDeliveryV2QualityLevelModel: Content, Hashable {
     /** Used to identify this level of quality, and to refer to the `qualityLevelParams` object below by the property key. */
     public var name: String
     /** The video quality's resolution's width in pixels. */
-    public var width: Int
+    public var width: Int?
     /** The video quality resolution's height in pixels. */
-    public var height: Int
+    public var height: Int?
     /** The display-friendly version of `name`. */
     public var label: String
     /** The display order to be shown to the user. */
     public var order: Int
+    public var mimeType: String?
+    public var codecs: String?
 
-    public init(name: String, width: Int, height: Int, label: String, order: Int) {
+    public init(name: String, width: Int? = nil, height: Int? = nil, label: String, order: Int, mimeType: String? = nil, codecs: String? = nil) {
         self.name = name
         self.width = width
         self.height = height
         self.label = label
         self.order = order
+        self.mimeType = mimeType
+        self.codecs = codecs
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -39,6 +43,23 @@ public struct CdnDeliveryV2QualityLevelModel: Content, Hashable {
         case height
         case label
         case order
+        case mimeType
+        case codecs
+    }
+
+    public var additionalProperties: [String: AnyCodable] = [:]
+
+    public subscript(key: String) -> AnyCodable? {
+        get {
+            if let value = additionalProperties[key] {
+                return value
+            }
+            return nil
+        }
+
+        set {
+            additionalProperties[key] = newValue
+        }
     }
 
     // Encodable protocol methods
@@ -46,10 +67,38 @@ public struct CdnDeliveryV2QualityLevelModel: Content, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(name, forKey: .name)
-        try container.encode(width, forKey: .width)
-        try container.encode(height, forKey: .height)
+        try container.encodeIfPresent(width, forKey: .width)
+        try container.encodeIfPresent(height, forKey: .height)
         try container.encode(label, forKey: .label)
         try container.encode(order, forKey: .order)
+        try container.encodeIfPresent(mimeType, forKey: .mimeType)
+        try container.encodeIfPresent(codecs, forKey: .codecs)
+        var additionalPropertiesContainer = encoder.container(keyedBy: String.self)
+        try additionalPropertiesContainer.encodeMap(additionalProperties)
+    }
+
+    // Decodable protocol methods
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        name = try container.decode(String.self, forKey: .name)
+        width = try container.decodeIfPresent(Int.self, forKey: .width)
+        height = try container.decodeIfPresent(Int.self, forKey: .height)
+        label = try container.decode(String.self, forKey: .label)
+        order = try container.decode(Int.self, forKey: .order)
+        mimeType = try container.decodeIfPresent(String.self, forKey: .mimeType)
+        codecs = try container.decodeIfPresent(String.self, forKey: .codecs)
+        var nonAdditionalPropertyKeys = Set<String>()
+        nonAdditionalPropertyKeys.insert("name")
+        nonAdditionalPropertyKeys.insert("width")
+        nonAdditionalPropertyKeys.insert("height")
+        nonAdditionalPropertyKeys.insert("label")
+        nonAdditionalPropertyKeys.insert("order")
+        nonAdditionalPropertyKeys.insert("mimeType")
+        nonAdditionalPropertyKeys.insert("codecs")
+        let additionalPropertiesContainer = try decoder.container(keyedBy: String.self)
+        additionalProperties = try additionalPropertiesContainer.decodeMap(AnyCodable.self, excludedKeys: nonAdditionalPropertyKeys)
     }
 }
 

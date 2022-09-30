@@ -32,7 +32,7 @@ open class CDNV2API {
        - name: CookieAuth
      - parameter type: (query) Used to determine which kind of retrieval method is requested for the video.  - VOD = stream a Video On Demand - AOD = stream Audio On Demand - Live = Livestream the content - Download = Download the content for the user to play later. 
      - parameter guid: (query) The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. Required when `type` is `vod`, `aod`, or `download`. Note: either this or `creator` must be supplied. (optional)
-     - parameter creator: (query) The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied. (optional)
+     - parameter creator: (query) The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied. Note: for `vod` and `download`, including this `creator` parameter *will* cause an error to be returned. (optional)
      - returns: `EventLoopFuture` of `ClientResponse` 
      */
     open class func getDeliveryInfoRaw(type: ModelType_getDeliveryInfo, guid: String? = nil, creator: String? = nil, headers: HTTPHeaders = FloatplaneAPIClientAPI.customHeaders, beforeSend: (inout ClientRequest) throws -> () = { _ in }) -> EventLoopFuture<ClientResponse> {
@@ -81,7 +81,7 @@ open class CDNV2API {
        - name: CookieAuth
      - parameter type: (query) Used to determine which kind of retrieval method is requested for the video.  - VOD = stream a Video On Demand - AOD = stream Audio On Demand - Live = Livestream the content - Download = Download the content for the user to play later. 
      - parameter guid: (query) The GUID of the attachment for a post, retrievable from the `videoAttachments` or `audioAttachments` object. Required when `type` is `vod`, `aod`, or `download`. Note: either this or `creator` must be supplied. (optional)
-     - parameter creator: (query) The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied. (optional)
+     - parameter creator: (query) The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied. Note: for `vod` and `download`, including this `creator` parameter *will* cause an error to be returned. (optional)
      - returns: `EventLoopFuture` of `GetDeliveryInfo` 
      */
     open class func getDeliveryInfo(type: ModelType_getDeliveryInfo, guid: String? = nil, creator: String? = nil, headers: HTTPHeaders = FloatplaneAPIClientAPI.customHeaders, beforeSend: (inout ClientRequest) throws -> () = { _ in }) -> EventLoopFuture<GetDeliveryInfo> {

@@ -20,7 +20,7 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 		}
 	}
 	
-	@Published var state: ViewModelState<CdnDeliveryV2VodResponse> = .idle
+	@Published var state: ViewModelState<CdnDeliveryV2VodLivestreamResponse> = .idle
 	
 	private let fpApiService: FPAPIService
 	let videoAttachment: VideoAttachmentModel
@@ -81,7 +81,7 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 				DispatchQueue.main.async {
 					switch result {
 					case let .success(response):
-						guard case let .typeCdnDeliveryV2VodResponse(cdnVod) = response else {
+						guard case let .typeCdnDeliveryV2VodLivestreamResponse(cdnVod) = response else {
 							self.state = .failed(VideoError.noQualityLevelsFound)
 							return
 						}
@@ -91,7 +91,7 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 						let baseCdn = cdnVod.cdn
 						let pathTemplate = cdnVod.resource.uri
 						let screenNativeBounds = UIScreen.main.nativeBounds
-						let levels = cdnVod.resource.data.qualityLevels
+						let levels = cdnVod.resource.data.qualityLevels?
 							.filter({ qualityLevel in
 								// Filter out resolutions larger than the device's screen resolution to save
 								// on bandwidth and downscaling performance.
@@ -100,30 +100,27 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 								// and 4K is 4320x2160 instead of 3480x2160) which makes screen size comparisons
 								// difficult to do correctly.
 								// Just in case some creators have funny heights, allow for a 15% tolerance.
-								let result = CGFloat(qualityLevel.height) <= (screenNativeBounds.height * 1.15)
+								let result = CGFloat(qualityLevel.height ?? 0) <= (screenNativeBounds.height * 1.15)
 								if !result {
-									self.logger.warning("Ignoring quality level \(String(describing: qualityLevel)) (\(qualityLevel.width) x \(qualityLevel.height)) due to larger-than-screen height of \(screenNativeBounds.height).")
+									self.logger.warning("Ignoring quality level \(String(describing: qualityLevel)) (\(qualityLevel.width ?? 0) x \(qualityLevel.height ?? 0)) due to larger-than-screen height of \(screenNativeBounds.height).")
 								}
 								return result
 							})
 							.compactMap({ (qualityLevel) -> (String, URL)? in
 								// Map the quality levels to the correct URL
-								guard let param = cdnVod.resource.data.qualityLevelParams[qualityLevel.name] else {
-									self.logger.warning("Ignoring quality level \(qualityLevel.name) because no parameter information was found.")
+								let path = CDNTemplateRenderer.render(template: pathTemplate, data: cdnVod.resource.data, quality: qualityLevel)
+								guard let url = URL(string: baseCdn + path) else {
 									return nil
 								}
-								let path = pathTemplate
-									.replacingOccurrences(of: "{qualityLevels}", with: qualityLevel.name)
-									.replacingOccurrences(of: "{qualityLevelParams.token}", with: param.token)
-								return (qualityLevel.name, URL(string: baseCdn + path)!)
-							})
+								return (qualityLevel.name, url)
+							}) ?? []
 						self.qualityLevels = Dictionary(uniqueKeysWithValues: levels)
 						
 						if self.qualityLevels.isEmpty {
 							self.logger.warning("No quality levels were able to be parsed from the video response. Showing an error to the user.", metadata: [
 								"id": "\(self.videoAttachment.guid)",
-								"qualityLevelNames": "\(cdnVod.resource.data.qualityLevels.map({ $0.name }).joined(separator: ", "))",
-								"qualityLevelParams": "\(cdnVod.resource.data.qualityLevelParams.keys.joined(separator: ", "))",
+								"qualityLevelNames": "\(cdnVod.resource.data.qualityLevels?.map({ $0.name }).joined(separator: ", ") ?? "<nil>")",
+								"qualityLevelParams": "\(cdnVod.resource.data.qualityLevelParams?.keys.joined(separator: ", ") ?? "<nil>")",
 							])
 							self.state = .failed(VideoError.noQualityLevelsFound)
 						}

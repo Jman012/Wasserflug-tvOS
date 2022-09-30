@@ -148,6 +148,7 @@
             "CdnDeliveryV2QualityLevelModel": {
                 "type": "object",
                 "description": "Represents a quality of video to download/stream.",
+                "additionalProperties": true,
                 "properties": {
                     "name": {
                         "type": "string",
@@ -155,11 +156,13 @@
                     },
                     "width": {
                         "type": "integer",
-                        "description": "The video quality's resolution's width in pixels."
+                        "description": "The video quality's resolution's width in pixels.",
+                        "nullable": true
                     },
                     "height": {
                         "type": "integer",
-                        "description": "The video quality resolution's height in pixels."
+                        "description": "The video quality resolution's height in pixels.",
+                        "nullable": true
                     },
                     "label": {
                         "type": "string",
@@ -168,17 +171,54 @@
                     "order": {
                         "type": "integer",
                         "description": "The display order to be shown to the user."
+                    },
+                    "mimeType": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "codecs": {
+                        "type": "string",
+                        "nullable": true
                     }
                 },
                 "required": [
                     "name",
-                    "width",
-                    "height",
                     "label",
                     "order"
                 ]
             },
-            "CdnDeliveryV2VodResponse": {
+            "CdnDeliveryV2ResourceModel": {
+                "type": "object",
+                "properties": {
+                    "uri": {
+                        "type": "string",
+                        "description": "The path to attach to the `cdn` property above. Replace the items surrounded by curly braces (`{`, `}`) with the appropriate values from the `data` property, depending on chosen resolution. First, choose the `qualityLevel`, then use the given token from the `qualityLevelParam` for that `qualityLevel`'s `name`."
+                    },
+                    "data": {
+                        "type": "object",
+                        "additionalProperties": true,
+                        "properties": {
+                            "qualityLevels": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/CdnDeliveryV2QualityLevelModel"
+                                }
+                            },
+                            "qualityLevelParams": {
+                                "type": "object",
+                                "description": "For each `qualityLevel` above, there will be an entry in this map where the property name matches the `qulityLevel[].name` containing a token to apply to the URL.",
+                                "nullable": true,
+                                "additionalProperties": true
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "uri",
+                    "data"
+                ]
+            },
+            "CdnDeliveryV2VodLivestreamResponse": {
                 "type": "object",
                 "properties": {
                     "cdn": {
@@ -195,47 +235,7 @@
                         ]
                     },
                     "resource": {
-                        "type": "object",
-                        "properties": {
-                            "uri": {
-                                "type": "string",
-                                "description": "The path to attach to the `cdn` property above. Replace the items surrounded by curly braces (`{`, `}`) with the appropriate values from the `data` property, depending on chosen resolution. First, choose the `qualityLevel`, then use the given token from the `qualityLevelParam` for that `qualityLevel`'s `name`."
-                            },
-                            "data": {
-                                "type": "object",
-                                "properties": {
-                                    "qualityLevels": {
-                                        "type": "array",
-                                        "items": {
-                                            "$ref": "#/components/schemas/CdnDeliveryV2QualityLevelModel"
-                                        }
-                                    },
-                                    "qualityLevelParams": {
-                                        "type": "object",
-                                        "description": "For each `qualityLevel` above, there will be an entry in this map where the property name matches the `qulityLevel[].name` containing a token to apply to the URL.",
-                                        "additionalProperties": {
-                                            "type": "object",
-                                            "properties": {
-                                                "token": {
-                                                    "type": "string"
-                                                }
-                                            },
-                                            "required": [
-                                                "token"
-                                            ]
-                                        }
-                                    }
-                                },
-                                "required": [
-                                    "qualityLevels",
-                                    "qualityLevelParams"
-                                ]
-                            }
-                        },
-                        "required": [
-                            "uri",
-                            "data"
-                        ]
+                        "$ref": "#/components/schemas/CdnDeliveryV2ResourceModel"
                     }
                 },
                 "required": [
@@ -261,35 +261,7 @@
                                 ]
                             },
                             "resource": {
-                                "type": "object",
-                                "properties": {
-                                    "uri": {
-                                        "type": "string",
-                                        "description": "The path to attach to the `cdn` property above. Replace the items surrounded by curly braces (`{`, `}`) with the appropriate values from the `data` property, depending on chosen resolution. First, choose the `qualityLevel`, then use the given token from the `qualityLevelParam` for that `qualityLevel`'s `name`."
-                                    },
-                                    "data": {
-                                        "type": "object",
-                                        "properties": {
-                                            "qualityLevels": {
-                                                "type": "array",
-                                                "items": {
-                                                    "$ref": "#/components/schemas/CdnDeliveryV2QualityLevelModel"
-                                                }
-                                            },
-                                            "token": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "required": [
-                                            "qualityLevels",
-                                            "token"
-                                        ]
-                                    }
-                                },
-                                "required": [
-                                    "uri",
-                                    "data"
-                                ]
+                                "$ref": "#/components/schemas/CdnDeliveryV2ResourceModel"
                             }
                         },
                         "required": [
@@ -299,63 +271,13 @@
                     }
                 ]
             },
-            "CdnDeliveryV2LivestreamResponse": {
-                "type": "object",
-                "properties": {
-                    "cdn": {
-                        "type": "string",
-                        "format": "uri",
-                        "description": "The domain of the CDN server to use. Combine with data from the `resource` object to create a full URL."
-                    },
-                    "strategy": {
-                        "type": "string",
-                        "description": "Which download/streaming strategy to use. If `cdn`, then a `cdn` property will be included with the response. Otherwise, if set to `client`, then a `client` property will be included with the response. The cdn or client property should be combined with the `resource` property to perform the download/stream.",
-                        "enum": [
-                            "cdn",
-                            "client"
-                        ]
-                    },
-                    "resource": {
-                        "type": "object",
-                        "properties": {
-                            "uri": {
-                                "type": "string",
-                                "description": "The path to attach to the `cdn` property above. Replace the items surrounded by curly braces (`{`, `}`) with the appropriate values from the `data` property."
-                            },
-                            "data": {
-                                "type": "object",
-                                "properties": {
-                                    "token": {
-                                        "type": "string"
-                                    }
-                                },
-                                "required": [
-                                    "token"
-                                ]
-                            }
-                        },
-                        "required": [
-                            "uri",
-                            "data"
-                        ]
-                    }
-                },
-                "required": [
-                    "cdn",
-                    "strategy",
-                    "resource"
-                ]
-            },
             "CdnDeliveryV2Response": {
                 "oneOf": [
                     {
-                        "$ref": "#/components/schemas/CdnDeliveryV2VodResponse"
+                        "$ref": "#/components/schemas/CdnDeliveryV2VodLivestreamResponse"
                     },
                     {
                         "$ref": "#/components/schemas/CdnDeliveryV2DownloadResponse"
-                    },
-                    {
-                        "$ref": "#/components/schemas/CdnDeliveryV2LivestreamResponse"
                     }
                 ]
             },
@@ -3491,7 +3413,7 @@
                             "type": "string"
                         },
                         "required": false,
-                        "description": "The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied."
+                        "description": "The GUID of the creator for a livestream, retrievable from `CreatorModelV2.id`. Required when `type` is `live`. Note: either this or `guid` must be supplied. Note: for `vod` and `download`, including this `creator` parameter *will* cause an error to be returned."
                     }
                 ],
                 "responses": {

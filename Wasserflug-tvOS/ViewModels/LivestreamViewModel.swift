@@ -25,7 +25,7 @@ class LivestreamViewModel: BaseViewModel, ObservableObject {
 		}
 	}
 	
-	@Published var state: ViewModelState<(CreatorModelV2, CdnDeliveryV2LivestreamResponse, URL)> = .idle
+	@Published var state: ViewModelState<(CreatorModelV2, CdnDeliveryV2VodLivestreamResponse, URL)> = .idle
 	@Published var isLive: Bool = false
 	@Published var isLoadingLiveStatus: Bool = false
 	
@@ -98,7 +98,7 @@ class LivestreamViewModel: BaseViewModel, ObservableObject {
 							DispatchQueue.main.async {
 								switch result {
 								case let .success(response):
-									guard case let .typeCdnDeliveryV2LivestreamResponse(cdnLivestream) = response else {
+									guard case let .typeCdnDeliveryV2VodLivestreamResponse(cdnLivestream) = response else {
 										self.state = .failed(LivestreamError.badResponse)
 										return
 									}
@@ -107,7 +107,7 @@ class LivestreamViewModel: BaseViewModel, ObservableObject {
 									])
 									let baseCdn = cdnLivestream.cdn
 									let pathTemplate = cdnLivestream.resource.uri
-									let newPath = baseCdn + pathTemplate.replacingOccurrences(of: "{token}", with: cdnLivestream.resource.data.token)
+									let newPath = baseCdn + CDNTemplateRenderer.render(template: pathTemplate, data: cdnLivestream.resource.data, quality: cdnLivestream.resource.data.qualityLevels?.first ?? CdnDeliveryV2QualityLevelModel(name: "", label: "", order: 0))
 									guard let newUrl = URL(string: newPath) else {
 										self.state = .failed(LivestreamError.badUrl)
 										return
