@@ -81,10 +81,11 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 					switch result {
 					case let .success(response):
 						self.logger.notice("Received video information.", metadata: [
-							"origins": "\(response.groups.flatMap({ $0.origins ?? [] }).map({ $0.url }))"
+							"origins": "\(response.groups.flatMap({ $0.origins ?? [] }).map({ $0.url }).joined(separator: ", "))"
 						])
 						
 						let screenNativeBounds = UIScreen.main.nativeBounds
+						// Only use the first group, for now.
 						let group = response.groups.first
 						let variants = group?.variants
 						let filteredVariants = variants?.filter({ variant in
@@ -110,7 +111,7 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 						
 						let qualityLevelsAndUrls = filteredVariants?.compactMap({ (variant) -> (String, (URL, CdnDeliveryV3Variant))? in
 							// Map the quality level to the correct URL
-							if let url = self.getBestUrl(variant: variant, group: group) {
+							if let url = DeliveryHelper.getBestUrl(variant: variant, group: group) {
 								return (variant.name, (url, variant))
 							}
 							return nil
@@ -168,45 +169,6 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 		templateItem.externalMetadata = avMetadataItems
 		
 		return templateItem
-	}
-	
-	private func getBestUrl(variant: CdnDeliveryV3Variant, group: CdnDeliveryV3Group?) -> URL? {
-		// If the variant itself has an absolute URL, use that.
-		if let absoluteUrl = URL(string: variant.url), absoluteUrl.host != nil {
-			return absoluteUrl
-		}
-		
-		// Otherwise, get the best URL, in order of:
-		// 1. First try the variant's origins, if any
-		// 2. Try the group's origins, if any
-		// 3. Lastly, default to floatplane.com
-		
-		if let variantOrigins = variant.origins {
-			for randomElement in variantOrigins.shuffled() {
-				if let url = joinUrl(base: randomElement.url, remainder: variant.url) {
-					return url
-				}
-			}
-		}
-		
-		if let groupOrigins = group?.origins {
-			for randomElement in groupOrigins.shuffled() {
-				if let url = joinUrl(base: randomElement.url, remainder: variant.url) {
-					return url
-				}
-			}
-		}
-		
-		return joinUrl(base: "https://www.floatplane.com", remainder: variant.url)
-	}
-	
-	private func joinUrl(base: String, remainder: String) -> URL? {
-		let cleanBase = base.trimmingSuffix(while: { $0 == "/" })
-		if remainder.hasPrefix("/") {
-			return URL(string: String(cleanBase) + String(remainder))
-		} else {
-			return URL(string: String(cleanBase) + "/" + String(remainder))
-		}
 	}
 }
 

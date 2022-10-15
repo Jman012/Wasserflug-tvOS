@@ -25,7 +25,7 @@ class LivestreamViewModel: BaseViewModel, ObservableObject {
 		}
 	}
 	
-	@Published var state: ViewModelState<(CreatorModelV2, CdnDeliveryV2VodLivestreamResponse, URL)> = .idle
+	@Published var state: ViewModelState<(CreatorModelV2, CdnDeliveryV3Response, URL)> = .idle
 	@Published var isLive: Bool = false
 	@Published var isLoadingLiveStatus: Bool = false
 	
@@ -51,7 +51,8 @@ class LivestreamViewModel: BaseViewModel, ObservableObject {
 		
 		// First, load the creator information. We do get some static information
 		// at app startup from the authentication code, but since we want to load
-		// the livestream thumbnail, we don't want this to be out of date and stale.
+		// the livestream thumbnail, we don't want this to be out of date and stale,
+		// in the case that it was updated since app launch when a livestream begins.
 		fpApiService
 			.getInfo(creatorGUID: [creatorId])
 			.flatMapResult { (response) -> Result<[CreatorModelV2], ErrorModel> in
@@ -71,7 +72,7 @@ class LivestreamViewModel: BaseViewModel, ObservableObject {
 			.whenComplete { result in
 				switch result {
 				case let .success(creators):
-					guard let creator = creators.first(where: { $0.id == self.creatorId }) else {
+					guard let creator = creators.first(where: { $0.id == self.creatorId }), let livestream = creator.liveStream else {
 						self.logger.error("Did not receive creator information correctly. Reporting the error to the user.")
 						self.state = .failed(LivestreamError.missingCreator)
 						return
@@ -79,8 +80,8 @@ class LivestreamViewModel: BaseViewModel, ObservableObject {
 					
 					// Second, get the CDN information
 					self.fpApiService
-						.getCdn(type: type, id: self.creatorId)
-						.flatMapResult { (response) -> Result<CdnDeliveryV2Response, ErrorModel> in
+						.getDeliveryInfo(scenario: .live, entityId: livestream.id, outputKind: nil)
+						.flatMapResult { (response) -> Result<CdnDeliveryV3Response, ErrorModel> in
 							switch response {
 							case let .http200(value: cdnResponse, raw: clientResponse):
 								self.logger.debug("Livestream informaton raw response: \(clientResponse.plaintextDebugContent)")
@@ -98,17 +99,16 @@ class LivestreamViewModel: BaseViewModel, ObservableObject {
 							DispatchQueue.main.async {
 								switch result {
 								case let .success(response):
-									guard case let .typeCdnDeliveryV2VodLivestreamResponse(cdnLivestream) = response else {
-										self.state = .failed(LivestreamError.badResponse)
-										return
-									}
 									self.logger.notice("Received livestream information.", metadata: [
-										"cdn": "\(cdnLivestream.cdn)",
+										"origins": "\(response.groups.flatMap({ $0.origins ?? [] }).map({ $0.url }).joined(separator: ", "))"
 									])
-									let baseCdn = cdnLivestream.cdn
-									let pathTemplate = cdnLivestream.resource.uri
-									let newPath = baseCdn + CDNTemplateRenderer.render(template: pathTemplate, data: cdnLivestream.resource.data, quality: cdnLivestream.resource.data.qualityLevels?.first ?? CdnDeliveryV2QualityLevelModel(name: "", label: "", order: 0))
-									guard let newUrl = URL(string: newPath) else {
+									// Only use the first group, for now.
+									let group = response.groups.first
+									let urls = group?.variants.compactMap({ variant -> URL? in
+										return DeliveryHelper.getBestUrl(variant: variant, group: group)
+									})
+									// Livestreams should only really have a single variant. Use the first one returned.
+									guard let newUrl = urls?.first else {
 										self.state = .failed(LivestreamError.badUrl)
 										return
 									}
@@ -119,7 +119,7 @@ class LivestreamViewModel: BaseViewModel, ObservableObject {
 									}
 									self.startLoadingLiveStatus()
 									
-									self.state = .loaded((creator, cdnLivestream, newUrl))
+									self.state = .loaded((creator, response, newUrl))
 								case let .failure(error):
 									self.logger.error("Encountered an unexpected error while loading livestream information. Reporting the error to the user. Error: \(String(reflecting: error))")
 //									self.path = nil
