@@ -47,21 +47,6 @@ public struct CdnDeliveryV2QualityLevelModel: Content, Hashable {
         case codecs
     }
 
-    public var additionalProperties: [String: AnyCodable] = [:]
-
-    public subscript(key: String) -> AnyCodable? {
-        get {
-            if let value = additionalProperties[key] {
-                return value
-            }
-            return nil
-        }
-
-        set {
-            additionalProperties[key] = newValue
-        }
-    }
-
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
@@ -73,32 +58,6 @@ public struct CdnDeliveryV2QualityLevelModel: Content, Hashable {
         try container.encode(order, forKey: .order)
         try container.encodeIfPresent(mimeType, forKey: .mimeType)
         try container.encodeIfPresent(codecs, forKey: .codecs)
-        var additionalPropertiesContainer = encoder.container(keyedBy: String.self)
-        try additionalPropertiesContainer.encodeMap(additionalProperties)
-    }
-
-    // Decodable protocol methods
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        name = try container.decode(String.self, forKey: .name)
-        width = try container.decodeIfPresent(Int.self, forKey: .width)
-        height = try container.decodeIfPresent(Int.self, forKey: .height)
-        label = try container.decode(String.self, forKey: .label)
-        order = try container.decode(Int.self, forKey: .order)
-        mimeType = try container.decodeIfPresent(String.self, forKey: .mimeType)
-        codecs = try container.decodeIfPresent(String.self, forKey: .codecs)
-        var nonAdditionalPropertyKeys = Set<String>()
-        nonAdditionalPropertyKeys.insert("name")
-        nonAdditionalPropertyKeys.insert("width")
-        nonAdditionalPropertyKeys.insert("height")
-        nonAdditionalPropertyKeys.insert("label")
-        nonAdditionalPropertyKeys.insert("order")
-        nonAdditionalPropertyKeys.insert("mimeType")
-        nonAdditionalPropertyKeys.insert("codecs")
-        let additionalPropertiesContainer = try decoder.container(keyedBy: String.self)
-        additionalProperties = try additionalPropertiesContainer.decodeMap(AnyCodable.self, excludedKeys: nonAdditionalPropertyKeys)
     }
 }
 

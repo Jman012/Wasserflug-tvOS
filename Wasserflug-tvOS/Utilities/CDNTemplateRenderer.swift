@@ -14,6 +14,7 @@ class CDNTemplateRenderer {
 			}
 			let source = template[outerRange]
 			let replace = getDataValueFromKeyPath(path: String(template[innerRange]), data: data, quality: quality)
+				.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed.union(.urlQueryAllowed)) ?? ""
 			
 			newTemplate = newTemplate.replacingOccurrences(of: source, with: replace)
 		}
@@ -53,8 +54,8 @@ class CDNTemplateRenderer {
 						replace = currentReplace.mimeType
 					case "codecs":
 						replace = currentReplace.codecs
-					case let x:
-						replace = currentReplace.additionalProperties[x]?.value
+					default:
+						break
 					}
 				} else if let currentReplace = replace as? [String: AnyCodable] {
 					replace = currentReplace[String(component)]?.value

@@ -20,7 +20,7 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 		}
 	}
 	
-	@Published var state: ViewModelState<CdnDeliveryV2VodLivestreamResponse> = .idle
+	@Published var state: ViewModelState<CdnDeliveryV3Response> = .idle
 	
 	private let fpApiService: FPAPIService
 	let videoAttachment: VideoAttachmentModel
@@ -43,7 +43,7 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 		]
 	}
 	
-	private(set) var qualityLevels: [String: URL] = [:]
+	private(set) var qualityLevels: [String: (URL, CdnDeliveryV3Variant)] = [:]
 	
 	init(fpApiService: FPAPIService, videoAttachment: VideoAttachmentModel, contentPost: ContentPostV3Response, description: AttributedString) {
 		self.fpApiService = fpApiService
@@ -61,9 +61,8 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 			"id": "\(videoAttachment.guid)",
 		])
 		
-		fpApiService
-			.getCdn(type: type, id: videoAttachment.guid)
-			.flatMapResult { (response) -> Result<CdnDeliveryV2Response, ErrorModel> in
+		fpApiService.getDeliveryInfo(scenario: .ondemand, entityId: videoAttachment.guid, outputKind: nil)
+			.flatMapResult { (response) -> Result<CdnDeliveryV3Response, ErrorModel> in
 				switch response {
 				case let .http200(value: cdnResponse, raw: clientResponse):
 					self.logger.debug("Video information raw response: \(clientResponse.plaintextDebugContent)")
@@ -81,51 +80,52 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 				DispatchQueue.main.async {
 					switch result {
 					case let .success(response):
-						guard case let .typeCdnDeliveryV2VodLivestreamResponse(cdnVod) = response else {
-							self.state = .failed(VideoError.noQualityLevelsFound)
-							return
-						}
 						self.logger.notice("Received video information.", metadata: [
-							"cdn": "\(cdnVod.cdn)",
+							"origins": "\(response.groups.flatMap({ $0.origins ?? [] }).map({ $0.url }))"
 						])
-						let baseCdn = cdnVod.cdn
-						let pathTemplate = cdnVod.resource.uri
-						let screenNativeBounds = UIScreen.main.nativeBounds
-						let levels = cdnVod.resource.data.qualityLevels?
-							.filter({ qualityLevel in
-								// Filter out resolutions larger than the device's screen resolution to save
-								// on bandwidth and downscaling performance.
-								// Use height for these comparisons. If using width, we run into funny issues with
-								// LTT videos which use 2:1 aspect ratios (1080p is 2160x1080 instead of 1920x1080,
-								// and 4K is 4320x2160 instead of 3480x2160) which makes screen size comparisons
-								// difficult to do correctly.
-								// Just in case some creators have funny heights, allow for a 15% tolerance.
-								let result = CGFloat(qualityLevel.height ?? 0) <= (screenNativeBounds.height * 1.15)
-								if !result {
-									self.logger.warning("Ignoring quality level \(String(describing: qualityLevel)) (\(qualityLevel.width ?? 0) x \(qualityLevel.height ?? 0)) due to larger-than-screen height of \(screenNativeBounds.height).")
-								}
-								return result
-							})
-							.compactMap({ (qualityLevel) -> (String, URL)? in
-								// Map the quality levels to the correct URL
-								let path = CDNTemplateRenderer.render(template: pathTemplate, data: cdnVod.resource.data, quality: qualityLevel)
-								guard let url = URL(string: baseCdn + path) else {
-									return nil
-								}
-								return (qualityLevel.name, url)
-							}) ?? []
-						self.qualityLevels = Dictionary(uniqueKeysWithValues: levels)
 						
+						let screenNativeBounds = UIScreen.main.nativeBounds
+						let group = response.groups.first
+						let variants = group?.variants
+						let filteredVariants = variants?.filter({ variant in
+							let enabled = variant.enabled ?? false
+							let hidden = variant.hidden ?? false
+							
+							// Filter out resolutions larger than the device's screen resolution to save
+							// on bandwidth and downscaling performance.
+							// Use height for these comparisons. If using width, we run into funny issues with
+							// LTT videos which use 2:1 aspect ratios (1080p is 2160x1080 instead of 1920x1080,
+							// and 4K is 4320x2160 instead of 3480x2160) which makes screen size comparisons
+							// difficult to do correctly.
+							// Just in case some creators have funny heights, allow for a 15% tolerance.
+							var videoSizeOkay: Bool = false
+							if let video = variant.meta?.video {
+								videoSizeOkay = CGFloat(video.height ?? 0) <= (screenNativeBounds.height * 1.15)
+								if !videoSizeOkay {
+									self.logger.warning("Ignoring quality level \(String(describing: variant.name)) (\(video.width ?? 0) x \(video.height ?? 0)) due to larger-than-screen height of \(screenNativeBounds.height).")
+								}
+							}
+							return enabled && !hidden && videoSizeOkay
+						})
+						
+						let qualityLevelsAndUrls = filteredVariants?.compactMap({ (variant) -> (String, (URL, CdnDeliveryV3Variant))? in
+							// Map the quality level to the correct URL
+							if let url = self.getBestUrl(variant: variant, group: group) {
+								return (variant.name, (url, variant))
+							}
+							return nil
+						}) ?? []
+						self.qualityLevels = Dictionary(uniqueKeysWithValues: qualityLevelsAndUrls)
+
 						if self.qualityLevels.isEmpty {
 							self.logger.warning("No quality levels were able to be parsed from the video response. Showing an error to the user.", metadata: [
 								"id": "\(self.videoAttachment.guid)",
-								"qualityLevelNames": "\(cdnVod.resource.data.qualityLevels?.map({ $0.name }).joined(separator: ", ") ?? "<nil>")",
-								"qualityLevelParams": "\(cdnVod.resource.data.qualityLevelParams?.keys.joined(separator: ", ") ?? "<nil>")",
+								"qualityLevelNames": "\(group?.variants.map({ $0.name }).joined(separator: ", ") ?? "<nil>")",
 							])
 							self.state = .failed(VideoError.noQualityLevelsFound)
 						}
-						
-						self.state = .loaded(cdnVod)
+
+						self.state = .loaded(response)
 					case let .failure(error):
 						self.logger.error("Encountered an unexpected error while loading video information. Reporting the error to the user. Error: \(String(reflecting: error))")
 						self.state = .failed(error)
@@ -147,13 +147,13 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 			"id": "\(videoAttachment.guid)",
 			"desiredQuality": "\(desiredQuality)",
 		])
-		var url = qualityLevels[desiredQuality]
+		var url = qualityLevels[desiredQuality]?.0
 		if url == nil {
 			url = qualityLevels
 				.sorted(by: { Int($0.key) ?? 0 < Int($1.key) ?? 0 })
 				.filter({ Int($0.key) ?? 0 < Int(desiredQuality) ?? Int.max }) // Don't get a resolution larger than the desired.
 				.last?
-				.value
+				.value.0
 		}
 		guard let url = url else {
 			self.logger.critical("No playable URL was found for the video. Invalid state. Closing the application.")
@@ -168,6 +168,45 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 		templateItem.externalMetadata = avMetadataItems
 		
 		return templateItem
+	}
+	
+	private func getBestUrl(variant: CdnDeliveryV3Variant, group: CdnDeliveryV3Group?) -> URL? {
+		// If the variant itself has an absolute URL, use that.
+		if let absoluteUrl = URL(string: variant.url), absoluteUrl.host != nil {
+			return absoluteUrl
+		}
+		
+		// Otherwise, get the best URL, in order of:
+		// 1. First try the variant's origins, if any
+		// 2. Try the group's origins, if any
+		// 3. Lastly, default to floatplane.com
+		
+		if let variantOrigins = variant.origins {
+			for randomElement in variantOrigins.shuffled() {
+				if let url = joinUrl(base: randomElement.url, remainder: variant.url) {
+					return url
+				}
+			}
+		}
+		
+		if let groupOrigins = group?.origins {
+			for randomElement in groupOrigins.shuffled() {
+				if let url = joinUrl(base: randomElement.url, remainder: variant.url) {
+					return url
+				}
+			}
+		}
+		
+		return joinUrl(base: "https://www.floatplane.com", remainder: variant.url)
+	}
+	
+	private func joinUrl(base: String, remainder: String) -> URL? {
+		let cleanBase = base.trimmingSuffix(while: { $0 == "/" })
+		if remainder.hasPrefix("/") {
+			return URL(string: String(cleanBase) + String(remainder))
+		} else {
+			return URL(string: String(cleanBase) + "/" + String(remainder))
+		}
 	}
 }
 

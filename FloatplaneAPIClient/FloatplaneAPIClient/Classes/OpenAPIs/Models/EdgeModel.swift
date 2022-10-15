@@ -18,9 +18,9 @@ public struct EdgeModel: Content, Hashable {
     public var bandwidth: Int64
     public var allowDownload: Bool
     public var allowStreaming: Bool
-    public var datacenter: EdgeModelDatacenter
+    public var datacenter: EdgeDataCenter
 
-    public init(hostname: String, queryPort: Int, bandwidth: Int64, allowDownload: Bool, allowStreaming: Bool, datacenter: EdgeModelDatacenter) {
+    public init(hostname: String, queryPort: Int, bandwidth: Int64, allowDownload: Bool, allowStreaming: Bool, datacenter: EdgeDataCenter) {
         self.hostname = hostname
         self.queryPort = queryPort
         self.bandwidth = bandwidth

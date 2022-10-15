@@ -1,4 +1,5 @@
 .gitignore
+.openapi-generator-ignore
 .swiftformat
 FloatplaneAPIClient/Classes/OpenAPIs/APIs.swift
 FloatplaneAPIClient/Classes/OpenAPIs/APIs/AuthV2API.swift
@@ -10,6 +11,7 @@ FloatplaneAPIClient/Classes/OpenAPIs/APIs/ContentV3API.swift
 FloatplaneAPIClient/Classes/OpenAPIs/APIs/CreatorSubscriptionPlanV2API.swift
 FloatplaneAPIClient/Classes/OpenAPIs/APIs/CreatorV2API.swift
 FloatplaneAPIClient/Classes/OpenAPIs/APIs/CreatorV3API.swift
+FloatplaneAPIClient/Classes/OpenAPIs/APIs/DeliveryV3API.swift
 FloatplaneAPIClient/Classes/OpenAPIs/APIs/EdgesV2API.swift
 FloatplaneAPIClient/Classes/OpenAPIs/APIs/FAQV2API.swift
 FloatplaneAPIClient/Classes/OpenAPIs/APIs/LoyaltyRewardsV3API.swift
@@ -36,6 +38,23 @@ FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV2ResourceModel.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV2ResourceModelData.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV2Response.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV2VodLivestreamResponse.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV3Group.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV3ImagePresentationCharacteristics.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV3MediaBitrateInfo.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV3MediaBitrateInfoBitrate.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV3MediaIdentityCharacteristics.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV3Meta.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV3MetaAudio.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV3MetaAudioAllOf.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV3MetaCommon.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV3MetaCommonAccess.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV3MetaImage.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV3MetaLive.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV3MetaVideo.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV3MetaVideoAllOf.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV3Origin.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV3Response.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV3Variant.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CheckFor2faLoginRequest.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/ChildImageModel.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CommentLikeV3PostRequest.swift
@@ -63,8 +82,8 @@ FloatplaneAPIClient/Classes/OpenAPIs/Models/CreatorModelV3.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CreatorModelV3Category.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/DiscordRoleModel.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/DiscordServerModel.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/EdgeDataCenter.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/EdgeModel.swift
-FloatplaneAPIClient/Classes/OpenAPIs/Models/EdgeModelDatacenter.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/EdgesModel.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/ErrorModel.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/ErrorModelErrorsInner.swift

@@ -20,6 +20,7 @@ protocol FPAPIService {
 	func getBlogPost(id: String) -> EventLoopFuture<ContentV3API.GetBlogPost>
 	func getVideoContent(id: String) -> EventLoopFuture<ContentV3API.GetVideoContent>
 	func getCdn(type: CDNV2API.ModelType_getDeliveryInfo, id: String) -> EventLoopFuture<CDNV2API.GetDeliveryInfo>
+	func getDeliveryInfo(scenario: DeliveryV3API.Scenario_getDeliveryInfoV3, entityId: String, outputKind: DeliveryV3API.OutputKind_getDeliveryInfoV3?) -> EventLoopFuture<DeliveryV3API.GetDeliveryInfoV3>
 	func getPictureContent(id: String) -> EventLoopFuture<ContentV3API.GetPictureContent>
 	
 	// Interaction-related
@@ -68,6 +69,9 @@ class DefaultFPAPIService: FPAPIService {
 		default:
 			return CDNV2API.getDeliveryInfo(type: type, guid: id)
 		}
+	}
+	func getDeliveryInfo(scenario: DeliveryV3API.Scenario_getDeliveryInfoV3, entityId: String, outputKind: DeliveryV3API.OutputKind_getDeliveryInfoV3? = nil) -> EventLoopFuture<DeliveryV3API.GetDeliveryInfoV3> {
+		return DeliveryV3API.getDeliveryInfoV3(scenario: scenario, entityId: entityId, outputKind: outputKind)
 	}
 	func getPictureContent(id: String) -> EventLoopFuture<ContentV3API.GetPictureContent> {
 		return ContentV3API.getPictureContent(id: id)
@@ -125,6 +129,16 @@ class MockFPAPIService: FPAPIService {
 			return eventLoop.makeSucceededFuture(.http200(value: MockData.getCdnLive, raw: ClientResponse()))
 		default:
 			return eventLoop.makeSucceededFuture(.http200(value: MockData.getCdn, raw: ClientResponse()))
+		}
+	}
+	func getDeliveryInfo(scenario: DeliveryV3API.Scenario_getDeliveryInfoV3, entityId: String, outputKind: DeliveryV3API.OutputKind_getDeliveryInfoV3? = nil) -> EventLoopFuture<DeliveryV3API.GetDeliveryInfoV3> {
+		switch scenario {
+		case .ondemand:
+			return eventLoop.makeSucceededFuture(.http200(value: MockData.getDeliveryOnDemand, raw: ClientResponse()))
+		case .live:
+			return eventLoop.makeSucceededFuture(.http200(value: MockData.getDeliveryLive, raw: ClientResponse()))
+		case .download:
+			return eventLoop.makeSucceededFuture(.http200(value: MockData.getDeliveryDownload, raw: ClientResponse()))
 		}
 	}
 	func getPictureContent(id: String) -> EventLoopFuture<ContentV3API.GetPictureContent> {
@@ -185,6 +199,18 @@ enum MockData {
 	
 	static let getCdnLive: CdnDeliveryV2Response = {
 		return try! decoder.decode(CdnDeliveryV2Response.self, from: ByteBuffer(string: MockStaticData.getCdnLive), headers: .init())
+	}()
+	
+	static let getDeliveryOnDemand: CdnDeliveryV3Response = {
+		return try! decoder.decode(CdnDeliveryV3Response.self, from: ByteBuffer(string: MockStaticData.getDeliveryOnDemand), headers: .init())
+	}()
+	
+	static let getDeliveryLive: CdnDeliveryV3Response = {
+		return try! decoder.decode(CdnDeliveryV3Response.self, from: ByteBuffer(string: MockStaticData.getDeliveryLive), headers: .init())
+	}()
+	
+	static let getDeliveryDownload: CdnDeliveryV3Response = {
+		return try! decoder.decode(CdnDeliveryV3Response.self, from: ByteBuffer(string: MockStaticData.getDeliveryDownload), headers: .init())
 	}()
 	
 	static let getPictureContent: ContentPictureV3Response = {
@@ -5567,6 +5593,404 @@ enum MockStaticData {
 			"token": "eyJhbGciOiJFUzM4NCIsInR5cCI6IkpXVCJ9.eyJhd3M6Y2hhbm5lbC1hcm4iOiJhcm46YXdzOml2czp1cy1lYXN0LTE6NzU4NDE3NTUxNTM2OmNoYW5uZWwveUtreHVyNHVrYzBCIiwiYXdzOmFjY2Vzcy1jb250cm9sLWFsbG93LW9yaWdpbiI6Imh0dHBzOi8vd3d3LmZsb2F0cGxhbmUuY29tIiwiaWF0IjoxNjYyOTM5NTcwLCJleHAiOjE2NjMwMjU5NzB9.Zu1UavMfLOmAQ6m-hX1h5dkNdqGgRpRe-hGwhEs57tu8aMg0Ey_Oi-z2hdV3sHiUNFygmNHhqKj_JYDjRHWJtc0O1wxIzSYI_soQm4ldOspJGIzZEjBNNgxg9ljOqUil"
 		}
 	}
+}
+"""#
+	
+	static let getDeliveryOnDemand: String = #"""
+{
+	"groups": [
+		{
+			"origins": [
+				{
+					"url": "https://cdn-vod-drm2.floatplane.com"
+				}
+			],
+			"variants": [
+				{
+					"name": "360-avc1",
+					"label": "360p",
+					"url": "/Videos/Lug14XXgLx/360.mp4/chunk.m3u8?token=<token>",
+					"mimeType": "application/x-mpegURL",
+					"order": 11016384,
+					"hidden": false,
+					"enabled": true,
+					"meta": {
+						"video": {
+							"codec": "avc1.64001e",
+							"codecSimple": "avc1",
+							"bitrate": {
+								"average": 255886
+							},
+							"width": 640,
+							"height": 320,
+							"isHdr": false,
+							"fps": 29.97,
+							"mimeType": "video/MP2T"
+						},
+						"audio": {
+							"codec": "mp4a.40.2",
+							"bitrate": {
+								"average": 93340,
+								"maximum": 93340
+							},
+							"channelCount": 2,
+							"samplerate": 48000,
+							"mimeType": "video/MP2T"
+						}
+					}
+				},
+				{
+					"name": "480-avc1",
+					"label": "480p",
+					"url": "/Videos/Lug14XXgLx/480.mp4/chunk.m3u8?token=<token>",
+					"mimeType": "application/x-mpegURL",
+					"order": 19339456,
+					"hidden": false,
+					"enabled": true,
+					"meta": {
+						"video": {
+							"codec": "avc1.64001f",
+							"codecSimple": "avc1",
+							"bitrate": {
+								"average": 395615
+							},
+							"width": 848,
+							"height": 424,
+							"isHdr": false,
+							"fps": 29.97,
+							"mimeType": "video/MP2T"
+						},
+						"audio": {
+							"codec": "mp4a.40.2",
+							"bitrate": {
+								"average": 93340,
+								"maximum": 93340
+							},
+							"channelCount": 2,
+							"samplerate": 48000,
+							"mimeType": "video/MP2T"
+						}
+					}
+				},
+				{
+					"name": "720-avc1",
+					"label": "720p",
+					"url": "/Videos/Lug14XXgLx/720.mp4/chunk.m3u8?token=<token>",
+					"mimeType": "application/x-mpegURL",
+					"order": 44112064,
+					"hidden": false,
+					"enabled": true,
+					"meta": {
+						"video": {
+							"codec": "avc1.640020",
+							"codecSimple": "avc1",
+							"bitrate": {
+								"average": 736634
+							},
+							"width": 1280,
+							"height": 640,
+							"isHdr": false,
+							"fps": 29.97,
+							"mimeType": "video/MP2T"
+						},
+						"audio": {
+							"codec": "mp4a.40.2",
+							"bitrate": {
+								"average": 93340,
+								"maximum": 93340
+							},
+							"channelCount": 2,
+							"samplerate": 48000,
+							"mimeType": "video/MP2T"
+						}
+					}
+				},
+				{
+					"name": "1080-avc1",
+					"label": "1080p",
+					"url": "/Videos/Lug14XXgLx/1080.mp4/chunk.m3u8?token=<token>",
+					"mimeType": "application/x-mpegURL",
+					"order": 99293376,
+					"hidden": false,
+					"enabled": true,
+					"meta": {
+						"video": {
+							"codec": "avc1.64002a",
+							"codecSimple": "avc1",
+							"bitrate": {
+								"average": 1448573
+							},
+							"width": 1920,
+							"height": 960,
+							"isHdr": false,
+							"fps": 29.97,
+							"mimeType": "video/MP2T"
+						},
+						"audio": {
+							"codec": "mp4a.40.2",
+							"bitrate": {
+								"average": 93340,
+								"maximum": 93340
+							},
+							"channelCount": 2,
+							"samplerate": 48000,
+							"mimeType": "video/MP2T"
+						}
+					}
+				},
+				{
+					"name": "2160-avc1",
+					"label": "4K",
+					"url": "/Videos/Lug14XXgLx/2160.mp4/chunk.m3u8?token=<token>",
+					"mimeType": "application/x-mpegURL",
+					"order": 397351104,
+					"hidden": false,
+					"enabled": true,
+					"meta": {
+						"video": {
+							"codec": "avc1.640034",
+							"codecSimple": "avc1",
+							"bitrate": {
+								"average": 5904212
+							},
+							"width": 3840,
+							"height": 1920,
+							"isHdr": false,
+							"fps": 29.97,
+							"mimeType": "video/MP2T"
+						},
+						"audio": {
+							"codec": "mp4a.40.2",
+							"bitrate": {
+								"average": 93340,
+								"maximum": 93340
+							},
+							"channelCount": 2,
+							"samplerate": 48000,
+							"mimeType": "video/MP2T"
+						}
+					}
+				}
+			]
+		}
+	]
+}
+"""#
+	
+	static let getDeliveryLive: String = #"""
+{
+	"groups": [
+		{
+			"origins": [
+				{
+					"url": "https://de488bcb61af.us-east-1.playback.live-video.net"
+				}
+			],
+			"variants": [
+				{
+					"name": "live-abr",
+					"label": "Auto",
+					"url": "/api/video/v1/us-east-1.758417551536.channel.yKkxur4ukc0B.m3u8?allow_source=false&token=<token>",
+					"mimeType": "application/x-mpegURL",
+					"hidden": false,
+					"enabled": true,
+					"meta": {
+						"live": {
+							"lowLatencyExtension": "ivshls"
+						}
+					}
+				}
+			]
+		}
+	]
+}
+"""#
+	
+	static let getDeliveryDownload: String = #"""
+{
+	"groups": [
+		{
+			"origins": [
+				{
+					"url": "https://edge01-na.floatplane.com",
+					"queryUrl": "https://edge01-na-query.floatplane.com",
+					"datacenter": {
+						"latitude": 45.3168,
+						"longitude": -73.8659,
+						"countryCode": "CA",
+						"regionCode": "QC"
+					}
+				},
+				{
+					"url": "https://edge02-na.floatplane.com",
+					"queryUrl": "https://edge02-na-query.floatplane.com",
+					"datacenter": {
+						"latitude": 45.3168,
+						"longitude": -73.8659,
+						"countryCode": "CA",
+						"regionCode": "QC"
+					}
+				}
+			],
+			"variants": [
+				{
+					"name": "360-avc1",
+					"label": "360p",
+					"url": "/Videos/Lug14XXgLx/360.mp4?token=<token>",
+					"mimeType": "video/mp4",
+					"order": 11016384,
+					"hidden": false,
+					"enabled": true,
+					"meta": {
+						"video": {
+							"codec": "avc1.64001e",
+							"codecSimple": "avc1",
+							"bitrate": {
+								"average": 255886
+							},
+							"width": 640,
+							"height": 320,
+							"isHdr": false,
+							"fps": 29.97
+						},
+						"audio": {
+							"codec": "mp4a.40.2",
+							"bitrate": {
+								"average": 93340,
+								"maximum": 93340
+							},
+							"channelCount": 2,
+							"samplerate": 48000
+						}
+					}
+				},
+				{
+					"name": "480-avc1",
+					"label": "480p",
+					"url": "/Videos/Lug14XXgLx/480.mp4?token=<token>",
+					"mimeType": "video/mp4",
+					"order": 19339456,
+					"hidden": false,
+					"enabled": true,
+					"meta": {
+						"video": {
+							"codec": "avc1.64001f",
+							"codecSimple": "avc1",
+							"bitrate": {
+								"average": 395615
+							},
+							"width": 848,
+							"height": 424,
+							"isHdr": false,
+							"fps": 29.97
+						},
+						"audio": {
+							"codec": "mp4a.40.2",
+							"bitrate": {
+								"average": 93340,
+								"maximum": 93340
+							},
+							"channelCount": 2,
+							"samplerate": 48000
+						}
+					}
+				},
+				{
+					"name": "720-avc1",
+					"label": "720p",
+					"url": "/Videos/Lug14XXgLx/720.mp4?token=<token>",
+					"mimeType": "video/mp4",
+					"order": 44112064,
+					"hidden": false,
+					"enabled": true,
+					"meta": {
+						"video": {
+							"codec": "avc1.640020",
+							"codecSimple": "avc1",
+							"bitrate": {
+								"average": 736634
+							},
+							"width": 1280,
+							"height": 640,
+							"isHdr": false,
+							"fps": 29.97
+						},
+						"audio": {
+							"codec": "mp4a.40.2",
+							"bitrate": {
+								"average": 93340,
+								"maximum": 93340
+							},
+							"channelCount": 2,
+							"samplerate": 48000
+						}
+					}
+				},
+				{
+					"name": "1080-avc1",
+					"label": "1080p",
+					"url": "/Videos/Lug14XXgLx/1080.mp4?token=<token>",
+					"mimeType": "video/mp4",
+					"order": 99293376,
+					"hidden": false,
+					"enabled": true,
+					"meta": {
+						"video": {
+							"codec": "avc1.64002a",
+							"codecSimple": "avc1",
+							"bitrate": {
+								"average": 1448573
+							},
+							"width": 1920,
+							"height": 960,
+							"isHdr": false,
+							"fps": 29.97
+						},
+						"audio": {
+							"codec": "mp4a.40.2",
+							"bitrate": {
+								"average": 93340,
+								"maximum": 93340
+							},
+							"channelCount": 2,
+							"samplerate": 48000
+						}
+					}
+				},
+				{
+					"name": "2160-avc1",
+					"label": "4K",
+					"url": "/Videos/Lug14XXgLx/2160.mp4?token=<token>",
+					"mimeType": "video/mp4",
+					"order": 397351104,
+					"hidden": false,
+					"enabled": true,
+					"meta": {
+						"video": {
+							"codec": "avc1.640034",
+							"codecSimple": "avc1",
+							"bitrate": {
+								"average": 5904212
+							},
+							"width": 3840,
+							"height": 1920,
+							"isHdr": false,
+							"fps": 29.97
+						},
+						"audio": {
+							"codec": "mp4a.40.2",
+							"bitrate": {
+								"average": 93340,
+								"maximum": 93340
+							},
+							"channelCount": 2,
+							"samplerate": 48000
+						}
+					}
+				}
+			]
+		}
+	]
 }
 """#
 	

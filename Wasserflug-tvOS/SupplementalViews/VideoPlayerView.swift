@@ -10,7 +10,6 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 	@AppStorage("DesiredQuality") var desiredQuality: String = ""
 	@Environment(\.managedObjectContext) var managedObjectContext
 	@ObservedObject var viewModel: VideoViewModel
-	let content: CdnDeliveryV2VodLivestreamResponse
 	let beginningWatchTime: Double
 	
 	let logger: Logger = {
@@ -29,7 +28,7 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 		])
 		let vc = AVPlayerViewController()
 		vc.delegate = context.coordinator
-		vc.transportBarCustomMenuItems = [createQualityAction(content: content)]
+		vc.transportBarCustomMenuItems = [createQualityAction()]
 		let playerItem = viewModel.createAVPlayerItem(desiredQuality: desiredQuality)
 		if beginningWatchTime > 0.0 && beginningWatchTime < 1.0 {
 			let totalSeconds = viewModel.videoAttachment.duration
@@ -95,16 +94,15 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 		}
 	}
 	
-	func createQualityAction(content: CdnDeliveryV2VodLivestreamResponse) -> UIMenu {
+	func createQualityAction() -> UIMenu {
 		let sparkleTvImage = UIImage(systemName: "sparkles.tv")
-		let resolutions: [UIAction] = content.resource.data.qualityLevels?
-			.filter({ viewModel.qualityLevels.keys.contains($0.name) })
-			.sorted(by: { $0.order < $1.order })
+		let resolutions: [UIAction] = viewModel.qualityLevels.values
+			.sorted(by: { $0.1.order ?? 0 < $1.1.order ?? 0 })
 			.map({ (qualityLevel) -> UIAction in
-				return UIAction(title: qualityLevel.label, identifier: UIAction.Identifier(qualityLevel.name), handler: { _ in
-					UserDefaults.standard.set(qualityLevel.name, forKey: "DesiredQuality")
+				return UIAction(title: qualityLevel.1.label, identifier: UIAction.Identifier(qualityLevel.1.name), handler: { _ in
+					UserDefaults.standard.set(qualityLevel.1.name, forKey: "DesiredQuality")
 				})
-		}) ?? []
+		})
 		let submenu = UIMenu(title: "Resolution", options: [.displayInline, .singleSelection], children: resolutions)
 		let menu = UIMenu(title: "Resolution", image: sparkleTvImage, children: [submenu])
 		return menu
