@@ -18,7 +18,7 @@ struct BlogPostSelectionView: View {
 	@Environment(\.managedObjectContext) private var viewContext
 
 	@State var isSelected = false
-	@State var shouldAutoPlay = false
+	@State var isAutoSelected = false
 	
 	private let relativeTimeConverter: RelativeDateTimeFormatter = {
 		let formatter = RelativeDateTimeFormatter()
@@ -178,15 +178,18 @@ struct BlogPostSelectionView: View {
 			.buttonStyle(.plain)
 			.onPlayPauseCommand(perform: {
 				if blogPost.isAccessible {
-					shouldAutoPlay = true
-					isSelected = true
+					isAutoSelected = true
 				}
 			})
 			.sheet(isPresented: $isSelected, onDismiss: {
-				shouldAutoPlay = false
 				isSelected = false
 			}, content: {
-				BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService, id: blogPost.id), shouldAutoPlay: shouldAutoPlay)
+				BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService, id: blogPost.id), shouldAutoPlay: false)
+			})
+			.sheet(isPresented: $isAutoSelected, onDismiss: {
+				isAutoSelected = false
+			}, content: {
+				BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService, id: blogPost.id), shouldAutoPlay: true)
 			})
 	}
 }
