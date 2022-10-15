@@ -17,7 +17,7 @@ struct VideoView: View {
 			ProgressView()
 		case let .failed(error):
 			ErrorView(error: error)
-		case let .loaded(content):
+		case .loaded(_):
 			VideoPlayerView(viewModel: viewModel, beginningWatchTime: beginningWatchTime)
 				.edgesIgnoringSafeArea(.all)
 		}

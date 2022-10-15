@@ -32,7 +32,9 @@ struct Wasserflug_tvOSApp: App {
 	init() {
 		// Set custom user agent for network requests. This is particularly
 		// required in order to pass the login phase with bypassing the captcha.
-		Wasserflug_tvOSApp.setHttp(header: "User-Agent", value: "Wasserflug tvOS App, CFNetwork")
+		let appVersion = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "<unknown>"
+		let bundleVersion = (Bundle.main.infoDictionary?["CFBundleVersion"] as? String) ?? "<unknown>"
+		Wasserflug_tvOSApp.setHttp(header: "User-Agent", value: "Wasserflug tvOS App version \(appVersion)-\(bundleVersion), CFNetwork")
 		
 		// Attempt to use any previous authentication cookies, so the user does
 		// not need to login on every app start.
