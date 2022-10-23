@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 .swiftformat
 FloatplaneAPIClient/Classes/OpenAPIs/APIs.swift
 FloatplaneAPIClient/Classes/OpenAPIs/APIs/AuthV2API.swift
@@ -95,6 +94,8 @@ FloatplaneAPIClient/Classes/OpenAPIs/Models/GetCaptchaInfoResponseV2Variants.swi
 FloatplaneAPIClient/Classes/OpenAPIs/Models/GetCaptchaInfoResponseV2VariantsAndroid.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/GetCaptchaInfoResponseV3.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/GetCaptchaInfoResponseV3Variants.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/GetProgressRequest.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/GetProgressResponseInner.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/ImageFileModel.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/ImageModel.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/LiveStreamModel.swift
@@ -113,6 +114,7 @@ FloatplaneAPIClient/Classes/OpenAPIs/Models/PlanInfoV2ResponsePlansInner.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/PlanInfoV2ResponsePlansInnerAllOf.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/PostMetadataModel.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/SubscriptionPlanModel.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/UpdateProgressRequest.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/UserActivityV3Response.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/UserActivityV3ResponseActivityInner.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/UserInfoV2Response.swift

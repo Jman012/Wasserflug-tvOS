@@ -12,7 +12,8 @@ protocol FPAPIService {
 	func secondFactor(token: String) -> EventLoopFuture<AuthV2API.CheckFor2faLogin>
 	
 	// Creator-related
-	func getHomeContent(ids: [String], limit: Int, lastItems: [ContentCreatorListLastItems]?) -> EventLoopFuture<ContentV3API.GetMultiCreatorBlogPosts>
+	func getHomeContent(ids: [String], limit: Int, lastItems: [ContentCreatorListLastItems]?) async throws -> ContentCreatorListV3Response
+	func getProgress(ids: [String]) async throws -> [GetProgressResponseInner]
 	func getCreatorContent(id: String, limit: Int, fetchAfter: Int?, search: String?) -> EventLoopFuture<ContentV3API.GetCreatorBlogPosts>
 	func getLivestream(url: URI) -> EventLoopFuture<ClientResponse>
 	
@@ -29,6 +30,12 @@ protocol FPAPIService {
 }
 
 class DefaultFPAPIService: FPAPIService {
+	lazy var logger: Logger = {
+		var logger = Wasserflug_tvOSApp.logger
+		logger[metadataKey: "class"] = "\(Self.Type.self)"
+		return logger
+	}()
+	
 	func getUserSelf() -> EventLoopFuture<UserV3API.GetSelf> {
 		return UserV3API.getSelf()
 	}
@@ -47,8 +54,57 @@ class DefaultFPAPIService: FPAPIService {
 	func secondFactor(token: String) -> EventLoopFuture<AuthV2API.CheckFor2faLogin> {
 		return AuthV2API.checkFor2faLogin(checkFor2faLoginRequest: .init(token: token))
 	}
-	func getHomeContent(ids: [String], limit: Int, lastItems: [ContentCreatorListLastItems]?) -> EventLoopFuture<ContentV3API.GetMultiCreatorBlogPosts> {
-		return ContentV3API.getMultiCreatorBlogPosts(ids: ids, limit: limit, fetchAfter: lastItems)
+	func getHomeContent(ids: [String], limit: Int, lastItems: [ContentCreatorListLastItems]?) async throws -> ContentCreatorListV3Response {
+		return try await withCheckedThrowingContinuation { continuation in
+			ContentV3API
+				.getMultiCreatorBlogPosts(ids: ids, limit: limit, fetchAfter: lastItems)
+				.whenComplete { result in
+					switch result {
+					case let .success(value):
+						switch value {
+						case let .http200(value: response, raw: clientResponse):
+							self.logger.debug("Home content raw response: \(clientResponse.plaintextDebugContent)")
+							continuation.resume(returning: response)
+						case let .http0(value: errorModel, raw: clientResponse),
+							let .http400(value: errorModel, raw: clientResponse),
+							let .http401(value: errorModel, raw: clientResponse),
+							let .http403(value: errorModel, raw: clientResponse),
+							let .http404(value: errorModel, raw: clientResponse):
+							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading home content. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
+							continuation.resume(throwing: errorModel)
+						}
+					case let .failure(error):
+						self.logger.error("Encountered an unexpected error while loading home content. Reporting the error to the user. Error: \(String(reflecting: error))")
+						continuation.resume(throwing: error)
+					}
+				}
+		}
+	}
+	func getProgress(ids: [String]) async throws -> [GetProgressResponseInner] {
+		return try await withCheckedThrowingContinuation { continuation in
+			ContentV3API
+				.getProgress(getProgressRequest: .init(ids: ids, contentType: .blogpost))
+				.whenComplete { result in
+					switch result {
+					case let .success(value):
+						switch value {
+						case let .http200(value: response, raw: clientResponse):
+							self.logger.debug("Get progress raw response: \(clientResponse.plaintextDebugContent)")
+							continuation.resume(returning: response)
+						case let .http0(value: errorModel, raw: clientResponse),
+							let .http400(value: errorModel, raw: clientResponse),
+							let .http401(value: errorModel, raw: clientResponse),
+							let .http403(value: errorModel, raw: clientResponse),
+							let .http404(value: errorModel, raw: clientResponse):
+							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading get progress. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
+							continuation.resume(throwing: errorModel)
+						}
+					case let .failure(error):
+						self.logger.error("Encountered an unexpected error while loading get progress. Reporting the error to the user. Error: \(String(reflecting: error))")
+						continuation.resume(throwing: error)
+					}
+				}
+		}
 	}
 	func getCreatorContent(id: String, limit: Int, fetchAfter: Int? = nil, search: String? = nil) -> EventLoopFuture<ContentV3API.GetCreatorBlogPosts> {
 		return ContentV3API.getCreatorBlogPosts(id: id, limit: limit, fetchAfter: fetchAfter, search: search)
@@ -82,6 +138,12 @@ class DefaultFPAPIService: FPAPIService {
 	func dislikeContent(id: String) -> EventLoopFuture<ContentV3API.DislikeContent> {
 		return ContentV3API.dislikeContent(contentLikeV3Request: .init(contentType: .blogpost, id: id))
 	}
+	
+	func test() async throws -> String {
+		return try await withCheckedThrowingContinuation { continuation in
+			continuation.resume(returning: "hi")
+		}
+	}
 }
 
 class MockFPAPIService: FPAPIService {
@@ -108,8 +170,15 @@ class MockFPAPIService: FPAPIService {
 	func secondFactor(token: String) -> EventLoopFuture<AuthV2API.CheckFor2faLogin> {
 		return eventLoop.makeSucceededFuture(.http200(value: .init(user: .init(id: "1", username: "my_username", profileImage: .init(width: 1, height: 1, path: "", childImages: nil)), needs2FA: false), raw: ClientResponse()))
 	}
-	func getHomeContent(ids: [String], limit: Int, lastItems: [ContentCreatorListLastItems]?) -> EventLoopFuture<ContentV3API.GetMultiCreatorBlogPosts> {
-		return eventLoop.makeSucceededFuture(.http200(value: MockData.blogPosts, raw: ClientResponse()))
+	func getHomeContent(ids: [String], limit: Int, lastItems: [ContentCreatorListLastItems]?) async throws -> ContentCreatorListV3Response {
+		return try await withCheckedThrowingContinuation { continuation in
+			continuation.resume(returning: MockData.blogPosts)
+		}
+	}
+	func getProgress(ids: [String]) async throws -> [GetProgressResponseInner] {
+		return try await withCheckedThrowingContinuation { continuation in
+			continuation.resume(returning: [])
+		}
 	}
 	func getCreatorContent(id: String, limit: Int, fetchAfter: Int? = nil, search: String? = nil) -> EventLoopFuture<ContentV3API.GetCreatorBlogPosts> {
 		return eventLoop.makeSucceededFuture(.http200(value: MockData.blogPosts.blogPosts, raw: ClientResponse()))

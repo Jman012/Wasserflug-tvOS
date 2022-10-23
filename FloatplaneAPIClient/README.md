@@ -102,9 +102,11 @@ Class | Method | HTTP request | Description
 *ContentV3API* | [**getCreatorBlogPosts**](docs/ContentV3API.md#getcreatorblogposts) | **GET** /api/v3/content/creator | Get Creator Blog Posts
 *ContentV3API* | [**getMultiCreatorBlogPosts**](docs/ContentV3API.md#getmulticreatorblogposts) | **GET** /api/v3/content/creator/list | Get Multi Creator Blog Posts
 *ContentV3API* | [**getPictureContent**](docs/ContentV3API.md#getpicturecontent) | **GET** /api/v3/content/picture | Get Picture Content
+*ContentV3API* | [**getProgress**](docs/ContentV3API.md#getprogress) | **POST** /api/v3/content/get/progress | Get Progress
 *ContentV3API* | [**getRelatedBlogPosts**](docs/ContentV3API.md#getrelatedblogposts) | **GET** /api/v3/content/related | Get Related Blog Posts
 *ContentV3API* | [**getVideoContent**](docs/ContentV3API.md#getvideocontent) | **GET** /api/v3/content/video | Get Video Content
 *ContentV3API* | [**likeContent**](docs/ContentV3API.md#likecontent) | **POST** /api/v3/content/like | Like Content
+*ContentV3API* | [**updateProgress**](docs/ContentV3API.md#updateprogress) | **POST** /api/v3/content/progress | Update Progress
 *CreatorSubscriptionPlanV2API* | [**getCreatorSubInfoPublic**](docs/CreatorSubscriptionPlanV2API.md#getcreatorsubinfopublic) | **GET** /api/v2/plan/info | Get Creator Sub Info Public
 *CreatorV2API* | [**getCreatorInfoByName**](docs/CreatorV2API.md#getcreatorinfobyname) | **GET** /api/v2/creator/named | Get Info By Name
 *CreatorV2API* | [**getInfo**](docs/CreatorV2API.md#getinfo) | **GET** /api/v2/creator/info | Get Info
@@ -208,6 +210,8 @@ Class | Method | HTTP request | Description
  - [GetCaptchaInfoResponseV2VariantsAndroid](docs/GetCaptchaInfoResponseV2VariantsAndroid.md)
  - [GetCaptchaInfoResponseV3](docs/GetCaptchaInfoResponseV3.md)
  - [GetCaptchaInfoResponseV3Variants](docs/GetCaptchaInfoResponseV3Variants.md)
+ - [GetProgressRequest](docs/GetProgressRequest.md)
+ - [GetProgressResponseInner](docs/GetProgressResponseInner.md)
  - [ImageFileModel](docs/ImageFileModel.md)
  - [ImageModel](docs/ImageModel.md)
  - [LiveStreamModel](docs/LiveStreamModel.md)
@@ -226,6 +230,7 @@ Class | Method | HTTP request | Description
  - [PlanInfoV2ResponsePlansInnerAllOf](docs/PlanInfoV2ResponsePlansInnerAllOf.md)
  - [PostMetadataModel](docs/PostMetadataModel.md)
  - [SubscriptionPlanModel](docs/SubscriptionPlanModel.md)
+ - [UpdateProgressRequest](docs/UpdateProgressRequest.md)
  - [UserActivityV3Response](docs/UserActivityV3Response.md)
  - [UserActivityV3ResponseActivityInner](docs/UserActivityV3ResponseActivityInner.md)
  - [UserInfoV2Response](docs/UserInfoV2Response.md)

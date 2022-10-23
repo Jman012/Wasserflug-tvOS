@@ -508,6 +508,72 @@ open class ContentV3API {
     }
 
     /**
+     Get Progress
+     POST /api/v3/content/get/progress
+     Batch retrieval of watch progress values for blog posts. This API is useful for showing progress of a list of blog posts shown on the screen to the user. When retrieving a list of blog posts, the media attachments only include the identifier; when retrieving full details of a blog post, the attachments include more information, but still fail to return the progress of the media. Only when pulling the full video/audio content does the progress get included in the response. Thus, the recommended approach is to pull paginated results of blog posts first, as usual, and then to call this endpoint to retrieve progress values for each blog post to show in some capacity, usually on the thumbnail as a progress bar on the bottom.  Note that the progress values returned in this endpoint are different from the update progress endpoint and the values returned in video/audio attachments. While the latter are measured in seconds, this endpoint returns progress as a percentage of the media's total duration. It is presumed that the progress returned is from the first attachment in the blog post's `attachmentOrder` that is either a video or audio attachment. Because this returns progress as an integer percentage (0 to 100), it is not recommended to use this particular value for jumping to a timestamp in the media when resuming playback, as the rounded number may be off by plus/minus several seconds in actual playback. Use the actual attachment progress, measured in seconds, instead.
+     - API Key:
+       - type: apiKey sails.sid 
+       - name: CookieAuth
+     - parameter getProgressRequest: (body)  
+     - returns: `EventLoopFuture` of `ClientResponse` 
+     */
+    open class func getProgressRaw(getProgressRequest: GetProgressRequest, headers: HTTPHeaders = FloatplaneAPIClientAPI.customHeaders, beforeSend: (inout ClientRequest) throws -> () = { _ in }) -> EventLoopFuture<ClientResponse> {
+        let localVariablePath = "/api/v3/content/get/progress"
+        let localVariableURLString = FloatplaneAPIClientAPI.basePath + localVariablePath
+
+        guard let localVariableApiClient = Configuration.apiClient else {
+            fatalError("Configuration.apiClient is not set.")
+        }
+
+        return localVariableApiClient.send(.POST, headers: headers, to: URI(string: localVariableURLString)) { localVariableRequest in
+            try Configuration.apiWrapper(&localVariableRequest)
+            
+            
+            try localVariableRequest.content.encode(getProgressRequest, using: Configuration.contentConfiguration.requireEncoder(for: GetProgressRequest.defaultContentType))
+            
+            try beforeSend(&localVariableRequest)
+        }
+    }
+
+    public enum GetProgress {
+        case http200(value: [GetProgressResponseInner], raw: ClientResponse)
+        case http400(value: ErrorModel, raw: ClientResponse)
+        case http401(value: ErrorModel, raw: ClientResponse)
+        case http403(value: ErrorModel, raw: ClientResponse)
+        case http404(value: ErrorModel, raw: ClientResponse)
+        case http0(value: ErrorModel, raw: ClientResponse)
+    }
+
+    /**
+     Get Progress
+     POST /api/v3/content/get/progress
+     Batch retrieval of watch progress values for blog posts. This API is useful for showing progress of a list of blog posts shown on the screen to the user. When retrieving a list of blog posts, the media attachments only include the identifier; when retrieving full details of a blog post, the attachments include more information, but still fail to return the progress of the media. Only when pulling the full video/audio content does the progress get included in the response. Thus, the recommended approach is to pull paginated results of blog posts first, as usual, and then to call this endpoint to retrieve progress values for each blog post to show in some capacity, usually on the thumbnail as a progress bar on the bottom.  Note that the progress values returned in this endpoint are different from the update progress endpoint and the values returned in video/audio attachments. While the latter are measured in seconds, this endpoint returns progress as a percentage of the media's total duration. It is presumed that the progress returned is from the first attachment in the blog post's `attachmentOrder` that is either a video or audio attachment. Because this returns progress as an integer percentage (0 to 100), it is not recommended to use this particular value for jumping to a timestamp in the media when resuming playback, as the rounded number may be off by plus/minus several seconds in actual playback. Use the actual attachment progress, measured in seconds, instead.
+     - API Key:
+       - type: apiKey sails.sid 
+       - name: CookieAuth
+     - parameter getProgressRequest: (body)  
+     - returns: `EventLoopFuture` of `GetProgress` 
+     */
+    open class func getProgress(getProgressRequest: GetProgressRequest, headers: HTTPHeaders = FloatplaneAPIClientAPI.customHeaders, beforeSend: (inout ClientRequest) throws -> () = { _ in }) -> EventLoopFuture<GetProgress> {
+        return getProgressRaw(getProgressRequest: getProgressRequest, headers: headers, beforeSend: beforeSend).flatMapThrowing { response -> GetProgress in
+            switch response.status.code {
+            case 200:
+                return .http200(value: try response.content.decode([GetProgressResponseInner].self, using: Configuration.contentConfiguration.requireDecoder(for: [GetProgressResponseInner].defaultContentType)), raw: response)
+            case 400:
+                return .http400(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 401:
+                return .http401(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 403:
+                return .http403(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 404:
+                return .http404(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            default:
+                return .http0(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            }
+        }
+    }
+
+    /**
      Get Related Blog Posts
      GET /api/v3/content/related
      Retrieve a list of blog posts that are related to the post being viewed.
@@ -703,6 +769,72 @@ open class ContentV3API {
             switch response.status.code {
             case 200:
                 return .http200(value: try response.content.decode([String].self, using: Configuration.contentConfiguration.requireDecoder(for: [String].defaultContentType)), raw: response)
+            case 400:
+                return .http400(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 401:
+                return .http401(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 403:
+                return .http403(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 404:
+                return .http404(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            default:
+                return .http0(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            }
+        }
+    }
+
+    /**
+     Update Progress
+     POST /api/v3/content/progress
+     Update the watch progress on a piece of media (usually video or audio), stored as the number of seconds in the media.
+     - API Key:
+       - type: apiKey sails.sid 
+       - name: CookieAuth
+     - parameter updateProgressRequest: (body)  
+     - returns: `EventLoopFuture` of `ClientResponse` 
+     */
+    open class func updateProgressRaw(updateProgressRequest: UpdateProgressRequest, headers: HTTPHeaders = FloatplaneAPIClientAPI.customHeaders, beforeSend: (inout ClientRequest) throws -> () = { _ in }) -> EventLoopFuture<ClientResponse> {
+        let localVariablePath = "/api/v3/content/progress"
+        let localVariableURLString = FloatplaneAPIClientAPI.basePath + localVariablePath
+
+        guard let localVariableApiClient = Configuration.apiClient else {
+            fatalError("Configuration.apiClient is not set.")
+        }
+
+        return localVariableApiClient.send(.POST, headers: headers, to: URI(string: localVariableURLString)) { localVariableRequest in
+            try Configuration.apiWrapper(&localVariableRequest)
+            
+            
+            try localVariableRequest.content.encode(updateProgressRequest, using: Configuration.contentConfiguration.requireEncoder(for: UpdateProgressRequest.defaultContentType))
+            
+            try beforeSend(&localVariableRequest)
+        }
+    }
+
+    public enum UpdateProgress {
+        case http200(value: String, raw: ClientResponse)
+        case http400(value: ErrorModel, raw: ClientResponse)
+        case http401(value: ErrorModel, raw: ClientResponse)
+        case http403(value: ErrorModel, raw: ClientResponse)
+        case http404(value: ErrorModel, raw: ClientResponse)
+        case http0(value: ErrorModel, raw: ClientResponse)
+    }
+
+    /**
+     Update Progress
+     POST /api/v3/content/progress
+     Update the watch progress on a piece of media (usually video or audio), stored as the number of seconds in the media.
+     - API Key:
+       - type: apiKey sails.sid 
+       - name: CookieAuth
+     - parameter updateProgressRequest: (body)  
+     - returns: `EventLoopFuture` of `UpdateProgress` 
+     */
+    open class func updateProgress(updateProgressRequest: UpdateProgressRequest, headers: HTTPHeaders = FloatplaneAPIClientAPI.customHeaders, beforeSend: (inout ClientRequest) throws -> () = { _ in }) -> EventLoopFuture<UpdateProgress> {
+        return updateProgressRaw(updateProgressRequest: updateProgressRequest, headers: headers, beforeSend: beforeSend).flatMapThrowing { response -> UpdateProgress in
+            switch response.status.code {
+            case 200:
+                return .http200(value: try response.content.decode(String.self, using: Configuration.contentConfiguration.requireDecoder(for: String.defaultContentType)), raw: response)
             case 400:
                 return .http400(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             case 401:

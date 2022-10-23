@@ -36,10 +36,12 @@ public struct ContentVideoV3Response: Content, Hashable {
     public var isAccessible: Bool
     public var blogPosts: [String]
     public var timelineSprite: ImageModel
+    /** The watch progress of the video, in seconds. If no progress has yet been posted to the video, then this field may not appear. */
+    public var progress: Int?
     public var userInteraction: [UserInteraction]?
     public var levels: [ContentVideoV3ResponseLevelsInner]
 
-    public init(id: String, guid: String, title: String, type: String, description: String, releaseDate: Date?, duration: Double, creator: String, likes: Int, dislikes: Int, score: Int, isProcessing: Bool, primaryBlogPost: String, thumbnail: ImageModel, isAccessible: Bool, blogPosts: [String], timelineSprite: ImageModel, userInteraction: [UserInteraction]?, levels: [ContentVideoV3ResponseLevelsInner]) {
+    public init(id: String, guid: String, title: String, type: String, description: String, releaseDate: Date?, duration: Double, creator: String, likes: Int, dislikes: Int, score: Int, isProcessing: Bool, primaryBlogPost: String, thumbnail: ImageModel, isAccessible: Bool, blogPosts: [String], timelineSprite: ImageModel, progress: Int? = nil, userInteraction: [UserInteraction]?, levels: [ContentVideoV3ResponseLevelsInner]) {
         self.id = id
         self.guid = guid
         self.title = title
@@ -57,6 +59,7 @@ public struct ContentVideoV3Response: Content, Hashable {
         self.isAccessible = isAccessible
         self.blogPosts = blogPosts
         self.timelineSprite = timelineSprite
+        self.progress = progress
         self.userInteraction = userInteraction
         self.levels = levels
     }
@@ -79,6 +82,7 @@ public struct ContentVideoV3Response: Content, Hashable {
         case isAccessible
         case blogPosts
         case timelineSprite
+        case progress
         case userInteraction
         case levels
     }
@@ -104,6 +108,7 @@ public struct ContentVideoV3Response: Content, Hashable {
         try container.encode(isAccessible, forKey: .isAccessible)
         try container.encode(blogPosts, forKey: .blogPosts)
         try container.encode(timelineSprite, forKey: .timelineSprite)
+        try container.encodeIfPresent(progress, forKey: .progress)
         try container.encode(userInteraction, forKey: .userInteraction)
         try container.encode(levels, forKey: .levels)
     }

@@ -1207,6 +1207,10 @@
                     "timelineSprite": {
                         "$ref": "#/components/schemas/ImageModel"
                     },
+                    "progress": {
+                        "type": "integer",
+                        "description": "The watch progress of the video, in seconds. If no progress has yet been posted to the video, then this field may not appear."
+                    },
                     "userInteraction": {
                         "$ref": "#/components/schemas/UserInteractionModel"
                     },
@@ -3194,6 +3198,81 @@
                     "latitude",
                     "longitude"
                 ]
+            },
+            "UpdateProgressRequest": {
+                "type": "object",
+                "description": "",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "The video or audio attachment identifier for the piece of media that is being updated. Note: this is *not* the blogPost identifier."
+                    },
+                    "contentType": {
+                        "type": "string",
+                        "enum": [
+                            "video",
+                            "audio"
+                        ],
+                        "description": "Which type of media the corresponding identifier is."
+                    },
+                    "progress": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "description": "The progress through the media that has been consumed by the user, in seconds.",
+                        "nullable": false
+                    }
+                },
+                "required": [
+                    "id",
+                    "contentType",
+                    "progress"
+                ]
+            },
+            "GetProgressRequest": {
+                "type": "object",
+                "description": "",
+                "properties": {
+                    "ids": {
+                        "type": "array",
+                        "description": "The identifiers of the blog posts from which progress should be retrieved.",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "contentType": {
+                        "type": "string",
+                        "enum": [
+                            "blogPost"
+                        ],
+                        "description": "The type of the corresponding identifiers. The only value currently is `blogPost`."
+                    }
+                },
+                "required": [
+                    "ids",
+                    "contentType"
+                ]
+            },
+            "GetProgressResponse": {
+                "type": "array",
+                "description": "A list of objects containing progress values for the requested identifiers. If no progress has been posted to an identifier, it may either not appear in the resulting list, or appear with a progress of `0`.",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "progress": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 100,
+                            "description": "Percentage of the blog post's media that has been consumed so far. Ranges from 0 to 100."
+                        }
+                    },
+                    "required": [
+                        "id",
+                        "progress"
+                    ]
+                }
             }
         },
         "securitySchemes": {
@@ -9004,6 +9083,129 @@
                                 },
                                 "example": [
                                     "dislike"
+                                ]
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401Unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/403Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404NotFound"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/Unexpected"
+                    }
+                }
+            }
+        },
+        "/api/v3/content/progress": {
+            "post": {
+                "deprecated": false,
+                "operationId": "updateProgress",
+                "summary": "Update Progress",
+                "description": "Update the watch progress on a piece of media (usually video or audio), stored as the number of seconds in the media.",
+                "tags": [
+                    "ContentV3"
+                ],
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateProgressRequest"
+                            },
+                            "example": {
+                                "ids": [
+                                    "mhhrOfndeF",
+                                    "3qZrz5ugsa"
+                                ],
+                                "contentType": "blogPost"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "example": "OK"
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401Unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/403Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404NotFound"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/Unexpected"
+                    }
+                }
+            }
+        },
+        "/api/v3/content/get/progress": {
+            "post": {
+                "deprecated": false,
+                "operationId": "getProgress",
+                "summary": "Get Progress",
+                "description": "Batch retrieval of watch progress values for blog posts. This API is useful for showing progress of a list of blog posts shown on the screen to the user. When retrieving a list of blog posts, the media attachments only include the identifier; when retrieving full details of a blog post, the attachments include more information, but still fail to return the progress of the media. Only when pulling the full video/audio content does the progress get included in the response. Thus, the recommended approach is to pull paginated results of blog posts first, as usual, and then to call this endpoint to retrieve progress values for each blog post to show in some capacity, usually on the thumbnail as a progress bar on the bottom.\n\nNote that the progress values returned in this endpoint are different from the update progress endpoint and the values returned in video/audio attachments. While the latter are measured in seconds, this endpoint returns progress as a percentage of the media's total duration. It is presumed that the progress returned is from the first attachment in the blog post's `attachmentOrder` that is either a video or audio attachment. Because this returns progress as an integer percentage (0 to 100), it is not recommended to use this particular value for jumping to a timestamp in the media when resuming playback, as the rounded number may be off by plus/minus several seconds in actual playback. Use the actual attachment progress, measured in seconds, instead.",
+                "tags": [
+                    "ContentV3"
+                ],
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GetProgressRequest"
+                            },
+                            "example": {
+                                "ids": [
+                                    "mhhrOfndeF",
+                                    "3qZrz5ugsa"
+                                ],
+                                "contentType": "blogPost"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetProgressResponse"
+                                },
+                                "example": [
+                                    {
+                                        "id": "3qZrz5ugsa",
+                                        "progress": 0
+                                    },
+                                    {
+                                        "id": "mhhrOfndeF",
+                                        "progress": 100
+                                    }
                                 ]
                             }
                         }
