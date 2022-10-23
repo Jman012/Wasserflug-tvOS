@@ -14,7 +14,7 @@ protocol FPAPIService {
 	// Creator-related
 	func getHomeContent(ids: [String], limit: Int, lastItems: [ContentCreatorListLastItems]?) async throws -> ContentCreatorListV3Response
 	func getProgress(ids: [String]) async throws -> [GetProgressResponseInner]
-	func getCreatorContent(id: String, limit: Int, fetchAfter: Int?, search: String?) -> EventLoopFuture<ContentV3API.GetCreatorBlogPosts>
+	func getCreatorContent(id: String, limit: Int, fetchAfter: Int?, search: String?) async throws -> [BlogPostModelV3]
 	func getLivestream(url: URI) -> EventLoopFuture<ClientResponse>
 	
 	// Post-related
@@ -106,8 +106,31 @@ class DefaultFPAPIService: FPAPIService {
 				}
 		}
 	}
-	func getCreatorContent(id: String, limit: Int, fetchAfter: Int? = nil, search: String? = nil) -> EventLoopFuture<ContentV3API.GetCreatorBlogPosts> {
-		return ContentV3API.getCreatorBlogPosts(id: id, limit: limit, fetchAfter: fetchAfter, search: search)
+	func getCreatorContent(id: String, limit: Int, fetchAfter: Int? = nil, search: String? = nil) async throws -> [BlogPostModelV3] {
+		return try await withCheckedThrowingContinuation { continuation in
+			ContentV3API
+				.getCreatorBlogPosts(id: id, limit: limit, fetchAfter: fetchAfter, search: search)
+				.whenComplete { result in
+					switch result {
+					case let .success(value):
+						switch value {
+						case let .http200(value: response, raw: clientResponse):
+							self.logger.debug("Creator content raw response: \(clientResponse.plaintextDebugContent)")
+							continuation.resume(returning: response)
+						case let .http0(value: errorModel, raw: clientResponse),
+							let .http400(value: errorModel, raw: clientResponse),
+							let .http401(value: errorModel, raw: clientResponse),
+							let .http403(value: errorModel, raw: clientResponse),
+							let .http404(value: errorModel, raw: clientResponse):
+							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading creator content. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
+							continuation.resume(throwing: errorModel)
+						}
+					case let .failure(error):
+						self.logger.error("Encountered an unexpected error while loading creator content. Reporting the error to the user. Error: \(String(reflecting: error))")
+						continuation.resume(throwing: error)
+					}
+				}
+		}
 	}
 	func getLivestream(url: URI) -> EventLoopFuture<ClientResponse> {
 		return Configuration.apiClient!.get(url)
@@ -180,8 +203,10 @@ class MockFPAPIService: FPAPIService {
 			continuation.resume(returning: [])
 		}
 	}
-	func getCreatorContent(id: String, limit: Int, fetchAfter: Int? = nil, search: String? = nil) -> EventLoopFuture<ContentV3API.GetCreatorBlogPosts> {
-		return eventLoop.makeSucceededFuture(.http200(value: MockData.blogPosts.blogPosts, raw: ClientResponse()))
+	func getCreatorContent(id: String, limit: Int, fetchAfter: Int? = nil, search: String? = nil) async throws -> [BlogPostModelV3] {
+		return try await withCheckedThrowingContinuation { continuation in
+			continuation.resume(returning: MockData.blogPosts.blogPosts)
+		}
 	}
 	func getLivestream(url: URI) -> EventLoopFuture<ClientResponse> {
 		return eventLoop.makeSucceededFuture(ClientResponse(status: .notFound, headers: .init(), body: nil))

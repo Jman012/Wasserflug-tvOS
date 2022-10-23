@@ -11,7 +11,7 @@ struct BlogPostSelectionView: View {
 	
 	let blogPost: BlogPostModelV3
 	let viewOrigin: ViewOrigin
-	@FetchRequest var watchProgresses: FetchedResults<WatchProgress>
+	let progressPercentage: Int
 	@State var geometrySize: CGSize?
 	
 	@Environment(\.fpApiService) var fpApiService
@@ -27,12 +27,8 @@ struct BlogPostSelectionView: View {
 	}()
 	
 	var progress: CGFloat {
-		if let watchProgress = watchProgresses.first(where: { $0.videoId == blogPost.videoAttachments?.first }) {
-			let progress = watchProgress.progress
-			return progress >= 0.95 ? 1.0 : progress
-		} else {
-			return 0.0
-		}
+		let p = CGFloat(progressPercentage) / 100.0
+		return p > 0.95 ? 1.0 : p
 	}
 	
 	var isTvOS16: Bool {
@@ -199,7 +195,7 @@ struct BlogPostSelectionView_Previews: PreviewProvider {
 		BlogPostSelectionView(
 			blogPost: MockData.blogPosts.blogPosts.first!,
 			viewOrigin: .home(MockData.creatorOwners.users.first!.user.userModelShared.asAnyUserModelShared()),
-			watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
+			progressPercentage: 75
 		)
 			.environment(\.fpApiService, MockFPAPIService())
 			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
@@ -207,7 +203,7 @@ struct BlogPostSelectionView_Previews: PreviewProvider {
 		BlogPostSelectionView(
 			blogPost: MockData.blogPosts.blogPosts.first!,
 			viewOrigin: .creator,
-			watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
+			progressPercentage: 75
 		)
 			.environment(\.fpApiService, MockFPAPIService())
 			.previewLayout(.fixed(width: 600, height: 500))

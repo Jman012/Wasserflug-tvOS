@@ -58,7 +58,7 @@ class HomeViewModel: BaseViewModel, ObservableObject {
 			logger.info("Loading progress for home content in background.")
 			Task {
 				do {
-					let progresses = try await fpApiService.getProgress(ids: response.blogPosts.map({ $0.guid }))
+					let progresses = try await fpApiService.getProgress(ids: response.blogPosts.map({ $0.id }))
 					for progress in progresses {
 						self.progresses[progress.id] = progress.progress
 					}
@@ -67,7 +67,6 @@ class HomeViewModel: BaseViewModel, ObservableObject {
 					self.state = .failed(error)
 				}
 			}
-			
 			
 			switch (loadingMode, self.state) {
 			case let (.append, .loaded(prevResponse)):

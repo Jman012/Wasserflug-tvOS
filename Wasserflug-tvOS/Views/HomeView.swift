@@ -31,7 +31,7 @@ struct HomeView: View {
 						BlogPostSelectionView(
 							blogPost: blogPost,
 							viewOrigin: .home(userInfo.creatorOwners[blogPost.creator.owner.id]?.asAnyUserModelShared()),
-							watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", blogPost.id), animation: .default)
+							progressPercentage: viewModel.progresses[blogPost.id] ?? 0
 						)
 							.onAppear(perform: {
 								viewModel.itemDidAppear(blogPost)

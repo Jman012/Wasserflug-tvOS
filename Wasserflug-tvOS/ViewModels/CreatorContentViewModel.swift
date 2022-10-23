@@ -11,6 +11,7 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 	
 	@Published var state: ViewModelState<[BlogPostModelV3]> = .idle
 	@Published var searchText: String = ""
+	@Published var progresses: Dictionary<String, Int> = [:]
 	
 	private var isVisible = true
 	private let fpApiService: FPAPIService
@@ -60,71 +61,71 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 	}
 	
 	func load(loadingMode: LoadingMode = .append) {
-		if self.state.isIdle {
-			state = .loading
-		}
-		
-		var fetchAfter = 0
-		switch (loadingMode, state) {
-		case let (.append, .loaded(posts)):
-			fetchAfter = posts.count
-		default:
-			break
-		}
-		
-		let id = creator.id
-		let limit = 20
-		logger.info("Loading creator content.", metadata: [
-			"creatorId": "\(id)",
-			"limit": "\(limit)",
-			"fetchAfter": "\(fetchAfter)",
-			"serchText": "\(self.searchText)",
-		])
-		
-		fpApiService.getCreatorContent(id: id, limit: limit, fetchAfter: fetchAfter, search: self.searchText)
-			.whenComplete { result in
-				DispatchQueue.main.async {
-					switch result {
-					case let .success(response):
-						switch response {
-						case let .http200(value: response, raw: clientResponse):
-							self.logger.debug("Creator content raw response: \(clientResponse.plaintextDebugContent)")
-							switch (loadingMode, self.state) {
-							case let (.append, .loaded(posts)):
-								self.logger.notice("Received creator content. Appending new items to list. Received \(response.count) items.")
-								self.state = .loaded(posts + response)
-							case let (.prepend, .loaded(prevResponse)):
-								let prevResponseIds = Set(prevResponse.lazy.map({ $0.id }))
-								if let last = response.last, prevResponseIds.contains(last.id) {
-									let newBlogPosts = response.filter({ !prevResponseIds.contains($0.id) })
-									self.logger.notice("Received creator content. Received \(response.count) items. Prepending only new items to list. Prepending \(newBlogPosts.count) items.")
-									if !newBlogPosts.isEmpty {
-										self.state = .loaded(newBlogPosts + prevResponse)
-									}
-								} else {
-									self.logger.notice("Received creator content. Encountered gap in new items and old items. Resetting list to only new items. Received \(response.count) items.")
-									
-									self.state = .loaded(response)
-								}
-							default:
-								self.logger.notice("Received creator content. Received \(response.count) items.")
-								self.state = .loaded(response)
-							}
-							
-						case let .http0(value: errorModel, raw: clientResponse),
-							let .http400(value: errorModel, raw: clientResponse),
-							let .http401(value: errorModel, raw: clientResponse),
-							let .http403(value: errorModel, raw: clientResponse),
-							let .http404(value: errorModel, raw: clientResponse):
-							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading creator content. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
-							self.state = .failed(errorModel)
-						}
-					case let .failure(error):
-						self.logger.error("Encountered an unexpected error while loading creator content. Reporting the error to the user. Error: \(String(reflecting: error))")
-						self.state = .failed(error)
+		Task { @MainActor in
+			if self.state.isIdle {
+				state = .loading
+			}
+			
+			var fetchAfter = 0
+			switch (loadingMode, state) {
+			case let (.append, .loaded(posts)):
+				fetchAfter = posts.count
+			default:
+				break
+			}
+			
+			let id = creator.id
+			let limit = 20
+			logger.info("Loading creator content.", metadata: [
+				"creatorId": "\(id)",
+				"limit": "\(limit)",
+				"fetchAfter": "\(fetchAfter)",
+				"serchText": "\(self.searchText)",
+			])
+			
+			let response: [BlogPostModelV3]
+			do {
+				response = try await fpApiService.getCreatorContent(id: id, limit: limit, fetchAfter: fetchAfter, search: self.searchText)
+			} catch {
+				self.state = .failed(error)
+				return
+			}
+			
+			logger.info("Loading progress for creator content in background.")
+			Task {
+				do {
+					let progresses = try await fpApiService.getProgress(ids: response.map({ $0.id }))
+					for progress in progresses {
+						self.progresses[progress.id] = progress.progress
 					}
+					self.logger.info("Done loading \(progresses.count) progresses for creator content.")
+				} catch {
+					self.state = .failed(error)
 				}
 			}
+			
+			switch (loadingMode, self.state) {
+			case let (.append, .loaded(posts)):
+				self.logger.notice("Received creator content. Appending new items to list. Received \(response.count) items.")
+				self.state = .loaded(posts + response)
+			case let (.prepend, .loaded(prevResponse)):
+				let prevResponseIds = Set(prevResponse.lazy.map({ $0.id }))
+				if let last = response.last, prevResponseIds.contains(last.id) {
+					let newBlogPosts = response.filter({ !prevResponseIds.contains($0.id) })
+					self.logger.notice("Received creator content. Received \(response.count) items. Prepending only new items to list. Prepending \(newBlogPosts.count) items.")
+					if !newBlogPosts.isEmpty {
+						self.state = .loaded(newBlogPosts + prevResponse)
+					}
+				} else {
+					self.logger.notice("Received creator content. Encountered gap in new items and old items. Resetting list to only new items. Received \(response.count) items.")
+					
+					self.state = .loaded(response)
+				}
+			default:
+				self.logger.notice("Received creator content. Received \(response.count) items.")
+				self.state = .loaded(response)
+			}
+		}
 	}
 	
 	func itemDidAppear(_ item: BlogPostModelV3) {
