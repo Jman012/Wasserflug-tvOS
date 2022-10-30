@@ -15,7 +15,7 @@ struct PlayMediaView<Content>: View where Content: View {
 	let progressPercentage: Int
 	
 	var progress: CGFloat {
-		let p = CGFloat(progressPercentage)
+		let p = CGFloat(progressPercentage) / 100.0
 		return p >= 0.95 ? 1.0 : p
 	}
 	

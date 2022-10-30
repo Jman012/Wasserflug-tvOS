@@ -23,6 +23,7 @@ protocol FPAPIService {
 	func getCdn(type: CDNV2API.ModelType_getDeliveryInfo, id: String) -> EventLoopFuture<CDNV2API.GetDeliveryInfo>
 	func getDeliveryInfo(scenario: DeliveryV3API.Scenario_getDeliveryInfoV3, entityId: String, outputKind: DeliveryV3API.OutputKind_getDeliveryInfoV3?) async throws -> CdnDeliveryV3Response
 	func getPictureContent(id: String) -> EventLoopFuture<ContentV3API.GetPictureContent>
+	func updateProgress(id: String, contentType: UpdateProgressRequest.ContentType, progress: Int) async throws
 	
 	// Interaction-related
 	func likeContent(id: String) -> EventLoopFuture<ContentV3API.LikeContent>
@@ -282,6 +283,32 @@ class DefaultFPAPIService: FPAPIService {
 	func getPictureContent(id: String) -> EventLoopFuture<ContentV3API.GetPictureContent> {
 		return ContentV3API.getPictureContent(id: id)
 	}
+	func updateProgress(id: String, contentType: UpdateProgressRequest.ContentType, progress: Int) async throws {
+		return try await withCheckedThrowingContinuation { continuation in
+			ContentV3API
+				.updateProgress(updateProgressRequest: .init(id: id, contentType: contentType, progress: progress))
+				.whenComplete { result in
+					switch result {
+					case let .success(value):
+						switch value {
+						case let .http200(value: _, raw: clientResponse):
+							self.logger.debug("Update Progress raw response: \(clientResponse.plaintextDebugContent)")
+							continuation.resume(returning: ())
+						case let .http0(value: errorModel, raw: clientResponse),
+							let .http400(value: errorModel, raw: clientResponse),
+							let .http401(value: errorModel, raw: clientResponse),
+							let .http403(value: errorModel, raw: clientResponse),
+							let .http404(value: errorModel, raw: clientResponse):
+							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while updating progress. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
+							continuation.resume(throwing: errorModel)
+						}
+					case let .failure(error):
+						self.logger.error("Encountered an unexpected error while loading delivery info. Reporting the error to the user. Error: \(String(reflecting: error))")
+						continuation.resume(throwing: error)
+					}
+				}
+		}
+	}
 	func likeContent(id: String) -> EventLoopFuture<ContentV3API.LikeContent> {
 		return ContentV3API.likeContent(contentLikeV3Request: .init(contentType: .blogpost, id: id))
 	}
@@ -376,6 +403,9 @@ class MockFPAPIService: FPAPIService {
 	}
 	func getPictureContent(id: String) -> EventLoopFuture<ContentV3API.GetPictureContent> {
 		return eventLoop.makeSucceededFuture(.http200(value: MockData.getPictureContent, raw: ClientResponse()))
+	}
+	func updateProgress(id: String, contentType: UpdateProgressRequest.ContentType, progress: Int) async throws {
+		// Nothing
 	}
 	func likeContent(id: String) -> EventLoopFuture<ContentV3API.LikeContent> {
 		return eventLoop.makeSucceededFuture(.http200(value: ["like"], raw: ClientResponse()))

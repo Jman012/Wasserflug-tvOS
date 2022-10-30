@@ -157,5 +157,28 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 		
 		return templateItem
 	}
+	
+	func updateProgress(progressSeconds: Int) {
+		Task { @MainActor in
+			guard case let .loaded((_, videoModel)) = self.state else {
+				return
+			}
+			
+			self.logger.notice("Attempting to record watch progress for a video.", metadata: [
+				"blogPostId": "\(videoModel.primaryBlogPost)",
+				"videoId": "\(videoModel.id)",
+				"progressSeconds": "\(progressSeconds)",
+			])
+			
+			do {
+				try await self.fpApiService.updateProgress(id: videoModel.id, contentType: .video, progress: progressSeconds)
+			} catch {
+				self.logger.warning("Could not update progress. Not showing an error as this is not critical.", metadata: [
+					"id": "\(videoModel.id)",
+					"progress": "\(progressSeconds)",
+				])
+			}
+		}
+	}
 }
 
