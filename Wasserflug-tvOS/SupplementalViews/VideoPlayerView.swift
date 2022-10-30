@@ -10,7 +10,8 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 	@AppStorage("DesiredQuality") var desiredQuality: String = ""
 	@Environment(\.managedObjectContext) var managedObjectContext
 	@ObservedObject var viewModel: VideoViewModel
-	let beginningWatchTime: Double
+	let videoContent: ContentVideoV3Response
+
 	
 	let logger: Logger = {
 		var logger = Wasserflug_tvOSApp.logger
@@ -30,11 +31,10 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 		vc.delegate = context.coordinator
 		vc.transportBarCustomMenuItems = [createQualityAction()]
 		let playerItem = viewModel.createAVPlayerItem(desiredQuality: desiredQuality)
-		if beginningWatchTime > 0.0 && beginningWatchTime < 1.0 {
-			let totalSeconds = viewModel.videoAttachment.duration
-			let percentageOfTotal = beginningWatchTime
-			let seekToSeconds = totalSeconds * percentageOfTotal
-			let newCMTime = CMTime(seconds: seekToSeconds, preferredTimescale: 1)
+		
+		let progressSeconds = videoContent.progress ?? 0
+		if progressSeconds > 0 {
+			let newCMTime = CMTime(seconds: Double(progressSeconds), preferredTimescale: 1)
 			playerItem.seek(to: newCMTime, completionHandler: nil)
 		}
 		vc.player = AVPlayer(playerItem: playerItem)

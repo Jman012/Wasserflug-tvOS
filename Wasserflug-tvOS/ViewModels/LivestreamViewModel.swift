@@ -41,98 +41,61 @@ class LivestreamViewModel: BaseViewModel, ObservableObject {
 	}
 	
 	func load() {
-		state = .loading
-		
-		let type: CDNV2API.ModelType_getDeliveryInfo = .live
-		logger.debug("Loading livestream information.", metadata: [
-			"type": "\(type)",
-			"id": "\(creatorId)",
-		])
-		
-		// First, load the creator information. We do get some static information
-		// at app startup from the authentication code, but since we want to load
-		// the livestream thumbnail, we don't want this to be out of date and stale,
-		// in the case that it was updated since app launch when a livestream begins.
-		fpApiService
-			.getInfo(creatorGUID: [creatorId])
-			.flatMapResult { (response) -> Result<[CreatorModelV2], ErrorModel> in
-				switch response {
-				case let .http200(value: creators, raw: clientResponse):
-					self.logger.debug("Creator information raw response: \(clientResponse.plaintextDebugContent)")
-					return .success(creators)
-				case let .http0(value: errorModel, raw: clientResponse),
-					let .http400(value: errorModel, raw: clientResponse),
-					let .http401(value: errorModel, raw: clientResponse),
-					let .http403(value: errorModel, raw: clientResponse),
-					let .http404(value: errorModel, raw: clientResponse):
-					self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading creator information. Error Model: \(String(reflecting: errorModel)).")
-					return .failure(errorModel)
+		Task { @MainActor in
+			state = .loading
+			
+			let type: CDNV2API.ModelType_getDeliveryInfo = .live
+			logger.debug("Loading livestream information.", metadata: [
+				"type": "\(type)",
+				"id": "\(creatorId)",
+			])
+			
+			// First, load the creator information. We do get some static information
+			// at app startup from the authentication code, but since we want to load
+			// the livestream thumbnail, we don't want this to be out of date and stale,
+			// in the case that it was updated since app launch when a livestream begins.
+			let creatorsResponse: [CreatorModelV2]
+			do {
+				creatorsResponse = try await fpApiService.getInfo(creatorGUID: [creatorId])
+			} catch {
+				self.state = .failed(error)
+				return
+			}
+			
+			guard let creator = creatorsResponse.first(where: { $0.id == self.creatorId }), let livestream = creator.liveStream else {
+				self.logger.error("Did not receive creator information correctly. Reporting the error to the user.")
+				self.state = .failed(LivestreamError.missingCreator)
+				return
+			}
+			
+			let cdnResponse: CdnDeliveryV3Response
+			do {
+				cdnResponse = try await fpApiService.getDeliveryInfo(scenario: .live, entityId: livestream.id, outputKind: nil)
+			} catch {
+				self.state = .failed(error)
+				return
+			}
+			
+			self.logger.notice("Received livestream information.", metadata: [
+				"origins": "\(cdnResponse.groups.flatMap({ $0.origins ?? [] }).map({ $0.url }).joined(separator: ", "))"
+			])
+			// Only use the first group, for now.
+			let group = cdnResponse.groups.first
+			let urls = group?.variants.compactMap({ variant -> URL? in
+				return DeliveryHelper.getBestUrl(variant: variant, group: group)
+			})
+			// Livestreams should only really have a single variant. Use the first one returned.
+			guard let newUrl = urls?.first else {
+				self.state = .failed(LivestreamError.badUrl)
+				return
+			}
+			if case let .loaded((_, _, oldUrl)) = self.state {
+				if newUrl != oldUrl {
+					self.shouldUpdatePlayer = true
 				}
 			}
-			.whenComplete { result in
-				switch result {
-				case let .success(creators):
-					guard let creator = creators.first(where: { $0.id == self.creatorId }), let livestream = creator.liveStream else {
-						self.logger.error("Did not receive creator information correctly. Reporting the error to the user.")
-						self.state = .failed(LivestreamError.missingCreator)
-						return
-					}
-					
-					// Second, get the CDN information
-					self.fpApiService
-						.getDeliveryInfo(scenario: .live, entityId: livestream.id, outputKind: nil)
-						.flatMapResult { (response) -> Result<CdnDeliveryV3Response, ErrorModel> in
-							switch response {
-							case let .http200(value: cdnResponse, raw: clientResponse):
-								self.logger.debug("Livestream informaton raw response: \(clientResponse.plaintextDebugContent)")
-								return .success(cdnResponse)
-							case let .http0(value: errorModel, raw: clientResponse),
-								let .http400(value: errorModel, raw: clientResponse),
-								let .http401(value: errorModel, raw: clientResponse),
-								let .http403(value: errorModel, raw: clientResponse),
-								let .http404(value: errorModel, raw: clientResponse):
-								self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading livestream information. Error Model: \(String(reflecting: errorModel)).")
-								return .failure(errorModel)
-							}
-						}
-						.whenComplete { result in
-							DispatchQueue.main.async {
-								switch result {
-								case let .success(response):
-									self.logger.notice("Received livestream information.", metadata: [
-										"origins": "\(response.groups.flatMap({ $0.origins ?? [] }).map({ $0.url }).joined(separator: ", "))"
-									])
-									// Only use the first group, for now.
-									let group = response.groups.first
-									let urls = group?.variants.compactMap({ variant -> URL? in
-										return DeliveryHelper.getBestUrl(variant: variant, group: group)
-									})
-									// Livestreams should only really have a single variant. Use the first one returned.
-									guard let newUrl = urls?.first else {
-										self.state = .failed(LivestreamError.badUrl)
-										return
-									}
-									if case let .loaded((_, _, oldUrl)) = self.state {
-										if newUrl != oldUrl {
-											self.shouldUpdatePlayer = true
-										}
-									}
-									self.startLoadingLiveStatus()
-									
-									self.state = .loaded((creator, response, newUrl))
-								case let .failure(error):
-									self.logger.error("Encountered an unexpected error while loading livestream information. Reporting the error to the user. Error: \(String(reflecting: error))")
-//									self.path = nil
-									self.state = .failed(error)
-								}
-							}
-						}
-					
-				case let .failure(error):
-					self.logger.error("Encountered an unexpected error while loading creator information. Reporting the error to the user. Error: \(String(reflecting: error))")
-					self.state = .failed(error)
-				}
-			}
+			self.startLoadingLiveStatus()
+		}
 	}
 	
 	func loadLiveStatus() {

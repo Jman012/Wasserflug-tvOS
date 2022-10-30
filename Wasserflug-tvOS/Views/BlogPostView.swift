@@ -4,6 +4,7 @@ import CachedAsyncImage
 
 struct BlogPostView: View {
 	@StateObject var viewModel: BlogPostViewModel
+	let progressPercentage: Int
 	var shouldAutoPlay: Bool
 	
 	@Environment(\.resetFocus) var resetFocus
@@ -52,16 +53,16 @@ struct BlogPostView: View {
 								showPlayButton: !(content.videoAttachments?.isEmpty ?? false),
 								width: geometry.size.width * 0.5,
 								playButtonSize: .default,
-								playContent: { beginningWatchTime in
+								playContent: {
 									VStack {
 										if let videoAttachments = content.videoAttachments, let firstVideo = videoAttachments.first {
-											VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: firstVideo, contentPost: content, description: viewModel.textAttributedString), beginningWatchTime: beginningWatchTime)
+											VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: firstVideo, contentPost: content, description: viewModel.textAttributedString))
 										}
 									}
 								},
 								defaultInNamespace: screenNamespace,
 								isShowingMedia: shouldAutoPlay,
-								watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", content.id, content.videoAttachments?.first?.id ?? ""), animation: .default))
+								progressPercentage: progressPercentage)
 
 							// Creator pfp, publish date, and description
 							VStack(alignment: .leading) {
@@ -147,6 +148,6 @@ struct BlogPostView: View {
 
 struct BlogPostView_Previews: PreviewProvider {
 	static var previews: some View {
-		BlogPostView(viewModel: BlogPostViewModel(fpApiService: MockFPAPIService(), id: ""), shouldAutoPlay: false)
+		BlogPostView(viewModel: BlogPostViewModel(fpApiService: MockFPAPIService(), id: ""), progressPercentage: 75, shouldAutoPlay: false)
 	}
 }

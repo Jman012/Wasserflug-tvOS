@@ -4,10 +4,10 @@ import FloatplaneAPIClient
 
 protocol FPAPIService {
 	// Auth-related
-	func getUserSelf() -> EventLoopFuture<UserV3API.GetSelf>
-	func listUserSubscriptionsV3() -> EventLoopFuture<SubscriptionsV3API.ListUserSubscriptionsV3>
-	func getInfo(creatorGUID: [String]) -> EventLoopFuture<CreatorV2API.GetInfo>
-	func getUsers(ids: [String]) -> EventLoopFuture<UserV2API.GetUserInfo>
+	func getUserSelf() async throws -> UserV3API.GetSelf
+	func listUserSubscriptionsV3() async throws -> [UserSubscriptionModel]
+	func getInfo(creatorGUID: [String]) async throws -> [CreatorModelV2]
+	func getUsers(ids: [String]) async throws -> UserInfoV2Response
 	func login(username: String, password: String, captchaToken: String?) -> EventLoopFuture<AuthV2API.Login>
 	func secondFactor(token: String) -> EventLoopFuture<AuthV2API.CheckFor2faLogin>
 	
@@ -19,9 +19,9 @@ protocol FPAPIService {
 	
 	// Post-related
 	func getBlogPost(id: String) -> EventLoopFuture<ContentV3API.GetBlogPost>
-	func getVideoContent(id: String) -> EventLoopFuture<ContentV3API.GetVideoContent>
+	func getVideoContent(id: String) async throws -> ContentVideoV3Response
 	func getCdn(type: CDNV2API.ModelType_getDeliveryInfo, id: String) -> EventLoopFuture<CDNV2API.GetDeliveryInfo>
-	func getDeliveryInfo(scenario: DeliveryV3API.Scenario_getDeliveryInfoV3, entityId: String, outputKind: DeliveryV3API.OutputKind_getDeliveryInfoV3?) -> EventLoopFuture<DeliveryV3API.GetDeliveryInfoV3>
+	func getDeliveryInfo(scenario: DeliveryV3API.Scenario_getDeliveryInfoV3, entityId: String, outputKind: DeliveryV3API.OutputKind_getDeliveryInfoV3?) async throws -> CdnDeliveryV3Response
 	func getPictureContent(id: String) -> EventLoopFuture<ContentV3API.GetPictureContent>
 	
 	// Interaction-related
@@ -36,17 +36,98 @@ class DefaultFPAPIService: FPAPIService {
 		return logger
 	}()
 	
-	func getUserSelf() -> EventLoopFuture<UserV3API.GetSelf> {
-		return UserV3API.getSelf()
+	func getUserSelf() async throws -> UserV3API.GetSelf {
+		return try await withCheckedThrowingContinuation { continuation in
+			UserV3API
+				.getSelf()
+				.whenComplete { result in
+					switch result {
+					case let .success(value):
+						continuation.resume(returning: value)
+					case let .failure(error):
+						self.logger.error("Encountered an unexpected error while loading creator information. Reporting the error to the user. Error: \(String(reflecting: error))")
+						continuation.resume(throwing: error)
+					}
+				}
+		}
 	}
-	func listUserSubscriptionsV3() -> EventLoopFuture<SubscriptionsV3API.ListUserSubscriptionsV3> {
-		return SubscriptionsV3API.listUserSubscriptionsV3()
+	func listUserSubscriptionsV3() async throws -> [UserSubscriptionModel] {
+		return try await withCheckedThrowingContinuation { continuation in
+			SubscriptionsV3API
+				.listUserSubscriptionsV3()
+				.whenComplete { result in
+					switch result {
+					case let .success(value):
+						switch value {
+						case let .http200(value: response, raw: clientResponse):
+							self.logger.debug("User subscriptions raw response: \(clientResponse.plaintextDebugContent)")
+							continuation.resume(returning: response)
+						case let .http0(value: errorModel, raw: clientResponse),
+							let .http400(value: errorModel, raw: clientResponse),
+							let .http401(value: errorModel, raw: clientResponse),
+							let .http403(value: errorModel, raw: clientResponse),
+							let .http404(value: errorModel, raw: clientResponse):
+							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading user subscriptions. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
+							continuation.resume(throwing: errorModel)
+						}
+					case let .failure(error):
+						self.logger.error("Encountered an unexpected error while loading user subscriptions. Reporting the error to the user. Error: \(String(reflecting: error))")
+						continuation.resume(throwing: error)
+					}
+				}
+		}
 	}
-	func getInfo(creatorGUID: [String]) -> EventLoopFuture<CreatorV2API.GetInfo> {
-		return CreatorV2API.getInfo(creatorGUID: creatorGUID)
+	func getInfo(creatorGUID: [String]) async throws -> [CreatorModelV2] {
+		return try await withCheckedThrowingContinuation { continuation in
+			CreatorV2API
+				.getInfo(creatorGUID: creatorGUID)
+				.whenComplete { result in
+					switch result {
+					case let .success(value):
+						switch value {
+						case let .http200(value: response, raw: clientResponse):
+							self.logger.debug("Creator information raw response: \(clientResponse.plaintextDebugContent)")
+							continuation.resume(returning: response)
+						case let .http0(value: errorModel, raw: clientResponse),
+							let .http400(value: errorModel, raw: clientResponse),
+							let .http401(value: errorModel, raw: clientResponse),
+							let .http403(value: errorModel, raw: clientResponse),
+							let .http404(value: errorModel, raw: clientResponse):
+							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading creator information. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
+							continuation.resume(throwing: errorModel)
+						}
+					case let .failure(error):
+						self.logger.error("Encountered an unexpected error while loading creator information. Reporting the error to the user. Error: \(String(reflecting: error))")
+						continuation.resume(throwing: error)
+					}
+				}
+		}
 	}
-	func getUsers(ids: [String]) -> EventLoopFuture<UserV2API.GetUserInfo> {
-		return UserV2API.getUserInfo(id: ids)
+	func getUsers(ids: [String]) async throws -> UserInfoV2Response {
+		return try await withCheckedThrowingContinuation { continuation in
+			UserV2API
+				.getUserInfo(id: ids)
+				.whenComplete { result in
+					switch result {
+					case let .success(value):
+						switch value {
+						case let .http200(value: response, raw: clientResponse):
+							self.logger.debug("Users raw response: \(clientResponse.plaintextDebugContent)")
+							continuation.resume(returning: response)
+						case let .http0(value: errorModel, raw: clientResponse),
+							let .http400(value: errorModel, raw: clientResponse),
+							let .http401(value: errorModel, raw: clientResponse),
+							let .http403(value: errorModel, raw: clientResponse),
+							let .http404(value: errorModel, raw: clientResponse):
+							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading users. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
+							continuation.resume(throwing: errorModel)
+						}
+					case let .failure(error):
+						self.logger.error("Encountered an unexpected error while loading users. Reporting the error to the user. Error: \(String(reflecting: error))")
+						continuation.resume(throwing: error)
+					}
+				}
+		}
 	}
 	func login(username: String, password: String, captchaToken: String?) -> EventLoopFuture<AuthV2API.Login> {
 		return AuthV2API.login(authLoginV2Request: .init(username: username, password: password, captchaToken: captchaToken))
@@ -138,8 +219,31 @@ class DefaultFPAPIService: FPAPIService {
 	func getBlogPost(id: String) -> EventLoopFuture<ContentV3API.GetBlogPost> {
 		return ContentV3API.getBlogPost(id: id)
 	}
-	func getVideoContent(id: String) -> EventLoopFuture<ContentV3API.GetVideoContent> {
-		return ContentV3API.getVideoContent(id: id)
+	func getVideoContent(id: String) async throws -> ContentVideoV3Response {
+		return try await withCheckedThrowingContinuation { continuation in
+			ContentV3API
+				.getVideoContent(id: id)
+				.whenComplete { result in
+					switch result {
+					case let .success(value):
+						switch value {
+						case let .http200(value: response, raw: clientResponse):
+							self.logger.debug("Video content raw response: \(clientResponse.plaintextDebugContent)")
+							continuation.resume(returning: response)
+						case let .http0(value: errorModel, raw: clientResponse),
+							let .http400(value: errorModel, raw: clientResponse),
+							let .http401(value: errorModel, raw: clientResponse),
+							let .http403(value: errorModel, raw: clientResponse),
+							let .http404(value: errorModel, raw: clientResponse):
+							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading video content. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
+							continuation.resume(throwing: errorModel)
+						}
+					case let .failure(error):
+						self.logger.error("Encountered an unexpected error while loading video content. Reporting the error to the user. Error: \(String(reflecting: error))")
+						continuation.resume(throwing: error)
+					}
+				}
+		}
 	}
 	func getCdn(type: CDNV2API.ModelType_getDeliveryInfo, id: String) -> EventLoopFuture<CDNV2API.GetDeliveryInfo> {
 		switch type {
@@ -149,8 +253,31 @@ class DefaultFPAPIService: FPAPIService {
 			return CDNV2API.getDeliveryInfo(type: type, guid: id)
 		}
 	}
-	func getDeliveryInfo(scenario: DeliveryV3API.Scenario_getDeliveryInfoV3, entityId: String, outputKind: DeliveryV3API.OutputKind_getDeliveryInfoV3? = nil) -> EventLoopFuture<DeliveryV3API.GetDeliveryInfoV3> {
-		return DeliveryV3API.getDeliveryInfoV3(scenario: scenario, entityId: entityId, outputKind: outputKind)
+	func getDeliveryInfo(scenario: DeliveryV3API.Scenario_getDeliveryInfoV3, entityId: String, outputKind: DeliveryV3API.OutputKind_getDeliveryInfoV3? = nil) async throws -> CdnDeliveryV3Response {
+		return try await withCheckedThrowingContinuation { continuation in
+			DeliveryV3API
+				.getDeliveryInfoV3(scenario: scenario, entityId: entityId, outputKind: outputKind)
+				.whenComplete { result in
+					switch result {
+					case let .success(value):
+						switch value {
+						case let .http200(value: response, raw: clientResponse):
+							self.logger.debug("Delivery info raw response: \(clientResponse.plaintextDebugContent)")
+							continuation.resume(returning: response)
+						case let .http0(value: errorModel, raw: clientResponse),
+							let .http400(value: errorModel, raw: clientResponse),
+							let .http401(value: errorModel, raw: clientResponse),
+							let .http403(value: errorModel, raw: clientResponse),
+							let .http404(value: errorModel, raw: clientResponse):
+							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading delivery info. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
+							continuation.resume(throwing: errorModel)
+						}
+					case let .failure(error):
+						self.logger.error("Encountered an unexpected error while loading delivery info. Reporting the error to the user. Error: \(String(reflecting: error))")
+						continuation.resume(throwing: error)
+					}
+				}
+		}
 	}
 	func getPictureContent(id: String) -> EventLoopFuture<ContentV3API.GetPictureContent> {
 		return ContentV3API.getPictureContent(id: id)
@@ -174,18 +301,26 @@ class MockFPAPIService: FPAPIService {
 		Configuration.apiClient!.eventLoop
 	}
 	
-	func getUserSelf() -> EventLoopFuture<UserV3API.GetSelf> {
-		return eventLoop.makeSucceededFuture(.http401(value: ErrorModel(id: "", errors: [], message: ""), raw: ClientResponse()))
-//		return eventLoop.makeSucceededFuture(.http200(value: MockData.userSelf, raw: ClientResponse()))
+	func getUserSelf() async throws -> UserV3API.GetSelf {
+		return try await withCheckedThrowingContinuation { continuation in
+			continuation.resume(returning: .http200(value: MockData.userSelf, raw: ClientResponse()))
+		}
+//		return eventLoop.makeSucceededFuture(.http401(value: ErrorModel(id: "", errors: [], message: ""), raw: ClientResponse()))
 	}
-	func listUserSubscriptionsV3() -> EventLoopFuture<SubscriptionsV3API.ListUserSubscriptionsV3> {
-		return eventLoop.makeSucceededFuture(.http200(value: MockData.userSubscriptions, raw: ClientResponse()))
+	func listUserSubscriptionsV3() async throws -> [UserSubscriptionModel] {
+		return try await withCheckedThrowingContinuation { continuation in
+			continuation.resume(returning: MockData.userSubscriptions)
+		}
 	}
-	func getInfo(creatorGUID: [String]) -> EventLoopFuture<CreatorV2API.GetInfo> {
-		return eventLoop.makeSucceededFuture(.http200(value: MockData.creators, raw: ClientResponse()))
+	func getInfo(creatorGUID: [String]) async throws -> [CreatorModelV2] {
+		return try await withCheckedThrowingContinuation { continuation in
+			continuation.resume(returning: MockData.creators)
+		}
 	}
-	func getUsers(ids: [String]) -> EventLoopFuture<UserV2API.GetUserInfo> {
-		return eventLoop.makeSucceededFuture(.http200(value: MockData.creatorOwners, raw: ClientResponse()))
+	func getUsers(ids: [String]) async throws -> UserInfoV2Response {
+		return try await withCheckedThrowingContinuation { continuation in
+			continuation.resume(returning: MockData.creatorOwners)
+		}
 	}
 	func login(username: String, password: String, captchaToken: String?) -> EventLoopFuture<AuthV2API.Login> {
 		return eventLoop.makeSucceededFuture(.http200(value: .init(user: nil, needs2FA: true), raw: ClientResponse()))
@@ -214,8 +349,10 @@ class MockFPAPIService: FPAPIService {
 	func getBlogPost(id: String) -> EventLoopFuture<ContentV3API.GetBlogPost> {
 		return eventLoop.makeSucceededFuture(.http200(value: MockData.getBlogPost, raw: ClientResponse()))
 	}
-	func getVideoContent(id: String) -> EventLoopFuture<ContentV3API.GetVideoContent> {
-		return eventLoop.makeSucceededFuture(.http200(value: MockData.getVideoContent, raw: ClientResponse()))
+	func getVideoContent(id: String) async throws -> ContentVideoV3Response {
+		return try await withCheckedThrowingContinuation { continuation in
+			continuation.resume(returning: MockData.getVideoContent)
+		}
 	}
 	func getCdn(type: CDNV2API.ModelType_getDeliveryInfo, id: String) -> EventLoopFuture<CDNV2API.GetDeliveryInfo> {
 		switch type {
@@ -225,14 +362,16 @@ class MockFPAPIService: FPAPIService {
 			return eventLoop.makeSucceededFuture(.http200(value: MockData.getCdn, raw: ClientResponse()))
 		}
 	}
-	func getDeliveryInfo(scenario: DeliveryV3API.Scenario_getDeliveryInfoV3, entityId: String, outputKind: DeliveryV3API.OutputKind_getDeliveryInfoV3? = nil) -> EventLoopFuture<DeliveryV3API.GetDeliveryInfoV3> {
-		switch scenario {
-		case .ondemand:
-			return eventLoop.makeSucceededFuture(.http200(value: MockData.getDeliveryOnDemand, raw: ClientResponse()))
-		case .live:
-			return eventLoop.makeSucceededFuture(.http200(value: MockData.getDeliveryLive, raw: ClientResponse()))
-		case .download:
-			return eventLoop.makeSucceededFuture(.http200(value: MockData.getDeliveryDownload, raw: ClientResponse()))
+	func getDeliveryInfo(scenario: DeliveryV3API.Scenario_getDeliveryInfoV3, entityId: String, outputKind: DeliveryV3API.OutputKind_getDeliveryInfoV3? = nil) async throws -> CdnDeliveryV3Response {
+		return try await withCheckedThrowingContinuation { continuation in
+			switch scenario {
+			case .ondemand:
+				continuation.resume(returning: MockData.getDeliveryOnDemand)
+			case .live:
+				continuation.resume(returning: MockData.getDeliveryLive)
+			case .download:
+				continuation.resume(returning: MockData.getDeliveryDownload)
+			}
 		}
 	}
 	func getPictureContent(id: String) -> EventLoopFuture<ContentV3API.GetPictureContent> {

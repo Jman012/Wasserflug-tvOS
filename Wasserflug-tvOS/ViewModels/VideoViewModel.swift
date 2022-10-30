@@ -20,7 +20,7 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 		}
 	}
 	
-	@Published var state: ViewModelState<CdnDeliveryV3Response> = .idle
+	@Published var state: ViewModelState<(CdnDeliveryV3Response, ContentVideoV3Response)> = .idle
 	
 	private let fpApiService: FPAPIService
 	let videoAttachment: VideoAttachmentModel
@@ -53,86 +53,73 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 	}
 	
 	func load() {
-		state = .loading
-		
-		let type: CDNV2API.ModelType_getDeliveryInfo = .vod
-		logger.info("Loading video information.", metadata: [
-			"type": "\(type)",
-			"id": "\(videoAttachment.guid)",
-		])
-		
-		fpApiService.getDeliveryInfo(scenario: .ondemand, entityId: videoAttachment.guid, outputKind: nil)
-			.flatMapResult { (response) -> Result<CdnDeliveryV3Response, ErrorModel> in
-				switch response {
-				case let .http200(value: cdnResponse, raw: clientResponse):
-					self.logger.debug("Video information raw response: \(clientResponse.plaintextDebugContent)")
-					return .success(cdnResponse)
-				case let .http0(value: errorModel, raw: clientResponse),
-					let .http400(value: errorModel, raw: clientResponse),
-					let .http401(value: errorModel, raw: clientResponse),
-					let .http403(value: errorModel, raw: clientResponse),
-					let .http404(value: errorModel, raw: clientResponse):
-					self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading video information. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
-					return .failure(errorModel)
-				}
+		Task { @MainActor in
+			self.state = .loading
+			
+			let type: CDNV2API.ModelType_getDeliveryInfo = .vod
+			self.logger.info("Loading video information.", metadata: [
+				"type": "\(type)",
+				"id": "\(videoAttachment.guid)",
+			])
+			
+			let deliveryInfo: CdnDeliveryV3Response
+			let videoContent: ContentVideoV3Response
+			do {
+				deliveryInfo = try await self.fpApiService.getDeliveryInfo(scenario: .ondemand, entityId: videoAttachment.guid, outputKind: nil)
+				videoContent = try await self.fpApiService.getVideoContent(id: videoAttachment.id)
+			} catch {
+				self.state = .failed(error)
+				return
 			}
-			.whenComplete { result in
-				DispatchQueue.main.async {
-					switch result {
-					case let .success(response):
-						self.logger.notice("Received video information.", metadata: [
-							"origins": "\(response.groups.flatMap({ $0.origins ?? [] }).map({ $0.url }).joined(separator: ", "))"
-						])
-						
-						let screenNativeBounds = UIScreen.main.nativeBounds
-						// Only use the first group, for now.
-						let group = response.groups.first
-						let variants = group?.variants
-						let filteredVariants = variants?.filter({ variant in
-							let enabled = variant.enabled ?? false
-							let hidden = variant.hidden ?? false
-							
-							// Filter out resolutions larger than the device's screen resolution to save
-							// on bandwidth and downscaling performance.
-							// Use height for these comparisons. If using width, we run into funny issues with
-							// LTT videos which use 2:1 aspect ratios (1080p is 2160x1080 instead of 1920x1080,
-							// and 4K is 4320x2160 instead of 3480x2160) which makes screen size comparisons
-							// difficult to do correctly.
-							// Just in case some creators have funny heights, allow for a 15% tolerance.
-							var videoSizeOkay: Bool = false
-							if let video = variant.meta?.video {
-								videoSizeOkay = CGFloat(video.height ?? 0) <= (screenNativeBounds.height * 1.15)
-								if !videoSizeOkay {
-									self.logger.warning("Ignoring quality level \(String(describing: variant.name)) (\(video.width ?? 0) x \(video.height ?? 0)) due to larger-than-screen height of \(screenNativeBounds.height).")
-								}
-							}
-							return enabled && !hidden && videoSizeOkay
-						})
-						
-						let qualityLevelsAndUrls = filteredVariants?.compactMap({ (variant) -> (String, (URL, CdnDeliveryV3Variant))? in
-							// Map the quality level to the correct URL
-							if let url = DeliveryHelper.getBestUrl(variant: variant, group: group) {
-								return (variant.name, (url, variant))
-							}
-							return nil
-						}) ?? []
-						self.qualityLevels = Dictionary(uniqueKeysWithValues: qualityLevelsAndUrls)
-
-						if self.qualityLevels.isEmpty {
-							self.logger.warning("No quality levels were able to be parsed from the video response. Showing an error to the user.", metadata: [
-								"id": "\(self.videoAttachment.guid)",
-								"qualityLevelNames": "\(group?.variants.map({ $0.name }).joined(separator: ", ") ?? "<nil>")",
-							])
-							self.state = .failed(VideoError.noQualityLevelsFound)
-						}
-
-						self.state = .loaded(response)
-					case let .failure(error):
-						self.logger.error("Encountered an unexpected error while loading video information. Reporting the error to the user. Error: \(String(reflecting: error))")
-						self.state = .failed(error)
+			
+			self.logger.notice("Received video information.", metadata: [
+				"origins": "\(deliveryInfo.groups.flatMap({ $0.origins ?? [] }).map({ $0.url }).joined(separator: ", "))"
+			])
+			
+			let screenNativeBounds = UIScreen.main.nativeBounds
+			// Only use the first group, for now.
+			let group = deliveryInfo.groups.first
+			let variants = group?.variants
+			let filteredVariants = variants?.filter({ variant in
+				let enabled = variant.enabled ?? false
+				let hidden = variant.hidden ?? false
+				
+				// Filter out resolutions larger than the device's screen resolution to save
+				// on bandwidth and downscaling performance.
+				// Use height for these comparisons. If using width, we run into funny issues with
+				// LTT videos which use 2:1 aspect ratios (1080p is 2160x1080 instead of 1920x1080,
+				// and 4K is 4320x2160 instead of 3480x2160) which makes screen size comparisons
+				// difficult to do correctly.
+				// Just in case some creators have funny heights, allow for a 15% tolerance.
+				var videoSizeOkay: Bool = false
+				if let video = variant.meta?.video {
+					videoSizeOkay = CGFloat(video.height ?? 0) <= (screenNativeBounds.height * 1.15)
+					if !videoSizeOkay {
+						self.logger.warning("Ignoring quality level \(String(describing: variant.name)) (\(video.width ?? 0) x \(video.height ?? 0)) due to larger-than-screen height of \(screenNativeBounds.height).")
 					}
 				}
+				return enabled && !hidden && videoSizeOkay
+			})
+			
+			let qualityLevelsAndUrls = filteredVariants?.compactMap({ (variant) -> (String, (URL, CdnDeliveryV3Variant))? in
+				// Map the quality level to the correct URL
+				if let url = DeliveryHelper.getBestUrl(variant: variant, group: group) {
+					return (variant.name, (url, variant))
+				}
+				return nil
+			}) ?? []
+			self.qualityLevels = Dictionary(uniqueKeysWithValues: qualityLevelsAndUrls)
+			
+			if self.qualityLevels.isEmpty {
+				self.logger.warning("No quality levels were able to be parsed from the video response. Showing an error to the user.", metadata: [
+					"id": "\(self.videoAttachment.guid)",
+					"qualityLevelNames": "\(group?.variants.map({ $0.name }).joined(separator: ", ") ?? "<nil>")",
+				])
+				self.state = .failed(VideoError.noQualityLevelsFound)
 			}
+			
+			self.state = .loaded((deliveryInfo, videoContent))
+		}
 	}
 	
 	private func metadataItem(identifier: AVMetadataIdentifier, value: Any) -> AVMetadataItem {

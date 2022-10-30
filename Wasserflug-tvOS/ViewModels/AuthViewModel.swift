@@ -26,130 +26,123 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 	}
 	
 	func determineAuthenticationStatus() {
-		isLoadingAuthStatus = true
-		
-		logger.info("Determining authentication status. Retrieving the self object and list of subscriptions.")
-		
-		// Get self and subscriptions
-		fpApiService.getUserSelf()
-			.and(fpApiService.listUserSubscriptionsV3())
-			.whenComplete { result in
-				DispatchQueue.main.async {
-					switch result {
-					case let .success(responses):
-						switch responses {
-						case let (.http200(value: userSelfResponse, raw: clientResponseSelf), .http200(value: userSubscriptionsResponse, raw: clientResponseSubs)):
-							self.logger.debug("User self raw response: \(clientResponseSelf.plaintextDebugContent)")
-							self.logger.debug("User subscriptions raw response: \(clientResponseSubs.plaintextDebugContent)")
-							self.logger.notice("Recieved successful user self and subscription responses.", metadata: [
-								"userId": "\(userSelfResponse.id)",
-								"username": "\(userSelfResponse.username)",
-								"subIds": "\(userSubscriptionsResponse.map({ $0.creator }))",
-							])
-							
-							guard !userSubscriptionsResponse.isEmpty else {
-								self.logger.warning("Login was successful but the user profile did not return any subscriptions. Aborting authentication process and informing user of inability to proceed.")
-								self.isLoggedIn = false
-								self.isLoadingAuthStatus = false
-								self.showNoSubscriptionsAlert = true
-								return
-							}
-							
-							self.isLoggedIn = true
-							self.userInfo.userSelf = userSelfResponse
-							self.userInfo.userSubscriptions = userSubscriptionsResponse
-							
-							// With the subscriptions, get the creators of the subscriptions.
-							// Convert to Set to remove possible duplicates (which is possible).
-							let creatorGuids = Set<String>(self.userInfo.userSubscriptions.map({ $0.creator }))
-							self.logger.info("Loading creator(s) information from subscriptions", metadata: [
-								"creatorGuids": "\(creatorGuids)",
-							])
-							self.fpApiService.getInfo(creatorGUID: Array<String>(creatorGuids))
-								.whenComplete { result in
-									DispatchQueue.main.async {
-										switch result {
-										case let .success(response):
-											switch response {
-											case let .http200(value: response, raw: clientResponseCreators):
-												self.logger.debug("Creator(s) information raw content: \(clientResponseCreators.plaintextDebugContent)")
-												self.logger.notice("Retrieved \(response.count) creator(s) information.")
-												self.userInfo.creators = Dictionary(uniqueKeysWithValues: response.map({ ($0.id, $0) }))
-												
-												// With the creators, get the creator owners
-												let ownerIds = response.map({ $0.owner })
-												self.logger.info("Loading creator owner(s) information.", metadata: [
-													"ownerIds": "\(ownerIds)",
-												])
-												self.fpApiService.getUsers(ids: ownerIds)
-													.whenComplete { result in
-														DispatchQueue.main.async {
-															self.isLoadingAuthStatus = false
-															switch result {
-															case let .success(response):
-																switch response {
-																case let .http200(value: response, raw: clientResponseCreatorOwners):
-																	self.logger.debug("Creator owner(s) raw response: \(clientResponseCreatorOwners.plaintextDebugContent)")
-																	self.logger.notice("Retrieved creator owner(s) information", metadata: [
-																		"names": "\(response.users.map({ $0.user.userModelShared.username }))",
-																	])
-																	self.userInfo.creatorOwners = Dictionary(uniqueKeysWithValues: response.users.map({ ($0.user.userModelShared.id, $0.user.userModelShared) }))
-																case let .http0(value: errorModel, raw: clientResponse),
-																	let .http400(value: errorModel, raw: clientResponse),
-																	let .http401(value: errorModel, raw: clientResponse),
-																	let .http403(value: errorModel, raw: clientResponse),
-																	let .http404(value: errorModel, raw: clientResponse):
-																	self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading creator owner(s). Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
-																	self.isLoggedIn = false
-																	self.isLoadingAuthStatus = false
-																	self.authenticationCheckError = errorModel
-																	self.showAuthenticationErrorAlert = true
-																}
-															case let .failure(error):
-																self.logger.error("Encountered an unexpected error while loading creator owner(s). Reporting the error to the user. Error: \(String(reflecting: error))")
-																self.isLoggedIn = false
-																self.isLoadingAuthStatus = false
-																self.authenticationCheckError = error
-																self.showAuthenticationErrorAlert = true
-															}
-														}
-													}
-											case let .http0(value: errorModel, raw: clientResponse),
-												let .http400(value: errorModel, raw: clientResponse),
-												let .http401(value: errorModel, raw: clientResponse),
-												let .http403(value: errorModel, raw: clientResponse),
-												let .http404(value: errorModel, raw: clientResponse):
-												self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading creator(s). Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
-												self.isLoggedIn = false
-												self.isLoadingAuthStatus = false
-												self.authenticationCheckError = errorModel
-												self.showAuthenticationErrorAlert = true
-											}
-										case let .failure(error):
-											self.logger.error("Encountered an unexpected error while loading creator(s). Reporting the error to the user. Error: \(String(reflecting: error))")
-											self.isLoggedIn = false
-											self.isLoadingAuthStatus = false
-											self.authenticationCheckError = error
-											self.showAuthenticationErrorAlert = true
-										}
-									}
-								}
-						default:
-							self.logger.notice("Received invalid responses for user self and user subscriptions. Assuming user is not logged in. Showing login screen to user.")
-							self.logger.debug("User self response: \(responses.0)")
-							self.logger.debug("User subscriptions response: \(responses.1)")
-							self.isLoggedIn = false
-							self.isLoadingAuthStatus = false
-						}
-					case let .failure(error):
-						self.logger.error("Encountered an unexpected error while loading user self and subscriptions. Reporting the error to the user. Showing login screen. Error: \(String(reflecting: error))")
-						self.isLoggedIn = false
-						self.isLoadingAuthStatus = false
-						self.authenticationCheckError = error
-						self.showAuthenticationErrorAlert = true
-					}
-				}
+		Task { @MainActor in
+			isLoadingAuthStatus = true
+			
+			logger.info("Determining authentication status. Retrieving the self object and list of subscriptions.")
+			
+			// Get self and subscriptions
+			let userSelfResponse: UserV3API.GetSelf
+			do {
+				userSelfResponse = try await fpApiService.getUserSelf()
+			} catch {
+				self.logger.error("Encountered an unexpected error while loading user self. Reporting the error to the user. Showing login screen. Error: \(String(reflecting: error))")
+				self.isLoggedIn = false
+				self.isLoadingAuthStatus = false
+				self.authenticationCheckError = error
+				self.showAuthenticationErrorAlert = true
+				return
 			}
+			
+			let userSelf: UserSelfV3Response
+			switch userSelfResponse {
+			case let .http200(value: value, raw: _):
+				userSelf = value
+			case let .http403(value: error, raw: _):
+				self.logger.notice("Received invalid responses for user self and user subscriptions. Assuming user is not logged in. Showing login screen to user.")
+				self.logger.debug("User self response: \(error)")
+				self.isLoggedIn = false
+				self.isLoadingAuthStatus = false
+				return
+			case let .http400(value: error, raw: _),
+				let .http401(value: error, raw: _),
+				let .http404(value: error, raw: _),
+				let .http0(value: error, raw: _):
+				self.logger.error("Encountered an unexpected response status code while loading user self. Reporting the error to the user. Showing login screen. Error: \(String(reflecting: error))")
+				self.isLoggedIn = false
+				self.isLoadingAuthStatus = false
+				self.authenticationCheckError = error
+				self.showAuthenticationErrorAlert = true
+				return
+			}
+			
+			let userSubscriptions: [UserSubscriptionModel]
+			do {
+				userSubscriptions = try await self.fpApiService.listUserSubscriptionsV3()
+			} catch {
+				self.logger.error("Encountered an unexpected error while loading user subscriptions. Reporting the error to the user. Showing login screen. Error: \(String(reflecting: error))")
+				self.isLoggedIn = false
+				self.isLoadingAuthStatus = false
+				self.authenticationCheckError = error
+				self.showAuthenticationErrorAlert = true
+				return
+			}
+			
+			self.logger.notice("Recieved successful user self and subscription responses.", metadata: [
+				"userId": "\(userSelf.id)",
+				"username": "\(userSelf.username)",
+				"subIds": "\(userSubscriptions.map({ $0.creator }))",
+			])
+			
+			guard !userSubscriptions.isEmpty else {
+				self.logger.warning("Login was successful but the user profile did not return any subscriptions. Aborting authentication process and informing user of inability to proceed.")
+				self.isLoggedIn = false
+				self.isLoadingAuthStatus = false
+				self.showNoSubscriptionsAlert = true
+				return
+			}
+			
+			self.isLoggedIn = true
+			self.userInfo.userSelf = userSelf
+			self.userInfo.userSubscriptions = userSubscriptions
+			
+			// With the subscriptions, get the creators of the subscriptions.
+			// Convert to Set to remove possible duplicates (which is possible).
+			let creatorGuids = Set<String>(self.userInfo.userSubscriptions.map({ $0.creator }))
+			self.logger.info("Loading creator(s) information from subscriptions", metadata: [
+				"creatorGuids": "\(creatorGuids)",
+			])
+			
+			let creatorInfos: [CreatorModelV2]
+			do {
+				creatorInfos = try await self.fpApiService.getInfo(creatorGUID: Array<String>(creatorGuids))
+			} catch {
+				self.logger.error("Encountered an unexpected error while loading user subscriptions. Reporting the error to the user. Showing login screen. Error: \(String(reflecting: error))")
+				self.isLoggedIn = false
+				self.isLoadingAuthStatus = false
+				self.authenticationCheckError = error
+				self.showAuthenticationErrorAlert = true
+				return
+			}
+
+			self.logger.notice("Retrieved \(creatorInfos.count) creator(s) information.")
+			self.userInfo.creators = Dictionary(uniqueKeysWithValues: creatorInfos.map({ ($0.id, $0) }))
+			
+			// With the creators, get the creator owners
+			let ownerIds = creatorInfos.map({ $0.owner })
+			self.logger.info("Loading creator owner(s) information.", metadata: [
+				"ownerIds": "\(ownerIds)",
+			])
+			
+			let creatorOwners: UserInfoV2Response
+			do {
+				creatorOwners = try await self.fpApiService.getUsers(ids: ownerIds)
+			} catch {
+				self.logger.error("Encountered an unexpected error while loading user subscriptions. Reporting the error to the user. Showing login screen. Error: \(String(reflecting: error))")
+				self.isLoggedIn = false
+				self.isLoadingAuthStatus = false
+				self.authenticationCheckError = error
+				self.showAuthenticationErrorAlert = true
+				return
+			}
+
+			self.logger.notice("Retrieved creator owner(s) information", metadata: [
+				"names": "\(creatorOwners.users.map({ $0.user.userModelShared.username }))",
+			])
+			self.userInfo.creatorOwners = Dictionary(uniqueKeysWithValues: creatorOwners.users.map({ ($0.user.userModelShared.id, $0.user.userModelShared) }))
+			
+			self.isLoadingAuthStatus = false
+		}
 	}
 	
 	func attemptLogin(username: String, password: String, isLoggedIn: @escaping () -> Void) {

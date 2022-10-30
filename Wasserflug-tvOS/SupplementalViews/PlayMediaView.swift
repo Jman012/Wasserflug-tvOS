@@ -8,20 +8,15 @@ struct PlayMediaView<Content>: View where Content: View {
 	let showPlayButton: Bool
 	let width: CGFloat?
 	let playButtonSize: PlayButton.Size
-	let playContent: (Double) -> Content
+	let playContent: () -> Content
 	let defaultInNamespace: Namespace.ID?
 	
 	@State var isShowingMedia = false
-	
-	@FetchRequest var watchProgresses: FetchedResults<WatchProgress>
+	let progressPercentage: Int
 	
 	var progress: CGFloat {
-		if let watchProgress = watchProgresses.first {
-			let progress = watchProgress.progress
-			return progress >= 0.95 ? 1.0 : progress
-		} else {
-			return 0.0
-		}
+		let p = CGFloat(progressPercentage)
+		return p >= 0.95 ? 1.0 : p
 	}
 	
 	var body: some View {
@@ -80,7 +75,7 @@ struct PlayMediaView<Content>: View where Content: View {
 					.sheet(isPresented: $isShowingMedia, onDismiss: {
 						isShowingMedia = false
 					}, content: {
-						playContent(Double(progress))
+						playContent()
 					})
 			}
 		}
@@ -95,9 +90,9 @@ struct PlayMediaView_Previews: PreviewProvider {
 				showPlayButton: true,
 				width: 200,
 				playButtonSize: .small,
-				playContent: { _ in EmptyView() },
+				playContent: { EmptyView() },
 				defaultInNamespace: nil,
-				watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
+				progressPercentage: 75
 			)
 				.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 
@@ -106,9 +101,9 @@ struct PlayMediaView_Previews: PreviewProvider {
 				showPlayButton: false,
 				width: 500,
 				playButtonSize: .default,
-				playContent: { _ in EmptyView() },
+				playContent: { EmptyView() },
 				defaultInNamespace: nil,
-				watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)				
+				progressPercentage: 75
 			)
 				.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 

@@ -180,12 +180,16 @@ struct BlogPostSelectionView: View {
 			.sheet(isPresented: $isSelected, onDismiss: {
 				isSelected = false
 			}, content: {
-				BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService, id: blogPost.id), shouldAutoPlay: false)
+				BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService, id: blogPost.id),
+							 progressPercentage: progressPercentage,
+							 shouldAutoPlay: false)
 			})
 			.sheet(isPresented: $isAutoSelected, onDismiss: {
 				isAutoSelected = false
 			}, content: {
-				BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService, id: blogPost.id), shouldAutoPlay: true)
+				BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService, id: blogPost.id),
+							 progressPercentage: progressPercentage,
+							 shouldAutoPlay: true)
 			})
 	}
 }
