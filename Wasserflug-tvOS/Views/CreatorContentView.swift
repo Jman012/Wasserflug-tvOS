@@ -89,6 +89,7 @@ struct CreatorContentView: View {
 							})
 								.sheet(isPresented: $isShowingLive, onDismiss: {
 									self.isShowingLive = false
+									self.livestreamViewModel.state = .idle
 								}, content: {
 									LivestreamView(viewModel: self.livestreamViewModel)
 								})

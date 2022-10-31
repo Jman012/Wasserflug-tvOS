@@ -89,12 +89,11 @@ class LivestreamViewModel: BaseViewModel, ObservableObject {
 				self.state = .failed(LivestreamError.badUrl)
 				return
 			}
-			if case let .loaded((_, _, oldUrl)) = self.state {
-				if newUrl != oldUrl {
-					self.shouldUpdatePlayer = true
-				}
-			}
+			
+			self.shouldUpdatePlayer = true
+			self.state = .loaded((creator, cdnResponse, newUrl))
 			self.startLoadingLiveStatus()
+			self.loadLiveStatus()
 		}
 	}
 	
@@ -149,10 +148,10 @@ class LivestreamViewModel: BaseViewModel, ObservableObject {
 		guard self.liveStatusTimer == nil else {
 			return
 		}
-		self.loadLiveStatus()
 		self.liveStatusTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true, block: { _ in
 			self.loadLiveStatus()
 		})
+		self.loadLiveStatus()
 	}
 	
 	private func metadataItem(identifier: AVMetadataIdentifier, value: Any) -> AVMetadataItem {
