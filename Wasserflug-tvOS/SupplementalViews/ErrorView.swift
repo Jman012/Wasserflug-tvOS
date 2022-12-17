@@ -15,7 +15,7 @@ struct ErrorView: View {
 				Text("An unexpected error was encountered while processing your data. Please submit a bug report with the app developer, *NOT* with Floatplane staff.\nError information:\n")
 				Text(moreDetails ? String(describing: error) : error.localizedDescription)
 			}
-			Button("More Details", action: {
+			Button(moreDetails ? "Fewer Details" : "More Details", action: {
 				moreDetails = !moreDetails
 			})
 		}
