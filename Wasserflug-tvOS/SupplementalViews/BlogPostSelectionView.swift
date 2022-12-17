@@ -138,10 +138,7 @@ struct BlogPostSelectionView: View {
 							if meta.hasPicture {
 								AttachmentPill(text: "Picture")
 							}
-							if meta.hasGallery {
-								AttachmentPill(text: "Gallery")
-							}
-							if !meta.hasVideo && !meta.hasAudio && !meta.hasPicture && !meta.hasGallery {
+							if !meta.hasVideo && !meta.hasAudio && !meta.hasPicture {
 								AttachmentPill(text: "Text")
 							}
 							

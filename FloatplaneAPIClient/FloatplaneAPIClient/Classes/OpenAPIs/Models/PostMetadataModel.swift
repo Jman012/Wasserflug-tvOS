@@ -21,11 +21,11 @@ public struct PostMetadataModel: Content, Hashable {
     public var audioDuration: Double
     public var hasPicture: Bool
     public var pictureCount: Int
-    public var hasGallery: Bool
-    public var galleryCount: Int
+    public var hasGallery: Bool?
+    public var galleryCount: Int?
     public var isFeatured: Bool
 
-    public init(hasVideo: Bool, videoCount: Int, videoDuration: Double, hasAudio: Bool, audioCount: Int, audioDuration: Double, hasPicture: Bool, pictureCount: Int, hasGallery: Bool, galleryCount: Int, isFeatured: Bool) {
+    public init(hasVideo: Bool, videoCount: Int, videoDuration: Double, hasAudio: Bool, audioCount: Int, audioDuration: Double, hasPicture: Bool, pictureCount: Int, hasGallery: Bool? = nil, galleryCount: Int? = nil, isFeatured: Bool) {
         self.hasVideo = hasVideo
         self.videoCount = videoCount
         self.videoDuration = videoDuration
@@ -65,8 +65,8 @@ public struct PostMetadataModel: Content, Hashable {
         try container.encode(audioDuration, forKey: .audioDuration)
         try container.encode(hasPicture, forKey: .hasPicture)
         try container.encode(pictureCount, forKey: .pictureCount)
-        try container.encode(hasGallery, forKey: .hasGallery)
-        try container.encode(galleryCount, forKey: .galleryCount)
+        try container.encodeIfPresent(hasGallery, forKey: .hasGallery)
+        try container.encodeIfPresent(galleryCount, forKey: .galleryCount)
         try container.encode(isFeatured, forKey: .isFeatured)
     }
 }

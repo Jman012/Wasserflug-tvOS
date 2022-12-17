@@ -905,12 +905,6 @@
                     "user": {
                         "$ref": "#/components/schemas/UserModel"
                     },
-                    "contentReference": {
-                        "type": "string"
-                    },
-                    "contentReferenceType": {
-                        "type": "string"
-                    },
                     "text": {
                         "type": "string"
                     },
@@ -922,6 +916,12 @@
                     },
                     "editDate": {
                         "type": "string"
+                    },
+                    "editCount": {
+                        "type": "integer"
+                    },
+                    "isEdited": {
+                        "type": "boolean"
                     },
                     "likes": {
                         "type": "integer"
@@ -952,12 +952,12 @@
                     "id",
                     "blogPost",
                     "user",
-                    "contentReference",
-                    "contentReferenceType",
                     "text",
                     "replying",
                     "postDate",
                     "editDate",
+                    "editCount",
+                    "isEdited",
                     "likes",
                     "dislikes",
                     "score",
@@ -2241,8 +2241,6 @@
                     "audioDuration",
                     "hasPicture",
                     "pictureCount",
-                    "hasGallery",
-                    "galleryCount",
                     "isFeatured"
                 ]
             },
@@ -2774,12 +2772,6 @@
                     "user": {
                         "$ref": "#/components/schemas/UserModel"
                     },
-                    "contentReference": {
-                        "type": "string"
-                    },
-                    "contentReferenceType": {
-                        "type": "string"
-                    },
                     "text": {
                         "type": "string"
                     },
@@ -2791,6 +2783,12 @@
                     },
                     "editDate": {
                         "type": "string"
+                    },
+                    "editCount": {
+                        "type": "integer"
+                    },
+                    "isEdited": {
+                        "type": "boolean"
                     },
                     "likes": {
                         "type": "integer"
@@ -2833,12 +2831,12 @@
                     "id",
                     "blogPost",
                     "user",
-                    "contentReference",
-                    "contentReferenceType",
                     "text",
                     "replying",
                     "postDate",
                     "editDate",
+                    "editCount",
+                    "isEdited",
                     "likes",
                     "dislikes",
                     "score",
@@ -2860,12 +2858,6 @@
                     "user": {
                         "$ref": "#/components/schemas/UserModel"
                     },
-                    "contentReference": {
-                        "type": "string"
-                    },
-                    "contentReferenceType": {
-                        "type": "string"
-                    },
                     "text": {
                         "type": "string"
                     },
@@ -2880,6 +2872,12 @@
                         "type": "string",
                         "format": "date-time",
                         "nullable": true
+                    },
+                    "editCount": {
+                        "type": "integer"
+                    },
+                    "isEdited": {
+                        "type": "boolean"
                     },
                     "likes": {
                         "type": "integer"
@@ -2913,12 +2911,12 @@
                     "id",
                     "blogPost",
                     "user",
-                    "contentReference",
-                    "contentReferenceType",
                     "text",
                     "replying",
                     "postDate",
                     "editDate",
+                    "editCount",
+                    "isEdited",
                     "likes",
                     "dislikes",
                     "score",
@@ -6610,8 +6608,6 @@
                                             ]
                                         }
                                     },
-                                    "contentReference": "",
-                                    "contentReferenceType": "",
                                     "text": "This is the text of the comment being posted",
                                     "replying": null,
                                     "postDate": "2021-10-09T08:12:51.290Z",
@@ -6716,8 +6712,6 @@
                                                 ]
                                             }
                                         },
-                                        "contentReference": "",
-                                        "contentReferenceType": "",
                                         "text": "This is my comment text, I really like this video.",
                                         "replying": null,
                                         "postDate": "2021-10-09T14:58:34.829Z",
@@ -6846,8 +6840,6 @@
                                                 ]
                                             }
                                         },
-                                        "contentReference": "",
-                                        "contentReferenceType": "",
                                         "text": "This is my reply text",
                                         "replying": "1234567890abcdef0",
                                         "postDate": "2021-12-17T06:57:33.152Z",

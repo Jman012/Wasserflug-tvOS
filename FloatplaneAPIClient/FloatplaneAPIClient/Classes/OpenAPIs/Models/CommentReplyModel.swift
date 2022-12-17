@@ -20,28 +20,28 @@ public struct CommentReplyModel: Content, Hashable {
     public var id: String
     public var blogPost: String
     public var user: UserModel
-    public var contentReference: String
-    public var contentReferenceType: String
     public var text: String
     public var replying: String
     public var postDate: Date
     public var editDate: Date?
+    public var editCount: Int
+    public var isEdited: Bool
     public var likes: Int
     public var dislikes: Int
     public var score: Int
     public var interactionCounts: CommentV3PostResponseInteractionCounts
     public var userInteraction: [UserInteraction]?
 
-    public init(id: String, blogPost: String, user: UserModel, contentReference: String, contentReferenceType: String, text: String, replying: String, postDate: Date, editDate: Date?, likes: Int, dislikes: Int, score: Int, interactionCounts: CommentV3PostResponseInteractionCounts, userInteraction: [UserInteraction]?) {
+    public init(id: String, blogPost: String, user: UserModel, text: String, replying: String, postDate: Date, editDate: Date?, editCount: Int, isEdited: Bool, likes: Int, dislikes: Int, score: Int, interactionCounts: CommentV3PostResponseInteractionCounts, userInteraction: [UserInteraction]?) {
         self.id = id
         self.blogPost = blogPost
         self.user = user
-        self.contentReference = contentReference
-        self.contentReferenceType = contentReferenceType
         self.text = text
         self.replying = replying
         self.postDate = postDate
         self.editDate = editDate
+        self.editCount = editCount
+        self.isEdited = isEdited
         self.likes = likes
         self.dislikes = dislikes
         self.score = score
@@ -53,12 +53,12 @@ public struct CommentReplyModel: Content, Hashable {
         case id
         case blogPost
         case user
-        case contentReference
-        case contentReferenceType
         case text
         case replying
         case postDate
         case editDate
+        case editCount
+        case isEdited
         case likes
         case dislikes
         case score
@@ -73,12 +73,12 @@ public struct CommentReplyModel: Content, Hashable {
         try container.encode(id, forKey: .id)
         try container.encode(blogPost, forKey: .blogPost)
         try container.encode(user, forKey: .user)
-        try container.encode(contentReference, forKey: .contentReference)
-        try container.encode(contentReferenceType, forKey: .contentReferenceType)
         try container.encode(text, forKey: .text)
         try container.encode(replying, forKey: .replying)
         try container.encode(postDate, forKey: .postDate)
         try container.encode(editDate, forKey: .editDate)
+        try container.encode(editCount, forKey: .editCount)
+        try container.encode(isEdited, forKey: .isEdited)
         try container.encode(likes, forKey: .likes)
         try container.encode(dislikes, forKey: .dislikes)
         try container.encode(score, forKey: .score)
