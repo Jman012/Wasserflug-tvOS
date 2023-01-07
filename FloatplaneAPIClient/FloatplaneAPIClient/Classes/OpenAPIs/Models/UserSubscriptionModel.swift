@@ -13,7 +13,7 @@ import Vapor
 
 public struct UserSubscriptionModel: Content, Hashable {
 
-    public var startDate: Date
+    public var startDate: Date?
     public var endDate: Date?
     public var paymentID: Int
     public var interval: String
@@ -21,7 +21,7 @@ public struct UserSubscriptionModel: Content, Hashable {
     public var plan: SubscriptionPlanModel
     public var creator: String
 
-    public init(startDate: Date, endDate: Date?, paymentID: Int, interval: String, paymentCancelled: Bool, plan: SubscriptionPlanModel, creator: String) {
+    public init(startDate: Date?, endDate: Date?, paymentID: Int, interval: String, paymentCancelled: Bool, plan: SubscriptionPlanModel, creator: String) {
         self.startDate = startDate
         self.endDate = endDate
         self.paymentID = paymentID
