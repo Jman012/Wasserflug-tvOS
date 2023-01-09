@@ -42,6 +42,7 @@ struct Wasserflug_tvOSApp: App {
 		
 		// Use FP's date format for JSON encoding/decoding.
 		let fpDateFormatter = DateFormatter()
+		fpDateFormatter.locale = Locale(identifier: "en_US_POSIX")
 		fpDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
 		Configuration.contentConfiguration.use(encoder: JSONEncoder.custom(dates: .formatted(fpDateFormatter)), for: .json)
 		Configuration.contentConfiguration.use(decoder: JSONDecoder.custom(dates: .formatted(fpDateFormatter)), for: .json)
