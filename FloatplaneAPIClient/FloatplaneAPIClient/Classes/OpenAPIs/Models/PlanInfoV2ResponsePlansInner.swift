@@ -28,14 +28,14 @@ public struct PlanInfoV2ResponsePlansInner: Content, Hashable {
     public var createdAt: Date
     public var updatedAt: Date?
     public var enabled: Bool
-    public var paymentID: Int
+    public var paymentID: Int?
     public var trialPeriod: Double
     public var creator: String
     public var userIsSubscribed: Bool
     public var userIsGrandfathered: Bool
     public var enabledGlobal: Bool
 
-    public init(id: String, title: String, description: String, price: String?, priceYearly: String?, currency: String, logo: String?, interval: String, featured: Bool, allowGrandfatheredAccess: Bool?, discordServers: [DiscordServerModel], discordRoles: [DiscordRoleModel], createdAt: Date, updatedAt: Date?, enabled: Bool, paymentID: Int, trialPeriod: Double, creator: String, userIsSubscribed: Bool, userIsGrandfathered: Bool, enabledGlobal: Bool) {
+    public init(id: String, title: String, description: String, price: String?, priceYearly: String?, currency: String, logo: String?, interval: String, featured: Bool, allowGrandfatheredAccess: Bool?, discordServers: [DiscordServerModel], discordRoles: [DiscordRoleModel], createdAt: Date, updatedAt: Date?, enabled: Bool, paymentID: Int?, trialPeriod: Double, creator: String, userIsSubscribed: Bool, userIsGrandfathered: Bool, enabledGlobal: Bool) {
         self.id = id
         self.title = title
         self.description = description

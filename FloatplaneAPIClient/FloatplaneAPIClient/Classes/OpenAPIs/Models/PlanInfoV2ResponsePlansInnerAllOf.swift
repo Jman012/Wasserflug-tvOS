@@ -16,14 +16,14 @@ public struct PlanInfoV2ResponsePlansInnerAllOf: Content, Hashable {
     public var createdAt: Date
     public var updatedAt: Date?
     public var enabled: Bool
-    public var paymentID: Int
+    public var paymentID: Int?
     public var trialPeriod: Double
     public var creator: String
     public var userIsSubscribed: Bool
     public var userIsGrandfathered: Bool
     public var enabledGlobal: Bool
 
-    public init(createdAt: Date, updatedAt: Date?, enabled: Bool, paymentID: Int, trialPeriod: Double, creator: String, userIsSubscribed: Bool, userIsGrandfathered: Bool, enabledGlobal: Bool) {
+    public init(createdAt: Date, updatedAt: Date?, enabled: Bool, paymentID: Int?, trialPeriod: Double, creator: String, userIsSubscribed: Bool, userIsGrandfathered: Bool, enabledGlobal: Bool) {
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.enabled = enabled

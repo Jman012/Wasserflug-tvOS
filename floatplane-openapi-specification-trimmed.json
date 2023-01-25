@@ -755,7 +755,8 @@
                                             "type": "boolean"
                                         },
                                         "paymentID": {
-                                            "type": "integer"
+                                            "type": "integer",
+                                            "nullable": true
                                         },
                                         "trialPeriod": {
                                             "type": "number"
@@ -2992,7 +2993,8 @@
                         "nullable": true
                     },
                     "paymentID": {
-                        "type": "integer"
+                        "type": "integer",
+                        "nullable": true
                     },
                     "interval": {
                         "type": "string"
@@ -3012,7 +3014,6 @@
                     "endDate",
                     "paymentID",
                     "interval",
-                    "paymentCancelled",
                     "plan",
                     "creator"
                 ]
