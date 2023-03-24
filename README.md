@@ -1,6 +1,12 @@
 # Wasserflug tvOS
 An unofficial Floatplane client for Apple TV/tvOS. View it on the Apple TV App Store at https://apps.apple.com/us/app/wasserflug/id1611976921.
 
+⚠️ Notice ⚠️: The App Store version is currently dated. Getting the Test Flight version is recommended. See below in "Beta Testing" for instructions.
+
+Looking for Roku? Look here: https://github.com/bmlzootown/Hydravion
+
+Looking for Android TV? Look here: https://github.com/bmlzootown/Hydravion-AndroidTV
+
 ## Screenshots
 
 See https://imgur.com/a/vXAcEJy for screenshots of Wasserflug.
