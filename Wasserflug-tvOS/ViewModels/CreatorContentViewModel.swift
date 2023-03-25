@@ -100,7 +100,8 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 					}
 					self.logger.info("Done loading \(progresses.count) progresses for creator content.")
 				} catch {
-					self.state = .failed(error)
+					// Ignore errors
+					//self.state = .failed(error)
 				}
 			}
 			

@@ -64,7 +64,8 @@ class HomeViewModel: BaseViewModel, ObservableObject {
 					}
 					self.logger.info("Done loading \(progresses.count) progresses for home content.")
 				} catch {
-					self.state = .failed(error)
+					// Ignore errors
+					//self.state = .failed(error)
 				}
 			}
 			
