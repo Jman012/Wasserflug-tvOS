@@ -16,10 +16,10 @@ public struct DiscordServerModel: Content, Hashable {
     public var id: String
     public var guildName: String
     public var guildIcon: String
-    public var inviteLink: String
+    public var inviteLink: String?
     public var inviteMode: String
 
-    public init(id: String, guildName: String, guildIcon: String, inviteLink: String, inviteMode: String) {
+    public init(id: String, guildName: String, guildIcon: String, inviteLink: String?, inviteMode: String) {
         self.id = id
         self.guildName = guildName
         self.guildIcon = guildIcon

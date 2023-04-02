@@ -22,7 +22,7 @@ class PictureViewModel: BaseViewModel, ObservableObject {
 		
 		fpApiService
 			.getPictureContent(id: pictureAttachment.guid)
-			.flatMapResult { (response) -> Result<ContentPictureV3Response, ErrorModel> in
+			.flatMapResult { (response) -> Result<ContentPictureV3Response, Error> in
 				switch response {
 				case let .http200(value: pictureAttachment, clientResponse):
 					self.logger.debug("Picture information raw response: \(clientResponse.plaintextDebugContent)")
@@ -34,6 +34,9 @@ class PictureViewModel: BaseViewModel, ObservableObject {
 					let .http404(value: errorModel, clientResponse):
 					self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading picture information. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
 					return .failure(errorModel)
+				case .http429(raw: _):
+					self.logger.warning("Received HTTP 429 Too Many Requests.")
+					return .failure(WasserflugError.http429)
 				}
 			}
 			.whenComplete { result in

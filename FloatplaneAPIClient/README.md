@@ -2,7 +2,7 @@
 
 Homepage: [https://jman012.github.io/FloatplaneAPIDocs](https://jman012.github.io/FloatplaneAPIDocs)
 
-This document describes the REST API layer of [https://www.floatplane.com](https://www.floatplane.com), a content creation and video streaming website created by Floatplane Media Inc. and Linus Media Group, where users can support their favorite creates via paid subscriptions in order to watch their video and livestream content in higher quality and other perks.
+This document describes the REST API layer of [https://www.floatplane.com](https://www.floatplane.com), a content creation and video streaming website created by Floatplane Media Inc. and Linus Media Group, where users can support their favorite creators via paid subscriptions in order to watch their video and livestream content in higher quality, in addition to other perks.
 
 While this document contains stubs for all of the Floatplane APIs for this version, many are not filled out because they are related only to content creation, moderation, or administration and are not needed for regular use. These have \"TODO\" as the description, and are automatically removed before document generation. If you are viewing the \"Trimmed\" version of this document, they have been removed for brevity.
 
@@ -15,13 +15,14 @@ While this document contains stubs for all of the Floatplane APIs for this versi
 - A Creator publishes **Content**, in the form of **Blog Posts**
  - Content is produced by Creators, and show up for subscribed Users to view when it is released. A piece of Content is meant to be generic, and may contain different types of sub-Content. Currently, the only type is a Blog Post.
  - A Blog Post is the main type of Content that a Creator produces. Blog Posts are how a Creator can share text and/or media attachments with their subscribers.
-- A Blog Post is comprised of one or more of: video, audio, picture, or gallery **Attachments**
- - A media Attachment may be: video, audio, picture, gallery. Attachments are a part of Blog Posts, and are in a particular order.
+- A Blog Post is comprised of one or more of: video, audio, or picture **Attachments**
+ - A media Attachment may be: video, audio, picture. Attachments are a part of Blog Posts, and are in a particular order.
 - A Creator may also have a single **Livestream**
+- Creators also may have one or more **Channels**
 
 ## API Flow
 
-As of Floatplane version 3.5.1, these are the recommended endpoints to use for normal operations.
+As of Floatplane version 4.0.13, these are the recommended endpoints to use for normal operations.
 
 1. Login
  1. `/api/v3/auth/captcha/info` - Get captcha information
@@ -30,14 +31,15 @@ As of Floatplane version 3.5.1, these are the recommended endpoints to use for n
  1. `/api/v2/auth/logout` - Logout at a later point in time
 1. Home page
  1. `/api/v3/user/subscriptions` - Get the user's active subscriptions
- 1. `/api/v3/content/creator/list` - Using the subscriptions, show a home page with content from all subscriptions
-  1. Supply all creator identifiers from the subscriptions
-  1. This should be paginated
- 1. `/api/v2/creator/info` - Also show a list of creators that the user can select
+    1. `/api/v3/creator/info` - Get more information on subscribed creators
+        1. Shows a list of creators that the user can select
   1. Note that this can search and return multiple creators. The V3 version only works for a single creator at a time.
+ 1. `/api/v3/content/creator/list` - Using the subscriptions, show a home page with content from all subscriptions/subscribed creators
+  1. Supply all creator identifiers from the subscriptions
+  1. This is be paginated
 1. Creator page
  1. `/api/v3/creator/info` - Get more details for the creator to display, including if livestreams are available
- 1. `/api/v3/content/creator` - Show recent content by the creator
+ 1. `/api/v3/content/creator` - Show recent content by that creator (as opposed to all subscribed creators, above)
  1. `/api/v2/plan/info` - Show available plans the user can subscribe to for the creator
 1. Content page
  1. `/api/v3/content/post` - Show more detailed information about a piece of content, including text description, available attachments, metadata, interactions, etc.
@@ -46,18 +48,26 @@ As of Floatplane version 3.5.1, these are the recommended endpoints to use for n
   1. There are several more comment APIs to post, like, dislike, etc.
  1. `/api/v2/user/ban/status` - Determine if the user is banned from this creator
  1. `/api/v3/content/{video|audio|picture|gallery}` - Load the attached media for the post. This is usually video, but audio, pictures, and galleries are also available.
- 1. `/api/v2/cdn/delivery` - For video and audio, this is required to get the information to stream or download the content in media players
+ 1. `/api/v3/delivery/info` - For video and audio, this is required to get the information to stream or download the content in media players
 1. Livestream
- 1. `/api/v2/cdn/delivery` - Using the type \"livestream\" to load the livestream media in a media player
- 1. `wss://chat.floatplane.com/sails.io/?...` - To connect to the livestream chat over websocket. TODO: Map out the WebSocket API.
+ 1. `/api/v3/delivery/info` - Using the type \"livestream\" to load the livestream media in a media player
+ 1. `wss://chat.floatplane.com/sails.io/?...` - To connect to the livestream chat over websocket. See https://jman012.github.io/FloatplaneAPIDocs/ for more information on the FP Async API with Websockets.
 1. User Profile
  1. `/api/v3/user/self` - Display username, name, email, and profile pictures
 
 ## API Organization
 
-The organization of APIs into categories in this document are reflected from the internal organization of the Floatplane website bundled code, from `frontend.floatplane.com/{version}/vendor.js`. This is in order to use the best organization from the original developers' point of view.
+The organization of APIs into categories in this document are reflected from the internal organization of the Floatplane website bundled code, from `frontend.floatplane.com/{version}/main.js`. This is in order to use the best organization from the original developers' point of view.
 
 For instance, Floatplane's authentication endpoints are organized into `Auth.v2.login(...)`, `Auth.v2.logout()`, and `Auth.v3.getCaptchaInfo()`. A limitation in OpenAPI is the lack of nested tagging/structure, so this document splits `Auth` into `AuthV2` and `AuthV3` to emulate the nested structure.
+
+## Rate Limiting
+
+The Floatplane API may employ rate limiting on certain or all endpoints. If too many requests are sent by a client to the API, it will be rejected and rate-limited. This may be by IP address per endpoint in a certain unit of time, but is subject to change.
+
+Rate-limited requests will respond with an HTTP 429 response. The content of the response may be HTML or JSON and is subject to change. The response will also have a `Retry-After` header, which contains the number of seconds remaining until the rate limiting will cease for the client on that endpoint. 
+
+Clients are expected to both 1) prevent too many requests from executing at a time, usually for specific endpoints, and particulay for the `/api/v2/cdn/delivery` and `/api/v3/delivery/info` endpoints, and 2) properly handle rate-limited responses by ceasing requests until the `Retry-After` expiration.
 
 ## Notes
 
@@ -111,7 +121,9 @@ Class | Method | HTTP request | Description
 *CreatorV2API* | [**getCreatorInfoByName**](docs/CreatorV2API.md#getcreatorinfobyname) | **GET** /api/v2/creator/named | Get Info By Name
 *CreatorV2API* | [**getInfo**](docs/CreatorV2API.md#getinfo) | **GET** /api/v2/creator/info | Get Info
 *CreatorV3API* | [**getCreator**](docs/CreatorV3API.md#getcreator) | **GET** /api/v3/creator/info | Get Creator
+*CreatorV3API* | [**getCreatorByName**](docs/CreatorV3API.md#getcreatorbyname) | **GET** /api/v3/creator/named | Get Creator By Name
 *CreatorV3API* | [**getCreators**](docs/CreatorV3API.md#getcreators) | **GET** /api/v3/creator/list | Get Creators
+*CreatorV3API* | [**listCreatorChannelsV3**](docs/CreatorV3API.md#listcreatorchannelsv3) | **GET** /api/v3/creator/channels/list | List Creator Channels
 *DeliveryV3API* | [**getDeliveryInfoV3**](docs/DeliveryV3API.md#getdeliveryinfov3) | **GET** /api/v3/delivery/info | Get Delivery Info
 *EdgesV2API* | [**getEdges**](docs/EdgesV2API.md#getedges) | **GET** /api/v2/edges | Get Edges
 *FAQV2API* | [**getFaqSections**](docs/FAQV2API.md#getfaqsections) | **GET** /api/v2/faq/list | Get Faq Sections
@@ -144,6 +156,7 @@ Class | Method | HTTP request | Description
  - [AuthLoginV2Request](docs/AuthLoginV2Request.md)
  - [AuthLoginV2Response](docs/AuthLoginV2Response.md)
  - [BlogPostModelV3](docs/BlogPostModelV3.md)
+ - [BlogPostModelV3Channel](docs/BlogPostModelV3Channel.md)
  - [BlogPostModelV3Creator](docs/BlogPostModelV3Creator.md)
  - [BlogPostModelV3CreatorOwner](docs/BlogPostModelV3CreatorOwner.md)
  - [CdnDeliveryV2DownloadResponse](docs/CdnDeliveryV2DownloadResponse.md)
@@ -170,11 +183,11 @@ Class | Method | HTTP request | Description
  - [CdnDeliveryV3Origin](docs/CdnDeliveryV3Origin.md)
  - [CdnDeliveryV3Response](docs/CdnDeliveryV3Response.md)
  - [CdnDeliveryV3Variant](docs/CdnDeliveryV3Variant.md)
+ - [ChannelModel](docs/ChannelModel.md)
  - [CheckFor2faLoginRequest](docs/CheckFor2faLoginRequest.md)
  - [ChildImageModel](docs/ChildImageModel.md)
  - [CommentLikeV3PostRequest](docs/CommentLikeV3PostRequest.md)
  - [CommentModel](docs/CommentModel.md)
- - [CommentReplyModel](docs/CommentReplyModel.md)
  - [CommentV3PostRequest](docs/CommentV3PostRequest.md)
  - [CommentV3PostResponse](docs/CommentV3PostResponse.md)
  - [CommentV3PostResponseInteractionCounts](docs/CommentV3PostResponseInteractionCounts.md)
@@ -195,6 +208,8 @@ Class | Method | HTTP request | Description
  - [CreatorModelV2LiveStream](docs/CreatorModelV2LiveStream.md)
  - [CreatorModelV3](docs/CreatorModelV3.md)
  - [CreatorModelV3Category](docs/CreatorModelV3Category.md)
+ - [CreatorModelV3Owner](docs/CreatorModelV3Owner.md)
+ - [CreatorModelV3OwnerOneOf](docs/CreatorModelV3OwnerOneOf.md)
  - [DiscordRoleModel](docs/DiscordRoleModel.md)
  - [DiscordServerModel](docs/DiscordServerModel.md)
  - [EdgeDataCenter](docs/EdgeDataCenter.md)

@@ -70,6 +70,9 @@ class DefaultFPAPIService: FPAPIService {
 							let .http404(value: errorModel, raw: clientResponse):
 							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading user subscriptions. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
 							continuation.resume(throwing: errorModel)
+						case .http429(raw: _):
+							self.logger.warning("Received HTTP 429 Too Many Requests.")
+							continuation.resume(throwing: WasserflugError.http429)
 						}
 					case let .failure(error):
 						self.logger.error("Encountered an unexpected error while loading user subscriptions. Reporting the error to the user. Error: \(String(reflecting: error))")
@@ -96,6 +99,9 @@ class DefaultFPAPIService: FPAPIService {
 							let .http404(value: errorModel, raw: clientResponse):
 							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading creator information. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
 							continuation.resume(throwing: errorModel)
+						case .http429(raw: _):
+							self.logger.warning("Received HTTP 429 Too Many Requests.")
+							continuation.resume(throwing: WasserflugError.http429)
 						}
 					case let .failure(error):
 						self.logger.error("Encountered an unexpected error while loading creator information. Reporting the error to the user. Error: \(String(reflecting: error))")
@@ -122,6 +128,9 @@ class DefaultFPAPIService: FPAPIService {
 							let .http404(value: errorModel, raw: clientResponse):
 							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading users. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
 							continuation.resume(throwing: errorModel)
+						case .http429(raw: _):
+							self.logger.warning("Received HTTP 429 Too Many Requests.")
+							continuation.resume(throwing: WasserflugError.http429)
 						}
 					case let .failure(error):
 						self.logger.error("Encountered an unexpected error while loading users. Reporting the error to the user. Error: \(String(reflecting: error))")
@@ -154,6 +163,9 @@ class DefaultFPAPIService: FPAPIService {
 							let .http404(value: errorModel, raw: clientResponse):
 							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading home content. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
 							continuation.resume(throwing: errorModel)
+						case .http429(raw: _):
+							self.logger.warning("Received HTTP 429 Too Many Requests.")
+							continuation.resume(throwing: WasserflugError.http429)
 						}
 					case let .failure(error):
 						self.logger.error("Encountered an unexpected error while loading home content. Reporting the error to the user. Error: \(String(reflecting: error))")
@@ -180,6 +192,9 @@ class DefaultFPAPIService: FPAPIService {
 							let .http404(value: errorModel, raw: clientResponse):
 							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading get progress. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
 							continuation.resume(throwing: errorModel)
+						case .http429(raw: _):
+							self.logger.warning("Received HTTP 429 Too Many Requests.")
+							continuation.resume(throwing: WasserflugError.http429)
 						}
 					case let .failure(error):
 						self.logger.error("Encountered an unexpected error while loading get progress. Reporting the error to the user. Error: \(String(reflecting: error))")
@@ -206,6 +221,9 @@ class DefaultFPAPIService: FPAPIService {
 							let .http404(value: errorModel, raw: clientResponse):
 							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading creator content. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
 							continuation.resume(throwing: errorModel)
+						case .http429(raw: _):
+							self.logger.warning("Received HTTP 429 Too Many Requests.")
+							continuation.resume(throwing: WasserflugError.http429)
 						}
 					case let .failure(error):
 						self.logger.error("Encountered an unexpected error while loading creator content. Reporting the error to the user. Error: \(String(reflecting: error))")
@@ -238,6 +256,9 @@ class DefaultFPAPIService: FPAPIService {
 							let .http404(value: errorModel, raw: clientResponse):
 							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading video content. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
 							continuation.resume(throwing: errorModel)
+						case .http429(raw: _):
+							self.logger.warning("Received HTTP 429 Too Many Requests.")
+							continuation.resume(throwing: WasserflugError.http429)
 						}
 					case let .failure(error):
 						self.logger.error("Encountered an unexpected error while loading video content. Reporting the error to the user. Error: \(String(reflecting: error))")
@@ -272,6 +293,9 @@ class DefaultFPAPIService: FPAPIService {
 							let .http404(value: errorModel, raw: clientResponse):
 							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading delivery info. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
 							continuation.resume(throwing: errorModel)
+						case .http429(raw: _):
+							self.logger.warning("Received HTTP 429 Too Many Requests.")
+							continuation.resume(throwing: WasserflugError.http429)
 						}
 					case let .failure(error):
 						self.logger.error("Encountered an unexpected error while loading delivery info. Reporting the error to the user. Error: \(String(reflecting: error))")
@@ -301,6 +325,9 @@ class DefaultFPAPIService: FPAPIService {
 							let .http404(value: errorModel, raw: clientResponse):
 							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while updating progress. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
 							continuation.resume(throwing: errorModel)
+						case .http429(raw: _):
+							self.logger.warning("Received HTTP 429 Too Many Requests.")
+							continuation.resume(throwing: WasserflugError.http429)
 						}
 					case let .failure(error):
 						self.logger.error("Encountered an unexpected error while loading delivery info. Reporting the error to the user. Error: \(String(reflecting: error))")

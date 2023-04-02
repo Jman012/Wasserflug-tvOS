@@ -47,6 +47,7 @@ open class CommentV3API {
         case http401(value: ErrorModel, raw: ClientResponse)
         case http403(value: ErrorModel, raw: ClientResponse)
         case http404(value: ErrorModel, raw: ClientResponse)
+        case http429(raw: ClientResponse)
         case http0(value: ErrorModel, raw: ClientResponse)
     }
 
@@ -73,6 +74,8 @@ open class CommentV3API {
                 return .http403(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             case 404:
                 return .http404(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 429:
+                return .http429(raw: response)
             default:
                 return .http0(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             }
@@ -123,11 +126,12 @@ open class CommentV3API {
     }
 
     public enum GetCommentReplies {
-        case http200(value: [CommentReplyModel], raw: ClientResponse)
+        case http200(value: [CommentModel], raw: ClientResponse)
         case http400(value: ErrorModel, raw: ClientResponse)
         case http401(value: ErrorModel, raw: ClientResponse)
         case http403(value: ErrorModel, raw: ClientResponse)
         case http404(value: ErrorModel, raw: ClientResponse)
+        case http429(raw: ClientResponse)
         case http0(value: ErrorModel, raw: ClientResponse)
     }
 
@@ -148,7 +152,7 @@ open class CommentV3API {
         return getCommentRepliesRaw(comment: comment, blogPost: blogPost, limit: limit, rid: rid, headers: headers, beforeSend: beforeSend).flatMapThrowing { response -> GetCommentReplies in
             switch response.status.code {
             case 200:
-                return .http200(value: try response.content.decode([CommentReplyModel].self, using: Configuration.contentConfiguration.requireDecoder(for: [CommentReplyModel].defaultContentType)), raw: response)
+                return .http200(value: try response.content.decode([CommentModel].self, using: Configuration.contentConfiguration.requireDecoder(for: [CommentModel].defaultContentType)), raw: response)
             case 400:
                 return .http400(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             case 401:
@@ -157,6 +161,8 @@ open class CommentV3API {
                 return .http403(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             case 404:
                 return .http404(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 429:
+                return .http429(raw: response)
             default:
                 return .http0(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             }
@@ -209,6 +215,7 @@ open class CommentV3API {
         case http401(value: ErrorModel, raw: ClientResponse)
         case http403(value: ErrorModel, raw: ClientResponse)
         case http404(value: ErrorModel, raw: ClientResponse)
+        case http429(raw: ClientResponse)
         case http0(value: ErrorModel, raw: ClientResponse)
     }
 
@@ -237,6 +244,8 @@ open class CommentV3API {
                 return .http403(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             case 404:
                 return .http404(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 429:
+                return .http429(raw: response)
             default:
                 return .http0(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             }
@@ -277,6 +286,7 @@ open class CommentV3API {
         case http401(value: ErrorModel, raw: ClientResponse)
         case http403(value: ErrorModel, raw: ClientResponse)
         case http404(value: ErrorModel, raw: ClientResponse)
+        case http429(raw: ClientResponse)
         case http0(value: ErrorModel, raw: ClientResponse)
     }
 
@@ -303,6 +313,8 @@ open class CommentV3API {
                 return .http403(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             case 404:
                 return .http404(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 429:
+                return .http429(raw: response)
             default:
                 return .http0(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             }
@@ -343,6 +355,7 @@ open class CommentV3API {
         case http401(value: ErrorModel, raw: ClientResponse)
         case http403(value: ErrorModel, raw: ClientResponse)
         case http404(value: ErrorModel, raw: ClientResponse)
+        case http429(raw: ClientResponse)
         case http0(value: ErrorModel, raw: ClientResponse)
     }
 
@@ -369,6 +382,8 @@ open class CommentV3API {
                 return .http403(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             case 404:
                 return .http404(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 429:
+                return .http429(raw: response)
             default:
                 return .http0(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             }

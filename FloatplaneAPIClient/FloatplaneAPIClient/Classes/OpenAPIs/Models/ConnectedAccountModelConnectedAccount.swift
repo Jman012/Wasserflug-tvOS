@@ -16,9 +16,9 @@ public struct ConnectedAccountModelConnectedAccount: Content, Hashable {
     public var id: String
     public var remoteUserId: String
     public var remoteUserName: String
-    public var data: ConnectedAccountModelConnectedAccountData
+    public var data: ConnectedAccountModelConnectedAccountData?
 
-    public init(id: String, remoteUserId: String, remoteUserName: String, data: ConnectedAccountModelConnectedAccountData) {
+    public init(id: String, remoteUserId: String, remoteUserName: String, data: ConnectedAccountModelConnectedAccountData?) {
         self.id = id
         self.remoteUserId = remoteUserId
         self.remoteUserName = remoteUserName

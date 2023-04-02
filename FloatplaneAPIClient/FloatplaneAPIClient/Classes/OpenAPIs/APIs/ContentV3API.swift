@@ -47,6 +47,7 @@ open class ContentV3API {
         case http401(value: ErrorModel, raw: ClientResponse)
         case http403(value: ErrorModel, raw: ClientResponse)
         case http404(value: ErrorModel, raw: ClientResponse)
+        case http429(raw: ClientResponse)
         case http0(value: ErrorModel, raw: ClientResponse)
     }
 
@@ -73,6 +74,8 @@ open class ContentV3API {
                 return .http403(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             case 404:
                 return .http404(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 429:
+                return .http429(raw: response)
             default:
                 return .http0(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             }
@@ -119,6 +122,7 @@ open class ContentV3API {
         case http401(value: ErrorModel, raw: ClientResponse)
         case http403(value: ErrorModel, raw: ClientResponse)
         case http404(value: ErrorModel, raw: ClientResponse)
+        case http429(raw: ClientResponse)
         case http0(value: ErrorModel, raw: ClientResponse)
     }
 
@@ -145,6 +149,8 @@ open class ContentV3API {
                 return .http403(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             case 404:
                 return .http404(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 429:
+                return .http429(raw: response)
             default:
                 return .http0(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             }
@@ -191,6 +197,7 @@ open class ContentV3API {
         case http401(value: ErrorModel, raw: ClientResponse)
         case http403(value: ErrorModel, raw: ClientResponse)
         case http404(value: ErrorModel, raw: ClientResponse)
+        case http429(raw: ClientResponse)
         case http0(value: ErrorModel, raw: ClientResponse)
     }
 
@@ -217,6 +224,8 @@ open class ContentV3API {
                 return .http403(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             case 404:
                 return .http404(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 429:
+                return .http429(raw: response)
             default:
                 return .http0(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             }
@@ -239,6 +248,7 @@ open class ContentV3API {
        - type: apiKey sails.sid 
        - name: CookieAuth
      - parameter id: (query) The GUID of the creator to retrieve posts from. 
+     - parameter channel: (query) The id of a creator's specific channel from which to retrieve posts. (optional)
      - parameter limit: (query) The maximum number of posts to return. (optional)
      - parameter fetchAfter: (query) The number of posts to skip. Usually a multiple of `limit`, to get the next \"page\" of results. (optional)
      - parameter search: (query) Search filter to look for specific posts. (optional)
@@ -254,7 +264,7 @@ open class ContentV3API {
      - parameter toDate: (query) Include posts where the publication date is on or before this filter date. (optional)
      - returns: `EventLoopFuture` of `ClientResponse` 
      */
-    open class func getCreatorBlogPostsRaw(id: String, limit: Int? = nil, fetchAfter: Int? = nil, search: String? = nil, tags: [String]? = nil, hasVideo: Bool? = nil, hasAudio: Bool? = nil, hasPicture: Bool? = nil, hasText: Bool? = nil, sort: Sort_getCreatorBlogPosts? = nil, fromDuration: Int? = nil, toDuration: Int? = nil, fromDate: Date? = nil, toDate: Date? = nil, headers: HTTPHeaders = FloatplaneAPIClientAPI.customHeaders, beforeSend: (inout ClientRequest) throws -> () = { _ in }) -> EventLoopFuture<ClientResponse> {
+    open class func getCreatorBlogPostsRaw(id: String, channel: String? = nil, limit: Int? = nil, fetchAfter: Int? = nil, search: String? = nil, tags: [String]? = nil, hasVideo: Bool? = nil, hasAudio: Bool? = nil, hasPicture: Bool? = nil, hasText: Bool? = nil, sort: Sort_getCreatorBlogPosts? = nil, fromDuration: Int? = nil, toDuration: Int? = nil, fromDate: Date? = nil, toDate: Date? = nil, headers: HTTPHeaders = FloatplaneAPIClientAPI.customHeaders, beforeSend: (inout ClientRequest) throws -> () = { _ in }) -> EventLoopFuture<ClientResponse> {
         let localVariablePath = "/api/v3/content/creator"
         let localVariableURLString = FloatplaneAPIClientAPI.basePath + localVariablePath
 
@@ -267,6 +277,7 @@ open class ContentV3API {
             
             struct QueryParams: Content {
                 var id: String
+                var channel: String?
                 var limit: Int?
                 var fetchAfter: Int?
                 var search: String?
@@ -283,6 +294,7 @@ open class ContentV3API {
 
                 enum CodingKeys: String, CodingKey {
                     case id = "id"
+                    case channel = "channel"
                     case limit = "limit"
                     case fetchAfter = "fetchAfter"
                     case search = "search"
@@ -298,7 +310,7 @@ open class ContentV3API {
                     case toDate = "toDate"
                 }
             }
-            try localVariableRequest.query.encode(QueryParams(id: id, limit: limit, fetchAfter: fetchAfter, search: search, tags: tags, hasVideo: hasVideo, hasAudio: hasAudio, hasPicture: hasPicture, hasText: hasText, sort: sort, fromDuration: fromDuration, toDuration: toDuration, fromDate: fromDate, toDate: toDate))
+            try localVariableRequest.query.encode(QueryParams(id: id, channel: channel, limit: limit, fetchAfter: fetchAfter, search: search, tags: tags, hasVideo: hasVideo, hasAudio: hasAudio, hasPicture: hasPicture, hasText: hasText, sort: sort, fromDuration: fromDuration, toDuration: toDuration, fromDate: fromDate, toDate: toDate))
             
             try beforeSend(&localVariableRequest)
         }
@@ -310,6 +322,7 @@ open class ContentV3API {
         case http401(value: ErrorModel, raw: ClientResponse)
         case http403(value: ErrorModel, raw: ClientResponse)
         case http404(value: ErrorModel, raw: ClientResponse)
+        case http429(raw: ClientResponse)
         case http0(value: ErrorModel, raw: ClientResponse)
     }
 
@@ -321,6 +334,7 @@ open class ContentV3API {
        - type: apiKey sails.sid 
        - name: CookieAuth
      - parameter id: (query) The GUID of the creator to retrieve posts from. 
+     - parameter channel: (query) The id of a creator's specific channel from which to retrieve posts. (optional)
      - parameter limit: (query) The maximum number of posts to return. (optional)
      - parameter fetchAfter: (query) The number of posts to skip. Usually a multiple of `limit`, to get the next \"page\" of results. (optional)
      - parameter search: (query) Search filter to look for specific posts. (optional)
@@ -336,8 +350,8 @@ open class ContentV3API {
      - parameter toDate: (query) Include posts where the publication date is on or before this filter date. (optional)
      - returns: `EventLoopFuture` of `GetCreatorBlogPosts` 
      */
-    open class func getCreatorBlogPosts(id: String, limit: Int? = nil, fetchAfter: Int? = nil, search: String? = nil, tags: [String]? = nil, hasVideo: Bool? = nil, hasAudio: Bool? = nil, hasPicture: Bool? = nil, hasText: Bool? = nil, sort: Sort_getCreatorBlogPosts? = nil, fromDuration: Int? = nil, toDuration: Int? = nil, fromDate: Date? = nil, toDate: Date? = nil, headers: HTTPHeaders = FloatplaneAPIClientAPI.customHeaders, beforeSend: (inout ClientRequest) throws -> () = { _ in }) -> EventLoopFuture<GetCreatorBlogPosts> {
-        return getCreatorBlogPostsRaw(id: id, limit: limit, fetchAfter: fetchAfter, search: search, tags: tags, hasVideo: hasVideo, hasAudio: hasAudio, hasPicture: hasPicture, hasText: hasText, sort: sort, fromDuration: fromDuration, toDuration: toDuration, fromDate: fromDate, toDate: toDate, headers: headers, beforeSend: beforeSend).flatMapThrowing { response -> GetCreatorBlogPosts in
+    open class func getCreatorBlogPosts(id: String, channel: String? = nil, limit: Int? = nil, fetchAfter: Int? = nil, search: String? = nil, tags: [String]? = nil, hasVideo: Bool? = nil, hasAudio: Bool? = nil, hasPicture: Bool? = nil, hasText: Bool? = nil, sort: Sort_getCreatorBlogPosts? = nil, fromDuration: Int? = nil, toDuration: Int? = nil, fromDate: Date? = nil, toDate: Date? = nil, headers: HTTPHeaders = FloatplaneAPIClientAPI.customHeaders, beforeSend: (inout ClientRequest) throws -> () = { _ in }) -> EventLoopFuture<GetCreatorBlogPosts> {
+        return getCreatorBlogPostsRaw(id: id, channel: channel, limit: limit, fetchAfter: fetchAfter, search: search, tags: tags, hasVideo: hasVideo, hasAudio: hasAudio, hasPicture: hasPicture, hasText: hasText, sort: sort, fromDuration: fromDuration, toDuration: toDuration, fromDate: fromDate, toDate: toDate, headers: headers, beforeSend: beforeSend).flatMapThrowing { response -> GetCreatorBlogPosts in
             switch response.status.code {
             case 200:
                 return .http200(value: try response.content.decode([BlogPostModelV3].self, using: Configuration.contentConfiguration.requireDecoder(for: [BlogPostModelV3].defaultContentType)), raw: response)
@@ -349,6 +363,8 @@ open class ContentV3API {
                 return .http403(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             case 404:
                 return .http404(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 429:
+                return .http429(raw: response)
             default:
                 return .http0(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             }
@@ -401,6 +417,7 @@ open class ContentV3API {
         case http401(value: ErrorModel, raw: ClientResponse)
         case http403(value: ErrorModel, raw: ClientResponse)
         case http404(value: ErrorModel, raw: ClientResponse)
+        case http429(raw: ClientResponse)
         case http0(value: ErrorModel, raw: ClientResponse)
     }
 
@@ -429,6 +446,8 @@ open class ContentV3API {
                 return .http403(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             case 404:
                 return .http404(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 429:
+                return .http429(raw: response)
             default:
                 return .http0(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             }
@@ -475,6 +494,7 @@ open class ContentV3API {
         case http401(value: ErrorModel, raw: ClientResponse)
         case http403(value: ErrorModel, raw: ClientResponse)
         case http404(value: ErrorModel, raw: ClientResponse)
+        case http429(raw: ClientResponse)
         case http0(value: ErrorModel, raw: ClientResponse)
     }
 
@@ -501,6 +521,8 @@ open class ContentV3API {
                 return .http403(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             case 404:
                 return .http404(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 429:
+                return .http429(raw: response)
             default:
                 return .http0(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             }
@@ -541,6 +563,7 @@ open class ContentV3API {
         case http401(value: ErrorModel, raw: ClientResponse)
         case http403(value: ErrorModel, raw: ClientResponse)
         case http404(value: ErrorModel, raw: ClientResponse)
+        case http429(raw: ClientResponse)
         case http0(value: ErrorModel, raw: ClientResponse)
     }
 
@@ -567,6 +590,8 @@ open class ContentV3API {
                 return .http403(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             case 404:
                 return .http404(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 429:
+                return .http429(raw: response)
             default:
                 return .http0(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             }
@@ -613,6 +638,7 @@ open class ContentV3API {
         case http401(value: ErrorModel, raw: ClientResponse)
         case http403(value: ErrorModel, raw: ClientResponse)
         case http404(value: ErrorModel, raw: ClientResponse)
+        case http429(raw: ClientResponse)
         case http0(value: ErrorModel, raw: ClientResponse)
     }
 
@@ -639,6 +665,8 @@ open class ContentV3API {
                 return .http403(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             case 404:
                 return .http404(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 429:
+                return .http429(raw: response)
             default:
                 return .http0(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             }
@@ -685,6 +713,7 @@ open class ContentV3API {
         case http401(value: ErrorModel, raw: ClientResponse)
         case http403(value: ErrorModel, raw: ClientResponse)
         case http404(value: ErrorModel, raw: ClientResponse)
+        case http429(raw: ClientResponse)
         case http0(value: ErrorModel, raw: ClientResponse)
     }
 
@@ -711,6 +740,8 @@ open class ContentV3API {
                 return .http403(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             case 404:
                 return .http404(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 429:
+                return .http429(raw: response)
             default:
                 return .http0(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             }
@@ -751,6 +782,7 @@ open class ContentV3API {
         case http401(value: ErrorModel, raw: ClientResponse)
         case http403(value: ErrorModel, raw: ClientResponse)
         case http404(value: ErrorModel, raw: ClientResponse)
+        case http429(raw: ClientResponse)
         case http0(value: ErrorModel, raw: ClientResponse)
     }
 
@@ -777,6 +809,8 @@ open class ContentV3API {
                 return .http403(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             case 404:
                 return .http404(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 429:
+                return .http429(raw: response)
             default:
                 return .http0(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             }
@@ -817,6 +851,7 @@ open class ContentV3API {
         case http401(value: ErrorModel, raw: ClientResponse)
         case http403(value: ErrorModel, raw: ClientResponse)
         case http404(value: ErrorModel, raw: ClientResponse)
+        case http429(raw: ClientResponse)
         case http0(value: ErrorModel, raw: ClientResponse)
     }
 
@@ -843,6 +878,8 @@ open class ContentV3API {
                 return .http403(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             case 404:
                 return .http404(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 429:
+                return .http429(raw: response)
             default:
                 return .http0(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             }

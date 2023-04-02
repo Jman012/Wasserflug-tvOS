@@ -1,4 +1,5 @@
 .gitignore
+.openapi-generator-ignore
 .swiftformat
 FloatplaneAPIClient/Classes/OpenAPIs/APIs.swift
 FloatplaneAPIClient/Classes/OpenAPIs/APIs/AuthV2API.swift
@@ -28,6 +29,7 @@ FloatplaneAPIClient/Classes/OpenAPIs/Models/AudioAttachmentModelWaveform.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/AuthLoginV2Request.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/AuthLoginV2Response.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/BlogPostModelV3.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/BlogPostModelV3Channel.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/BlogPostModelV3Creator.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/BlogPostModelV3CreatorOwner.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV2DownloadResponse.swift
@@ -54,11 +56,11 @@ FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV3MetaVideoAllOf.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV3Origin.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV3Response.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CdnDeliveryV3Variant.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/ChannelModel.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CheckFor2faLoginRequest.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/ChildImageModel.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CommentLikeV3PostRequest.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CommentModel.swift
-FloatplaneAPIClient/Classes/OpenAPIs/Models/CommentReplyModel.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CommentV3PostRequest.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CommentV3PostResponse.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CommentV3PostResponseInteractionCounts.swift
@@ -79,6 +81,8 @@ FloatplaneAPIClient/Classes/OpenAPIs/Models/CreatorModelV2ExtendedAllOf.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CreatorModelV2LiveStream.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CreatorModelV3.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CreatorModelV3Category.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/CreatorModelV3Owner.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Models/CreatorModelV3OwnerOneOf.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/DiscordRoleModel.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/DiscordServerModel.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/EdgeDataCenter.swift

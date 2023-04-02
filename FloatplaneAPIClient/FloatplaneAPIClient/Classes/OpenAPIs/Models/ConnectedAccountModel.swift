@@ -20,12 +20,12 @@ public struct ConnectedAccountModel: Content, Hashable {
     /** Determines if the system allows this account to be connected to. */
     public var enabled: Bool
     public var iconWhite: String
-    public var connectedAccount: ConnectedAccountModelConnectedAccount
+    public var connectedAccount: ConnectedAccountModelConnectedAccount?
     /** If true, the user is connected and the `connectedAccount` will have data about the account. */
     public var connected: Bool
     public var isAccountProvider: Bool
 
-    public init(key: String, name: String, enabled: Bool, iconWhite: String, connectedAccount: ConnectedAccountModelConnectedAccount, connected: Bool, isAccountProvider: Bool) {
+    public init(key: String, name: String, enabled: Bool, iconWhite: String, connectedAccount: ConnectedAccountModelConnectedAccount?, connected: Bool, isAccountProvider: Bool) {
         self.key = key
         self.name = name
         self.enabled = enabled

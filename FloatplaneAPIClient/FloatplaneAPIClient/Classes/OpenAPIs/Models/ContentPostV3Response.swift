@@ -26,6 +26,7 @@ public struct ContentPostV3Response: Content, Hashable {
     /** Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML. */
     public var text: String
     public var type: ModelType
+    public var channel: ChannelModel
     public var tags: [String]
     public var attachmentOrder: [String]
     public var metadata: PostMetadataModel
@@ -49,12 +50,13 @@ public struct ContentPostV3Response: Content, Hashable {
     /** May be undefined when the post is locked. */
     public var galleryAttachments: [AnyCodable]?
 
-    public init(id: String, guid: String, title: String, text: String, type: ModelType, tags: [String], attachmentOrder: [String], metadata: PostMetadataModel, releaseDate: Date, likes: Int, dislikes: Int, score: Int, comments: Int, creator: CreatorModelV2, wasReleasedSilently: Bool, thumbnail: ContentPostV3ResponseThumbnail?, isAccessible: Bool, userInteraction: [UserInteraction]?, videoAttachments: [VideoAttachmentModel]? = nil, audioAttachments: [AudioAttachmentModel]? = nil, pictureAttachments: [PictureAttachmentModel]? = nil, galleryAttachments: [AnyCodable]? = nil) {
+    public init(id: String, guid: String, title: String, text: String, type: ModelType, channel: ChannelModel, tags: [String], attachmentOrder: [String], metadata: PostMetadataModel, releaseDate: Date, likes: Int, dislikes: Int, score: Int, comments: Int, creator: CreatorModelV2, wasReleasedSilently: Bool, thumbnail: ContentPostV3ResponseThumbnail?, isAccessible: Bool, userInteraction: [UserInteraction]?, videoAttachments: [VideoAttachmentModel]? = nil, audioAttachments: [AudioAttachmentModel]? = nil, pictureAttachments: [PictureAttachmentModel]? = nil, galleryAttachments: [AnyCodable]? = nil) {
         self.id = id
         self.guid = guid
         self.title = title
         self.text = text
         self.type = type
+        self.channel = channel
         self.tags = tags
         self.attachmentOrder = attachmentOrder
         self.metadata = metadata
@@ -80,6 +82,7 @@ public struct ContentPostV3Response: Content, Hashable {
         case title
         case text
         case type
+        case channel
         case tags
         case attachmentOrder
         case metadata
@@ -108,6 +111,7 @@ public struct ContentPostV3Response: Content, Hashable {
         try container.encode(title, forKey: .title)
         try container.encode(text, forKey: .text)
         try container.encode(type, forKey: .type)
+        try container.encode(channel, forKey: .channel)
         try container.encode(tags, forKey: .tags)
         try container.encode(attachmentOrder, forKey: .attachmentOrder)
         try container.encode(metadata, forKey: .metadata)

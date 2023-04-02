@@ -18,15 +18,18 @@ public struct LiveStreamModel: Content, Hashable {
     public var description: String
     public var thumbnail: ContentPostV3ResponseThumbnail?
     public var owner: String
+    /** The creator channel this livestream belongs to. */
+    public var channel: String?
     public var streamPath: String
     public var offline: LiveStreamModelOffline
 
-    public init(id: String, title: String, description: String, thumbnail: ContentPostV3ResponseThumbnail?, owner: String, streamPath: String, offline: LiveStreamModelOffline) {
+    public init(id: String, title: String, description: String, thumbnail: ContentPostV3ResponseThumbnail?, owner: String, channel: String? = nil, streamPath: String, offline: LiveStreamModelOffline) {
         self.id = id
         self.title = title
         self.description = description
         self.thumbnail = thumbnail
         self.owner = owner
+        self.channel = channel
         self.streamPath = streamPath
         self.offline = offline
     }
@@ -37,6 +40,7 @@ public struct LiveStreamModel: Content, Hashable {
         case description
         case thumbnail
         case owner
+        case channel
         case streamPath
         case offline
     }
@@ -50,6 +54,7 @@ public struct LiveStreamModel: Content, Hashable {
         try container.encode(description, forKey: .description)
         try container.encode(thumbnail, forKey: .thumbnail)
         try container.encode(owner, forKey: .owner)
+        try container.encodeIfPresent(channel, forKey: .channel)
         try container.encode(streamPath, forKey: .streamPath)
         try container.encode(offline, forKey: .offline)
     }

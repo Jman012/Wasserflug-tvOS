@@ -14,8 +14,9 @@ import Vapor
 public struct CreatorModelV3: Content, Hashable {
 
     public var id: String
-    public var owner: String
+    public var owner: CreatorModelV3Owner
     public var title: String
+    /** Shown in the browser URL, and used in `/creator/named` queries. */
     public var urlname: String
     public var description: String
     public var about: String
@@ -27,9 +28,14 @@ public struct CreatorModelV3: Content, Hashable {
     public var discoverable: Bool
     public var subscriberCountDisplay: String
     public var incomeDisplay: Bool
+    public var defaultChannel: String
     public var socialLinks: [String: String]
+    public var channels: [ChannelModel]
+    /** Present in `/creator/named` queries */
+    public var discordServers: [DiscordServerModel]?
+    public var card: ImageModel?
 
-    public init(id: String, owner: String, title: String, urlname: String, description: String, about: String, category: CreatorModelV3Category, cover: ContentPostV3ResponseThumbnail?, icon: ImageModel, liveStream: CreatorModelV2LiveStream?, subscriptionPlans: [SubscriptionPlanModel]?, discoverable: Bool, subscriberCountDisplay: String, incomeDisplay: Bool, socialLinks: [String: String]) {
+    public init(id: String, owner: CreatorModelV3Owner, title: String, urlname: String, description: String, about: String, category: CreatorModelV3Category, cover: ContentPostV3ResponseThumbnail?, icon: ImageModel, liveStream: CreatorModelV2LiveStream?, subscriptionPlans: [SubscriptionPlanModel]?, discoverable: Bool, subscriberCountDisplay: String, incomeDisplay: Bool, defaultChannel: String, socialLinks: [String: String], channels: [ChannelModel], discordServers: [DiscordServerModel]? = nil, card: ImageModel? = nil) {
         self.id = id
         self.owner = owner
         self.title = title
@@ -44,7 +50,11 @@ public struct CreatorModelV3: Content, Hashable {
         self.discoverable = discoverable
         self.subscriberCountDisplay = subscriberCountDisplay
         self.incomeDisplay = incomeDisplay
+        self.defaultChannel = defaultChannel
         self.socialLinks = socialLinks
+        self.channels = channels
+        self.discordServers = discordServers
+        self.card = card
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -62,7 +72,11 @@ public struct CreatorModelV3: Content, Hashable {
         case discoverable
         case subscriberCountDisplay
         case incomeDisplay
+        case defaultChannel
         case socialLinks
+        case channels
+        case discordServers
+        case card
     }
 
     // Encodable protocol methods
@@ -83,7 +97,11 @@ public struct CreatorModelV3: Content, Hashable {
         try container.encode(discoverable, forKey: .discoverable)
         try container.encode(subscriberCountDisplay, forKey: .subscriberCountDisplay)
         try container.encode(incomeDisplay, forKey: .incomeDisplay)
+        try container.encode(defaultChannel, forKey: .defaultChannel)
         try container.encode(socialLinks, forKey: .socialLinks)
+        try container.encode(channels, forKey: .channels)
+        try container.encodeIfPresent(discordServers, forKey: .discordServers)
+        try container.encodeIfPresent(card, forKey: .card)
     }
 }
 

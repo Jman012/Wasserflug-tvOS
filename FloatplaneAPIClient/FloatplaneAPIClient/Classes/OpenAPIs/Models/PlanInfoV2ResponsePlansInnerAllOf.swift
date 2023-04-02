@@ -20,10 +20,10 @@ public struct PlanInfoV2ResponsePlansInnerAllOf: Content, Hashable {
     public var trialPeriod: Double
     public var creator: String
     public var userIsSubscribed: Bool
-    public var userIsGrandfathered: Bool
+    public var userIsGrandfathered: Bool?
     public var enabledGlobal: Bool
 
-    public init(createdAt: Date, updatedAt: Date?, enabled: Bool, paymentID: Int?, trialPeriod: Double, creator: String, userIsSubscribed: Bool, userIsGrandfathered: Bool, enabledGlobal: Bool) {
+    public init(createdAt: Date, updatedAt: Date?, enabled: Bool, paymentID: Int?, trialPeriod: Double, creator: String, userIsSubscribed: Bool, userIsGrandfathered: Bool? = nil, enabledGlobal: Bool) {
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.enabled = enabled
@@ -58,7 +58,7 @@ public struct PlanInfoV2ResponsePlansInnerAllOf: Content, Hashable {
         try container.encode(trialPeriod, forKey: .trialPeriod)
         try container.encode(creator, forKey: .creator)
         try container.encode(userIsSubscribed, forKey: .userIsSubscribed)
-        try container.encode(userIsGrandfathered, forKey: .userIsGrandfathered)
+        try container.encodeIfPresent(userIsGrandfathered, forKey: .userIsGrandfathered)
         try container.encode(enabledGlobal, forKey: .enabledGlobal)
     }
 }

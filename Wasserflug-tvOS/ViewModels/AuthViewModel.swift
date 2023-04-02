@@ -64,6 +64,13 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 				self.authenticationCheckError = error
 				self.showAuthenticationErrorAlert = true
 				return
+			case .http429(raw: _):
+				self.logger.warning("Received HTTP 429 Too Many Requests.")
+				self.isLoggedIn = false
+				self.isLoadingAuthStatus = false
+				self.authenticationCheckError = WasserflugError.http429
+				self.showAuthenticationErrorAlert = true
+				return
 			}
 			
 			let userSubscriptions: [UserSubscriptionModel]
@@ -186,6 +193,10 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while attempting login. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
 							self.showIncorrectLoginAlert = true
 							self.loginError = errorModel
+						case .http429(raw: _):
+							self.logger.warning("Received HTTP 429 Too Many Requests.")
+							self.showIncorrectLoginAlert = true
+							self.loginError = WasserflugError.http429
 						}
 					case let .failure(error):
 						self.logger.error("Encountered an unexpected error while attempting login. Reporting the error to the user. Error: \(String(reflecting: error))")
@@ -229,6 +240,10 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while attempting 2fa. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
 							self.showIncorrectSecondFactorAlert = true
 							self.secondFactorError = errorModel
+						case .http429(raw: _):
+							self.logger.warning("Received HTTP 429 Too Many Requests.")
+							self.showIncorrectSecondFactorAlert = true
+							self.secondFactorError = WasserflugError.http429
 						}
 					case let .failure(error):
 						self.logger.error("Encountered an unexpected error while attempting 2fa. Reporting the error to the user. Error: \(String(reflecting: error))")

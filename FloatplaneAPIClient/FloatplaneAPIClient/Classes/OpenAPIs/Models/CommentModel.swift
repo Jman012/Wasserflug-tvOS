@@ -21,20 +21,22 @@ public struct CommentModel: Content, Hashable {
     public var blogPost: String
     public var user: UserModel
     public var text: String
-    public var replying: String
-    public var postDate: String
-    public var editDate: String
+    public var replying: String?
+    public var postDate: Date
+    public var editDate: Date?
+    public var pinDate: Date?
     public var editCount: Int
     public var isEdited: Bool
     public var likes: Int
     public var dislikes: Int
     public var score: Int
     public var interactionCounts: CommentV3PostResponseInteractionCounts
-    public var totalReplies: Int
-    public var replies: [CommentReplyModel]
+    public var totalReplies: Int?
+    /** This is present (but possibly empty) for top-level comments. This is never present for reply comments. */
+    public var replies: [CommentModel]?
     public var userInteraction: [UserInteraction]?
 
-    public init(id: String, blogPost: String, user: UserModel, text: String, replying: String, postDate: String, editDate: String, editCount: Int, isEdited: Bool, likes: Int, dislikes: Int, score: Int, interactionCounts: CommentV3PostResponseInteractionCounts, totalReplies: Int, replies: [CommentReplyModel], userInteraction: [UserInteraction]?) {
+    public init(id: String, blogPost: String, user: UserModel, text: String, replying: String?, postDate: Date, editDate: Date?, pinDate: Date? = nil, editCount: Int, isEdited: Bool, likes: Int, dislikes: Int, score: Int, interactionCounts: CommentV3PostResponseInteractionCounts, totalReplies: Int? = nil, replies: [CommentModel]? = nil, userInteraction: [UserInteraction]?) {
         self.id = id
         self.blogPost = blogPost
         self.user = user
@@ -42,6 +44,7 @@ public struct CommentModel: Content, Hashable {
         self.replying = replying
         self.postDate = postDate
         self.editDate = editDate
+        self.pinDate = pinDate
         self.editCount = editCount
         self.isEdited = isEdited
         self.likes = likes
@@ -61,6 +64,7 @@ public struct CommentModel: Content, Hashable {
         case replying
         case postDate
         case editDate
+        case pinDate
         case editCount
         case isEdited
         case likes
@@ -83,14 +87,15 @@ public struct CommentModel: Content, Hashable {
         try container.encode(replying, forKey: .replying)
         try container.encode(postDate, forKey: .postDate)
         try container.encode(editDate, forKey: .editDate)
+        try container.encodeIfPresent(pinDate, forKey: .pinDate)
         try container.encode(editCount, forKey: .editCount)
         try container.encode(isEdited, forKey: .isEdited)
         try container.encode(likes, forKey: .likes)
         try container.encode(dislikes, forKey: .dislikes)
         try container.encode(score, forKey: .score)
         try container.encode(interactionCounts, forKey: .interactionCounts)
-        try container.encode(totalReplies, forKey: .totalReplies)
-        try container.encode(replies, forKey: .replies)
+        try container.encodeIfPresent(totalReplies, forKey: .totalReplies)
+        try container.encodeIfPresent(replies, forKey: .replies)
         try container.encode(userInteraction, forKey: .userInteraction)
     }
 }

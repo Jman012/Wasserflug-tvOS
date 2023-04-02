@@ -22,6 +22,7 @@ public struct BlogPostModelV3: Content, Hashable {
     /** Text description of the post. May have HTML paragraph (`<p>`) tags surrounding it, along with other HTML.. */
     public var text: String
     public var type: ModelType
+    public var channel: BlogPostModelV3Channel
     public var tags: [String]
     public var attachmentOrder: [String]
     public var metadata: PostMetadataModel
@@ -44,12 +45,13 @@ public struct BlogPostModelV3: Content, Hashable {
     /** May be undefined, usually when `isAccessible` is `false`. */
     public var galleryAttachments: [String]?
 
-    public init(id: String, guid: String, title: String, text: String, type: ModelType, tags: [String], attachmentOrder: [String], metadata: PostMetadataModel, releaseDate: Date, likes: Int, dislikes: Int, score: Int, comments: Int, creator: BlogPostModelV3Creator, wasReleasedSilently: Bool, thumbnail: ContentPostV3ResponseThumbnail?, isAccessible: Bool, videoAttachments: [String]? = nil, audioAttachments: [String]? = nil, pictureAttachments: [String]? = nil, galleryAttachments: [String]? = nil) {
+    public init(id: String, guid: String, title: String, text: String, type: ModelType, channel: BlogPostModelV3Channel, tags: [String], attachmentOrder: [String], metadata: PostMetadataModel, releaseDate: Date, likes: Int, dislikes: Int, score: Int, comments: Int, creator: BlogPostModelV3Creator, wasReleasedSilently: Bool, thumbnail: ContentPostV3ResponseThumbnail? = nil, isAccessible: Bool, videoAttachments: [String]? = nil, audioAttachments: [String]? = nil, pictureAttachments: [String]? = nil, galleryAttachments: [String]? = nil) {
         self.id = id
         self.guid = guid
         self.title = title
         self.text = text
         self.type = type
+        self.channel = channel
         self.tags = tags
         self.attachmentOrder = attachmentOrder
         self.metadata = metadata
@@ -74,6 +76,7 @@ public struct BlogPostModelV3: Content, Hashable {
         case title
         case text
         case type
+        case channel
         case tags
         case attachmentOrder
         case metadata
@@ -101,6 +104,7 @@ public struct BlogPostModelV3: Content, Hashable {
         try container.encode(title, forKey: .title)
         try container.encode(text, forKey: .text)
         try container.encode(type, forKey: .type)
+        try container.encode(channel, forKey: .channel)
         try container.encode(tags, forKey: .tags)
         try container.encode(attachmentOrder, forKey: .attachmentOrder)
         try container.encode(metadata, forKey: .metadata)
@@ -111,7 +115,7 @@ public struct BlogPostModelV3: Content, Hashable {
         try container.encode(comments, forKey: .comments)
         try container.encode(creator, forKey: .creator)
         try container.encode(wasReleasedSilently, forKey: .wasReleasedSilently)
-        try container.encode(thumbnail, forKey: .thumbnail)
+        try container.encodeIfPresent(thumbnail, forKey: .thumbnail)
         try container.encode(isAccessible, forKey: .isAccessible)
         try container.encodeIfPresent(videoAttachments, forKey: .videoAttachments)
         try container.encodeIfPresent(audioAttachments, forKey: .audioAttachments)

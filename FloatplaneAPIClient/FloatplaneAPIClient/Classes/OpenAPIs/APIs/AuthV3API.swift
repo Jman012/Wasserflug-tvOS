@@ -42,6 +42,7 @@ open class AuthV3API {
         case http401(value: ErrorModel, raw: ClientResponse)
         case http403(value: ErrorModel, raw: ClientResponse)
         case http404(value: ErrorModel, raw: ClientResponse)
+        case http429(raw: ClientResponse)
         case http0(value: ErrorModel, raw: ClientResponse)
     }
 
@@ -64,6 +65,8 @@ open class AuthV3API {
                 return .http403(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             case 404:
                 return .http404(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
+            case 429:
+                return .http429(raw: response)
             default:
                 return .http0(value: try response.content.decode(ErrorModel.self, using: Configuration.contentConfiguration.requireDecoder(for: ErrorModel.defaultContentType)), raw: response)
             }
