@@ -1,11 +1,11 @@
 # Wasserflug tvOS
 An unofficial Floatplane client for Apple TV/tvOS. View it on the Apple TV App Store at https://apps.apple.com/us/app/wasserflug/id1611976921.
 
-⚠️ Notice ⚠️: The App Store version is currently dated. Getting the Test Flight version is recommended. See below in "Beta Testing" for instructions.
+⚠️ Notice ⚠️: The App Store version is currently out-dated. Getting the Test Flight version is recommended. See below in "Beta Testing" for instructions.
 
-Looking for Roku? Look here: https://github.com/bmlzootown/Hydravion
+Looking for Roku? https://github.com/bmlzootown/Hydravion
 
-Looking for Android TV? Look here: https://github.com/bmlzootown/Hydravion-AndroidTV
+Looking for Android TV? https://github.com/bmlzootown/Hydravion-AndroidTV
 
 ## Screenshots
 
@@ -14,33 +14,28 @@ See https://imgur.com/a/vXAcEJy for screenshots of Wasserflug.
 ## Features
 
 ### Implemented Floatplane Features
-✅ Floatplane Login (and with 2FA)  
-- Login via LTT Forum/Discord: See FAQ  
-✅ Aggregated home screem  
-✅ Creator screens with proper branding (banner image, profile picture, "About" information)  
-✅ Search a creator for videos  
-✅ Floatplane tags (viewing only)  
-✅ Formatted post descriptions  
-✅ 4K Support  
-✅ Attachment views  
-
-- ✅ Videos
-- ✅ Pictures
-- ❌ Audio
-- ❌ Gallery
-
-✅ Creator Livestream  
-❌ Livestream chat  
-❌ Notifications(?)  
-❌ Creator discovery  
-❌ Search by tags  
-
-- Note: You can currently manually search a tag by typing a `#` before the tag name in the creator's search screen, same as Floatplane.com.
-- This is more about clicking a tag button to search it automatically.
-
-### Extra Features
-✅ Watch progress (client-side only, will not sync across other Apple TVs or with the Floatplane website)  
-❌ Picture-in-Picture  
+- ✅ Floatplane Login (and with 2FA)
+  - Login via LTT Forum/Discord: See FAQ
+- ✅ Aggregated home screen
+- ✅ Creator screens with proper branding (banner image, profile picture, "About" information)
+  - ✅ Search a creator for videos
+  - ✅ Creator Livestream
+- ✅ Floatplane tags (view only)
+- ✅ Formatted post descriptions
+- ✅ 4K Support
+- ✅ Watch progress (syncs with Floatplane website)
+- ✅ Attachment views
+  - ✅ Videos
+  - ✅ Pictures
+  - ❌ Audio
+  - ❌ Gallery
+- ❌ Livestream chat
+- ❌ Notifications
+- ❌ Creator discovery
+- ❌ Search by tags
+  - Note: You can currently manually search a tag by typing a `#` before the tag name in the creator's search screen, same as Floatplane.com.
+  - This is more about clicking a tag button to search it automatically.
+- ❌ Picture-in-Picture
 
 ## Frequently Asked Questions
 
