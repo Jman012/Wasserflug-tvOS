@@ -21,18 +21,18 @@ public struct BlogPostModelV3Creator: Content, Hashable {
     public var description: String
     public var about: String
     public var category: CreatorModelV3Category
-    public var cover: ContentPostV3ResponseThumbnail?
+    public var cover: ImageModel?
     public var icon: ImageModel
-    public var liveStream: CreatorModelV2LiveStream?
+    public var liveStream: LiveStreamModel?
     public var subscriptionPlans: [SubscriptionPlanModel]
     public var discoverable: Bool
     public var subscriberCountDisplay: String
     public var incomeDisplay: Bool
     public var defaultChannel: String?
     public var channels: [String]?
-    public var card: ContentPostV3ResponseThumbnail?
+    public var card: ImageModel?
 
-    public init(id: String, owner: BlogPostModelV3CreatorOwner, title: String, urlname: String, description: String, about: String, category: CreatorModelV3Category, cover: ContentPostV3ResponseThumbnail?, icon: ImageModel, liveStream: CreatorModelV2LiveStream?, subscriptionPlans: [SubscriptionPlanModel], discoverable: Bool, subscriberCountDisplay: String, incomeDisplay: Bool, defaultChannel: String? = nil, channels: [String]? = nil, card: ContentPostV3ResponseThumbnail? = nil) {
+    public init(id: String, owner: BlogPostModelV3CreatorOwner, title: String, urlname: String, description: String, about: String, category: CreatorModelV3Category, cover: ImageModel?, icon: ImageModel, liveStream: LiveStreamModel?, subscriptionPlans: [SubscriptionPlanModel], discoverable: Bool, subscriberCountDisplay: String, incomeDisplay: Bool, defaultChannel: String? = nil, channels: [String]? = nil, card: ImageModel? = nil) {
         self.id = id
         self.owner = owner
         self.title = title

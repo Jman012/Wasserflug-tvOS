@@ -20,12 +20,12 @@ public struct ChannelModel: Content, Hashable {
     public var urlname: String
     public var about: String
     public var order: Int?
-    public var cover: ContentPostV3ResponseThumbnail?
-    public var card: ContentPostV3ResponseThumbnail?
+    public var cover: ImageModel?
+    public var card: ImageModel?
     public var icon: ImageModel
     public var socialLinks: [String: String]?
 
-    public init(id: String, creator: String, title: String, urlname: String, about: String, order: Int? = nil, cover: ContentPostV3ResponseThumbnail?, card: ContentPostV3ResponseThumbnail?, icon: ImageModel, socialLinks: [String: String]? = nil) {
+    public init(id: String, creator: String, title: String, urlname: String, about: String, order: Int? = nil, cover: ImageModel?, card: ImageModel?, icon: ImageModel, socialLinks: [String: String]? = nil) {
         self.id = id
         self.creator = creator
         self.title = title

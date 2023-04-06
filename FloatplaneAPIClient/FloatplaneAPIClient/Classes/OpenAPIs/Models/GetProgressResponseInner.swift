@@ -13,6 +13,7 @@ import Vapor
 
 public struct GetProgressResponseInner: Content, Hashable {
 
+    static let progressRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: 100, exclusiveMaximum: false, multipleOf: nil)
     public var id: String
     /** Percentage of the blog post's media that has been consumed so far. Ranges from 0 to 100. */
     public var progress: Int

@@ -33,7 +33,7 @@ public struct BlogPostModelV3: Content, Hashable {
     public var comments: Int
     public var creator: BlogPostModelV3Creator
     public var wasReleasedSilently: Bool
-    public var thumbnail: ContentPostV3ResponseThumbnail?
+    public var thumbnail: ImageModel?
     /** If false, the post should be marked as locked and not viewable by the user. */
     public var isAccessible: Bool
     /** May be undefined, usually when `isAccessible` is `false`. */
@@ -45,7 +45,7 @@ public struct BlogPostModelV3: Content, Hashable {
     /** May be undefined, usually when `isAccessible` is `false`. */
     public var galleryAttachments: [String]?
 
-    public init(id: String, guid: String, title: String, text: String, type: ModelType, channel: BlogPostModelV3Channel, tags: [String], attachmentOrder: [String], metadata: PostMetadataModel, releaseDate: Date, likes: Int, dislikes: Int, score: Int, comments: Int, creator: BlogPostModelV3Creator, wasReleasedSilently: Bool, thumbnail: ContentPostV3ResponseThumbnail? = nil, isAccessible: Bool, videoAttachments: [String]? = nil, audioAttachments: [String]? = nil, pictureAttachments: [String]? = nil, galleryAttachments: [String]? = nil) {
+    public init(id: String, guid: String, title: String, text: String, type: ModelType, channel: BlogPostModelV3Channel, tags: [String], attachmentOrder: [String], metadata: PostMetadataModel, releaseDate: Date, likes: Int, dislikes: Int, score: Int, comments: Int, creator: BlogPostModelV3Creator, wasReleasedSilently: Bool, thumbnail: ImageModel? = nil, isAccessible: Bool, videoAttachments: [String]? = nil, audioAttachments: [String]? = nil, pictureAttachments: [String]? = nil, galleryAttachments: [String]? = nil) {
         self.id = id
         self.guid = guid
         self.title = title

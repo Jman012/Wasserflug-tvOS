@@ -16,14 +16,14 @@ public struct LiveStreamModel: Content, Hashable {
     public var id: String
     public var title: String
     public var description: String
-    public var thumbnail: ContentPostV3ResponseThumbnail?
+    public var thumbnail: ImageModel?
     public var owner: String
     /** The creator channel this livestream belongs to. */
     public var channel: String?
     public var streamPath: String
     public var offline: LiveStreamModelOffline
 
-    public init(id: String, title: String, description: String, thumbnail: ContentPostV3ResponseThumbnail?, owner: String, channel: String? = nil, streamPath: String, offline: LiveStreamModelOffline) {
+    public init(id: String, title: String, description: String, thumbnail: ImageModel?, owner: String, channel: String? = nil, streamPath: String, offline: LiveStreamModelOffline) {
         self.id = id
         self.title = title
         self.description = description

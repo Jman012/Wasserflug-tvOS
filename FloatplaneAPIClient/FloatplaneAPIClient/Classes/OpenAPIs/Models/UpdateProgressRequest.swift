@@ -18,6 +18,7 @@ public struct UpdateProgressRequest: Content, Hashable {
         case video = "video"
         case audio = "audio"
     }
+    static let progressRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     /** The video or audio attachment identifier for the piece of media that is being updated. Note: this is *not* the blogPost identifier. */
     public var id: String
     /** Which type of media the corresponding identifier is. */

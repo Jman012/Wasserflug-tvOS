@@ -21,9 +21,9 @@ public struct CreatorModelV2Extended: Content, Hashable {
     public var description: String
     public var about: String
     public var category: String
-    public var cover: ContentPostV3ResponseThumbnail?
+    public var cover: ImageModel?
     public var icon: ImageModel
-    public var liveStream: CreatorModelV2LiveStream?
+    public var liveStream: LiveStreamModel?
     public var subscriptionPlans: [SubscriptionPlanModel]?
     public var discoverable: Bool
     public var subscriberCountDisplay: String
@@ -32,7 +32,7 @@ public struct CreatorModelV2Extended: Content, Hashable {
     public var socialLinks: [String: String]
     public var discordServers: [DiscordServerModel]
 
-    public init(id: String, owner: String, title: String, urlname: String, description: String, about: String, category: String, cover: ContentPostV3ResponseThumbnail?, icon: ImageModel, liveStream: CreatorModelV2LiveStream?, subscriptionPlans: [SubscriptionPlanModel]?, discoverable: Bool, subscriberCountDisplay: String, incomeDisplay: Bool, defaultChannel: String? = nil, socialLinks: [String: String], discordServers: [DiscordServerModel]) {
+    public init(id: String, owner: String, title: String, urlname: String, description: String, about: String, category: String, cover: ImageModel?, icon: ImageModel, liveStream: LiveStreamModel?, subscriptionPlans: [SubscriptionPlanModel]?, discoverable: Bool, subscriberCountDisplay: String, incomeDisplay: Bool, defaultChannel: String? = nil, socialLinks: [String: String], discordServers: [DiscordServerModel]) {
         self.id = id
         self.owner = owner
         self.title = title

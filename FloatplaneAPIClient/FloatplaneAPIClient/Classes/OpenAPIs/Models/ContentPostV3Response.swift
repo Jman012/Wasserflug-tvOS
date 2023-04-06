@@ -37,7 +37,7 @@ public struct ContentPostV3Response: Content, Hashable {
     public var comments: Int
     public var creator: CreatorModelV2
     public var wasReleasedSilently: Bool
-    public var thumbnail: ContentPostV3ResponseThumbnail?
+    public var thumbnail: ImageModel?
     /** If false, the post should be marked as locked and not viewable by the user. */
     public var isAccessible: Bool
     public var userInteraction: [UserInteraction]?
@@ -50,7 +50,7 @@ public struct ContentPostV3Response: Content, Hashable {
     /** May be undefined when the post is locked. */
     public var galleryAttachments: [AnyCodable]?
 
-    public init(id: String, guid: String, title: String, text: String, type: ModelType, channel: ChannelModel, tags: [String], attachmentOrder: [String], metadata: PostMetadataModel, releaseDate: Date, likes: Int, dislikes: Int, score: Int, comments: Int, creator: CreatorModelV2, wasReleasedSilently: Bool, thumbnail: ContentPostV3ResponseThumbnail?, isAccessible: Bool, userInteraction: [UserInteraction]?, videoAttachments: [VideoAttachmentModel]? = nil, audioAttachments: [AudioAttachmentModel]? = nil, pictureAttachments: [PictureAttachmentModel]? = nil, galleryAttachments: [AnyCodable]? = nil) {
+    public init(id: String, guid: String, title: String, text: String, type: ModelType, channel: ChannelModel, tags: [String], attachmentOrder: [String], metadata: PostMetadataModel, releaseDate: Date, likes: Int, dislikes: Int, score: Int, comments: Int, creator: CreatorModelV2, wasReleasedSilently: Bool, thumbnail: ImageModel?, isAccessible: Bool, userInteraction: [UserInteraction]?, videoAttachments: [VideoAttachmentModel]? = nil, audioAttachments: [AudioAttachmentModel]? = nil, pictureAttachments: [PictureAttachmentModel]? = nil, galleryAttachments: [AnyCodable]? = nil) {
         self.id = id
         self.guid = guid
         self.title = title

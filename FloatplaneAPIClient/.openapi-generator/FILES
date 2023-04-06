@@ -72,13 +72,11 @@ FloatplaneAPIClient/Classes/OpenAPIs/Models/ContentCreatorListV3Response.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/ContentLikeV3Request.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/ContentPictureV3Response.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/ContentPostV3Response.swift
-FloatplaneAPIClient/Classes/OpenAPIs/Models/ContentPostV3ResponseThumbnail.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/ContentVideoV3Response.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/ContentVideoV3ResponseLevelsInner.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CreatorModelV2.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CreatorModelV2Extended.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CreatorModelV2ExtendedAllOf.swift
-FloatplaneAPIClient/Classes/OpenAPIs/Models/CreatorModelV2LiveStream.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CreatorModelV3.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CreatorModelV3Category.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/CreatorModelV3Owner.swift
@@ -137,5 +135,7 @@ FloatplaneAPIClient/Classes/OpenAPIs/Models/UserSelfV3Response.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/UserSubscriptionModel.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/VideoAttachmentModel.swift
 FloatplaneAPIClient/Classes/OpenAPIs/Models/VotePollRequest.swift
+FloatplaneAPIClient/Classes/OpenAPIs/OpenISO8601DateFormatter.swift
+FloatplaneAPIClient/Classes/OpenAPIs/Validation.swift
 Package.swift
 README.md

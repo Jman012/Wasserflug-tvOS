@@ -59,10 +59,6 @@ extension ImageModel: ImageModelShared {
 	
 }
 
-extension ContentPostV3ResponseThumbnail: ImageModelShared {
-	
-}
-
 extension Optional where Wrapped == ImageModelShared {
 	var pathUrlOrNil: URL? {
 		if let thumbnail = self {
