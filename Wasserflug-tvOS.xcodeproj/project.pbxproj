@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		E70448E22803A9110045A1AE /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70448E12803A9110045A1AE /* WaveformView.swift */; };
 		E70F775729D90D4900869BE3 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70F775629D90D4900869BE3 /* Errors.swift */; };
+		E70F777629DF7A5E00869BE3 /* ToastBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70F777529DF7A5E00869BE3 /* ToastBarView.swift */; };
 		E71FDB3C27D3F89200A9C88B /* Swift+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB3B27D3F89200A9C88B /* Swift+Extensions.swift */; };
 		E71FDB7927E66D7E00A9C88B /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB7827E66D7E00A9C88B /* Persistence.swift */; };
 		E71FDB7C27E66DB100A9C88B /* Wasserflug.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB7A27E66DB100A9C88B /* Wasserflug.xcdatamodeld */; };
@@ -80,6 +81,7 @@
 /* Begin PBXFileReference section */
 		E70448E12803A9110045A1AE /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
 		E70F775629D90D4900869BE3 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		E70F777529DF7A5E00869BE3 /* ToastBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastBarView.swift; sourceTree = "<group>"; };
 		E71FDB3B27D3F89200A9C88B /* Swift+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Swift+Extensions.swift"; sourceTree = "<group>"; };
 		E71FDB7827E66D7E00A9C88B /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		E71FDB7B27E66DB100A9C88B /* Wasserflug.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Wasserflug.xcdatamodel; sourceTree = "<group>"; };
@@ -286,6 +288,7 @@
 				E753379727CB06BE0010E3D2 /* PictureView.swift */,
 				E753379A27CB06BE0010E3D2 /* LivestreamPlayerView.swift */,
 				E7A2F42B28CE43D800583294 /* LivestreamView.swift */,
+				E70F777529DF7A5E00869BE3 /* ToastBarView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -482,6 +485,7 @@
 				E753379E27CB06BE0010E3D2 /* BlogPostContentView.swift in Sources */,
 				E75337A027CB06BE0010E3D2 /* PlayButton.swift in Sources */,
 				E75337A527CB06BE0010E3D2 /* HomeViewModel.swift in Sources */,
+				E70F777629DF7A5E00869BE3 /* ToastBarView.swift in Sources */,
 				E75337AD27CB06BE0010E3D2 /* CreatorSearchView.swift in Sources */,
 				E71FDB7927E66D7E00A9C88B /* Persistence.swift in Sources */,
 				E753377D27CB066E0010E3D2 /* OSLoggingLogger.swift in Sources */,

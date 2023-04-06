@@ -92,6 +92,9 @@ struct ContentView: View {
 				RootTabView()
 			}
 		}
+		.overlay(alignment: .topTrailing, content: {
+			ToastBarView()
+		})
 		.environmentObject(viewModel.userInfo)
 		.onAppear(perform: {
 			if !hasInitiallyLoaded {
