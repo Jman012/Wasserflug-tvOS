@@ -21,7 +21,10 @@ struct CreatorSearchView: View {
 			case .loading:
 				ProgressView()
 			case let .failed(error):
-				ErrorView(error: error)
+				ErrorView(error: error, tryAgainText: "Try Again", tryAgainHandler: {
+					viewModel.state = .loading
+					viewModel.load()
+				})
 			case let .loaded(content):
 				LazyVGrid(columns: gridColumns, spacing: 60) {
 					ForEach(content) { blogPost in

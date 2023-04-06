@@ -15,7 +15,9 @@ struct LivestreamView: View {
 			case .loading:
 				ProgressView()
 			case let .failed(error):
-				ErrorView(error: error)
+				ErrorView(error: error, tryAgainText: "Refresh", tryAgainHandler: {
+					viewModel.state = .idle
+				})
 			case let .loaded((creator, _, _)):
 				if !viewModel.isLive {
 					VStack {

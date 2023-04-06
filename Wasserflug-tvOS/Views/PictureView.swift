@@ -16,7 +16,9 @@ struct PictureView: View {
 		case .loading:
 			ProgressView()
 		case let .failed(error):
-			ErrorView(error: error)
+			ErrorView(error: error, tryAgainText: "Refresh", tryAgainHandler: {
+				viewModel.state = .idle
+			})
 		case let .loaded(content):
 			CachedAsyncImage(url: URL(string: content.imageFiles.first!.path), content: { image in
 				image

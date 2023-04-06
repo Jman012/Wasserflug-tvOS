@@ -3,6 +3,8 @@ import FloatplaneAPIClient
 
 struct ErrorView: View {
 	let error: Error
+	var tryAgainText: String = "Try Again"
+	let tryAgainHandler: () -> Void
 	@State var moreDetails = false
 	
 	var body: some View {
@@ -15,9 +17,14 @@ struct ErrorView: View {
 				Text("An unexpected error was encountered while processing your data. Please submit a bug report with the app developer, *NOT* with Floatplane staff.\nError information:\n")
 				Text(moreDetails ? String(describing: error) : error.localizedDescription)
 			}
-			Button(moreDetails ? "Fewer Details" : "More Details", action: {
-				moreDetails = !moreDetails
-			})
+			HStack {
+				Button(tryAgainText, action: {
+					self.tryAgainHandler()
+				})
+				Button(moreDetails ? "Fewer Details" : "More Details", action: {
+					moreDetails = !moreDetails
+				})
+			}
 		}
 			.font(.headline)
 			.multilineTextAlignment(.center)
@@ -26,6 +33,6 @@ struct ErrorView: View {
 
 struct ErrorView_Previews: PreviewProvider {
 	static var previews: some View {
-		ErrorView(error: ErrorModel(id: "test id", errors: [.init(id: "test id 2", name: "test name", message: "test message", data: nil)], message: "test error message"))
+		ErrorView(error: ErrorModel(id: "test id", errors: [.init(id: "test id 2", name: "test name", message: "test message", data: nil)], message: "test error message"), tryAgainHandler: {})
 	}
 }

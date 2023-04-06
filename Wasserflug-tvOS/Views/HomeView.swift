@@ -23,7 +23,9 @@ struct HomeView: View {
 		case .loading:
 			ProgressView()
 		case let .failed(error):
-			ErrorView(error: error)
+			ErrorView(error: error, tryAgainText: "Refresh", tryAgainHandler: {
+				viewModel.state = .idle
+			})
 		case let .loaded(response):
 			ScrollView {
 				LazyVGrid(columns: gridColumns, spacing: 60) {

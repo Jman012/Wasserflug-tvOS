@@ -31,7 +31,9 @@ struct CreatorContentView: View {
 			case .loading:
 				ProgressView()
 			case let .failed(error):
-				ErrorView(error: error)
+				ErrorView(error: error, tryAgainText: "Refresh", tryAgainHandler: {
+					viewModel.state = .idle
+				})
 			case let .loaded(content):
 				GeometryReader { geometry in
 					ScrollView {
