@@ -18,9 +18,11 @@ struct BlogPostView: View {
 	var body: some View {
 		switch viewModel.state {
 		case .idle:
-			ProgressView().onAppear(perform: {
-				viewModel.load(colorScheme: colorScheme)
-			})
+			ProgressView()
+				.frame(width: .infinity, height: .infinity)
+				.onAppear(perform: {
+					viewModel.load(colorScheme: colorScheme)
+				})
 		case .loading:
 			ProgressView()
 		case let .failed(error):

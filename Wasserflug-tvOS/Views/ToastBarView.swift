@@ -8,9 +8,11 @@ fileprivate extension Notification.Name {
 struct Toast: Identifiable, Hashable {
 	let id: UUID = UUID()
 	let message: String
+	let wasserflugToast: WasserflugToast?
 	
 	init(_ item: WasserflugToast) {
 		self.message = item.message
+		self.wasserflugToast = item
 	}
 	
 	static func post(toast: Toast) {
@@ -32,13 +34,7 @@ enum WasserflugToast {
 struct ToastBarView: View {
 	
 	@State var toasts: [Toast] = []
-	
-	private var publisher = NotificationCenter.default
-			.publisher(for: .wasserflugToast)
-			.compactMap { notification in
-				return notification.object as? Toast
-			}
-			.receive(on: RunLoop.main)
+	@State var lastToastRecievedOf: [WasserflugToast: Date] = [:]
 	
 	var body: some View {
 		VStack {
@@ -51,7 +47,21 @@ struct ToastBarView: View {
 			}
 		}
 		.animation(.easeInOut, value: toasts)
-		.onReceive(publisher, perform: { toast in
+		.onReceive(NotificationCenter.default
+			.publisher(for: .wasserflugToast)
+			.compactMap { (notification) -> Toast? in
+				let toast = notification.object as? Toast
+				if let wasserflugToast = toast?.wasserflugToast {
+					// Skip excess failedToLoadProgress toasts if received within 5 minutes of the initial one.
+					if let lastReceived = lastToastRecievedOf[wasserflugToast], wasserflugToast == .failedToLoadProgress && lastReceived.timeIntervalSinceNow < TimeInterval(5 * 60) {
+						return nil
+					}
+					lastToastRecievedOf[wasserflugToast] = Date()
+					return toast
+				}
+				return toast
+			}
+			.receive(on: RunLoop.main), perform: { toast in
 			toasts.insert(toast, at: 0)
 			
 			DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
