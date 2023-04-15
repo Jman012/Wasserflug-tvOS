@@ -61,8 +61,8 @@ struct PlayMediaView<Content>: View where Content: View {
 					ProgressView()
 					Rectangle()
 						.fill(.clear)
-						.frame(width: width)
 						.aspectRatio(thumbnail?.aspectRatio ?? 1.0, contentMode: .fit)
+						.frame(width: width)
 				}
 			})
 			

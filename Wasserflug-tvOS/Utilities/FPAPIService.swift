@@ -5155,47 +5155,36 @@ enum MockStaticData {
 	
 	static let getBlogPost = #"""
 {
-	"id": "ez4ELvWk5m",
-	"guid": "ez4ELvWk5m",
-	"title": "Livestream VOD – April 15, 2023 @ 02:18 – I Give Up - WAN Show April 14, 2023",
-	"text": "<p>JumpCloud offers an Open Directory Platform that makes it possible to unify your technology stack across identity, access, and device management. Learn more here: <a href=\"https://lmg.gg/JumpCloud\">https://lmg.gg/JumpCloud</a></p><p>Check out Goliath today and save 20% at <a href=\"https://lmg.gg/Goliath-Technologies\">https://lmg.gg/Goliath-Technologies</a></p><p>Buy a Seasonic Prime TX 1000W PSU:<a href=\"https://geni.us/aryiquT\"> https://geni.us/aryiquT</a></p><p><br /></p><p>Purchases made through some store links may provide some compensation to Linus Media Group.</p><p><br /></p><p>Podcast Download: TBD</p>",
+	"id": "iKl5zXTlaP",
+	"guid": "iKl5zXTlaP",
+	"title": "TL: AutoGPT, Windows handheld mode, WD hack + more!",
+	"text": "<p><strong>NEWS SOURCES:</strong></p><p><br /></p><p>PROMPT INCEPTION</p><p>AutoGPT</p><p><a href=\"https://www.digitaltrends.com/computing/what-is-auto-gpt/\">https://www.digitaltrends.com/computing/what-is-auto-gpt/</a></p><p><a href=\"https://github.com/Torantulino/Auto-GPT\">https://github.com/Torantulino/Auto-GPT</a></p><p><a href=\"https://www.lesswrong.com/posts/566kBoPi76t8KAkoD/on-autogpt#:~:text=The%20concept%20works%20like%20this%3A\">https://www.lesswrong.com/posts/566kBoPi76t8KAkoD/on-autogpt#:~:text=The%20concept%20works%20like%20this%3A</a></p><p><a href=\"https://github.com/trending\">https://github.com/trending</a></p><p>Microsoft Jarvis <a href=\"https://github.com/microsoft/JARVIS\">https://github.com/microsoft/JARVIS</a></p><p>Sim study <a href=\"https://arxiv.org/abs/2304.03442\">https://arxiv.org/abs/2304.03442</a></p><p><a href=\"https://arxiv.org/pdf/2304.03442.pdf\">https://arxiv.org/pdf/2304.03442.pdf</a></p><p>party <a href=\"https://lmg.gg/bmG9w\">https://lmg.gg/bmG9w</a></p><p>Voice cloning scams are effing sh** up</p><p><a href=\"https://www.wkyt.com/2023/04/10/ive-got-your-daughter-mom-warns-terrifying-ai-voice-cloning-scam-that-faked-kidnapping\">https://www.wkyt.com/2023/04/10/ive-got-your-daughter-mom-warns-terrifying-ai-voice-cloning-scam-that-faked-kidnapping</a></p><p><a href=\"https://www.tiktok.com/@bethroyce/video/7207863411902778666\">https://www.tiktok.com/@bethroyce/video/7207863411902778666</a></p><p>some banks use voices to log in <a href=\"https://www.vice.com/en/article/dy7axa/how-i-broke-into-a-bank-account-with-an-ai-generated-voice\">https://www.vice.com/en/article/dy7axa/how-i-broke-into-a-bank-account-with-an-ai-generated-voice</a> </p><p>Dolly 2.0 will make AI tech more accessible <a href=\"https://arstechnica.com/information-technology/2023/04/a-really-big-deal-dolly-is-a-free-open-source-chatgpt-style-ai-model/\">https://arstechnica.com/information-technology/2023/04/a-really-big-deal-dolly-is-a-free-open-source-chatgpt-style-ai-model/</a></p><p>US Commerce Dept working on AI safety rules <a href=\"https://www.axios.com/2023/04/11/ai-safety-rules-commerce-department-artificial-intelligence\">https://www.axios.com/2023/04/11/ai-safety-rules-commerce-department-artificial-intelligence</a></p><p>NTIA accepting comments <a href=\"https://ntia.gov/issues/artificial-intelligence/request-for-comments\">https://ntia.gov/issues/artificial-intelligence/request-for-comments</a></p><p><br /></p><p>HAND-SIZED WINDOW</p><p>Microsoft experimenting with a Steam Deck-friendly “handheld mode” for Windows</p><p><a href=\"https://twitter.com/_h0x0d_/status/1646339289230483458\">https://twitter.com/_h0x0d_/status/1646339289230483458</a></p><p><a href=\"https://www.theverge.com/2023/4/13/23681492/microsoft-windows-handheld-mode-gaming-xbox-steam-deck\">https://www.theverge.com/2023/4/13/23681492/microsoft-windows-handheld-mode-gaming-xbox-steam-deck</a></p><p>or is it for Steam Deck rivals?</p><p><a href=\"https://www.pcworld.com/article/1785380/of-course-microsoft-is-working-on-windows-handheld-mode-for-steam-deck-rivals.html\">https://www.pcworld.com/article/1785380/of-course-microsoft-is-working-on-windows-handheld-mode-for-steam-deck-rivals.html</a></p><p>Windows 11 is getting a new “Presence Mode”</p><p><a href=\"https://www.thurrott.com/windows/281855/microsoft-starts-testing-presence-sensing-privacy-settings-on-windows-11\">https://www.thurrott.com/windows/281855/microsoft-starts-testing-presence-sensing-privacy-settings-on-windows-11</a></p><p>Will allow you to choose whether applications can detect if you are interacting with your device</p><p><a href=\"https://www.xda-developers.com/windows-11-beta-apps-track-presense-privacy-page/\">https://www.xda-developers.com/windows-11-beta-apps-track-presense-privacy-page/</a></p><p><a href=\"https://www.windowscentral.com/software-apps/windows-11/windows-11-apps-will-soon-be-able-to-detect-when-you-are-present-in-front-of-your-pc\">https://www.windowscentral.com/software-apps/windows-11/windows-11-apps-will-soon-be-able-to-detect-when-you-are-present-in-front-of-your-pc</a></p><p><br /></p><p>WESTERN PITIFUL</p><p>Hackers reportedly holding Western Digital data hostage</p><p><a href=\"https://techcrunch.com/2023/04/13/hackers-claim-vast-access-to-western-digital-systems/\">https://techcrunch.com/2023/04/13/hackers-claim-vast-access-to-western-digital-systems/</a></p><p>original statement <a href=\"https://www.businesswire.com/news/home/20230402005076/en/Western-Digital-Provides-Information-on-Network-Security-Incident\">https://www.businesswire.com/news/home/20230402005076/en/Western-Digital-Provides-Information-on-Network-Security-Incident</a></p><p><a href=\"https://www.pcmag.com/news/after-10-days-western-digitals-my-cloud-finally-restored-following-hack\">https://www.pcmag.com/news/after-10-days-western-digitals-my-cloud-finally-restored-following-hack</a></p><p>if WD doesn’t pay, hackers will publish data on website of “professional” hacking group <a href=\"https://lmg.gg/HR4lt\">https://lmg.gg/HR4lt</a></p><p><br /></p><p>QUICK BITS</p><p><br /></p><p>SOWING DISCORD</p><p>National Guard member allegedly leaked classified documents on Discord</p><p><a href=\"https://www.nbcnews.com/politics/national-security/us-officials-identify-leaked-classified-documents-suspect-21-year-old-rcna79577?cid=ed_npd_bn_tw_bn\">https://www.nbcnews.com/politics/national-security/us-officials-identify-leaked-classified-documents-suspect-21-year-old-rcna79577?cid=ed_npd_bn_tw_bn</a></p><p><a href=\"https://www.youtube.com/watch?v=Dc8wbH6juG8\">https://www.youtube.com/watch?v=Dc8wbH6juG8</a></p><p><a href=\"https://www.washingtonpost.com/national-security/2023/04/12/discord-leaked-documents/\">https://www.washingtonpost.com/national-security/2023/04/12/discord-leaked-documents/</a></p><p><br /></p><p>IT TURNS RAY TRACING ON, OR ELSE…</p><p>Nvidia: 83% of RTX 40-series gamers enable ray tracing, but… what does that mean?</p><p><a href=\"https://www.pcgamer.com/nvidia-says-83-of-rtx-40-series-gamers-enable-ray-tracing/\">https://www.pcgamer.com/nvidia-says-83-of-rtx-40-series-gamers-enable-ray-tracing/</a></p><p><a href=\"https://arstechnica.com/gadgets/2023/04/nvidia-proud-that-83-of-people-with-1200-ray-tracing-gpus-actually-use-rtx/\">https://arstechnica.com/gadgets/2023/04/nvidia-proud-that-83-of-people-with-1200-ray-tracing-gpus-actually-use-rtx/</a></p><p><a href=\"https://www.reddit.com/r/hardware/comments/12ldh21/comment/jg6u2wg/?utm_source=reddit&amp;utm_medium=web2x&amp;context=3\">https://www.reddit.com/r/hardware/comments/12ldh21/comment/jg6u2wg/?utm_source=reddit&amp;utm_medium=web2x&amp;context=3</a></p><p><br /></p><p>THE SAG AWARDS</p><p>SURPRISE! GPU sag can kill your graphics card</p><p><a href=\"https://www.tomshardware.com/news/rtx-2080-ti-dying-from-gpu-sag\">https://www.tomshardware.com/news/rtx-2080-ti-dying-from-gpu-sag</a></p><p>German repair ubermensch KrisFix claims that 2080 Ti’s commonly die late in life due to being so thick</p><p><a href=\"https://youtu.be/m3oM3huKl8c\">https://youtu.be/m3oM3huKl8c</a></p><p>I CAN’T BELIEVE that Nvidia engineers didn’t fucking study how torque works</p><p><a href=\"https://www.pcgamer.com/dont-let-your-chonk-graphics-card-sag-or-it-might-actually-die/\">https://www.pcgamer.com/dont-let-your-chonk-graphics-card-sag-or-it-might-actually-die/</a></p><p><br /></p><p>UH OH, HOW MONEY WORK?</p><p>Twitter Subscriptions</p><p><a href=\"https://www.engadget.com/twitter-replaces-super-follows-with-subscriptions-203711756.html\">https://www.engadget.com/twitter-replaces-super-follows-with-subscriptions-203711756.html</a></p><p><a href=\"https://twitter.com/elonmusk/status/1646560815003373568\">https://twitter.com/elonmusk/status/1646560815003373568</a></p><p><br /></p><p>FLY ME TO THEM MOONS</p><p>Europe’s ESA launches rocket to Jupiter</p><p><a href=\"https://news.sky.com/story/european-space-agencys-juice-mission-launches-to-search-for-life-on-jupiters-moons-12855869\">https://news.sky.com/story/european-space-agencys-juice-mission-launches-to-search-for-life-on-jupiters-moons-12855869</a></p><p>postponed <a href=\"https://www.telegraph.co.uk/world-news/2023/04/13/juice-rocket-launch-jupiter-european-space-agency-watch/\">https://www.telegraph.co.uk/world-news/2023/04/13/juice-rocket-launch-jupiter-european-space-agency-watch/</a></p><p><a href=\"https://www.esa.int/Science_Exploration/Space_Science/Juice/ESA_s_Juice_lifts_off_on_quest_to_discover_secrets_of_Jupiter_s_icy_moons\">https://www.esa.int/Science_Exploration/Space_Science/Juice/ESA_s_Juice_lifts_off_on_quest_to_discover_secrets_of_Jupiter_s_icy_moons</a></p>",
 	"type": "blogPost",
 	"channel": {
-		"id": "63fe42c309e691e4e36de93d",
+		"id": "6413534d88c13c181c3e2809",
 		"creator": "59f94c0bdd241b70349eb72b",
-		"title": "Linus Tech Tips",
-		"urlname": "main",
-		"about": "# We're LinusTechTips\nWe make videos and stuff, cool eh?",
-		"order": 0,
+		"title": "TechLinked",
+		"urlname": "techlinked",
+		"about": "News about tech + gaming culture, delivered thrice weekly.\n\nWe're also doing long-form video essays now, apparently. \n\nThe TalkLinked talk show/podcast will probably come back at some point, too!\n\nWriters: Riley Murdock, Jon Martin, James Strieb",
+		"order": 2,
 		"cover": null,
 		"card": null,
 		"icon": {
-			"width": 600,
-			"height": 600,
-			"path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205.jpeg",
-			"childImages": [
-				{
-					"width": 250,
-					"height": 250,
-					"path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205_250x250.jpeg"
-				},
-				{
-					"width": 100,
-					"height": 100,
-					"path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205_100x100.jpeg"
-				}
-			]
+			"width": 88,
+			"height": 88,
+			"path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/6413534d88c13c181c3e2809/955526950207988_1678988110287.jpeg",
+			"childImages": []
 		}
 	},
 	"tags": [],
 	"attachmentOrder": [
-		"wAjrwHU7Fi"
+		"kx3hhG4yjR"
 	],
-	"releaseDate": "2023-04-15T11:02:00.039Z",
-	"likes": 122,
+	"releaseDate": "2023-04-15T06:41:00.041Z",
+	"likes": 194,
 	"dislikes": 0,
-	"score": 122,
-	"comments": 67,
+	"score": 194,
+	"comments": 20,
 	"creator": {
 		"id": "59f94c0bdd241b70349eb72b",
 		"owner": "59f94c0bdd241b70349eb723",
@@ -5233,7 +5222,7 @@ enum MockStaticData {
 	"metadata": {
 		"hasVideo": true,
 		"videoCount": 1,
-		"videoDuration": 15695,
+		"videoDuration": 482,
 		"hasAudio": false,
 		"audioCount": 0,
 		"audioDuration": 0,
@@ -5247,17 +5236,17 @@ enum MockStaticData {
 	"thumbnail": {
 		"width": 1920,
 		"height": 1080,
-		"path": "https://pbs.floatplane.com/stream_thumbnails/5c13f3c006f1be15e08e05c0/086292391511337_1681524589325.jpeg",
+		"path": "https://pbs.floatplane.com/blogPost_thumbnails/iKl5zXTlaP/096118745514196_1681526329366.jpeg",
 		"childImages": [
 			{
 				"width": 400,
 				"height": 225,
-				"path": "https://pbs.floatplane.com/stream_thumbnails/5c13f3c006f1be15e08e05c0/086292391511337_1681524589325_400x225.jpeg"
+				"path": "https://pbs.floatplane.com/blogPost_thumbnails/iKl5zXTlaP/096118745514196_1681526329366_400x225.jpeg"
 			},
 			{
 				"width": 1200,
 				"height": 675,
-				"path": "https://pbs.floatplane.com/stream_thumbnails/5c13f3c006f1be15e08e05c0/086292391511337_1681524589325_1200x675.jpeg"
+				"path": "https://pbs.floatplane.com/blogPost_thumbnails/iKl5zXTlaP/096118745514196_1681526329366_1200x675.jpeg"
 			}
 		]
 	},
@@ -5265,23 +5254,23 @@ enum MockStaticData {
 	"userInteraction": [],
 	"videoAttachments": [
 		{
-			"id": "wAjrwHU7Fi",
-			"guid": "wAjrwHU7Fi",
-			"title": "April 15, 2023 @ 02:18 – I Give Up - WAN Show April 14, 2023",
+			"id": "kx3hhG4yjR",
+			"guid": "kx3hhG4yjR",
+			"title": "TL: AutoGPT, Windows handheld mode, WD hack + more!",
 			"type": "video",
 			"description": "",
 			"releaseDate": null,
-			"duration": 15695,
+			"duration": 482,
 			"creator": "59f94c0bdd241b70349eb72b",
 			"likes": 0,
 			"dislikes": 0,
 			"score": 0,
 			"isProcessing": false,
-			"primaryBlogPost": "ez4ELvWk5m",
+			"primaryBlogPost": "iKl5zXTlaP",
 			"thumbnail": {
 				"width": 1920,
 				"height": 1080,
-				"path": "https://pbs.floatplane.com/content_thumbnails/wAjrwHU7Fi/143372303766262_1681541103461.jpeg",
+				"path": "https://pbs.floatplane.com/content_thumbnails/kx3hhG4yjR/805065786365119_1681523334582.jpeg",
 				"childImages": []
 			},
 			"isAccessible": true

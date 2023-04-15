@@ -48,7 +48,7 @@ struct BlogPostView: View {
 							.padding([.bottom])
 						
 						/* Thumbnail and description row */
-						HStack(alignment: .top) {
+						HStack(alignment: .top, spacing: 40) {
 							// Thumbnail with play button, on left of screen
 							PlayMediaView(
 								thumbnail: content.thumbnail,
@@ -96,7 +96,6 @@ struct BlogPostView: View {
 									.lineLimit(15)
 									.padding([.top])
 							}
-								.frame(minWidth: geometry.size.width * 0.5)
 						}
 							.focusSection()
 						
@@ -115,7 +114,7 @@ struct BlogPostView: View {
 								}
 									.prefersDefaultFocus(in: likeDislikeCommentNamespace)
 									.foregroundColor(viewModel.isLiked ? FPColors.blue : colorScheme == .light ? Color.black : Color.white)
-								
+
 								// Dislike button
 								Button(action: {
 									viewModel.dislike()
@@ -125,7 +124,7 @@ struct BlogPostView: View {
 									Text("\(content.dislikes + additional)")
 								}
 									.foregroundColor(viewModel.isDisliked ? FPColors.blue : colorScheme == .light ? Color.black : Color.white)
-								
+
 								// Comments label
 								Text("\(content.comments) comment\(content.comments == 1 ? "" : "s")")
 							}
@@ -150,6 +149,6 @@ struct BlogPostView: View {
 
 struct BlogPostView_Previews: PreviewProvider {
 	static var previews: some View {
-		BlogPostView(viewModel: BlogPostViewModel(fpApiService: MockFPAPIService(), id: ""), progressPercentage: 75, shouldAutoPlay: false)
+		BlogPostView(viewModel: BlogPostViewModel(fpApiService: MockFPAPIService(), id: "", state: .loaded(MockData.getBlogPost)), progressPercentage: 75, shouldAutoPlay: false)
 	}
 }

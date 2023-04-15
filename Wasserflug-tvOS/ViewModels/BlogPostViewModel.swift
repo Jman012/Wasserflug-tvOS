@@ -35,9 +35,16 @@ class BlogPostViewModel: BaseViewModel, ObservableObject {
 		}
 	}
 	
-	init(fpApiService: FPAPIService, id: String) {
+	init(fpApiService: FPAPIService, id: String, state: ViewModelState<ContentPostV3Response> = .idle) {
 		self.fpApiService = fpApiService
 		self.id = id
+		self.state = state
+		
+		// for swiftui previews
+		super.init()
+		if case let .loaded(blogPost) = state {
+			self.textAttributedString = self.convertDescriptionToAttributeString(blogPost.text, colorScheme: .dark)
+		}
 	}
 	
 	func load(colorScheme: ColorScheme) {
