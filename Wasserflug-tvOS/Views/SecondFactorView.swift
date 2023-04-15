@@ -24,11 +24,8 @@ struct SecondFactorView: View {
 						.textContentType(.oneTimeCode)
 						.focused($focusedField, equals: .secondFactorField)
 						.onSubmit {
-							print("2fa on submit")
 							DispatchQueue.main.asyncAfter(deadline: .now() + 0.50, execute: {
-								print("2fa on submit delayed")
 								if secondFactorCode != "" {
-									print("2fa on submit: set to login button")
 									focusedField = .loginButton
 								}
 							})

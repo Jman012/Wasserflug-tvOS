@@ -81,6 +81,9 @@ struct BlogPostContentView: View {
 					showingPicture = nil
 				}, content: { item in
 					PictureView(viewModel: PictureViewModel(fpApiService: fpApiService, pictureAttachment: item))
+						.overlay(alignment: .topTrailing, content: {
+							ToastBarView()
+						})
 				})
 		}
 		if let galleryAttachments = content.galleryAttachments, !galleryAttachments.isEmpty {

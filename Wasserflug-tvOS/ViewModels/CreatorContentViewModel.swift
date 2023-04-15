@@ -80,7 +80,7 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 				"creatorId": "\(id)",
 				"limit": "\(limit)",
 				"fetchAfter": "\(fetchAfter)",
-				"serchText": "\(self.searchText)",
+				"searchText": "\(self.searchText)",
 			])
 			
 			let response: [BlogPostModelV3]
@@ -91,17 +91,19 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 				return
 			}
 			
-			logger.info("Loading progress for creator content in background.")
-			Task {
-				do {
-					let progresses = try await fpApiService.getProgress(ids: response.map({ $0.id }))
-					for progress in progresses {
-						self.progresses[progress.id] = progress.progress
+			if !response.isEmpty {
+				logger.info("Loading progress for creator content in background.")
+				Task {
+					do {
+						let progresses = try await fpApiService.getProgress(ids: response.map({ $0.id }))
+						for progress in progresses {
+							self.progresses[progress.id] = progress.progress
+						}
+						self.logger.info("Done loading \(progresses.count) progresses for creator content.")
+					} catch {
+						self.logger.warning("Error retrieving watch progress: \(String(reflecting: error))")
+						Toast.post(toast: .init(.failedToLoadProgress))
 					}
-					self.logger.info("Done loading \(progresses.count) progresses for creator content.")
-				} catch {
-					self.logger.warning("Error retrieving watch progress: \(String(reflecting: error))")
-					Toast.post(toast: .init(.failedToLoadProgress))
 				}
 			}
 			

@@ -76,6 +76,9 @@ struct PlayMediaView<Content>: View where Content: View {
 						isShowingMedia = false
 					}, content: {
 						playContent()
+							.overlay(alignment: .topTrailing, content: {
+								ToastBarView()
+							})
 					})
 			}
 		}

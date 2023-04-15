@@ -39,6 +39,14 @@ struct BlogPostSelectionView: View {
 		}
 	}
 	
+	var isTvOS16_4: Bool {
+		if #available(tvOS 16.4, *) {
+			return true
+		} else {
+			return false
+		}
+	}
+	
 	var body: some View {
 		Button(action: {
 			if blogPost.isAccessible {
@@ -165,10 +173,11 @@ struct BlogPostSelectionView: View {
 					}
 				}
 			}
-			.padding(isTvOS16 ? 0 : 16)
+			.padding([.top, .bottom], isTvOS16 ? (isTvOS16_4 ? 0 : -8) : 16)
+			.padding([.leading, .trailing], isTvOS16 ? -24 : 16)
 		})
-//			.buttonStyle(TruePlainButtonStyle())
 			.buttonStyle(.plain)
+			.padding(isTvOS16_4 ? 32 : 0)
 			.onPlayPauseCommand(perform: {
 				if blogPost.isAccessible {
 					isAutoSelected = true
@@ -180,6 +189,9 @@ struct BlogPostSelectionView: View {
 				BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService, id: blogPost.id),
 							 progressPercentage: progressPercentage,
 							 shouldAutoPlay: false)
+				.overlay(alignment: .topTrailing, content: {
+					ToastBarView()
+				})
 			})
 			.sheet(isPresented: $isAutoSelected, onDismiss: {
 				isAutoSelected = false
@@ -187,6 +199,9 @@ struct BlogPostSelectionView: View {
 				BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService, id: blogPost.id),
 							 progressPercentage: progressPercentage,
 							 shouldAutoPlay: true)
+				.overlay(alignment: .topTrailing, content: {
+					ToastBarView()
+				})
 			})
 	}
 }
@@ -208,28 +223,5 @@ struct BlogPostSelectionView_Previews: PreviewProvider {
 		)
 			.environment(\.fpApiService, MockFPAPIService())
 			.previewLayout(.fixed(width: 600, height: 500))
-	}
-}
-
-struct TruePlainButtonStyle: ButtonStyle {
-	func makeBody(configuration: Self.Configuration) -> some View {
-		FocusedTruePlainButtonStyleView(configuration: configuration)
-	}
-}
-
-struct FocusedTruePlainButtonStyleView: View {
-	@Environment(\.isFocused) var focused: Bool
-	let configuration: ButtonStyle.Configuration
-	var body: some View {
-		configuration.label
-			.scaleEffect(focused ? 1.1 : 1.0)
-			.padding()
-	}
-}
-
-struct ModifiedPlainButtonStyle: PrimitiveButtonStyle {
-	func makeBody(configuration: Self.Configuration) -> some View {
-		PlainButtonStyle.plain.makeBody(configuration: configuration)
-			.padding(0)
 	}
 }

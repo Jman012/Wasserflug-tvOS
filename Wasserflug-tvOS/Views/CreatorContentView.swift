@@ -81,6 +81,9 @@ struct CreatorContentView: View {
 									isShowingSearch = false
 								}, content: {
 									CreatorSearchView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, creator: viewModel.creator, creatorOwner: viewModel.creatorOwner), creatorName: viewModel.creator.title)
+										.overlay(alignment: .topTrailing, content: {
+											ToastBarView()
+										})
 								})
 							
 							// Livestream button
@@ -94,6 +97,9 @@ struct CreatorContentView: View {
 									self.livestreamViewModel.state = .idle
 								}, content: {
 									LivestreamView(viewModel: self.livestreamViewModel)
+										.overlay(alignment: .topTrailing, content: {
+											ToastBarView()
+										})
 								})
 							
 							// Creator "about" information
