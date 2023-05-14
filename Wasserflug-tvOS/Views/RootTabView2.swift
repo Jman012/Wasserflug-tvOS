@@ -252,6 +252,7 @@ struct RootTabView2: View {
 			.padding(30)
 		}
 		.background(Color(red: 49.0/256.0, green: 63.0/256.0, blue: 85.0/256.0))
+		.environment(\.colorScheme, .dark)
 		.defaultFocus($focusedItem, tabSelection, priority: .userInitiated)
 		.defaultFocus($focusedItem, tabSelection, priority: .automatic)
 	}
