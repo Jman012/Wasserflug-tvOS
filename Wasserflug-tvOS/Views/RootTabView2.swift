@@ -23,7 +23,7 @@ struct RootTabView2: View {
 	@Environment(\.managedObjectContext) var managedObjectContext
 	
 	let fixedWidth: CGFloat = 165
-	@State var tabSelection: TabSelection? = nil
+	@State var tabSelection: TabSelection = .home
 	@State var state: SideBarState = .collapsed
 	
 	@FocusState var menuIsFocused: Bool
@@ -49,7 +49,6 @@ struct RootTabView2: View {
 		.ignoresSafeArea()
 		.onAppear {
 			contentIsFocused = true
-			tabSelection = .home
 		}
 	}
 	

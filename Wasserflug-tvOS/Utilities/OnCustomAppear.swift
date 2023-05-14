@@ -20,9 +20,16 @@ struct OnCustomAppearModifier: ViewModifier {
 	@Environment(\.customAppear) var customAppear
 	
 	let perform: () -> Void
+	@State var didPerform = false
 
 	func body(content: Content) -> some View {
 		content
+			.onAppear(perform: {
+				if !didPerform && customAppear == .appear {
+					perform()
+					didPerform = true
+				}
+			})
 			.onChange(of: customAppear, perform: {
 				if $0 == .appear {
 					perform()
@@ -35,9 +42,16 @@ struct OnCustomDisappearModifier: ViewModifier {
 	@Environment(\.customAppear) var customAppear
 	
 	let perform: () -> Void
+	@State var didPerform = false
 
 	func body(content: Content) -> some View {
 		content
+			.onDisappear(perform: {
+				if !didPerform && customAppear == .disappear {
+					perform()
+					didPerform = true
+				}
+			})
 			.onChange(of: customAppear, perform: {
 				if $0 == .disappear {
 					perform()
