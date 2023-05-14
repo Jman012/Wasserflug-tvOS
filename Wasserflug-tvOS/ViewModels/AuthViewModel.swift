@@ -211,6 +211,9 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 		isAttemptingSecondFactor = true
 		logger.info("Attempting 2fa action for login process.")
 		
+		// Sanitize the code
+		let secondFactorCode = secondFactorCode.filter({ $0.isNumber }).stringValue
+		
 		fpApiService.secondFactor(token: secondFactorCode)
 			.whenComplete { result in
 				DispatchQueue.main.async {
