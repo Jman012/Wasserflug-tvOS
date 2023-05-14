@@ -68,9 +68,9 @@ struct SettingsView: View {
 				Button(action: {
 					showResetViewHistoryConfirmation = true
 				}, label: {
-					Text("Reset View History")
+					Text("Reset Local View History")
 				})
-					.confirmationDialog("Reset View History", isPresented: $showResetViewHistoryConfirmation, actions: {
+					.confirmationDialog("Reset Local View History", isPresented: $showResetViewHistoryConfirmation, actions: {
 						Button("Reset", role: .destructive, action: {
 
 							let fetchRequest: NSFetchRequest<NSFetchRequestResult> = WatchProgress.fetchRequest()
@@ -86,7 +86,7 @@ struct SettingsView: View {
 							showResetViewHistoryConfirmation = false
 						})
 					}, message: {
-						Text("This will remove all view history from this device. This can not be undone. Are you sure you want to continue?")
+						Text("This will remove all view local history from this device. It may be restored from Floatplane view history. Are you sure you want to continue?")
 					})
 					.alert("Resetting View History Successful", isPresented: $showResetViewHistorySuccess, actions: {})
 					.alert("Resetting View History Failed", isPresented: $showResetViewHistoryFailure, actions: {})

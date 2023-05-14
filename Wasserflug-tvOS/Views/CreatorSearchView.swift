@@ -31,7 +31,7 @@ struct CreatorSearchView: View {
 						BlogPostSelectionView(
 							blogPost: blogPost,
 							viewOrigin: .creator,
-							progressPercentage: viewModel.progresses[blogPost.id] ?? 0
+							watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", blogPost.id), animation: .default)
 						)
 							.onAppear(perform: {
 								viewModel.itemDidAppear(blogPost)
@@ -47,6 +47,6 @@ struct CreatorSearchView: View {
 
 struct CreatorSearchView_Previews: PreviewProvider {
 	static var previews: some View {
-		CreatorSearchView(viewModel: CreatorContentViewModel(fpApiService: MockFPAPIService(), creator: MockData.creators.first!, creatorOwner: MockData.creatorOwners.users[0].user.userModelShared), creatorName: "Linus Tech Tips")
+		CreatorSearchView(viewModel: CreatorContentViewModel(fpApiService: MockFPAPIService(), managedObjectContext: PersistenceController.preview.container.viewContext, creator: MockData.creators.first!, creatorOwner: MockData.creatorOwners.users[0].user.userModelShared), creatorName: "Linus Tech Tips")
 	}
 }

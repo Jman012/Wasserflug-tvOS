@@ -1,5 +1,6 @@
 import SwiftUI
 import Combine
+import CoreData
 import FloatplaneAPIClient
 
 class CreatorContentViewModel: BaseViewModel, ObservableObject {
@@ -11,10 +12,10 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 	
 	@Published var state: ViewModelState<[BlogPostModelV3]> = .idle
 	@Published var searchText: String = ""
-	@Published var progresses: Dictionary<String, Int> = [:]
 	
 	private var isVisible = true
 	private let fpApiService: FPAPIService
+	let managedObjectContext: NSManagedObjectContext
 	let creator: CreatorModelV2
 	let creatorOwner: UserModelShared
 	var searchDebounce: AnyCancellable? = nil
@@ -41,8 +42,9 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 	lazy var creatorAboutHeader: AttributedString = (try? AttributedString(markdown: String(creator.about[..<creatorAboutFirstNewlineIndex]))) ?? AttributedString("")
 	lazy var creatorAboutBody: AttributedString = (try? AttributedString(markdown: String(creator.about[creatorAboutFirstNewlineIndex...]))) ?? AttributedString("")
 	
-	init(fpApiService: FPAPIService, creator: CreatorModelV2, creatorOwner: UserModelShared) {
+	init(fpApiService: FPAPIService, managedObjectContext: NSManagedObjectContext, creator: CreatorModelV2, creatorOwner: UserModelShared) {
 		self.fpApiService = fpApiService
+		self.managedObjectContext = managedObjectContext
 		self.creator = creator
 		self.creatorOwner = creatorOwner
 		super.init()
@@ -57,7 +59,7 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 	}
 	
 	func createSubViewModel() -> CreatorContentViewModel {
-		return CreatorContentViewModel(fpApiService: fpApiService, creator: creator, creatorOwner: creatorOwner)
+		return CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creator: creator, creatorOwner: creatorOwner)
 	}
 	
 	func load(loadingMode: LoadingMode = .append) {
@@ -97,7 +99,12 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 					do {
 						let progresses = try await fpApiService.getProgress(ids: response.map({ $0.id }))
 						for progress in progresses {
-							self.progresses[progress.id] = progress.progress
+							let blogPostId = progress.id
+							if let blogPost = response.first(where: { $0.id == blogPostId }) {
+								if let videoId = blogPost.attachmentOrder.filter({ blogPost.videoAttachments?.contains($0) == true }).first {
+									VideoViewModel.updateLocalProgress(logger: logger, blogPostId: blogPostId, videoId: videoId, videoDuration: 100.0, progressSeconds: progress.progress, managedObjectContext: managedObjectContext)
+								}
+							}
 						}
 						self.logger.info("Done loading \(progresses.count) progresses for creator content.")
 					} catch {

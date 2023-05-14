@@ -11,11 +11,12 @@ struct RootTabView: View {
 	
 	@EnvironmentObject var userInfo: UserInfo
 	@Environment(\.fpApiService) var fpApiService
+	@Environment(\.managedObjectContext) var managedObjectContext
 	@State var selection: Selection = .home
 	
 	var body: some View {
 		TabView(selection: $selection) {
-			HomeView(viewModel: HomeViewModel(userInfo: userInfo, fpApiService: fpApiService))
+			HomeView(viewModel: HomeViewModel(userInfo: userInfo, fpApiService: fpApiService, managedObjectContext: managedObjectContext))
 				.tag(Selection.home)
 				.tabItem {
 					Text("Home")
@@ -24,7 +25,7 @@ struct RootTabView: View {
 			// There is an issue where multiple subscriptions for one creator might be active.
 			// Instead of showing one tab per subscription, show one per creator.
 			ForEach(userInfo.creatorsInOrder, id: \.0.id) { (creator, creatorOwner) in
-				CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, creator: creator, creatorOwner: creatorOwner), livestreamViewModel: LivestreamViewModel(fpApiService: fpApiService, creatorId: creator.id))
+				CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creator: creator, creatorOwner: creatorOwner), livestreamViewModel: LivestreamViewModel(fpApiService: fpApiService, creatorId: creator.id))
 					.tag(Selection.creator(creator.id))
 					.tabItem {
 						Text(creator.title)

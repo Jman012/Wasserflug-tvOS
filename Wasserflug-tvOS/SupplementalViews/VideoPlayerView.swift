@@ -10,8 +10,7 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 	@AppStorage("DesiredQuality") var desiredQuality: String = ""
 	@Environment(\.managedObjectContext) var managedObjectContext
 	@ObservedObject var viewModel: VideoViewModel
-	let videoContent: ContentVideoV3Response
-
+	let beginningWatchTime: Double
 	
 	let logger: Logger = {
 		var logger = Wasserflug_tvOSApp.logger
@@ -32,11 +31,14 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 		vc.transportBarCustomMenuItems = [createQualityAction()]
 		let playerItem = viewModel.createAVPlayerItem(desiredQuality: desiredQuality)
 		
-		let progressSeconds = videoContent.progress ?? 0
-		if progressSeconds > 0 {
-			let newCMTime = CMTime(seconds: Double(progressSeconds), preferredTimescale: 1)
+		if beginningWatchTime > 0.0 && beginningWatchTime < 1.0 {
+			let totalSeconds = viewModel.videoAttachment.duration
+			let percentageOfTotal = beginningWatchTime
+			let seekToSeconds = totalSeconds * percentageOfTotal
+			let newCMTime = CMTime(seconds: seekToSeconds, preferredTimescale: 1)
 			playerItem.seek(to: newCMTime, completionHandler: nil)
 		}
+		
 		vc.player = AVPlayer(playerItem: playerItem)
 		vc.player?.play() // Needs to play when it first appears.
 		return vc
@@ -98,6 +100,7 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 		let sparkleTvImage = UIImage(systemName: "sparkles.tv")
 		let resolutions: [UIAction] = viewModel.qualityLevels.values
 			.sorted(by: { $0.1.order ?? 0 < $1.1.order ?? 0 })
+			.reversed()
 			.map({ (qualityLevel) -> UIAction in
 				return UIAction(title: qualityLevel.1.label, identifier: UIAction.Identifier(qualityLevel.1.name), handler: { _ in
 					UserDefaults.standard.set(qualityLevel.1.name, forKey: "DesiredQuality")
@@ -123,7 +126,7 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 				progressSeconds = 0
 			}
 			
-			parent.viewModel.updateProgress(progressSeconds: progressSeconds)
+			parent.viewModel.updateProgress(progressSeconds: progressSeconds, managedObjectContext: parent.managedObjectContext)
 		}
 	}
 }

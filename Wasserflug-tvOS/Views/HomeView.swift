@@ -35,7 +35,7 @@ struct HomeView: View {
 						BlogPostSelectionView(
 							blogPost: blogPost,
 							viewOrigin: .home(userInfo.creatorOwners[blogPost.creator.owner.id]?.asAnyUserModelShared()),
-							progressPercentage: viewModel.progresses[blogPost.id] ?? 0
+							watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", blogPost.id), animation: .default)
 						)
 							.focused($blogPostFocus, equals: blogPost.id)
 							.onAppear(perform: {
@@ -70,7 +70,7 @@ struct HomeView: View {
 struct HomeView_Previews: PreviewProvider {
 	static var previews: some View {
 		NavigationView {
-			HomeView(viewModel: HomeViewModel(userInfo: MockData.userInfo, fpApiService: MockFPAPIService()))
+			HomeView(viewModel: HomeViewModel(userInfo: MockData.userInfo, fpApiService: MockFPAPIService(), managedObjectContext: PersistenceController.preview.container.viewContext))
 				.environmentObject(MockData.userInfo)
 		}
 	}

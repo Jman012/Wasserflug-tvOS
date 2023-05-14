@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 import FloatplaneAPIClient
 import Vapor
 
@@ -11,14 +12,15 @@ class HomeViewModel: BaseViewModel, ObservableObject {
 	
 	let userInfo: UserInfo
 	private let fpApiService: FPAPIService
+	private let managedObjectContext: NSManagedObjectContext
 	
 	@Published var state: ViewModelState<ContentCreatorListV3Response> = .idle
-	@Published var progresses: Dictionary<String, Int> = [:]
 	private var isVisible = true
 	
-	init(userInfo: UserInfo, fpApiService: FPAPIService) {
+	init(userInfo: UserInfo, fpApiService: FPAPIService, managedObjectContext: NSManagedObjectContext) {
 		self.userInfo = userInfo
 		self.fpApiService = fpApiService
+		self.managedObjectContext = managedObjectContext
 	}
 	
 	func load(loadingMode: LoadingMode = .append) {
@@ -60,7 +62,12 @@ class HomeViewModel: BaseViewModel, ObservableObject {
 				do {
 					let progresses = try await fpApiService.getProgress(ids: response.blogPosts.map({ $0.id }))
 					for progress in progresses {
-						self.progresses[progress.id] = progress.progress
+						let blogPostId = progress.id
+						if let blogPost = response.blogPosts.first(where: { $0.id == blogPostId }) {
+							if let videoId = blogPost.attachmentOrder.filter({ blogPost.videoAttachments?.contains($0) == true }).first {
+								VideoViewModel.updateLocalProgress(logger: logger, blogPostId: blogPostId, videoId: videoId, videoDuration: 100.0, progressSeconds: progress.progress, managedObjectContext: managedObjectContext)
+							}
+						}
 					}
 					self.logger.info("Done loading \(progresses.count) progresses for home content.")
 				} catch {

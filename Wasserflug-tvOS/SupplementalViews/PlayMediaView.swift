@@ -8,15 +8,19 @@ struct PlayMediaView<Content>: View where Content: View {
 	let showPlayButton: Bool
 	let width: CGFloat?
 	let playButtonSize: PlayButton.Size
-	let playContent: () -> Content
+	let playContent: (Double) -> Content
 	let defaultInNamespace: Namespace.ID?
 	
 	@State var isShowingMedia = false
-	let progressPercentage: Int
+	@FetchRequest var watchProgresses: FetchedResults<WatchProgress>
 	
 	var progress: CGFloat {
-		let p = CGFloat(progressPercentage) / 100.0
-		return p >= 0.95 ? 1.0 : p
+		if let watchProgress = watchProgresses.first {
+			let progress = watchProgress.progress
+			return progress >= 0.95 ? 1.0 : progress
+		} else {
+			return 0.0
+		}
 	}
 	
 	var body: some View {
@@ -72,10 +76,10 @@ struct PlayMediaView<Content>: View where Content: View {
 				})
 					// If a namespace is provided, then prefer default focus on it.
 					.optionalPrefersDefaultFocus(in: defaultInNamespace)
-					.sheet(isPresented: $isShowingMedia, onDismiss: {
+					.fullScreenCover(isPresented: $isShowingMedia, onDismiss: {
 						isShowingMedia = false
 					}, content: {
-						playContent()
+						playContent(Double(progress))
 							.overlay(alignment: .topTrailing, content: {
 								ToastBarView()
 							})
@@ -93,9 +97,9 @@ struct PlayMediaView_Previews: PreviewProvider {
 				showPlayButton: true,
 				width: 200,
 				playButtonSize: .small,
-				playContent: { EmptyView() },
+				playContent: { _ in EmptyView() },
 				defaultInNamespace: nil,
-				progressPercentage: 75
+				watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
 			)
 				.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 
@@ -104,9 +108,9 @@ struct PlayMediaView_Previews: PreviewProvider {
 				showPlayButton: false,
 				width: 500,
 				playButtonSize: .default,
-				playContent: { EmptyView() },
+				playContent: { _ in EmptyView() },
 				defaultInNamespace: nil,
-				progressPercentage: 75
+				watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
 			)
 				.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 

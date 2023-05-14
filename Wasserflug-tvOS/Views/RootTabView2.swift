@@ -20,6 +20,7 @@ struct RootTabView2: View {
 	
 	@EnvironmentObject var userInfo: UserInfo
 	@Environment(\.fpApiService) var fpApiService
+	@Environment(\.managedObjectContext) var managedObjectContext
 	
 	let fixedWidth: CGFloat = 165
 	@State var tabSelection: TabSelection? = nil
@@ -101,12 +102,12 @@ struct RootTabView2: View {
 	
 	var contentBody: some View {
 		ZStack {
-			HomeView(viewModel: HomeViewModel(userInfo: userInfo, fpApiService: fpApiService))
+			HomeView(viewModel: HomeViewModel(userInfo: userInfo, fpApiService: fpApiService, managedObjectContext: managedObjectContext))
 				.customAppear(tabSelection == .home ? .appear : .disappear)
 				.opacity(tabSelection == .home ? 1 : 0)
 
 			ForEach(userInfo.creatorsInOrder, id: \.0.id) { (creator, creatorOwner) in
-				CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, creator: creator, creatorOwner: creatorOwner), livestreamViewModel: LivestreamViewModel(fpApiService: fpApiService, creatorId: creator.id))
+				CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creator: creator, creatorOwner: creatorOwner), livestreamViewModel: LivestreamViewModel(fpApiService: fpApiService, creatorId: creator.id))
 					.customAppear(tabSelection == .creator(creator.id) ? .appear : .disappear)
 					.opacity(tabSelection == .creator(creator.id) ? 1 : 0)
 			}

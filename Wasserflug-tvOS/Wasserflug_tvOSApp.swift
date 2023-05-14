@@ -10,7 +10,7 @@ struct Wasserflug_tvOSApp: App {
 		var logger = Logging.Logger(label: Bundle.main.bundleIdentifier!)
 		#if DEBUG
 		// For debugging, log at a lower level to get more information.
-		logger.logLevel = .debug
+		logger.logLevel = .info
 		#else
 		// For release mode, only log important items.
 		logger.logLevel = .notice

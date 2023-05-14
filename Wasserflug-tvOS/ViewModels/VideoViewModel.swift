@@ -1,4 +1,6 @@
 import Foundation
+import CoreData
+import Logging
 import FloatplaneAPIClient
 import NIO
 import AVKit
@@ -158,26 +160,56 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 		return templateItem
 	}
 	
-	func updateProgress(progressSeconds: Int) {
+	func updateProgress(progressSeconds: Int, managedObjectContext: NSManagedObjectContext) {
 		Task { @MainActor in
 			guard case let .loaded((_, videoModel)) = self.state else {
 				return
 			}
 			
-			self.logger.notice("Attempting to record watch progress for a video.", metadata: [
+			logger.notice("Attempting to record watch progress for a video.", metadata: [
 				"blogPostId": "\(videoModel.primaryBlogPost)",
 				"videoId": "\(videoModel.id)",
 				"progressSeconds": "\(progressSeconds)",
 			])
 			
+			// First save to local storage
+			Self.updateLocalProgress(logger: logger, blogPostId: contentPost.id, videoId: videoAttachment.id, videoDuration: videoAttachment.duration, progressSeconds: progressSeconds, managedObjectContext: managedObjectContext)
+			
+			// Next save to FP API
 			do {
 				try await self.fpApiService.updateProgress(id: videoModel.id, contentType: .video, progress: progressSeconds)
 			} catch {
-				self.logger.warning("Could not update progress. Not showing an error as this is not critical.", metadata: [
+				logger.warning("Could not update progress. Not showing an error as this is not critical.", metadata: [
 					"id": "\(videoModel.id)",
 					"progress": "\(progressSeconds)",
 				])
 			}
+		}
+	}
+	
+	static func updateLocalProgress(logger: Logger, blogPostId: String, videoId: String, videoDuration: Double, progressSeconds: Int, managedObjectContext: NSManagedObjectContext) {
+		let fetchRequest = WatchProgress.fetchRequest()
+		let progress: Double = Double(progressSeconds) / videoDuration
+		do {
+			fetchRequest.predicate = NSPredicate(format: "blogPostId = %@ and videoId = %@", blogPostId, videoId)
+			if let fetchResult = (try? managedObjectContext.fetch(fetchRequest))?.first {
+				logger.info("Did find previous watchProgress. Will mutate with new progress.", metadata: [
+					"previous": "\(String(reflecting: fetchResult))",
+				])
+				fetchResult.progress = progress
+			} else {
+				logger.info("No previous watchProgress found. Will create new WatchProgress entity.")
+				let newWatchProgress = WatchProgress(context: managedObjectContext)
+				newWatchProgress.blogPostId = blogPostId
+				newWatchProgress.videoId = videoId
+				newWatchProgress.progress = progress
+			}
+			try managedObjectContext.save()
+			logger.info("Successfully saved watch progress for \(blogPostId) \(videoId)")
+		} catch {
+			logger.error("Error saving watch progress for for \(blogPostId) \(videoId): \(String(reflecting: error))")
+			// Otherwise, this has minimal impact on the user of this application.
+			// No need to further handle the error.
 		}
 	}
 }

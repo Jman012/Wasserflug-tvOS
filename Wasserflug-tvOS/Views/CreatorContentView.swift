@@ -81,7 +81,7 @@ struct CreatorContentView: View {
 								.sheet(isPresented: $isShowingSearch, onDismiss: {
 									isShowingSearch = false
 								}, content: {
-									CreatorSearchView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, creator: viewModel.creator, creatorOwner: viewModel.creatorOwner), creatorName: viewModel.creator.title)
+									CreatorSearchView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: PersistenceController.preview.container.viewContext, creator: viewModel.creator, creatorOwner: viewModel.creatorOwner), creatorName: viewModel.creator.title)
 										.overlay(alignment: .topTrailing, content: {
 											ToastBarView()
 										})
@@ -121,7 +121,7 @@ struct CreatorContentView: View {
 								BlogPostSelectionView(
 									blogPost: blogPost,
 									viewOrigin: .creator,
-									progressPercentage: viewModel.progresses[blogPost.id] ?? 0
+									watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", blogPost.id), animation: .default)
 								)
 									.focused($blogPostFocus, equals: blogPost.id)
 									.onAppear(perform: {
@@ -165,6 +165,7 @@ struct CreatorContentView_Previews: PreviewProvider {
 			}
 			CreatorContentView(viewModel: CreatorContentViewModel(
 				fpApiService: MockFPAPIService(),
+				managedObjectContext: PersistenceController.preview.container.viewContext,
 				creator: MockData.creators[0],
 				creatorOwner: MockData.creatorOwners.users[0].user.userModelShared
 			), livestreamViewModel: LivestreamViewModel(

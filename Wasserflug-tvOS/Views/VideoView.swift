@@ -5,6 +5,7 @@ import FloatplaneAPIClient
 struct VideoView: View {
 	
 	@StateObject var viewModel: VideoViewModel
+	let beginningWatchTime: Double
 	
 	var body: some View {
 		switch viewModel.state {
@@ -18,8 +19,8 @@ struct VideoView: View {
 			ErrorView(error: error, tryAgainText: "Refresh", tryAgainHandler: {
 				viewModel.state = .idle
 			})
-		case let .loaded((_, videoContent)):
-			VideoPlayerView(viewModel: viewModel, videoContent: videoContent)
+		case .loaded(_):
+			VideoPlayerView(viewModel: viewModel, beginningWatchTime: beginningWatchTime)
 				.edgesIgnoringSafeArea(.all)
 		}
 	}
@@ -27,6 +28,6 @@ struct VideoView: View {
 
 struct VideoView_Previews: PreviewProvider {
 	static var previews: some View {
-		VideoView(viewModel: VideoViewModel(fpApiService: MockFPAPIService(), videoAttachment: MockData.getBlogPost.videoAttachments!.first!, contentPost: MockData.getBlogPost, description: "Test description"))
+		VideoView(viewModel: VideoViewModel(fpApiService: MockFPAPIService(), videoAttachment: MockData.getBlogPost.videoAttachments!.first!, contentPost: MockData.getBlogPost, description: "Test description"), beginningWatchTime: 0.75)
 	}
 }
