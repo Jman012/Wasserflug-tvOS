@@ -14,6 +14,10 @@
 		E71FDB7927E66D7E00A9C88B /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB7827E66D7E00A9C88B /* Persistence.swift */; };
 		E71FDB7C27E66DB100A9C88B /* Wasserflug.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB7A27E66DB100A9C88B /* Wasserflug.xcdatamodeld */; };
 		E731AF0F289B22AC00A2DAD7 /* AttachmentPills.swift in Sources */ = {isa = PBXBuildFile; fileRef = E731AF0E289B22AC00A2DAD7 /* AttachmentPills.swift */; };
+		E74C98A32A080AAC00FDDB9C /* RootTabView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74C98A22A080AAC00FDDB9C /* RootTabView2.swift */; };
+		E74C98A62A080B9E00FDDB9C /* DebouncedOnChange in Frameworks */ = {isa = PBXBuildFile; productRef = E74C98A52A080B9E00FDDB9C /* DebouncedOnChange */; };
+		E74C98A82A082D5100FDDB9C /* HideableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74C98A72A082D5100FDDB9C /* HideableView.swift */; };
+		E74C98AA2A08979700FDDB9C /* HideableView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74C98A92A08979700FDDB9C /* HideableView2.swift */; };
 		E753374127CAFAFF0010E3D2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E753374027CAFAFF0010E3D2 /* Assets.xcassets */; };
 		E753374427CAFAFF0010E3D2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E753374327CAFAFF0010E3D2 /* Preview Assets.xcassets */; };
 		E753374E27CAFAFF0010E3D2 /* Wasserflug_tvOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753374D27CAFAFF0010E3D2 /* Wasserflug_tvOSTests.swift */; };
@@ -59,6 +63,7 @@
 		E7A2F42C28CE43D800583294 /* LivestreamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A2F42B28CE43D800583294 /* LivestreamView.swift */; };
 		E7A447E92815E1C0009BCE2E /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */; };
 		E7BD7E7528E6682900E1BBE9 /* DeliveryHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BD7E7428E6682900E1BBE9 /* DeliveryHelper.swift */; };
+		E7F2F23D2A113F0000602991 /* OnCustomAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F2F23C2A113F0000602991 /* OnCustomAppear.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +91,9 @@
 		E71FDB7827E66D7E00A9C88B /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		E71FDB7B27E66DB100A9C88B /* Wasserflug.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Wasserflug.xcdatamodel; sourceTree = "<group>"; };
 		E731AF0E289B22AC00A2DAD7 /* AttachmentPills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentPills.swift; sourceTree = "<group>"; };
+		E74C98A22A080AAC00FDDB9C /* RootTabView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView2.swift; sourceTree = "<group>"; };
+		E74C98A72A082D5100FDDB9C /* HideableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideableView.swift; sourceTree = "<group>"; };
+		E74C98A92A08979700FDDB9C /* HideableView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideableView2.swift; sourceTree = "<group>"; };
 		E753373927CAFAFE0010E3D2 /* Wasserflug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wasserflug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E753374027CAFAFF0010E3D2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E753374327CAFAFF0010E3D2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -134,6 +142,7 @@
 		E7BD7E7428E6682900E1BBE9 /* DeliveryHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryHelper.swift; sourceTree = "<group>"; };
 		E7CCF2D1285314B600506E51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E7CCF2D2285315B400506E51 /* Wasserflug-tvOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Wasserflug-tvOS.entitlements"; sourceTree = "<group>"; };
+		E7F2F23C2A113F0000602991 /* OnCustomAppear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnCustomAppear.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +151,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E75337BC27CB07900010E3D2 /* FloatplaneAPIClient in Frameworks */,
+				E74C98A62A080B9E00FDDB9C /* DebouncedOnChange in Frameworks */,
 				E753376827CAFF550010E3D2 /* CachedAsyncImage in Frameworks */,
 				E753376B27CB01FD0010E3D2 /* Vapor in Frameworks */,
 			);
@@ -252,6 +262,8 @@
 				E70448E12803A9110045A1AE /* WaveformView.swift */,
 				E731AF0E289B22AC00A2DAD7 /* AttachmentPills.swift */,
 				E7A2F42928C58E0300583294 /* ExecuteCode.swift */,
+				E74C98A72A082D5100FDDB9C /* HideableView.swift */,
+				E74C98A92A08979700FDDB9C /* HideableView2.swift */,
 			);
 			path = SupplementalViews;
 			sourceTree = "<group>";
@@ -279,6 +291,7 @@
 				E753379427CB06BE0010E3D2 /* LoginView.swift */,
 				E753379B27CB06BE0010E3D2 /* SecondFactorView.swift */,
 				E753379D27CB06BE0010E3D2 /* RootTabView.swift */,
+				E74C98A22A080AAC00FDDB9C /* RootTabView2.swift */,
 				E753379627CB06BE0010E3D2 /* HomeView.swift */,
 				E753379927CB06BE0010E3D2 /* CreatorContentView.swift */,
 				E753379227CB06BE0010E3D2 /* CreatorSearchView.swift */,
@@ -305,6 +318,7 @@
 				E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */,
 				E7BD7E7428E6682900E1BBE9 /* DeliveryHelper.swift */,
 				E70F775629D90D4900869BE3 /* Errors.swift */,
+				E7F2F23C2A113F0000602991 /* OnCustomAppear.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -336,6 +350,7 @@
 				E753376727CAFF550010E3D2 /* CachedAsyncImage */,
 				E753376A27CB01FD0010E3D2 /* Vapor */,
 				E75337BB27CB07900010E3D2 /* FloatplaneAPIClient */,
+				E74C98A52A080B9E00FDDB9C /* DebouncedOnChange */,
 			);
 			productName = "Wasserflug-tvOS";
 			productReference = E753373927CAFAFE0010E3D2 /* Wasserflug.app */;
@@ -412,6 +427,7 @@
 			packageReferences = (
 				E753376627CAFF550010E3D2 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 				E753376927CB01FD0010E3D2 /* XCRemoteSwiftPackageReference "vapor" */,
+				E74C98A42A080B9E00FDDB9C /* XCRemoteSwiftPackageReference "DebouncedOnChange" */,
 			);
 			productRefGroup = E753373A27CAFAFE0010E3D2 /* Products */;
 			projectDirPath = "";
@@ -468,6 +484,7 @@
 				E7A447E92815E1C0009BCE2E /* SwiftUI+Extensions.swift in Sources */,
 				E7A2F42A28C58E0300583294 /* ExecuteCode.swift in Sources */,
 				E75337AB27CB06BE0010E3D2 /* CreatorContentViewModel.swift in Sources */,
+				E74C98A32A080AAC00FDDB9C /* RootTabView2.swift in Sources */,
 				E75337AF27CB06BE0010E3D2 /* LoginView.swift in Sources */,
 				E753377B27CB066E0010E3D2 /* FPAPIService.swift in Sources */,
 				E753377827CB066E0010E3D2 /* FloatplaneAPIClient+Extensions.swift in Sources */,
@@ -482,13 +499,16 @@
 				E75337A927CB06BE0010E3D2 /* AuthViewModel.swift in Sources */,
 				E75337AA27CB06BE0010E3D2 /* ViewModelState.swift in Sources */,
 				E75337B027CB06BE0010E3D2 /* VideoView.swift in Sources */,
+				E74C98A82A082D5100FDDB9C /* HideableView.swift in Sources */,
 				E753379E27CB06BE0010E3D2 /* BlogPostContentView.swift in Sources */,
 				E75337A027CB06BE0010E3D2 /* PlayButton.swift in Sources */,
 				E75337A527CB06BE0010E3D2 /* HomeViewModel.swift in Sources */,
+				E7F2F23D2A113F0000602991 /* OnCustomAppear.swift in Sources */,
 				E70F777629DF7A5E00869BE3 /* ToastBarView.swift in Sources */,
 				E75337AD27CB06BE0010E3D2 /* CreatorSearchView.swift in Sources */,
 				E71FDB7927E66D7E00A9C88B /* Persistence.swift in Sources */,
 				E753377D27CB066E0010E3D2 /* OSLoggingLogger.swift in Sources */,
+				E74C98AA2A08979700FDDB9C /* HideableView2.swift in Sources */,
 				E75337A727CB06BE0010E3D2 /* BaseViewModel.swift in Sources */,
 				E75337B527CB06BE0010E3D2 /* LivestreamPlayerView.swift in Sources */,
 				E75337A827CB06BE0010E3D2 /* LivestreamViewModel.swift in Sources */,
@@ -679,7 +699,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 15.0;
+				TVOS_DEPLOYMENT_TARGET = 16.0;
 			};
 			name = Debug;
 		};
@@ -711,7 +731,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 15.0;
+				TVOS_DEPLOYMENT_TARGET = 16.0;
 			};
 			name = Release;
 		};
@@ -833,6 +853,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		E74C98A42A080B9E00FDDB9C /* XCRemoteSwiftPackageReference "DebouncedOnChange" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Tunous/DebouncedOnChange.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+			};
+		};
 		E753376627CAFF550010E3D2 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image";
@@ -852,6 +880,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		E74C98A52A080B9E00FDDB9C /* DebouncedOnChange */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E74C98A42A080B9E00FDDB9C /* XCRemoteSwiftPackageReference "DebouncedOnChange" */;
+			productName = DebouncedOnChange;
+		};
 		E753376727CAFF550010E3D2 /* CachedAsyncImage */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E753376627CAFF550010E3D2 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;

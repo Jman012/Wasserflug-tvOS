@@ -38,6 +38,15 @@
         }
       },
       {
+        "package": "DebouncedOnChange",
+        "repositoryURL": "https://github.com/Tunous/DebouncedOnChange.git",
+        "state": {
+          "branch": null,
+          "revision": "b699017e13966e35c9388c8cc97151c8883dda1e",
+          "version": "1.1.0"
+        }
+      },
+      {
         "package": "multipart-kit",
         "repositoryURL": "https://github.com/vapor/multipart-kit.git",
         "state": {

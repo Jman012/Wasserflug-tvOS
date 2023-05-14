@@ -13,6 +13,9 @@ struct SettingsView: View {
 	@State var showResetViewHistorySuccess = false
 	@State var showResetViewHistoryFailure = false
 	
+	static let showNewSidebarKey = "ShowNewSidebar"
+	@AppStorage(Self.showNewSidebarKey) var showNewSidebar: Bool = true
+	
 	let logger: Logger = {
 		var logger = Wasserflug_tvOSApp.logger
 		logger[metadataKey: "class"] = "\(Self.Type.self)"
@@ -34,6 +37,7 @@ struct SettingsView: View {
 							.frame(width: pfpSize, height: pfpSize)
 					})
 				}
+				.padding([.top])
 			}
 			
 			Spacer()
@@ -46,6 +50,16 @@ struct SettingsView: View {
 					Text("Logout")
 				})
 					.prefersDefaultFocus(in: namespace)
+			}
+				.frame(maxWidth: .infinity)
+				.focusSection()
+			
+			HStack {
+				Button(action: {
+					showNewSidebar.toggle()
+				}, label: {
+					Text(showNewSidebar ? "Show old tab view" : "Show new sidebar")
+				})
 			}
 				.frame(maxWidth: .infinity)
 				.focusSection()

@@ -7,6 +7,8 @@ struct HomeView: View {
 	@Environment(\.scenePhase) var scenePhase
 	@EnvironmentObject var userInfo: UserInfo
 	
+	@FocusState var blogPostFocus: String?
+	
 	private let gridColumns: [GridItem] = [
 		GridItem(.flexible(minimum: 0, maximum: .infinity), alignment: .top),
 		GridItem(.flexible(minimum: 0, maximum: .infinity), alignment: .top),
@@ -17,9 +19,9 @@ struct HomeView: View {
 	var body: some View {
 		switch viewModel.state {
 		case .idle:
-			Color.clear.onAppear(perform: {
+			Color.clear.onCombinedCustomAppear {
 				viewModel.load()
-			})
+			}
 		case .loading:
 			ProgressView()
 		case let .failed(error):
@@ -35,15 +37,17 @@ struct HomeView: View {
 							viewOrigin: .home(userInfo.creatorOwners[blogPost.creator.owner.id]?.asAnyUserModelShared()),
 							progressPercentage: viewModel.progresses[blogPost.id] ?? 0
 						)
+							.focused($blogPostFocus, equals: blogPost.id)
 							.onAppear(perform: {
 								viewModel.itemDidAppear(blogPost)
 							})
 					}
 				}
 					.padding(40)
-			}.onDisappear {
+			}.onCombinedCustomDisappear {
 				viewModel.homeDidDisappear()
-			}.onAppear {
+			}.onCombinedCustomAppear {
+				blogPostFocus = response.blogPosts.first?.id
 				// Load new content when the view re-appears, like when switching
 				// tabs. There is no refresh button.
 				viewModel.homeDidAppearAgain()

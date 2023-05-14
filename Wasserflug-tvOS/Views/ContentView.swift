@@ -18,6 +18,8 @@ struct ContentView: View {
 	@State var hasInitiallyLoaded = false
 	@State var showErrorMoreDetails = false
 	
+	@AppStorage(SettingsView.showNewSidebarKey) var showNewSidebar: Bool = true
+	
 	enum Notifications {
 		static let loggedOut = Notification.Name("com.jamesnl.Wasserflug-tvOSApp.loggedOut")
 	}
@@ -89,7 +91,11 @@ struct ContentView: View {
 					}
 				}
 			} else {
-				RootTabView()
+				if showNewSidebar {
+					RootTabView2()
+				} else {
+					RootTabView()
+				}
 			}
 		}
 		.overlay(alignment: .topTrailing, content: {

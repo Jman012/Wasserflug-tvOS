@@ -13,6 +13,7 @@ struct CreatorContentView: View {
 	
 	@State var isShowingSearch = false
 	@State var isShowingLive = false
+	@FocusState var blogPostFocus: String?
 	
 	let gridColumns: [GridItem] = [
 		GridItem(.flexible(minimum: 0, maximum: .infinity), alignment: .top),
@@ -25,9 +26,9 @@ struct CreatorContentView: View {
 		VStack {
 			switch viewModel.state {
 			case .idle:
-				ProgressView().onAppear(perform: {
+				ProgressView().onCombinedCustomAppear {
 					viewModel.load()
-				})
+				}
 			case .loading:
 				ProgressView()
 			case let .failed(error):
@@ -122,6 +123,7 @@ struct CreatorContentView: View {
 									viewOrigin: .creator,
 									progressPercentage: viewModel.progresses[blogPost.id] ?? 0
 								)
+									.focused($blogPostFocus, equals: blogPost.id)
 									.onAppear(perform: {
 										viewModel.itemDidAppear(blogPost)
 									})
@@ -129,9 +131,10 @@ struct CreatorContentView: View {
 						}
 							.padding(40)
 					}
-				}.onDisappear {
+				}.onCombinedCustomDisappear {
 					viewModel.creatorContentDidDisappear()
-				}.onAppear {
+				}.onCombinedCustomAppear {
+					blogPostFocus = content.first?.id
 					// Load new content when the view re-appears, like when switching
 					// tabs. There is no refresh button.
 					viewModel.creatorContentDidAppearAgain()
