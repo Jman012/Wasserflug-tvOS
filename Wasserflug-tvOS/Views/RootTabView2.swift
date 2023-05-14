@@ -35,11 +35,8 @@ struct RootTabView2: View {
 		HStack(spacing: 0) {
 			sideBarView
 				.zIndex(2)
-				.border(.red)
-//				.opacity(0)
 			contentView
 				.zIndex(1)
-				.border(.green)
 		}
 		.onChange(of: tabSelection, perform: { _ in
 //			DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
