@@ -21,7 +21,7 @@ struct LivestreamView: View {
 			case let .loaded((creator, _, _)):
 				if !viewModel.isLive {
 					VStack {
-						CachedAsyncImage(url: URL(string: creator.liveStream?.thumbnail?.path ?? ""), content: { image in
+						CachedAsyncImage(url: URL(string: creator.liveStream?.offline.thumbnail?.path ?? ""), content: { image in
 							image
 								.resizable()
 								.scaledToFit()
