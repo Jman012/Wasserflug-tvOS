@@ -15,6 +15,7 @@ struct RootTabView2: View {
 	enum TabSelection: Hashable {
 		case home
 		case creator(String)
+		case channel(String)
 		case settings
 	}
 	
@@ -106,9 +107,15 @@ struct RootTabView2: View {
 				.opacity(tabSelection == .home ? 1 : 0)
 
 			ForEach(userInfo.creatorsInOrder, id: \.0.id) { (creator, creatorOwner) in
-				CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creator: creator, creatorOwner: creatorOwner), livestreamViewModel: LivestreamViewModel(fpApiService: fpApiService, creatorId: creator.id))
+				CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: creator, creatorOwner: creatorOwner), livestreamViewModel: LivestreamViewModel(fpApiService: fpApiService, creatorId: creator.id))
 					.customAppear(tabSelection == .creator(creator.id) ? .appear : .disappear)
 					.opacity(tabSelection == .creator(creator.id) ? 1 : 0)
+				
+				ForEach(creator.channels, id: \.id) { channel in
+					CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: channel, creatorOwner: creatorOwner), livestreamViewModel: LivestreamViewModel(fpApiService: fpApiService, creatorId: creator.id))
+						.customAppear(tabSelection == .channel(channel.id) ? .appear : .disappear)
+						.opacity(tabSelection == .channel(channel.id) ? 1 : 0)
+				}
 			}
 
 			SettingsView()
@@ -211,7 +218,7 @@ struct RootTabView2: View {
 				ScrollViewReader { proxy in
 					VStack {
 						ForEach(userInfo.creatorsInOrder, id: \.0.id) { (creator, creatorOwner) in
-							button(for: creator)
+							button(forCreator: creator)
 								.id(TabSelection.creator(creator.id))
 								.focused($focusedItem, equals: TabSelection.creator(creator.id))
 								.onChange(of: focusedItem, debounceTime: .seconds(0.5), perform: { focusedItem in
@@ -222,6 +229,20 @@ struct RootTabView2: View {
 								.onChange(of: focusedItem, perform: { focusedItem in
 									
 								})
+							
+							ForEach(creator.channels, id: \.id) { channel in
+								button(forChannel: channel, creator: creator)
+									.id(TabSelection.channel(channel.id))
+									.focused($focusedItem, equals: TabSelection.channel(channel.id))
+									.onChange(of: focusedItem, debounceTime: .seconds(0.5), perform: { focusedItem in
+										if focusedItem == .channel(channel.id) {
+											proxy.scrollTo(focusedItem)
+										}
+									})
+									.onChange(of: focusedItem, perform: { focusedItem in
+										
+									})
+							}
 						}
 					}
 					.padding(30)
@@ -257,10 +278,10 @@ struct RootTabView2: View {
 		.defaultFocus($focusedItem, tabSelection, priority: .automatic)
 	}
 	
-	func button(for creator: CreatorModelV2) -> some View {
+	func button(forCreator creator: CreatorModelV3) -> some View {
 		let showMenu = state == .expanded
-		let imageSize: CGFloat = 75 // TODO: change to 50 for channels
-		let indent: CGFloat = 0 // TODO: change to 40 for channels, when showing menu
+		let imageSize: CGFloat = 75
+		let indent: CGFloat = 0
 		let isSelected = tabSelection == .creator(creator.id)
 		return Button(action: {
 			withAnimation {
@@ -282,9 +303,44 @@ struct RootTabView2: View {
 						.fixedSize()
 						.padding([.leading])
 					Spacer()
-//					if item.type == .creator {
-//						Image(systemName: "chevron.down")
-//					}
+					if !creator.channels.isEmpty {
+						Image(systemName: "chevron.down")
+					}
+				}
+			}
+			.padding(showMenu || isSelected ? 15 : 0)
+			.background(isSelected ? VisualEffectView(effect: UIBlurEffect(style: .light)) : nil)
+			.animation(.spring(), value: showMenu)
+		})
+		.background(.clear)
+		.buttonStyle(.card)
+	}
+	
+	func button(forChannel channel: ChannelModel, creator: CreatorModelV3) -> some View {
+		let showMenu = state == .expanded
+		let imageSize: CGFloat = 50
+		let indent: CGFloat = showMenu ? 40 : 0
+		let isSelected = tabSelection == .channel(channel.id)
+		return Button(action: {
+			withAnimation {
+				tabSelection = .channel(channel.id)
+			}
+		}, label: {
+			HStack(spacing: 0) {
+				CachedAsyncImage(url: (channel.icon as ImageModelShared?).bestImage(for: CGSize(width: imageSize, height: imageSize))) { image in
+					image.resizable()
+				} placeholder: {
+					ProgressView()
+				}
+					.frame(width: imageSize, height: imageSize)
+					.cornerRadius(imageSize)
+					.padding([.leading], indent)
+				if showMenu {
+					Text(channel.title)
+						.lineLimit(1)
+						.fixedSize()
+						.padding([.leading])
+					Spacer()
 				}
 			}
 			.padding(showMenu || isSelected ? 15 : 0)

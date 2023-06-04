@@ -1854,7 +1854,11 @@
                                     "username": {
                                         "type": "string"
                                     }
-                                }
+                                },
+                                "required": [
+                                    "id",
+                                    "username"
+                                ]
                             }
                         ]
                     },

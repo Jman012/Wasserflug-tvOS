@@ -54,7 +54,7 @@ struct CreatorContentView: View {
 						}, placeholder: {
 							ProgressView()
 								.frame(maxWidth: .infinity, maxHeight: .infinity)
-								.aspectRatio(viewModel.creator.cover?.aspectRatio ?? 1.0, contentMode: .fit)
+								.aspectRatio(viewModel.creatorOrChannel.cover?.aspectRatio ?? 1.0, contentMode: .fit)
 						})
 						
 						// Row for pfp, search, livestream, about
@@ -81,7 +81,7 @@ struct CreatorContentView: View {
 								.sheet(isPresented: $isShowingSearch, onDismiss: {
 									isShowingSearch = false
 								}, content: {
-									CreatorSearchView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: PersistenceController.preview.container.viewContext, creator: viewModel.creator, creatorOwner: viewModel.creatorOwner), creatorName: viewModel.creator.title)
+									CreatorSearchView(viewModel: viewModel.createSubViewModel(), creatorName: viewModel.creatorOrChannel.title)
 										.overlay(alignment: .topTrailing, content: {
 											ToastBarView()
 										})
@@ -157,7 +157,7 @@ struct CreatorContentView: View {
 }
 
 struct CreatorContentView_Previews: PreviewProvider {
-	@State static var selection = RootTabView.Selection.creator(MockData.creators[0].id)
+	@State static var selection = RootTabView.Selection.creator(MockData.creatorV3.id)
 	static var previews: some View {
 		TabView(selection: $selection) {
 			Text("test").tabItem {
@@ -166,15 +166,15 @@ struct CreatorContentView_Previews: PreviewProvider {
 			CreatorContentView(viewModel: CreatorContentViewModel(
 				fpApiService: MockFPAPIService(),
 				managedObjectContext: PersistenceController.preview.container.viewContext,
-				creator: MockData.creators[0],
+				creatorOrChannel: MockData.creatorV3,
 				creatorOwner: MockData.creatorOwners.users[0].user.userModelShared
 			), livestreamViewModel: LivestreamViewModel(
 				fpApiService: MockFPAPIService(),
-				creatorId: MockData.creators[0].id)
+				creatorId: MockData.creatorV3.id)
 			)
-				.tag(RootTabView.Selection.creator(MockData.creators[0].id))
+				.tag(RootTabView.Selection.creator(MockData.creatorV3.id))
 				.tabItem {
-					Text(MockData.creators[0].title)
+					Text(MockData.creatorV3.title)
 				}
 				.environmentObject(MockData.userInfo)
 			Text("test").tabItem {

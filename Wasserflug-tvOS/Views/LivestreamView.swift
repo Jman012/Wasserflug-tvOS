@@ -60,6 +60,6 @@ struct LivestreamView_Previews: PreviewProvider {
 	static var previews: some View {
 		LivestreamView(viewModel: LivestreamViewModel(
 			fpApiService: MockFPAPIService(),
-			creatorId: MockData.creators[0].id))
+			creatorId: MockData.creatorV3.id))
 	}
 }

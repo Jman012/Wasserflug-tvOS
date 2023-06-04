@@ -16,16 +16,16 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 	private var isVisible = true
 	private let fpApiService: FPAPIService
 	let managedObjectContext: NSManagedObjectContext
-	let creator: CreatorModelV2
+	let creatorOrChannel: CreatorOrChannel
 	let creatorOwner: UserModelShared
 	var searchDebounce: AnyCancellable? = nil
 	
 	var hasCover: Bool {
-		creator.cover == nil
+		creatorOrChannel.cover == nil
 	}
 	
 	var coverImagePath: URL? {
-		if let cover = creator.cover {
+		if let cover = creatorOrChannel.cover {
 			return URL(string: cover.path)
 		} else {
 			return nil
@@ -33,19 +33,23 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 	}
 	
 	var creatorProfileImagePath: URL? {
-		URL(string: creatorOwner.profileImage.path)
+		URL(string: creatorOrChannel.icon.path)
 	}
 	
-	fileprivate var creatorAboutFirstNewlineIndex: String.Index {
-		creator.about.firstIndex(of: "\n") ?? creator.about.startIndex
+	fileprivate var aboutFirstNewlineIndex: String.Index {
+		if creatorOrChannel.about.first == "#" {
+			return creatorOrChannel.aboutFixed.firstIndex(of: "\n") ?? creatorOrChannel.aboutFixed.startIndex
+		} else {
+			return creatorOrChannel.aboutFixed.startIndex
+		}
 	}
-	lazy var creatorAboutHeader: AttributedString = (try? AttributedString(markdown: String(creator.about[..<creatorAboutFirstNewlineIndex]))) ?? AttributedString("")
-	lazy var creatorAboutBody: AttributedString = (try? AttributedString(markdown: String(creator.about[creatorAboutFirstNewlineIndex...]))) ?? AttributedString("")
+	lazy var creatorAboutHeader: AttributedString = (try? AttributedString(markdown: String(creatorOrChannel.aboutFixed[..<aboutFirstNewlineIndex]), options: .init(allowsExtendedAttributes: false, interpretedSyntax: .full, failurePolicy: .returnPartiallyParsedIfPossible, languageCode: nil))) ?? AttributedString("")
+	lazy var creatorAboutBody: AttributedString = (try? AttributedString(markdown: String(creatorOrChannel.aboutFixed[aboutFirstNewlineIndex...]), options: .init(allowsExtendedAttributes: false, interpretedSyntax: .full, failurePolicy: .returnPartiallyParsedIfPossible, languageCode: nil))) ?? AttributedString("")
 	
-	init(fpApiService: FPAPIService, managedObjectContext: NSManagedObjectContext, creator: CreatorModelV2, creatorOwner: UserModelShared) {
+	init(fpApiService: FPAPIService, managedObjectContext: NSManagedObjectContext, creatorOrChannel: CreatorOrChannel, creatorOwner: UserModelShared) {
 		self.fpApiService = fpApiService
 		self.managedObjectContext = managedObjectContext
-		self.creator = creator
+		self.creatorOrChannel = creatorOrChannel
 		self.creatorOwner = creatorOwner
 		super.init()
 		
@@ -59,7 +63,7 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 	}
 	
 	func createSubViewModel() -> CreatorContentViewModel {
-		return CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creator: creator, creatorOwner: creatorOwner)
+		return CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: creatorOrChannel, creatorOwner: creatorOwner)
 	}
 	
 	func load(loadingMode: LoadingMode = .append) {
@@ -76,10 +80,12 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 				break
 			}
 			
-			let id = creator.id
+			let creatorId = creatorOrChannel.creatorId
+			let channelId = creatorOrChannel.channelId
 			let limit = 20
 			logger.info("Loading creator content.", metadata: [
-				"creatorId": "\(id)",
+				"creatorId": "\(creatorId)",
+				"channelId": "\(channelId ?? "")",
 				"limit": "\(limit)",
 				"fetchAfter": "\(fetchAfter)",
 				"searchText": "\(self.searchText)",
@@ -87,7 +93,7 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 			
 			let response: [BlogPostModelV3]
 			do {
-				response = try await fpApiService.getCreatorContent(id: id, limit: limit, fetchAfter: fetchAfter, search: self.searchText)
+				response = try await fpApiService.getCreatorContent(id: creatorId, limit: limit, fetchAfter: fetchAfter, search: self.searchText, channelId: channelId)
 			} catch {
 				self.state = .failed(error)
 				return

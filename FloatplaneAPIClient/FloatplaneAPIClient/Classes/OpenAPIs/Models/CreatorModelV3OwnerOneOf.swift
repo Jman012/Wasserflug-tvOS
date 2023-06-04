@@ -13,10 +13,10 @@ import Vapor
 
 public struct CreatorModelV3OwnerOneOf: Content, Hashable {
 
-    public var id: String?
-    public var username: String?
+    public var id: String
+    public var username: String
 
-    public init(id: String? = nil, username: String? = nil) {
+    public init(id: String, username: String) {
         self.id = id
         self.username = username
     }
@@ -30,8 +30,8 @@ public struct CreatorModelV3OwnerOneOf: Content, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(id, forKey: .id)
-        try container.encodeIfPresent(username, forKey: .username)
+        try container.encode(id, forKey: .id)
+        try container.encode(username, forKey: .username)
     }
 }
 

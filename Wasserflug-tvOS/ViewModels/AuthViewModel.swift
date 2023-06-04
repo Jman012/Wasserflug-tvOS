@@ -110,9 +110,16 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 				"creatorGuids": "\(creatorGuids)",
 			])
 			
-			let creatorInfos: [CreatorModelV2]
+			// Get the creators and their channels.
+			// This used to use the V2 API because it allowed for pulling multiple creators in one request,
+			// which saves on number of requests and latency and such. But now that we're supporting channels,
+			// which are not included in detail in V2 responses, we need to get them one at a time. So, we
+			// can switch to the V3 API to do one request per creator which included channels.
+			var creatorInfos: [CreatorModelV3] = []
 			do {
-				creatorInfos = try await self.fpApiService.getInfo(creatorGUID: Array<String>(creatorGuids))
+				for id in creatorGuids {
+					creatorInfos.append(try await self.fpApiService.getCreator(id: id))
+				}
 			} catch {
 				self.logger.error("Encountered an unexpected error while loading user subscriptions. Reporting the error to the user. Showing login screen. Error: \(String(reflecting: error))")
 				self.isLoggedIn = false
@@ -126,7 +133,7 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 			self.userInfo.creators = Dictionary(uniqueKeysWithValues: creatorInfos.map({ ($0.id, $0) }))
 			
 			// With the creators, get the creator owners
-			let ownerIds = creatorInfos.map({ $0.owner })
+			let ownerIds = creatorInfos.map({ $0.owner.id })
 			self.logger.info("Loading creator owner(s) information.", metadata: [
 				"ownerIds": "\(ownerIds)",
 			])
@@ -261,18 +268,18 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 class UserInfo: ObservableObject {
 	@Published var userSelf: UserSelfV3Response?
 	@Published var userSubscriptions: [UserSubscriptionModel] = []
-	@Published var creators: [String: CreatorModelV2] = [:]
+	@Published var creators: [String: CreatorModelV3] = [:]
 	@Published var creatorOwners: [String: UserModelShared] = [:] {
 		didSet {
 			setCreatorsInOrder()
 		}
 	}
-	@Published var creatorsInOrder: [(CreatorModelV2, UserModelShared)] = []
+	@Published var creatorsInOrder: [(CreatorModelV3, UserModelShared)] = []
 	
 	private func setCreatorsInOrder() {
 		for sub in userSubscriptions {
 			if !creatorsInOrder.contains(where: { $0.0.id == sub.creator }) {
-				if let creator = creators[sub.creator], let creatorOwner = creatorOwners[creator.owner] {
+				if let creator = creators[sub.creator], let creatorOwner = creatorOwners[creator.owner.id] {
 					creatorsInOrder.append((creator, creatorOwner))
 				}
 			}

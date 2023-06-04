@@ -7,6 +7,7 @@ protocol FPAPIService {
 	func getUserSelf() async throws -> UserV3API.GetSelf
 	func listUserSubscriptionsV3() async throws -> [UserSubscriptionModel]
 	func getInfo(creatorGUID: [String]) async throws -> [CreatorModelV2]
+	func getCreator(id: String) async throws -> CreatorModelV3
 	func getUsers(ids: [String]) async throws -> UserInfoV2Response
 	func login(username: String, password: String, captchaToken: String?) -> EventLoopFuture<AuthV2API.Login>
 	func secondFactor(token: String) -> EventLoopFuture<AuthV2API.CheckFor2faLogin>
@@ -14,7 +15,7 @@ protocol FPAPIService {
 	// Creator-related
 	func getHomeContent(ids: [String], limit: Int, lastItems: [ContentCreatorListLastItems]?) async throws -> ContentCreatorListV3Response
 	func getProgress(ids: [String]) async throws -> [GetProgressResponseInner]
-	func getCreatorContent(id: String, limit: Int, fetchAfter: Int?, search: String?) async throws -> [BlogPostModelV3]
+	func getCreatorContent(id: String, limit: Int, fetchAfter: Int?, search: String?, channelId: String?) async throws -> [BlogPostModelV3]
 	func getLivestream(url: URI) -> EventLoopFuture<ClientResponse>
 	
 	// Post-related
@@ -85,6 +86,35 @@ class DefaultFPAPIService: FPAPIService {
 		return try await withCheckedThrowingContinuation { continuation in
 			CreatorV2API
 				.getInfo(creatorGUID: creatorGUID)
+				.whenComplete { result in
+					switch result {
+					case let .success(value):
+						switch value {
+						case let .http200(value: response, raw: clientResponse):
+							self.logger.debug("Creator information raw response: \(clientResponse.plaintextDebugContent)")
+							continuation.resume(returning: response)
+						case let .http0(value: errorModel, raw: clientResponse),
+							let .http400(value: errorModel, raw: clientResponse),
+							let .http401(value: errorModel, raw: clientResponse),
+							let .http403(value: errorModel, raw: clientResponse),
+							let .http404(value: errorModel, raw: clientResponse):
+							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading creator information. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
+							continuation.resume(throwing: errorModel)
+						case .http429(raw: _):
+							self.logger.warning("Received HTTP 429 Too Many Requests.")
+							continuation.resume(throwing: WasserflugError.http429)
+						}
+					case let .failure(error):
+						self.logger.error("Encountered an unexpected error while loading creator information. Reporting the error to the user. Error: \(String(reflecting: error))")
+						continuation.resume(throwing: error)
+					}
+				}
+		}
+	}
+	func getCreator(id: String) async throws -> CreatorModelV3 {
+		return try await withCheckedThrowingContinuation { continuation in
+			CreatorV3API
+				.getCreator(id: id)
 				.whenComplete { result in
 					switch result {
 					case let .success(value):
@@ -203,10 +233,10 @@ class DefaultFPAPIService: FPAPIService {
 				}
 		}
 	}
-	func getCreatorContent(id: String, limit: Int, fetchAfter: Int? = nil, search: String? = nil) async throws -> [BlogPostModelV3] {
+	func getCreatorContent(id: String, limit: Int, fetchAfter: Int? = nil, search: String? = nil, channelId: String? = nil) async throws -> [BlogPostModelV3] {
 		return try await withCheckedThrowingContinuation { continuation in
 			ContentV3API
-				.getCreatorBlogPosts(id: id, limit: limit, fetchAfter: fetchAfter, search: search)
+				.getCreatorBlogPosts(id: id, channel: channelId, limit: limit, fetchAfter: fetchAfter, search: search)
 				.whenComplete { result in
 					switch result {
 					case let .success(value):
@@ -371,6 +401,11 @@ class MockFPAPIService: FPAPIService {
 			continuation.resume(returning: MockData.creators)
 		}
 	}
+	func getCreator(id: String) async throws -> CreatorModelV3 {
+		return try await withCheckedThrowingContinuation { continuation in
+			continuation.resume(returning: MockData.creatorV3)
+		}
+	}
 	func getUsers(ids: [String]) async throws -> UserInfoV2Response {
 		return try await withCheckedThrowingContinuation { continuation in
 			continuation.resume(returning: MockData.creatorOwners)
@@ -392,7 +427,7 @@ class MockFPAPIService: FPAPIService {
 			continuation.resume(returning: [])
 		}
 	}
-	func getCreatorContent(id: String, limit: Int, fetchAfter: Int? = nil, search: String? = nil) async throws -> [BlogPostModelV3] {
+	func getCreatorContent(id: String, limit: Int, fetchAfter: Int? = nil, search: String? = nil, channelId: String?) async throws -> [BlogPostModelV3] {
 		return try await withCheckedThrowingContinuation { continuation in
 			continuation.resume(returning: MockData.blogPosts.blogPosts)
 		}
@@ -457,6 +492,10 @@ enum MockData {
 		return try! decoder.decode([CreatorModelV2].self, from: ByteBuffer(string: MockStaticData.creators), headers: .init())
 	}()
 	
+	static let creatorV3: CreatorModelV3 = {
+		return try! decoder.decode(CreatorModelV3.self, from: ByteBuffer(string: MockStaticData.creatorV3), headers: .init())
+	}()
+	
 	static let creatorOwners: UserInfoV2Response = {
 		return try! decoder.decode(UserInfoV2Response.self, from: ByteBuffer(string: MockStaticData.creatorOwners), headers: .init())
 	}()
@@ -465,7 +504,9 @@ enum MockData {
 		let a = UserInfo()
 		a.userSelf = userSelf
 		a.userSubscriptions = userSubscriptions
-		a.creators = Dictionary(uniqueKeysWithValues: creators.map({ ($0.id, $0) }))
+		a.creators = [
+			creatorV3.id: creatorV3
+		]
 		a.creatorOwners = Dictionary(uniqueKeysWithValues: creatorOwners.users.map({ ($0.user.userModelShared.id, $0.user.userModelShared) }))
 		return a
 	}()
@@ -704,6 +745,357 @@ enum MockStaticData {
 			}
 		}
 	]
+}
+"""#
+	static let creatorV3: String = #"""
+{
+	"id": "59f94c0bdd241b70349eb72b",
+	"owner": {
+		"id": "59f94c0bdd241b70349eb723",
+		"username": "Linus"
+	},
+	"title": "LinusTechTips",
+	"urlname": "linustechtips",
+	"description": "We make entertaining videos about technology, including tech reviews, showcases and other content.",
+	"about": "# We're LinusTechTips\nWe make videos and stuff, cool eh?",
+	"category": {
+		"id": "59f94c0bdd241b70349eb727",
+		"title": "Technology"
+	},
+	"cover": {
+		"width": 1990,
+		"height": 519,
+		"path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/696951209272749_1521668313867.jpeg",
+		"childImages": [
+			{
+				"width": 1245,
+				"height": 325,
+				"path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/696951209272749_1521668313867_1245x325.jpeg"
+			}
+		]
+	},
+	"icon": {
+		"width": 600,
+		"height": 600,
+		"path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205.jpeg",
+		"childImages": [
+			{
+				"width": 250,
+				"height": 250,
+				"path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205_250x250.jpeg"
+			},
+			{
+				"width": 100,
+				"height": 100,
+				"path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205_100x100.jpeg"
+			}
+		]
+	},
+	"liveStream": {
+		"id": "5c13f3c006f1be15e08e05c0",
+		"title": "It's Time To Name And Shame - WAN Show June 2, 2023",
+		"description": "<p>Get a 15-day free trial for unlimited backup at<a href=\"https://www.backblaze.com/landing/podcast-wan.html\" rel=\"noopener noreferrer\" target=\"_blank\"> https://www.backblaze.com/landing/podcast-wan.html</a></p><p>Visit<a href=\"https://www.squarespace.com/WAN\" rel=\"noopener noreferrer\" target=\"_blank\"> https://www.squarespace.com/WAN</a> and use offer code WAN for 10% off</p><p>Start taking proactive steps to safeguard your network and critical infrastructure at<a href=\"https://lmg.gg/blkpt\" rel=\"noopener noreferrer\" target=\"_blank\"> https://lmg.gg/blkpt</a></p><p><br></p><p>Podcast Download: TBD</p>",
+		"thumbnail": {
+			"width": 1920,
+			"height": 1080,
+			"path": "https://pbs.floatplane.com/stream_thumbnails/5c13f3c006f1be15e08e05c0/227070283326316_1685755931723.jpeg",
+			"childImages": [
+				{
+					"width": 400,
+					"height": 225,
+					"path": "https://pbs.floatplane.com/stream_thumbnails/5c13f3c006f1be15e08e05c0/227070283326316_1685755931723_400x225.jpeg"
+				},
+				{
+					"width": 1200,
+					"height": 675,
+					"path": "https://pbs.floatplane.com/stream_thumbnails/5c13f3c006f1be15e08e05c0/227070283326316_1685755931723_1200x675.jpeg"
+				}
+			]
+		},
+		"owner": "59f94c0bdd241b70349eb72b",
+		"channel": "63fe42c309e691e4e36de93d",
+		"streamPath": "/api/video/v1/us-east-1.758417551536.channel.yKkxur4ukc0B.m3u8",
+		"offline": {
+			"title": "Offline",
+			"description": "We're offline for now – please check back later!",
+			"thumbnail": {
+				"width": 1920,
+				"height": 1080,
+				"path": "https://pbs.floatplane.com/stream_thumbnails/5c13f3c006f1be15e08e05c0/894654974252956_1549059179026.jpeg",
+				"childImages": [
+					{
+						"width": 400,
+						"height": 225,
+						"path": "https://pbs.floatplane.com/stream_thumbnails/5c13f3c006f1be15e08e05c0/894654974252956_1549059179026_400x225.jpeg"
+					},
+					{
+						"width": 1200,
+						"height": 675,
+						"path": "https://pbs.floatplane.com/stream_thumbnails/5c13f3c006f1be15e08e05c0/894654974252956_1549059179026_1200x675.jpeg"
+					}
+				]
+			}
+		}
+	},
+	"subscriptionPlans": [
+		{
+			"id": "5d48d0306825b5780db93d07",
+			"title": "LTT Supporter",
+			"description": "- 2 Exclusives Per Week (Meet the Team, Extras, Behind the Scenes) \n- Exclusive livestreams\n- Save $10 by purchasing an annual subscription\n- Our gratitude for your support",
+			"price": "5.00",
+			"priceYearly": "50.00",
+			"currency": "usd",
+			"logo": null,
+			"interval": "month",
+			"featured": true,
+			"allowGrandfatheredAccess": false,
+			"discordServers": [],
+			"discordRoles": []
+		},
+		{
+			"id": "5e0ba6ac14e2590f760a0f0f",
+			"title": "LTT Supporter Plus",
+			"description": "- 4K Bitrate Streaming\n- 2 Exclusives Per Week (Meet the Team, Extras, Behind the Scenes) \n- Exclusive livestreams\n- Save $20 by purchasing an annual subscription\n- LTX 2023 Digital Pass\n- Our gratitude for your support",
+			"price": "10.00",
+			"priceYearly": "100.00",
+			"currency": "usd",
+			"logo": null,
+			"interval": "month",
+			"featured": true,
+			"allowGrandfatheredAccess": false,
+			"discordServers": [],
+			"discordRoles": []
+		}
+	],
+	"discoverable": true,
+	"subscriberCountDisplay": "total",
+	"incomeDisplay": false,
+	"defaultChannel": "63fe42c309e691e4e36de93d",
+	"socialLinks": {
+		"instagram": "https://www.instagram.com/linustech",
+		"website": "https://linustechtips.com",
+		"facebook": "https://www.facebook.com/LinusTech",
+		"youtube": "https://www.youtube.com/user/LinusTechTips",
+		"twitter": "https://twitter.com/linustech"
+	},
+	"channels": [
+		{
+			"id": "63fe42c309e691e4e36de93d",
+			"creator": "59f94c0bdd241b70349eb72b",
+			"title": "Linus Tech Tips",
+			"urlname": "main",
+			"about": "# We're LinusTechTips\nWe make videos and stuff, cool eh?",
+			"order": 0,
+			"cover": {
+				"width": 1990,
+				"height": 519,
+				"path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/696951209272749_1521668313867.jpeg",
+				"childImages": [
+					{
+						"width": 1245,
+						"height": 325,
+						"path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/696951209272749_1521668313867_1245x325.jpeg"
+					}
+				]
+			},
+			"card": null,
+			"icon": {
+				"width": 600,
+				"height": 600,
+				"path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205.jpeg",
+				"childImages": [
+					{
+						"width": 250,
+						"height": 250,
+						"path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205_250x250.jpeg"
+					},
+					{
+						"width": 100,
+						"height": 100,
+						"path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/770551996990709_1551249357205_100x100.jpeg"
+					}
+				]
+			},
+			"socialLinks": {}
+		},
+		{
+			"id": "6413534d88c13c181c3e2809",
+			"creator": "59f94c0bdd241b70349eb72b",
+			"title": "TechLinked",
+			"urlname": "techlinked",
+			"about": "News about tech + gaming culture, delivered thrice weekly.\n\nWe're also doing long-form video essays now, apparently. \n\nThe TalkLinked talk show/podcast will probably come back at some point, too!\n\nWriters: Riley Murdock, Jon Martin, James Strieb",
+			"order": 2,
+			"cover": {
+				"width": 1080,
+				"height": 282,
+				"path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/6413534d88c13c181c3e2809/231100243161134_1678988109632.jpeg",
+				"childImages": []
+			},
+			"card": null,
+			"icon": {
+				"width": 88,
+				"height": 88,
+				"path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/6413534d88c13c181c3e2809/955526950207988_1678988110287.jpeg",
+				"childImages": []
+			},
+			"socialLinks": {}
+		},
+		{
+			"id": "64135da7ce81077a8480c679",
+			"creator": "59f94c0bdd241b70349eb72b",
+			"title": "ShortCircuit",
+			"urlname": "shortcircuit",
+			"about": "What's in the box? Let's find out!\n\nOfficial channel under Linus Media Group.",
+			"order": 3,
+			"cover": {
+				"width": 1084,
+				"height": 283,
+				"path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135da7ce81077a8480c679/745715133852622_1678990806332.jpeg",
+				"childImages": []
+			},
+			"card": null,
+			"icon": {
+				"width": 88,
+				"height": 88,
+				"path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135da7ce81077a8480c679/470304051261927_1678990806883.jpeg",
+				"childImages": []
+			},
+			"socialLinks": {}
+		},
+		{
+			"id": "64135e27c773b27ff22c97eb",
+			"creator": "59f94c0bdd241b70349eb72b",
+			"title": "Techquickie",
+			"urlname": "techquickie",
+			"about": "Ever wanted to learn more about your favorite gadgets or a trending topic in tech? \n\nWith a mix of humor, cynicism, and insight, Techquickie brings you the answers to all your tech questions every Tuesday and Friday.",
+			"order": 5,
+			"cover": {
+				"width": 1080,
+				"height": 282,
+				"path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135e27c773b27ff22c97eb/721553790654237_1678990887992.jpeg",
+				"childImages": []
+			},
+			"card": null,
+			"icon": {
+				"width": 88,
+				"height": 88,
+				"path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135e27c773b27ff22c97eb/666841640245092_1678990909616.jpeg",
+				"childImages": []
+			},
+			"socialLinks": {}
+		},
+		{
+			"id": "64135e901ebaee42e258eb0b",
+			"creator": "59f94c0bdd241b70349eb72b",
+			"title": "Mac Address",
+			"urlname": "macaddress",
+			"about": "The exploration of all things Apple, from iPhones underwater to full iClouds in the sky. We want to be the channel that you come to first for an unexpected viewpoint about the devices you love.",
+			"order": 4,
+			"cover": {
+				"width": 1080,
+				"height": 282,
+				"path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135e901ebaee42e258eb0b/254417940627493_1678990992632.jpeg",
+				"childImages": []
+			},
+			"card": null,
+			"icon": {
+				"width": 88,
+				"height": 88,
+				"path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135e901ebaee42e258eb0b/979475909700348_1678990993114.jpeg",
+				"childImages": []
+			},
+			"socialLinks": {}
+		},
+		{
+			"id": "64135ed078d6262f717341b7",
+			"creator": "59f94c0bdd241b70349eb72b",
+			"title": "Channel Super Fun",
+			"urlname": "channelsuperfun",
+			"about": "Channel Super Fun is all about the name. Games, toys, and challenges. Expect to find them all here!",
+			"order": 6,
+			"cover": {
+				"width": 1080,
+				"height": 282,
+				"path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135ed078d6262f717341b7/881886551214964_1678991123807.jpeg",
+				"childImages": []
+			},
+			"card": null,
+			"icon": {
+				"width": 88,
+				"height": 88,
+				"path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135ed078d6262f717341b7/317924815973639_1678991124672.jpeg",
+				"childImages": []
+			},
+			"socialLinks": {}
+		},
+		{
+			"id": "64135f82fc76ab7f9fbdc876",
+			"creator": "59f94c0bdd241b70349eb72b",
+			"title": "They're Just Movies",
+			"urlname": "tajm",
+			"about": "Each week our small group of nerds sits down for a not-so-serious, SPOILER-FILLED, chat about the movies you love.\n\nFormerly known as Carpool Critics, we're part of Linus Media Group!",
+			"order": 7,
+			"cover": {
+				"width": 1080,
+				"height": 282,
+				"path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/64135f82fc76ab7f9fbdc876/190277198232475_1678991235439.jpeg",
+				"childImages": []
+			},
+			"card": null,
+			"icon": {
+				"width": 88,
+				"height": 88,
+				"path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/64135f82fc76ab7f9fbdc876/570806971094170_1678991236419.jpeg",
+				"childImages": []
+			},
+			"socialLinks": {}
+		},
+		{
+			"id": "6413623f5b12cca228a28e78",
+			"creator": "59f94c0bdd241b70349eb72b",
+			"title": "FP Exclusive",
+			"urlname": "fpexclusive",
+			"about": "wow... so empty",
+			"order": 1,
+			"cover": {
+				"width": 1200,
+				"height": 313,
+				"path": "https://pbs.floatplane.com/cover_images/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/072932633007415_1678991935461.jpeg",
+				"childImages": []
+			},
+			"card": null,
+			"icon": {
+				"width": 720,
+				"height": 720,
+				"path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/069457536750544_1678991936484.jpeg",
+				"childImages": [
+					{
+						"width": 100,
+						"height": 100,
+						"path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/069457536750544_1678991936484_100x100.jpeg"
+					},
+					{
+						"width": 250,
+						"height": 250,
+						"path": "https://pbs.floatplane.com/creator_icons/59f94c0bdd241b70349eb72b/6413623f5b12cca228a28e78/069457536750544_1678991936484_250x250.jpeg"
+					}
+				]
+			},
+			"socialLinks": {}
+		}
+	],
+	"card": {
+		"width": 375,
+		"height": 500,
+		"path": "https://pbs.floatplane.com/creator_card/59f94c0bdd241b70349eb72b/281467946609369_1551250329871.jpeg",
+		"childImages": [
+			{
+				"width": 300,
+				"height": 400,
+				"path": "https://pbs.floatplane.com/creator_card/59f94c0bdd241b70349eb72b/281467946609369_1551250329871_300x400.jpeg"
+			}
+		]
+	}
 }
 """#
 	static let getHomeContent: String = #"""
