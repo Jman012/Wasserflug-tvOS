@@ -20,6 +20,7 @@ See https://imgur.com/a/vXAcEJy for screenshots of Wasserflug.
 - ✅ Creator screens with proper branding (banner image, profile picture, "About" information)
   - ✅ Search a creator for videos
   - ✅ Creator Livestream
+  - ✅ Channel support (branding, search, etc.)
 - ✅ Floatplane tags (view only)
 - ✅ Formatted post descriptions
 - ✅ 4K Support
