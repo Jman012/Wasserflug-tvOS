@@ -151,7 +151,7 @@ extension CreatorModelV3Owner {
 	var id: String {
 		switch self {
 		case let .typeCreatorModelV3OwnerOneOf(owner):
-			return owner.id!
+			return owner.id
 		case let .typeString(id):
 			return id
 		}
