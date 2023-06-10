@@ -74,8 +74,11 @@ struct BlogPostSelectionView: View {
 							// Watch progress indicator
 							GeometryReader { geometry in
 								Rectangle()
-									.fill(FPColors.blue)
-									.frame(width: geometry.size.width * progress)
+									.fill(LinearGradient(colors: [FPColors.watchProgressIndicatorBegin, FPColors.watchProgressIndicatorEnd], startPoint: .leading, endPoint: .trailing))
+									.frame(width: geometry.size.width)
+									.mask(alignment: .leading) {
+										Rectangle().frame(width: geometry.size.width * progress)
+									}
 							}
 							.frame(height: isFocused ? 16 : 8)
 							.animation(.spring(), value: isFocused)
@@ -117,12 +120,10 @@ struct BlogPostSelectionView: View {
 				// Below the image: title, length, tags, etc.
 				HStack(alignment: .top, spacing: 0) {
 					let profileImageSize: CGFloat = 35
-					// For the home screen, show the icon/profile picture of the
-					// creator that published the blog post.
-					if case let .home(creatorOwner) = viewOrigin,
-					   let profileImagePath = creatorOwner?.profileImage.path,
-					   let profileImageUrl = URL(string: profileImagePath) {
-						CachedAsyncImage(url: profileImageUrl, content: { image in
+					// Show the channel icon, regardless of view origin.
+					if case let .typeChannelModel(channel) = blogPost.channel,
+					   let channelIconUrl = URL(string: channel.icon.path) {
+						CachedAsyncImage(url: channelIconUrl, content: { image in
 							image
 								.resizable()
 								.scaledToFit()
