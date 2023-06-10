@@ -20,6 +20,7 @@ struct BlogPostSelectionView: View {
 
 	@State var isSelected = false
 	@State var isAutoSelected = false
+	@FocusState private var isFocused
 	
 	private let relativeTimeConverter: RelativeDateTimeFormatter = {
 		let formatter = RelativeDateTimeFormatter()
@@ -76,7 +77,8 @@ struct BlogPostSelectionView: View {
 									.fill(FPColors.blue)
 									.frame(width: geometry.size.width * progress)
 							}
-								.frame(height: 8)
+							.frame(height: isFocused ? 16 : 8)
+							.animation(.spring(), value: isFocused)
 						}
 						.cornerRadius(10.0)
 					}, placeholder: {
@@ -182,6 +184,7 @@ struct BlogPostSelectionView: View {
 			.padding([.leading, .trailing], isTvOS16 ? -24 : 16)
 		})
 			.buttonStyle(.plain)
+			.focused($isFocused)
 			.padding(isTvOS16_4 ? 32 : 0)
 			.onPlayPauseCommand(perform: {
 				if blogPost.isAccessible {
