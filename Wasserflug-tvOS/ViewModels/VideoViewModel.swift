@@ -139,9 +139,13 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 		])
 		var url = qualityLevels[desiredQuality]?.0
 		if url == nil {
-			url = qualityLevels
-				.sorted(by: { Int($0.key) ?? 0 < Int($1.key) ?? 0 })
-				.filter({ Int($0.key) ?? 0 < Int(desiredQuality) ?? Int.max }) // Don't get a resolution larger than the desired.
+			let sortedUrls = qualityLevels
+				.sorted(by: { $0.value.1.meta?.video?.height ?? 0 < $1.value.1.meta?.video?.height ?? 0 })
+			// Just get the highest available. It's difficult to be smart about next highest from the selection, because the label isn't
+			// sortable, so let's just guess that if a desired quality isn't available, it's because it was too high and this video
+			// doesn't have it, but the user wants higher quality. It's also an Apple TV instead of a mobiel device, so higher quality
+			// is expected. The expected use case is 4K is desired, but only up to 1080p is available, so default to 1080p.
+			url = sortedUrls
 				.last?
 				.value.0
 		}

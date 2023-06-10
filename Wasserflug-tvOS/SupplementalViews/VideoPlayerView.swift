@@ -100,7 +100,7 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 		let sparkleTvImage = UIImage(systemName: "sparkles.tv")
 		let resolutions: [UIAction] = viewModel.qualityLevels.values
 			.sorted(by: { $0.1.order ?? 0 < $1.1.order ?? 0 })
-			.reversed()
+			.reversed() // This keeps the higher quality on top of the menu
 			.map({ (qualityLevel) -> UIAction in
 				return UIAction(title: qualityLevel.1.label, identifier: UIAction.Identifier(qualityLevel.1.name), handler: { _ in
 					UserDefaults.standard.set(qualityLevel.1.name, forKey: "DesiredQuality")
