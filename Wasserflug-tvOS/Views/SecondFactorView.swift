@@ -22,6 +22,7 @@ struct SecondFactorView: View {
 					
 					TextField("2FA Code", text: $secondFactorCode)
 						.textContentType(.oneTimeCode)
+						.font(.system(size: 36))
 						.focused($focusedField, equals: .secondFactorField)
 						.onSubmit {
 							DispatchQueue.main.asyncAfter(deadline: .now() + 0.50, execute: {

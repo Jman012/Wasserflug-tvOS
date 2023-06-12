@@ -19,67 +19,62 @@ struct LoginView: View {
 		GeometryReader { geometry in
 			ZStack {
 				VStack {
-						Text("Login to Floatplane")
-							.bold()
-						Spacer()
-						
-						TextField("Username", text: $username)
-							.textContentType(.username)
-							.focused($focusedField, equals: .usernameField)
-							.onSubmit {
-								print("username on submit")
-								DispatchQueue.main.asyncAfter(deadline: .now() + 0.50, execute: {
-									print("username on submit delayed")
-									if username != "" {
-										if password == "" {
-											print("un: setting to password field")
-											focusedField = .passwordField
-										} else {
-											print("un: setting to login button")
-											focusedField = .loginButton
-										}
-									}
-								})
-							}
-
-						SecureField("Password", text: $password)
-							.textContentType(.password)
-							.focused($focusedField, equals: .passwordField)
-							.onSubmit {
-								print("password on submit")
-								DispatchQueue.main.asyncAfter(deadline: .now() + 0.50, execute: {
-									print("password on submit delayed")
-									if password != "" {
-										print("pw: setting to login button")
+					Text("Login to Floatplane")
+						.bold()
+					Spacer()
+					
+					TextField("Username", text: $username)
+						.textContentType(.username)
+						.font(.system(size: 36))
+						.focused($focusedField, equals: .usernameField)
+						.onSubmit {
+							DispatchQueue.main.asyncAfter(deadline: .now() + 0.50, execute: {
+								if username != "" {
+									if password == "" {
+										focusedField = .passwordField
+									} else {
 										focusedField = .loginButton
 									}
-								})
-							}
-						
-						Spacer()
-						
-						Button(action: {
-							if username == "" {
-								focusedField = .usernameField
-							} else if password == "" {
-								focusedField = .passwordField
-							} else {
-								viewModel.attemptLogin(username: username, password: password, isLoggedIn: {
-									self.isLoggingIn = false
-								})
-							}
-						}, label: {
-							HStack {
-								if viewModel.isAttemptingLogin {
-									ProgressView()
 								}
-								Text("Login")
+							})
+						}
+
+					SecureField("Password", text: $password)
+						.textContentType(.password)
+						.font(.system(size: 36))
+						.focused($focusedField, equals: .passwordField)
+						.onSubmit {
+							DispatchQueue.main.asyncAfter(deadline: .now() + 0.50, execute: {
+								if password != "" {
+									focusedField = .loginButton
+								}
+							})
+						}
+					
+					Spacer()
+					
+					Button(action: {
+						if username == "" {
+							focusedField = .usernameField
+						} else if password == "" {
+							focusedField = .passwordField
+						} else {
+							viewModel.attemptLogin(username: username, password: password, isLoggedIn: {
+								self.isLoggingIn = false
+							})
+						}
+					}, label: {
+						HStack {
+							if viewModel.isAttemptingLogin {
+								ProgressView()
 							}
-						})
-							.disabled(viewModel.isAttemptingLogin)
-							.focused($focusedField, equals: .loginButton)
-					}
-					.multilineTextAlignment(.center)
+							Text("Login")
+						}
+					})
+						.disabled(viewModel.isAttemptingLogin)
+						.focused($focusedField, equals: .loginButton)
+				}
+				.multilineTextAlignment(.center)
 				.frame(maxWidth: geometry.size.width * 0.4)
 			}
 			.frame(maxWidth: .infinity, maxHeight: .infinity)
