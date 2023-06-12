@@ -85,7 +85,7 @@ struct ContentView: View {
 							.fullScreenCover(isPresented: $isLoggingIn, onDismiss: {
 								viewModel.determineAuthenticationStatus()
 							}, content: {
-								NavigationView {
+								NavigationStack {
 									LoginView(isLoggingIn: $isLoggingIn, viewModel: viewModel)
 								}
 								.background(.ultraThinMaterial)

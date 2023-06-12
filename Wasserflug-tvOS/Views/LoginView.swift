@@ -16,16 +16,9 @@ struct LoginView: View {
 	@FocusState private var focusedField: Field?
 	
 	var body: some View {
-		ZStack {
-			NavigationLink(isActive: $viewModel.needsSecondFactor, destination: {
-				SecondFactorView(isLoggingIn: $isLoggingIn, viewModel: viewModel)
-			}, label: {
-				EmptyView()
-			}).hidden()
-			
-			GeometryReader { geometry in
-				ZStack {
-					VStack {
+		GeometryReader { geometry in
+			ZStack {
+				VStack {
 						Text("Login to Floatplane")
 							.bold()
 						Spacer()
@@ -87,11 +80,13 @@ struct LoginView: View {
 							.focused($focusedField, equals: .loginButton)
 					}
 					.multilineTextAlignment(.center)
-					.frame(maxWidth: geometry.size.width * 0.4)
-				}
-				.frame(maxWidth: .infinity, maxHeight: .infinity)
+				.frame(maxWidth: geometry.size.width * 0.4)
 			}
+			.frame(maxWidth: .infinity, maxHeight: .infinity)
 		}
+		.navigationDestination(isPresented: $viewModel.needsSecondFactor, destination: {
+			SecondFactorView(isLoggingIn: $isLoggingIn, viewModel: viewModel)
+		})
 		.alert("Login", isPresented: $viewModel.showIncorrectLoginAlert, actions: { }, message: {
 			if let error = viewModel.loginError {
 				Text("""
