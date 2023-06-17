@@ -13,6 +13,7 @@ struct PlayMediaView<Content>: View where Content: View {
 	
 	@State var isShowingMedia = false
 	@FetchRequest var watchProgresses: FetchedResults<WatchProgress>
+	@FocusState private var isFocused
 	
 	var progress: CGFloat {
 		if let watchProgress = watchProgresses.first {
@@ -34,6 +35,7 @@ struct PlayMediaView<Content>: View where Content: View {
 					image
 				})
 					.buttonStyle(.card)
+					.focused($isFocused)
 					.padding()
 			}
 		}
@@ -52,10 +54,14 @@ struct PlayMediaView<Content>: View where Content: View {
 					// Watch progress indicator
 					GeometryReader { geometry in
 						Rectangle()
-							.fill(FPColors.blue)
-							.frame(width: geometry.size.width * progress)
+							.fill(LinearGradient(colors: [FPColors.watchProgressIndicatorBegin, FPColors.watchProgressIndicatorEnd], startPoint: .leading, endPoint: .trailing))
+							.frame(width: geometry.size.width)
+							.mask(alignment: .leading) {
+								Rectangle().frame(width: geometry.size.width * progress)
+							}
 					}
-						.frame(height: 8)
+					.frame(height: isFocused ? 16 : 8)
+					.animation(.spring(), value: isFocused)
 				}
 					.frame(width: width)
 					// Apply the cornerRadius on the ZStack to get the corners of the watch progress indicator
@@ -74,6 +80,7 @@ struct PlayMediaView<Content>: View where Content: View {
 				PlayButton(size: playButtonSize, action: {
 					isShowingMedia = true
 				})
+					.focused($isFocused)
 					// If a namespace is provided, then prefer default focus on it.
 					.optionalPrefersDefaultFocus(in: defaultInNamespace)
 					.fullScreenCover(isPresented: $isShowingMedia, onDismiss: {
