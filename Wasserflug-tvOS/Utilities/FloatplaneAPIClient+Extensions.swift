@@ -157,3 +157,14 @@ extension CreatorModelV3Owner {
 		}
 	}
 }
+
+extension BlogPostModelV3Channel {
+	var asChannelModel: ChannelModel? {
+		switch self {
+		case let .typeChannelModel(channelModel):
+			return channelModel
+		default:
+			return nil
+		}
+	}
+}

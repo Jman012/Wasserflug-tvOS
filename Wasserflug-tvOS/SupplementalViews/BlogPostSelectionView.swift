@@ -160,7 +160,7 @@ struct BlogPostSelectionView: View {
 							}
 							
 							// Video/audio duration with clock icon
-							let duration: TimeInterval = meta.hasVideo ? meta.videoDuration : meta.hasAudio ? meta.audioDuration : 0.0
+							let duration: TimeInterval = meta.videoCount == 1 ? meta.videoDuration : meta.audioCount == 1 ? meta.audioDuration : 0.0
 							if duration != 0 {
 								Image(systemName: "clock")
 								Text("\(TimeInterval(duration).floatplaneTimestamp)")
@@ -171,7 +171,7 @@ struct BlogPostSelectionView: View {
 						
 						HStack {
 							// Creator name on bottom of card
-							Text(verbatim: blogPost.creator.title)
+							Text(verbatim: blogPost.channel.asChannelModel?.title ?? blogPost.creator.title)
 							
 							Spacer(minLength: 0)
 							
