@@ -93,20 +93,25 @@ class BlogPostViewModel: BaseViewModel, ObservableObject {
 	}
 	
 	func convertDescriptionToAttributeString(_ description: String, colorScheme: ColorScheme) -> AttributedString {
-		let nsAttributedStringDescription = try! NSMutableAttributedString(
-			data: description.data(using: .utf8)!,
-			options: [
-				.documentType: NSAttributedString.DocumentType.html,
-				.characterEncoding: String.Encoding.utf8.rawValue,
-			],
-			documentAttributes: nil)
-		let attributeOverrides = [
-			NSAttributedString.Key.font: UIFont.systemFont(ofSize: 24.0),
-			NSAttributedString.Key.foregroundColor: colorScheme == .light ? UIColor.black : UIColor.white,
-		]
-		nsAttributedStringDescription.addAttributes(attributeOverrides, range: NSRange(location: 0, length: nsAttributedStringDescription.length))
-		
-		return AttributedString(nsAttributedStringDescription)
+		do {
+			let nsAttributedStringDescription = try NSMutableAttributedString(
+				data: description.data(using: .utf8)!,
+				options: [
+					.documentType: NSAttributedString.DocumentType.html,
+					.characterEncoding: String.Encoding.utf8.rawValue,
+				],
+				documentAttributes: nil)
+			let attributeOverrides = [
+				NSAttributedString.Key.font: UIFont.systemFont(ofSize: 24.0),
+				NSAttributedString.Key.foregroundColor: colorScheme == .light ? UIColor.black : UIColor.white,
+			]
+			nsAttributedStringDescription.addAttributes(attributeOverrides, range: NSRange(location: 0, length: nsAttributedStringDescription.length))
+			
+			return AttributedString(nsAttributedStringDescription)
+		} catch {
+			self.logger.error("Encountered an unexpected error while converting description to attributed string. Error: \(String(reflecting: error))")
+			return AttributedString(stringLiteral: description)
+		}
 	}
 	
 	func like() {
