@@ -58,14 +58,14 @@ struct BlogPostView: View {
 								playButtonSize: .default,
 								playContent: { beginningWatchTime in
 									ZStack {
-										if let videoAttachments = content.videoAttachments, let firstVideo = videoAttachments.first {
+										if let firstVideo = content.firstVideoAttachment {
 											VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: firstVideo, contentPost: content, description: viewModel.textAttributedString), beginningWatchTime: beginningWatchTime)
 										}
 									}
 								},
 								defaultInNamespace: screenNamespace,
 								isShowingMedia: shouldAutoPlay,
-								watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", content.id, content.videoAttachments?.first?.id ?? ""), animation: .default))
+								watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", content.id, content.firstVideoAttachmentId ?? ""), animation: .default))
 
 							// Creator pfp, publish date, and description
 							VStack(alignment: .leading) {

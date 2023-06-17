@@ -29,7 +29,7 @@ struct BlogPostSelectionView: View {
 	}()
 	
 	var progress: CGFloat {
-		if let watchProgress = watchProgresses.first(where: { $0.videoId == blogPost.videoAttachments?.first }) {
+		if let watchProgress = watchProgresses.first(where: { $0.videoId == blogPost.firstVideoAttachmentId }) {
 			let progress = watchProgress.progress
 			return progress >= 0.95 ? 1.0 : progress
 		} else {

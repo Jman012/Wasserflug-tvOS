@@ -168,3 +168,18 @@ extension BlogPostModelV3Channel {
 		}
 	}
 }
+
+extension BlogPostModelV3 {
+	var firstVideoAttachmentId: String? {
+		return self.attachmentOrder.filter({ self.videoAttachments?.contains($0) == true }).first
+	}
+}
+
+extension ContentPostV3Response {
+	var firstVideoAttachmentId: String? {
+		return self.attachmentOrder.filter({ self.videoAttachments?.lazy.map({ $0.id }).contains($0) == true }).first
+	}
+	var firstVideoAttachment: VideoAttachmentModel? {
+		return self.videoAttachments?.first(where: { $0.id == firstVideoAttachmentId })
+	}
+}

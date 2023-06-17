@@ -107,7 +107,7 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 						for progress in progresses {
 							let blogPostId = progress.id
 							if let blogPost = response.first(where: { $0.id == blogPostId }) {
-								if let videoId = blogPost.attachmentOrder.filter({ blogPost.videoAttachments?.contains($0) == true }).first {
+								if let videoId = blogPost.firstVideoAttachmentId {
 									VideoViewModel.updateLocalProgress(logger: logger, blogPostId: blogPostId, videoId: videoId, videoDuration: 100.0, progressSeconds: progress.progress, managedObjectContext: managedObjectContext)
 								}
 							}

@@ -13,8 +13,42 @@ struct BlogPostContentView: View {
 	@State var showingPicture: PictureAttachmentModel? = nil
 	@State var showAudioAttachmentFeatureMissing = false
 	
+	var orderedAttachmentIds: [String: Int] {
+		return content.attachmentOrder.enumerated().reduce(into: [String: Int](), { $0[$1.element] = $1.offset })
+	}
+	
+	var orderedVideoAttachments: [VideoAttachmentModel]? {
+		if let videoAttachments = content.videoAttachments {
+			return videoAttachments.sorted(by: { (a, b) -> Bool in
+				return orderedAttachmentIds[a.id] ?? 0 < orderedAttachmentIds[b.id] ?? 0
+			})
+		} else {
+			return nil
+		}
+	}
+	
+	var orderedPictureAttachments: [PictureAttachmentModel]? {
+		if let pictureAttachments = content.pictureAttachments {
+			return pictureAttachments.sorted(by: { (a, b) -> Bool in
+				return orderedAttachmentIds[a.id] ?? 0 < orderedAttachmentIds[b.id] ?? 0
+			})
+		} else {
+			return nil
+		}
+	}
+	
+	var orderedAudioAttachments: [AudioAttachmentModel]? {
+		if let audioAttachments = content.audioAttachments {
+			return audioAttachments.sorted(by: { (a, b) -> Bool in
+				return orderedAttachmentIds[a.id] ?? 0 < orderedAttachmentIds[b.id] ?? 0
+			})
+		} else {
+			return nil
+		}
+	}
+	
 	var body: some View {
-		if let videoAttachments = content.videoAttachments, !videoAttachments.isEmpty {
+		if let videoAttachments = orderedVideoAttachments, !videoAttachments.isEmpty {
 			Text("Videos")
 				.font(.headline)
 			ScrollView(.horizontal) {
@@ -43,7 +77,7 @@ struct BlogPostContentView: View {
 			}
 			.focusSection()
 		}
-		if let pictureAttachments = content.pictureAttachments, !pictureAttachments.isEmpty {
+		if let pictureAttachments = orderedPictureAttachments, !pictureAttachments.isEmpty {
 			Text("Pictures")
 				.font(.headline)
 			ScrollView(.horizontal) {
@@ -86,11 +120,7 @@ struct BlogPostContentView: View {
 						})
 				})
 		}
-		if let galleryAttachments = content.galleryAttachments, !galleryAttachments.isEmpty {
-			Text("Galleries")
-				.font(.headline)
-		}
-		if let audioAttachments = content.audioAttachments, !audioAttachments.isEmpty {
+		if let audioAttachments = orderedAudioAttachments, !audioAttachments.isEmpty {
 			Text("Audio")
 				.font(.headline)
 			ScrollView(.horizontal) {
