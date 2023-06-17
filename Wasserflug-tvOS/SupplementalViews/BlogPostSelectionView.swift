@@ -59,7 +59,8 @@ struct BlogPostSelectionView: View {
 				isSelected = true
 			}
 		}, label: {
-			VStack(alignment: .leading, spacing: 2) {
+			VStack(alignment: .leading, spacing: 10) {
+				// Thumbnail
 				ZStack(alignment: .center) {
 					CachedAsyncImage(url: (blogPost.thumbnail as ImageModelShared?).bestImage(for: geometrySize), content: { image in
 						// Thumbnail image with watch progress indicator overlaid on
@@ -133,7 +134,7 @@ struct BlogPostSelectionView: View {
 							ProgressView()
 								.frame(width: profileImageSize, height: profileImageSize)
 						})
-							.padding([.all], 5)
+						.padding([.trailing], 10)
 					}
 					
 					VStack(alignment: .leading, spacing: 4) {
