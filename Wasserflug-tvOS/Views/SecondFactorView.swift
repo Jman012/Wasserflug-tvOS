@@ -2,8 +2,8 @@ import SwiftUI
 import FloatplaneAPIClient
 
 struct SecondFactorView: View {
-	@Binding var isLoggingIn: Bool
 	@ObservedObject var viewModel: AuthViewModel
+	@EnvironmentObject var navigationCoordinator: NavigationCoordinator
 	
 	@State var secondFactorCode: String = ""
 	
@@ -38,7 +38,7 @@ struct SecondFactorView: View {
 							focusedField = .secondFactorField
 						} else {
 							viewModel.attemptSecondFactor(secondFactorCode: secondFactorCode, isLoggedIn: {
-								self.isLoggingIn = false
+								navigationCoordinator.popToRoot()
 							})
 						}
 					}, label: {
@@ -72,10 +72,9 @@ There was an error while attempting to log in.
 }
 
 struct SecondFactorView_Previews: PreviewProvider {
-	@State static var isLoggingIn = true
 	static var previews: some View {
 		Group {
-			SecondFactorView(isLoggingIn: $isLoggingIn, viewModel: AuthViewModel(fpApiService: MockFPAPIService()))
+			SecondFactorView(viewModel: AuthViewModel(fpApiService: MockFPAPIService()))
 		}
 	}
 }

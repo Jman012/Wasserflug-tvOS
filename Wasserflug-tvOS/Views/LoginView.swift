@@ -2,8 +2,8 @@ import SwiftUI
 import FloatplaneAPIClient
 
 struct LoginView: View {
-	@Binding var isLoggingIn: Bool
 	@ObservedObject var viewModel: AuthViewModel
+	@EnvironmentObject var navigationCoordinator: NavigationCoordinator
 	
 	@State var username: String = ""
 	@State var password: String = ""
@@ -60,7 +60,9 @@ struct LoginView: View {
 							focusedField = .passwordField
 						} else {
 							viewModel.attemptLogin(username: username, password: password, isLoggedIn: {
-								self.isLoggingIn = false
+								navigationCoordinator.popToRoot()
+							}, needsSecondFactor: {
+								navigationCoordinator.push(authStep: .secondFactor)
 							})
 						}
 					}, label: {
@@ -79,9 +81,6 @@ struct LoginView: View {
 			}
 			.frame(maxWidth: .infinity, maxHeight: .infinity)
 		}
-		.navigationDestination(isPresented: $viewModel.needsSecondFactor, destination: {
-			SecondFactorView(isLoggingIn: $isLoggingIn, viewModel: viewModel)
-		})
 		.alert("Login", isPresented: $viewModel.showIncorrectLoginAlert, actions: { }, message: {
 			if let error = viewModel.loginError {
 				Text("""
@@ -100,10 +99,9 @@ If you have forgotten your password, please reset it via https://www.floatplane.
 }
 
 struct LoginView_Previews: PreviewProvider {
-	@State static var isLoggingIn = true
 	static var previews: some View {
 		Group {
-			LoginView(isLoggingIn: $isLoggingIn, viewModel: AuthViewModel(fpApiService: MockFPAPIService()))
+			LoginView(viewModel: AuthViewModel(fpApiService: MockFPAPIService()))
 		}
 	}
 }

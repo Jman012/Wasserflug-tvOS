@@ -45,7 +45,7 @@ struct SettingsView: View {
 			HStack {
 				Button(action: {
 					FloatplaneAPIClientAPI.removeAuthenticationCookies()
-					NotificationCenter.default.post(name: ContentView.Notifications.loggedOut, object: nil)
+					NotificationCenter.default.post(name: .loggedOut, object: nil)
 				}, label: {
 					Text("Logout")
 				})

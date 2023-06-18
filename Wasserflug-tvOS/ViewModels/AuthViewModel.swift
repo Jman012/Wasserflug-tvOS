@@ -14,7 +14,6 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 	@Published var isAttemptingLogin = false
 	@Published var showIncorrectLoginAlert = false
 	@Published var loginError: Error? = nil
-	@Published var needsSecondFactor = false
 	@Published var isAttemptingSecondFactor = false
 	@Published var showIncorrectSecondFactorAlert = false
 	@Published var secondFactorError: Error? = nil
@@ -159,7 +158,7 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 		}
 	}
 	
-	func attemptLogin(username: String, password: String, isLoggedIn: @escaping () -> Void) {
+	func attemptLogin(username: String, password: String, isLoggedIn: @escaping () -> Void, needsSecondFactor: @escaping () -> Void) {
 		isAttemptingLogin = true
 		
 		logger.info("Attempting login action.", metadata: [
@@ -181,7 +180,7 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 							
 							if response.needs2FA {
 								self.logger.notice("Successfully logged in as user '\(username)'. Requires second factor to continue authentication process.")
-								self.needsSecondFactor = true
+								needsSecondFactor()
 							} else {
 								self.logger.notice("Successfully logged in as user '\(username)'. No second factor required.", metadata: [
 									"id": "\(response.user?.id ?? "<no user object found>")",
