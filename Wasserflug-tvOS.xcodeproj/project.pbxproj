@@ -13,6 +13,9 @@
 		E71FDB3C27D3F89200A9C88B /* Swift+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB3B27D3F89200A9C88B /* Swift+Extensions.swift */; };
 		E71FDB7927E66D7E00A9C88B /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB7827E66D7E00A9C88B /* Persistence.swift */; };
 		E71FDB7C27E66DB100A9C88B /* Wasserflug.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB7A27E66DB100A9C88B /* Wasserflug.xcdatamodeld */; };
+		E72E39732A3F8CF000F33C67 /* FPColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72E39722A3F8CF000F33C67 /* FPColors.swift */; };
+		E72E39752A3F8D0400F33C67 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72E39742A3F8D0400F33C67 /* NavigationCoordinator.swift */; };
+		E72E39772A3F8D8100F33C67 /* NotificationName+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72E39762A3F8D8100F33C67 /* NotificationName+Extensions.swift */; };
 		E731AF0F289B22AC00A2DAD7 /* AttachmentPills.swift in Sources */ = {isa = PBXBuildFile; fileRef = E731AF0E289B22AC00A2DAD7 /* AttachmentPills.swift */; };
 		E7326D282A2D0C1F0065C016 /* CreatorOrChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7326D272A2D0C1F0065C016 /* CreatorOrChannel.swift */; };
 		E74C98A32A080AAC00FDDB9C /* RootTabView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74C98A22A080AAC00FDDB9C /* RootTabView2.swift */; };
@@ -91,6 +94,9 @@
 		E71FDB3B27D3F89200A9C88B /* Swift+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Swift+Extensions.swift"; sourceTree = "<group>"; };
 		E71FDB7827E66D7E00A9C88B /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		E71FDB7B27E66DB100A9C88B /* Wasserflug.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Wasserflug.xcdatamodel; sourceTree = "<group>"; };
+		E72E39722A3F8CF000F33C67 /* FPColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPColors.swift; sourceTree = "<group>"; };
+		E72E39742A3F8D0400F33C67 /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
+		E72E39762A3F8D8100F33C67 /* NotificationName+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Extensions.swift"; sourceTree = "<group>"; };
 		E731AF0E289B22AC00A2DAD7 /* AttachmentPills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentPills.swift; sourceTree = "<group>"; };
 		E7326D272A2D0C1F0065C016 /* CreatorOrChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorOrChannel.swift; sourceTree = "<group>"; };
 		E74C98A22A080AAC00FDDB9C /* RootTabView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView2.swift; sourceTree = "<group>"; };
@@ -322,6 +328,9 @@
 				E70F775629D90D4900869BE3 /* Errors.swift */,
 				E7F2F23C2A113F0000602991 /* OnCustomAppear.swift */,
 				E7326D272A2D0C1F0065C016 /* CreatorOrChannel.swift */,
+				E72E39722A3F8CF000F33C67 /* FPColors.swift */,
+				E72E39742A3F8D0400F33C67 /* NavigationCoordinator.swift */,
+				E72E39762A3F8D8100F33C67 /* NotificationName+Extensions.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -515,10 +524,13 @@
 				E75337A727CB06BE0010E3D2 /* BaseViewModel.swift in Sources */,
 				E75337B527CB06BE0010E3D2 /* LivestreamPlayerView.swift in Sources */,
 				E75337A827CB06BE0010E3D2 /* LivestreamViewModel.swift in Sources */,
+				E72E39772A3F8D8100F33C67 /* NotificationName+Extensions.swift in Sources */,
 				E753379F27CB06BE0010E3D2 /* VideoPlayerView.swift in Sources */,
 				E75337A227CB06BE0010E3D2 /* BlogPostSelectionView.swift in Sources */,
 				E75337B427CB06BE0010E3D2 /* CreatorContentView.swift in Sources */,
 				E7326D282A2D0C1F0065C016 /* CreatorOrChannel.swift in Sources */,
+				E72E39732A3F8CF000F33C67 /* FPColors.swift in Sources */,
+				E72E39752A3F8D0400F33C67 /* NavigationCoordinator.swift in Sources */,
 				E75337A327CB06BE0010E3D2 /* ErrorView.swift in Sources */,
 				E75337AE27CB06BE0010E3D2 /* SettingsView.swift in Sources */,
 				E71FDB7C27E66DB100A9C88B /* Wasserflug.xcdatamodeld in Sources */,
