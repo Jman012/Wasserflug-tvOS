@@ -52,6 +52,8 @@ struct PlayButton: View {
 		}
 			.buttonStyle(.card)
 			.onPlayPauseCommand(perform: self.action)
+			.accessibilityLabel("Play video")
+			.accessibilityHint("Plays the video")
 	}
 }
 

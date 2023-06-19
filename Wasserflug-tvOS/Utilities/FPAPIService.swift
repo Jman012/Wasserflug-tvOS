@@ -5568,7 +5568,7 @@ enum MockStaticData {
 			"childImages": []
 		}
 	},
-	"tags": [],
+	"tags": ["server", "apple"],
 	"attachmentOrder": [
 		"kx3hhG4yjR"
 	],

@@ -50,6 +50,7 @@ struct PlayMediaView<Content>: View where Content: View {
 						.resizable()
 						.scaledToFit()
 						.frame(width: width)
+						.accessibilityLabel("Thumbnail")
 					
 					// Watch progress indicator
 					GeometryReader { geometry in
@@ -62,6 +63,7 @@ struct PlayMediaView<Content>: View where Content: View {
 					}
 					.frame(height: isFocused ? 16 : 8)
 					.animation(.spring(), value: isFocused)
+					.accessibilityLabel(progress == 0 ? "Not watched" : progress == 1 ? "Watched" : "\(Int(progress * 100)) percent watched")
 				}
 					.frame(width: width)
 					// Apply the cornerRadius on the ZStack to get the corners of the watch progress indicator
@@ -93,6 +95,7 @@ struct PlayMediaView<Content>: View where Content: View {
 					})
 			}
 		}
+		.accessibilityElement(children: .contain)
 	}
 }
 

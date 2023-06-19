@@ -83,8 +83,9 @@ struct BlogPostSelectionView: View {
 							}
 							.frame(height: isFocused ? 16 : 8)
 							.animation(.spring(), value: isFocused)
+							.accessibilityLabel(progress == 0 ? "Not watched" : progress == 1 ? "Watched" : "\(Int(progress * 100)) percent watched")
 						}
-						.cornerRadius(10.0)
+							.cornerRadius(10.0)
 					}, placeholder: {
 						ZStack {
 							ProgressView()
@@ -165,6 +166,7 @@ struct BlogPostSelectionView: View {
 								Image(systemName: "clock")
 								Text("\(TimeInterval(duration).floatplaneTimestamp)")
 									.lineLimit(1)
+									.accessibilityLabel("Duration \(TimeInterval(duration).accessibileFloatplanetimestamp)")
 							}
 						}
 							.font(.system(size: 18, weight: .light))

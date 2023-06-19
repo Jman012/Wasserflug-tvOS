@@ -18,7 +18,6 @@ struct BlogPostView: View {
 		switch viewModel.state {
 		case .idle:
 			ProgressView()
-				.frame(width: .infinity, height: .infinity)
 				.onAppear(perform: {
 					viewModel.load(colorScheme: colorScheme)
 				})
@@ -37,16 +36,23 @@ struct BlogPostView: View {
 						// Title
 						Text(content.title)
 							.font(.title3)
+							.accessibilityIdentifier("Title")
 						
 						// Tags under the title
-						HStack(alignment: .top, spacing: 20) {
-							ForEach(content.tags, id: \.self) { tag in
-								Text("#" + tag)
-									.foregroundColor(FPColors.blue)
-									.font(.subheadline)
+						if !content.tags.isEmpty {
+							HStack(alignment: .top, spacing: 20) {
+								ForEach(content.tags, id: \.self) { tag in
+									Text("#" + tag)
+										.foregroundColor(FPColors.blue)
+										.font(.subheadline)
+										.accessibilityLabel(tag)
+								}
 							}
-						}
 							.padding([.bottom])
+							.accessibilityElement(children: .ignore)
+							.accessibilityLabel("Tags")
+							.accessibilityValue(String(content.tags.joined(by: ", ")))
+						}
 						
 						/* Thumbnail and description row */
 						HStack(alignment: .top, spacing: 40) {
@@ -66,6 +72,7 @@ struct BlogPostView: View {
 								defaultInNamespace: screenNamespace,
 								isShowingMedia: shouldAutoPlay,
 								watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", content.id, content.firstVideoAttachmentId ?? ""), animation: .default))
+							.accessibilityIdentifier("Thumbnail and play button")
 
 							// Creator pfp, publish date, and description
 							VStack(alignment: .leading) {
@@ -80,14 +87,17 @@ struct BlogPostView: View {
 										ProgressView()
 											.frame(width: 75, height: 75)
 									})
+										.accessibilityHidden(true)
 									
 									VStack(alignment: .leading) {
 										// Creator name
-										Text(content.creator.title)
+										Text(content.channel.title)
 											.font(.headline)
+											.accessibilityIdentifier("Channel")
 										// Blog post publish date
 										Text("\(content.releaseDate)")
 											.font(.caption)
+											.accessibilityIdentifier("Release date")
 									}
 									Spacer()
 								}
@@ -96,6 +106,7 @@ struct BlogPostView: View {
 									.font(.body)
 									.lineLimit(15)
 									.padding([.top])
+									.accessibilityIdentifier("Description")
 							}
 						}
 							.focusSection()
@@ -106,25 +117,31 @@ struct BlogPostView: View {
 								.fill(.clear)
 							HStack {
 								// Like button
+								let additionalLikes = viewModel.isLiked && viewModel.latestUserInteraction != nil ? 1 : 0
 								Button(action: {
 									viewModel.like()
 								}) {
 									Image(systemName: viewModel.isLiked ? "hand.thumbsup.fill" : "hand.thumbsup")
-									let additional = viewModel.isLiked && viewModel.latestUserInteraction != nil ? 1 : 0
-									Text("\(content.likes + additional)")
+									Text("\(content.likes + additionalLikes)")
 								}
 									.prefersDefaultFocus(in: likeDislikeCommentNamespace)
 									.foregroundColor(viewModel.isLiked ? FPColors.blue : colorScheme == .light ? Color.black : Color.white)
+									.accessibilityLabel("Like")
+									.accessibilityValue("\(content.likes + additionalLikes) likes")
+									.accessibilityHint(viewModel.isLiked ? "Removes like from post" : "Likes the post")
 
 								// Dislike button
+								let additionalDislikes = viewModel.isDisliked && viewModel.latestUserInteraction != nil ? 1 : 0
 								Button(action: {
 									viewModel.dislike()
 								}) {
 									Image(systemName: viewModel.isDisliked ? "hand.thumbsdown.fill" : "hand.thumbsdown")
-									let additional = viewModel.isDisliked && viewModel.latestUserInteraction != nil ? 1 : 0
-									Text("\(content.dislikes + additional)")
+									Text("\(content.dislikes + additionalDislikes)")
 								}
 									.foregroundColor(viewModel.isDisliked ? FPColors.blue : colorScheme == .light ? Color.black : Color.white)
+									.accessibilityLabel("Dislike")
+									.accessibilityValue("\(content.dislikes + additionalDislikes) dislikes")
+									.accessibilityHint(viewModel.isLiked ? "Removes dislike from post" : "Dislikes the post")
 
 								// Comments label
 								Text("\(content.comments) comment\(content.comments == 1 ? "" : "s")")
@@ -140,7 +157,6 @@ struct BlogPostView: View {
 							BlogPostContentView(geometry: geometry, content: content, fpApiService: fpApiService, description: viewModel.textAttributedString)
 						}
 					}
-					
 				}
 			}
 				.focusScope(screenNamespace)
