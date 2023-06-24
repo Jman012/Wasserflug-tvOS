@@ -189,7 +189,7 @@ struct RootTabView2: View {
 				})
 				.buttonStyle(.plain)
 				.focused($focusedItem, equals: TabSelection.home)
-				.accessibilityLabel("Home")
+				.accessibilityLabel("Home view")
 				.accessibilityHint("Go to the home screen to view all subscription content")
 			}
 			.padding([.top], 30)

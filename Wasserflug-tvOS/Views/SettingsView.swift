@@ -36,6 +36,7 @@ struct SettingsView: View {
 						ProgressView()
 							.frame(width: pfpSize, height: pfpSize)
 					})
+						.accessibilityLabel("Logged-in user profile picture")
 				}
 				.padding([.top])
 			}
