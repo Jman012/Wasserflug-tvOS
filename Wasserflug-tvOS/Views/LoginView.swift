@@ -3,7 +3,7 @@ import FloatplaneAPIClient
 
 struct LoginView: View {
 	@ObservedObject var viewModel: AuthViewModel
-	@EnvironmentObject var navigationCoordinator: NavigationCoordinator
+	@EnvironmentObject var navigationCoordinator: NavigationCoordinator<WasserflugRoute>
 	
 	@State var username: String = ""
 	@State var password: String = ""
@@ -62,7 +62,7 @@ struct LoginView: View {
 							viewModel.attemptLogin(username: username, password: password, isLoggedIn: {
 								navigationCoordinator.popToRoot()
 							}, needsSecondFactor: {
-								navigationCoordinator.push(authStep: .secondFactor)
+								navigationCoordinator.push(route: .secondFactor)
 							})
 						}
 					}, label: {

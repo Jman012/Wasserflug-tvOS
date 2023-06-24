@@ -8,17 +8,18 @@ struct ContentView: View {
 	@ObservedObject var viewModel: AuthViewModel
 	
 	@Environment(\.colorScheme) var colorScheme
+	@Environment(\.fpApiService) var fpApiService
 	
-	@StateObject var navigationCoordinator = NavigationCoordinator()
+	@StateObject var navigationCoordinator = NavigationCoordinator<WasserflugRoute>()
 	@State var hasInitiallyLoaded = false
 	@State var showErrorMoreDetails = false
 	
 	@AppStorage(SettingsView.showNewSidebarKey) var showNewSidebar: Bool = true
 	
 	var body: some View {
-		ZStack {
-			if viewModel.isLoadingAuthStatus || !viewModel.isLoggedIn {
-				NavigationStack(path: $navigationCoordinator.path) {
+		NavigationStack(path: $navigationCoordinator.path) {
+			ZStack {
+				if viewModel.isLoadingAuthStatus || !viewModel.isLoggedIn {
 					ZStack {
 						// Logo and headings in center
 						HStack {
@@ -28,9 +29,11 @@ struct ContentView: View {
 								.foregroundColor(colorScheme == .dark ? .white : .black)
 								.scaledToFit()
 								.frame(height: 300)
+								.accessibilityHidden(true)
 							VStack {
 								Text("Wasserflug")
 									.font(.title)
+									.accessibilityAddTraits(.isHeader)
 								Text("An unofficial Floatplane client")
 							}
 						}
@@ -40,44 +43,55 @@ struct ContentView: View {
 							Spacer()
 							if viewModel.isLoadingAuthStatus {
 								ProgressView()
+									.accessibilityLabel("Loading")
 							} else if !viewModel.isLoggedIn {
-								NavigationLink("Login", value: AuthStep.login)
+								NavigationLink("Login", value: WasserflugRoute.login)
+									.accessibilityHint("Login to Wasserflug")
 							}
 						}
 					}
 					.onAppear {
 						viewModel.determineAuthenticationStatus()
 					}
-					.navigationDestination(for: AuthStep.self, destination: { step in
-						switch step {
-						case .login:
-							LoginView(viewModel: viewModel)
-						case .secondFactor:
-							SecondFactorView(viewModel: viewModel)
-						}
-					})
-				}
-				.environmentObject(navigationCoordinator)
-				.background(ZStack {
-					// Background blurred image of FP website splash image
-					Image("splash-bg")
-						.resizable()
-						.scaledToFill()
-					VisualEffectView(effect: UIBlurEffect(style: colorScheme == .dark ? .dark : .light))
-				}.ignoresSafeArea())
-			} else {
-				// Main content view if logged in
-				if showNewSidebar {
-					RootTabView2()
+					.background(ZStack {
+						// Background blurred image of FP website splash image
+						Image("splash-bg")
+							.resizable()
+							.scaledToFill()
+						VisualEffectView(effect: UIBlurEffect(style: colorScheme == .dark ? .dark : .light))
+					}
+						.ignoresSafeArea()
+						.accessibilityHidden(true))
 				} else {
-					RootTabView()
+					// Main content view if logged in
+					ZStack {
+						if showNewSidebar {
+							RootTabView2()
+						} else {
+							RootTabView()
+						}
+					}
 				}
 			}
+			.navigationDestination(for: WasserflugRoute.self, destination: { route in
+				switch route {
+				case .login:
+					LoginView(viewModel: viewModel)
+				case .secondFactor:
+					SecondFactorView(viewModel: viewModel)
+				case let .blogPostView(blogPostId: blogPostId, autoPlay: autoPlay):
+					BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService, id: blogPostId),
+								 shouldAutoPlay: autoPlay)
+				default:
+					Text("to do")
+				}
+			})
 		}
 		.overlay(alignment: .topTrailing, content: {
 			ToastBarView()
 		})
 		.environmentObject(viewModel.userInfo)
+		.environmentObject(navigationCoordinator) // Inject the navigation coordinator for children to access
 		.onReceive(NotificationCenter.default.publisher(for: .loggedOut, object: nil), perform: { _ in
 			viewModel.determineAuthenticationStatus()
 		})

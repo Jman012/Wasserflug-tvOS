@@ -49,11 +49,11 @@ struct PlayButton: View {
 					.foregroundColor(.white)
 					.font(.system(size: size.imageSize))
 			}
+			.accessibilityLabel("Play video")
+			.accessibilityHint("Plays the video")
 		}
 			.buttonStyle(.card)
 			.onPlayPauseCommand(perform: self.action)
-			.accessibilityLabel("Play video")
-			.accessibilityHint("Plays the video")
 	}
 }
 

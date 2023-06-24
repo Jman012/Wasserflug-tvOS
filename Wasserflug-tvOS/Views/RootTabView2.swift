@@ -48,6 +48,9 @@ struct RootTabView2: View {
 		.onAppear {
 			contentIsFocused = true
 		}
+		.onChange(of: tabSelection) { _ in
+			UIAccessibility.post(notification: .screenChanged, argument: nil)
+		}
 	}
 	
 	var contentView: some View {
@@ -197,9 +200,6 @@ struct RootTabView2: View {
 										proxy.scrollTo(focusedItem)
 									}
 								})
-								.onChange(of: focusedItem, perform: { focusedItem in
-									
-								})
 							
 							ForEach(creator.channels, id: \.id) { channel in
 								button(forChannel: channel, creator: creator)
@@ -209,9 +209,6 @@ struct RootTabView2: View {
 										if focusedItem == .channel(channel.id) {
 											proxy.scrollTo(focusedItem)
 										}
-									})
-									.onChange(of: focusedItem, perform: { focusedItem in
-										
 									})
 							}
 						}
@@ -284,12 +281,12 @@ struct RootTabView2: View {
 			.padding(showMenu || isSelected ? 15 : 0)
 			.background(isSelected ? VisualEffectView(effect: UIBlurEffect(style: .light)) : nil)
 			.animation(.spring(), value: showMenu)
+			.accessibilityElement(children: .ignore)
+			.accessibilityLabel("Creator \(creator.title)")
+			.accessibilityHint("Go to the creator page for \(creator.title)")
 		})
 		.background(.clear)
 		.buttonStyle(.card)
-		.accessibilityElement(children: .ignore)
-		.accessibilityLabel("Creator \(creator.title)")
-		.accessibilityHint("Go to the creator page for \(creator.title)")
 	}
 	
 	func button(forChannel channel: ChannelModel, creator: CreatorModelV3) -> some View {
@@ -322,12 +319,12 @@ struct RootTabView2: View {
 			.padding(showMenu || isSelected ? 15 : 0)
 			.background(isSelected ? VisualEffectView(effect: UIBlurEffect(style: .light)) : nil)
 			.animation(.spring(), value: showMenu)
+			.accessibilityElement(children: .ignore)
+			.accessibilityLabel("Channel \(channel.title)")
+			.accessibilityHint("Go to the channel page for \(channel.title)")
 		})
 		.background(.clear)
 		.buttonStyle(.card)
-		.accessibilityElement(children: .ignore)
-		.accessibilityLabel("Channel \(channel.title)")
-		.accessibilityHint("Go to the channel page for \(channel.title)")
 	}
 }
 

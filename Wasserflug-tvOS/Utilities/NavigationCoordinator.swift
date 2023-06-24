@@ -1,19 +1,27 @@
 import Foundation
 import SwiftUI
+import FloatplaneAPIClient
 
-enum AuthStep {
+enum WasserflugRoute: Hashable {
+	// Flow: authentication
 	case login
 	case secondFactor
+	
+	// Flow: main content
+	case blogPostView(blogPostId: String, autoPlay: Bool)
+	case searchView
+	case livestreamView
+	case videoView(videoAttachment: VideoAttachmentModel, content: ContentPostV3Response, description: AttributedString, beginningWatchTime: Double)
 }
 
-class NavigationCoordinator: ObservableObject {
+class NavigationCoordinator<Route>: ObservableObject where Route : Hashable {
 	@Published var path = NavigationPath()
 
 	func popToRoot() {
 		path.removeLast(path.count)
 	}
 	
-	func push(authStep: AuthStep) {
-		path.append(authStep)
+	func push(route: Route) {
+		path.append(route)
 	}
 }

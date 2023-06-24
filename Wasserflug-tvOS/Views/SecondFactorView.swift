@@ -3,7 +3,7 @@ import FloatplaneAPIClient
 
 struct SecondFactorView: View {
 	@ObservedObject var viewModel: AuthViewModel
-	@EnvironmentObject var navigationCoordinator: NavigationCoordinator
+	@EnvironmentObject var navigationCoordinator: NavigationCoordinator<WasserflugRoute>
 	
 	@State var secondFactorCode: String = ""
 	

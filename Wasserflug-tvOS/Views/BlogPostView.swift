@@ -36,7 +36,7 @@ struct BlogPostView: View {
 						// Title
 						Text(content.title)
 							.font(.title3)
-							.accessibilityIdentifier("Title")
+							.accessibilityAddTraits(.isHeader)
 						
 						// Tags under the title
 						if !content.tags.isEmpty {
@@ -122,13 +122,14 @@ struct BlogPostView: View {
 									viewModel.like()
 								}) {
 									Image(systemName: viewModel.isLiked ? "hand.thumbsup.fill" : "hand.thumbsup")
+										.accessibility(hidden: true)
 									Text("\(content.likes + additionalLikes)")
+										.accessibilityLabel("Like")
+										.accessibilityValue("\(content.likes + additionalLikes) likes")
+										.accessibilityHint(viewModel.isLiked ? "Removes like from post" : "Likes the post")
 								}
 									.prefersDefaultFocus(in: likeDislikeCommentNamespace)
 									.foregroundColor(viewModel.isLiked ? FPColors.blue : colorScheme == .light ? Color.black : Color.white)
-									.accessibilityLabel("Like")
-									.accessibilityValue("\(content.likes + additionalLikes) likes")
-									.accessibilityHint(viewModel.isLiked ? "Removes like from post" : "Likes the post")
 
 								// Dislike button
 								let additionalDislikes = viewModel.isDisliked && viewModel.latestUserInteraction != nil ? 1 : 0
@@ -136,12 +137,13 @@ struct BlogPostView: View {
 									viewModel.dislike()
 								}) {
 									Image(systemName: viewModel.isDisliked ? "hand.thumbsdown.fill" : "hand.thumbsdown")
+										.accessibility(hidden: true)
 									Text("\(content.dislikes + additionalDislikes)")
+										.accessibilityLabel("Dislike")
+										.accessibilityValue("\(content.dislikes + additionalDislikes) dislikes")
+										.accessibilityHint(viewModel.isLiked ? "Removes dislike from post" : "Dislikes the post")
 								}
 									.foregroundColor(viewModel.isDisliked ? FPColors.blue : colorScheme == .light ? Color.black : Color.white)
-									.accessibilityLabel("Dislike")
-									.accessibilityValue("\(content.dislikes + additionalDislikes) dislikes")
-									.accessibilityHint(viewModel.isLiked ? "Removes dislike from post" : "Dislikes the post")
 
 								// Comments label
 								Text("\(content.comments) comment\(content.comments == 1 ? "" : "s")")
