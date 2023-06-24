@@ -9,6 +9,7 @@ struct ContentView: View {
 	
 	@Environment(\.colorScheme) var colorScheme
 	@Environment(\.fpApiService) var fpApiService
+	@Environment(\.managedObjectContext) var managedObjectContext
 	
 	@StateObject var navigationCoordinator = NavigationCoordinator<WasserflugRoute>()
 	@State var hasInitiallyLoaded = false
@@ -82,8 +83,12 @@ struct ContentView: View {
 				case let .blogPostView(blogPostId: blogPostId, autoPlay: autoPlay):
 					BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService, id: blogPostId),
 								 shouldAutoPlay: autoPlay)
-				default:
-					Text("to do")
+				case let .searchView(creatorOrChannel: creatorOrChannel, creatorOwner: creatorOwner):
+					CreatorSearchView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: creatorOrChannel, creatorOwner: creatorOwner), creatorName: creatorOrChannel.title)
+				case let .livestreamView(creatorId: creatorId):
+					LivestreamView(viewModel: LivestreamViewModel(fpApiService: fpApiService, creatorId: creatorId))
+				case let .videoView(videoAttachment: video, content: content, description: description, beginningWatchTime: beginningWatchTime):
+					VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: video, contentPost: content, description: description), beginningWatchTime: beginningWatchTime)
 				}
 			})
 		}

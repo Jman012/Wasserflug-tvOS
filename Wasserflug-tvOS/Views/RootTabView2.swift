@@ -23,7 +23,7 @@ struct RootTabView2: View {
 	@Environment(\.fpApiService) var fpApiService
 	@Environment(\.managedObjectContext) var managedObjectContext
 	
-	let fixedWidth: CGFloat = 165
+	let fixedWidth: CGFloat = 140
 	@State var tabSelection: TabSelection = .home
 	@State var state: SideBarState = .collapsed
 	
@@ -76,13 +76,13 @@ struct RootTabView2: View {
 				.accessibilityHidden(tabSelection == .home ? false : true)
 
 			ForEach(userInfo.creatorsInOrder, id: \.0.id) { (creator, creatorOwner) in
-				CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: creator, creatorOwner: creatorOwner), livestreamViewModel: LivestreamViewModel(fpApiService: fpApiService, creatorId: creator.id))
+				CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: creator, creatorOwner: creatorOwner))
 					.customAppear(tabSelection == .creator(creator.id) ? .appear : .disappear)
 					.opacity(tabSelection == .creator(creator.id) ? 1 : 0)
 					.accessibilityHidden(tabSelection == .creator(creator.id) ? false : true)
 				
 				ForEach(creator.channels, id: \.id) { channel in
-					CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: channel, creatorOwner: creatorOwner), livestreamViewModel: LivestreamViewModel(fpApiService: fpApiService, creatorId: creator.id))
+					CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: channel, creatorOwner: creatorOwner))
 						.customAppear(tabSelection == .channel(channel.id) ? .appear : .disappear)
 						.opacity(tabSelection == .channel(channel.id) ? 1 : 0)
 						.accessibilityHidden(tabSelection == .channel(channel.id) ? false : true)

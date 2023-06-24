@@ -13,6 +13,8 @@ struct BlogPostContentView: View {
 	@State var showingPicture: PictureAttachmentModel? = nil
 	@State var showAudioAttachmentFeatureMissing = false
 	
+	@EnvironmentObject var navCoordinator: NavigationCoordinator<WasserflugRoute>
+	
 	var orderedAttachmentIds: [String: Int] {
 		return content.attachmentOrder.enumerated().reduce(into: [String: Int](), { $0[$1.element] = $1.offset })
 	}
@@ -57,13 +59,12 @@ struct BlogPostContentView: View {
 						VStack {
 							PlayMediaView(
 								thumbnail: video.thumbnail,
-								showPlayButton: true,
+								viewMode: .playButton,
 								width: geometry.size.width * 0.2,
 								playButtonSize: .small,
 								playContent: { beginningWatchTime in
-									VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: video, contentPost: content, description: description), beginningWatchTime: beginningWatchTime)
+									navCoordinator.push(route: .videoView(videoAttachment: video, content: content, description: description, beginningWatchTime: beginningWatchTime))
 								},
-								defaultInNamespace: nil,
 								watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", content.id, video.id), animation: .default)
 							)
 							Text(video.title)

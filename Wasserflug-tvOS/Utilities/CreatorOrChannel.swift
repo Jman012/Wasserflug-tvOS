@@ -36,3 +36,42 @@ extension ChannelModel: CreatorOrChannel {
 		about.replacingOccurrences(of: "\n\n", with: " ")
 	}
 }
+
+struct AnyCreatorOrChannel: CreatorOrChannel, Hashable {
+	private let creatorOrChannel: CreatorOrChannel
+	
+	var id: String { creatorOrChannel.id }
+	var title: String { creatorOrChannel.title }
+	var about: String { creatorOrChannel.about }
+	var cover: ImageModel? { creatorOrChannel.cover }
+	var icon: ImageModel { creatorOrChannel.icon }
+	var creatorId: String { creatorOrChannel.creatorId }
+	var channelId: String? { creatorOrChannel.channelId }
+	var aboutFixed: String { creatorOrChannel.aboutFixed }
+	
+	init(_ creatorOrChannel: CreatorOrChannel) {
+		self.creatorOrChannel = creatorOrChannel
+	}
+	
+	static func == (lhs: AnyCreatorOrChannel, rhs: AnyCreatorOrChannel) -> Bool {
+		return lhs.id == rhs.id &&
+		lhs.title == rhs.title &&
+		lhs.about == rhs.about &&
+		lhs.cover == rhs.cover &&
+		lhs.icon == rhs.icon &&
+		lhs.creatorId == rhs.creatorId &&
+		lhs.channelId == rhs.channelId &&
+		lhs.aboutFixed == rhs.aboutFixed
+	}
+	
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(id)
+		hasher.combine(title)
+		hasher.combine(about)
+		hasher.combine(cover)
+		hasher.combine(icon)
+		hasher.combine(creatorId)
+		hasher.combine(channelId)
+		hasher.combine(aboutFixed)
+	}
+}

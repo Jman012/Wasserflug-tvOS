@@ -2,14 +2,18 @@ import SwiftUI
 import FloatplaneAPIClient
 import CachedAsyncImage
 
-struct PlayMediaView<Content>: View where Content: View {
+struct PlayMediaView: View {
+	
+	enum ViewMode {
+		case playButton
+		case imageCard
+	}
 	
 	let thumbnail: ImageModelShared?
-	let showPlayButton: Bool
+	let viewMode: ViewMode
 	let width: CGFloat?
 	let playButtonSize: PlayButton.Size
-	let playContent: (Double) -> Content
-	let defaultInNamespace: Namespace.ID?
+	let playContent: (Double) -> Void
 	
 	@State var isShowingMedia = false
 	@FetchRequest var watchProgresses: FetchedResults<WatchProgress>
@@ -25,77 +29,63 @@ struct PlayMediaView<Content>: View where Content: View {
 	}
 	
 	var body: some View {
-		ZStack {
-			if showPlayButton {
+		switch viewMode {
+		case .playButton:
+			ZStack {
 				image
-			} else {
-				Button(action: {
-					isShowingMedia = true
-				}, label: {
-					image
+				
+				PlayButton(size: playButtonSize, action: {
+					self.playContent(progress)
 				})
-					.buttonStyle(.card)
 					.focused($isFocused)
-					.padding()
 			}
+		case .imageCard:
+			Button(action: {
+				self.playContent(progress)
+			}, label: {
+				image
+			})
+				.buttonStyle(.card)
+				.focused($isFocused)
+				.padding()
 		}
 	}
 	
 	var image: some View {
-		ZStack {
-			CachedAsyncImage(url: thumbnail.pathUrlOrNil, content: { image in
-				ZStack(alignment: .bottomLeading) {
-					// Thumbnail image
-					image
-						.resizable()
-						.scaledToFit()
-						.frame(width: width)
-						.accessibilityLabel("Thumbnail")
-					
-					// Watch progress indicator
-					GeometryReader { geometry in
-						Rectangle()
-							.fill(LinearGradient(colors: [FPColors.watchProgressIndicatorBegin, FPColors.watchProgressIndicatorEnd], startPoint: .leading, endPoint: .trailing))
-							.frame(width: geometry.size.width)
-							.mask(alignment: .leading) {
-								Rectangle().frame(width: geometry.size.width * progress)
-							}
-					}
-					.frame(height: isFocused ? 16 : 8)
-					.animation(.spring(), value: isFocused)
-					.accessibilityLabel(progress == 0 ? "Not watched" : progress == 1 ? "Watched" : "\(Int(progress * 100)) percent watched")
-				}
+		CachedAsyncImage(url: thumbnail.pathUrlOrNil, content: { image in
+			ZStack(alignment: .bottomLeading) {
+				// Thumbnail image
+				image
+					.resizable()
+					.scaledToFit()
 					.frame(width: width)
-					// Apply the cornerRadius on the ZStack to get the corners of the watch progress indicator
-					.cornerRadius(10.0)
-			}, placeholder: {
-				ZStack {
-					ProgressView()
+					.accessibilityLabel("Thumbnail")
+				
+				// Watch progress indicator
+				GeometryReader { geometry in
 					Rectangle()
-						.fill(.clear)
-						.aspectRatio(thumbnail?.aspectRatio ?? 1.0, contentMode: .fit)
-						.frame(width: width)
+						.fill(LinearGradient(colors: [FPColors.watchProgressIndicatorBegin, FPColors.watchProgressIndicatorEnd], startPoint: .leading, endPoint: .trailing))
+						.frame(width: geometry.size.width)
+						.mask(alignment: .leading) {
+							Rectangle().frame(width: geometry.size.width * progress)
+						}
 				}
-			})
-			
-			if showPlayButton {
-				PlayButton(size: playButtonSize, action: {
-					isShowingMedia = true
-				})
-					.focused($isFocused)
-					// If a namespace is provided, then prefer default focus on it.
-					.optionalPrefersDefaultFocus(in: defaultInNamespace)
-					.fullScreenCover(isPresented: $isShowingMedia, onDismiss: {
-						isShowingMedia = false
-					}, content: {
-						playContent(Double(progress))
-							.overlay(alignment: .topTrailing, content: {
-								ToastBarView()
-							})
-					})
+				.frame(height: isFocused ? 16 : 8)
+				.animation(.spring(), value: isFocused)
+				.accessibilityLabel(progress == 0 ? "Not watched" : progress == 1 ? "Watched" : "\(Int(progress * 100)) percent watched")
 			}
-		}
-		.accessibilityElement(children: .contain)
+				.frame(width: width)
+				// Apply the cornerRadius on the ZStack to get the corners of the watch progress indicator
+				.cornerRadius(10.0)
+		}, placeholder: {
+			ZStack {
+				ProgressView()
+				Rectangle()
+					.fill(.clear)
+					.aspectRatio(thumbnail?.aspectRatio ?? 1.0, contentMode: .fit)
+					.frame(width: width)
+			}
+		})
 	}
 }
 
@@ -104,22 +94,20 @@ struct PlayMediaView_Previews: PreviewProvider {
 		VStack {
 			PlayMediaView(
 				thumbnail: MockData.blogPosts.blogPosts.first!.thumbnail,
-				showPlayButton: true,
+				viewMode: .playButton,
 				width: 200,
 				playButtonSize: .small,
-				playContent: { _ in EmptyView() },
-				defaultInNamespace: nil,
+				playContent: { _ in },
 				watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
 			)
 				.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 
 			PlayMediaView(
 				thumbnail: MockData.blogPosts.blogPosts.first!.thumbnail,
-				showPlayButton: false,
+				viewMode: .imageCard,
 				width: 500,
 				playButtonSize: .default,
-				playContent: { _ in EmptyView() },
-				defaultInNamespace: nil,
+				playContent: { _ in },
 				watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
 			)
 				.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)

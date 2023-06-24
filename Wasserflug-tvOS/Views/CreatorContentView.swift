@@ -9,10 +9,8 @@ struct CreatorContentView: View {
 	@Environment(\.scenePhase) var scenePhase
 	
 	@StateObject var viewModel: CreatorContentViewModel
-	@StateObject var livestreamViewModel: LivestreamViewModel
 	
 	@State var isShowingSearch = false
-	@State var isShowingLive = false
 	@FocusState var blogPostFocus: String?
 	
 	let gridColumns: [GridItem] = [
@@ -73,35 +71,14 @@ struct CreatorContentView: View {
 								.offset(x: 20, y: -115) // Half the height (150/2=75) + 40pts of padding = 115pt
 							
 							// Search button
-							Button(action: {
-								isShowingSearch = true
-							}, label: {
+							NavigationLink(value: WasserflugRoute.searchView(creatorOrChannel: AnyCreatorOrChannel(viewModel.creatorOrChannel), creatorOwner: AnyUserModelShared(viewModel.creatorOwner)), label: {
 								Label("Search", systemImage: "magnifyingglass")
 							})
-								.sheet(isPresented: $isShowingSearch, onDismiss: {
-									isShowingSearch = false
-								}, content: {
-									CreatorSearchView(viewModel: viewModel.createSubViewModel(), creatorName: viewModel.creatorOrChannel.title)
-										.overlay(alignment: .topTrailing, content: {
-											ToastBarView()
-										})
-								})
 							
 							// Livestream button
-							Button(action: {
-								isShowingLive = true
-							}, label: {
+							NavigationLink(value: WasserflugRoute.livestreamView(creatorId: self.viewModel.creatorOrChannel.creatorId), label: {
 								Label("Livestream", systemImage: "play.tv")
 							})
-								.sheet(isPresented: $isShowingLive, onDismiss: {
-									self.isShowingLive = false
-									self.livestreamViewModel.state = .idle
-								}, content: {
-									LivestreamView(viewModel: self.livestreamViewModel)
-										.overlay(alignment: .topTrailing, content: {
-											ToastBarView()
-										})
-								})
 							
 							// Creator "about" information
 							VStack {
@@ -168,10 +145,7 @@ struct CreatorContentView_Previews: PreviewProvider {
 				managedObjectContext: PersistenceController.preview.container.viewContext,
 				creatorOrChannel: MockData.creatorV3,
 				creatorOwner: MockData.creatorOwners.users[0].user.userModelShared
-			), livestreamViewModel: LivestreamViewModel(
-				fpApiService: MockFPAPIService(),
-				creatorId: MockData.creatorV3.id)
-			)
+			))
 				.tag(RootTabView.Selection.creator(MockData.creatorV3.id))
 				.tabItem {
 					Text(MockData.creatorV3.title)

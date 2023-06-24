@@ -104,29 +104,25 @@ extension UserSelfModel: UserModelShared {
 	
 }
 
-struct AnyUserModelShared: UserModelShared {
+struct AnyUserModelShared: UserModelShared, Hashable {
 	private let userModelShared: UserModelShared
 	
-	var id: String {
-		return userModelShared.id
-	}
-	
-	var username: String {
-		return userModelShared.username
-	}
-	
-	var profileImage: ImageModel {
-		return userModelShared.profileImage
-	}
+	var id: String { userModelShared.id }
+	var username: String { userModelShared.username }
+	var profileImage: ImageModel { userModelShared.profileImage }
 	
 	init(_ userModelShared: UserModelShared) {
 		self.userModelShared = userModelShared
 	}
-}
-
-extension AnyUserModelShared: Equatable {
+	
 	static func == (lhs: AnyUserModelShared, rhs: AnyUserModelShared) -> Bool {
 		return lhs.id == rhs.id && lhs.username == rhs.username && lhs.profileImage == rhs.profileImage
+	}
+	
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(id)
+		hasher.combine(username)
+		hasher.combine(profileImage)
 	}
 }
 

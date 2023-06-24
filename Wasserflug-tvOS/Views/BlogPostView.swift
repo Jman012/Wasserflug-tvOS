@@ -9,6 +9,7 @@ struct BlogPostView: View {
 	@Environment(\.resetFocus) var resetFocus
 	@Environment(\.fpApiService) var fpApiService
 	@Environment(\.colorScheme) var colorScheme
+	@EnvironmentObject var navCoordinator: NavigationCoordinator<WasserflugRoute>
 	@Namespace var screenNamespace
 	@Namespace var likeDislikeCommentNamespace
 	
@@ -59,20 +60,18 @@ struct BlogPostView: View {
 							// Thumbnail with play button, on left of screen
 							PlayMediaView(
 								thumbnail: content.thumbnail,
-								showPlayButton: !(content.videoAttachments?.isEmpty ?? false),
+								viewMode: (content.videoAttachments?.isEmpty == false ? .playButton : .imageCard),
 								width: geometry.size.width * 0.5,
 								playButtonSize: .default,
 								playContent: { beginningWatchTime in
-									ZStack {
-										if let firstVideo = content.firstVideoAttachment {
-											VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: firstVideo, contentPost: content, description: viewModel.textAttributedString), beginningWatchTime: beginningWatchTime)
-										}
+									if let firstVideo = content.firstVideoAttachment {
+										navCoordinator.push(route: .videoView(videoAttachment: firstVideo, content: content, description: viewModel.textAttributedString, beginningWatchTime: beginningWatchTime))
 									}
 								},
-								defaultInNamespace: screenNamespace,
 								isShowingMedia: shouldAutoPlay,
 								watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", content.id, content.firstVideoAttachmentId ?? ""), animation: .default))
 							.accessibilityIdentifier("Thumbnail and play button")
+							.prefersDefaultFocus(in: screenNamespace)
 
 							// Creator pfp, publish date, and description
 							VStack(alignment: .leading) {
@@ -112,45 +111,44 @@ struct BlogPostView: View {
 							.focusSection()
 						
 						// Like/dislike/comments row
-						ZStack(alignment: .leading) {
-							Rectangle()
-								.fill(.clear)
-							HStack {
-								// Like button
-								let additionalLikes = viewModel.isLiked && viewModel.latestUserInteraction != nil ? 1 : 0
-								Button(action: {
-									viewModel.like()
-								}) {
-									Image(systemName: viewModel.isLiked ? "hand.thumbsup.fill" : "hand.thumbsup")
-										.accessibility(hidden: true)
-									Text("\(content.likes + additionalLikes)")
-										.accessibilityLabel("Like")
-										.accessibilityValue("\(content.likes + additionalLikes) likes")
-										.accessibilityHint(viewModel.isLiked ? "Removes like from post" : "Likes the post")
-								}
-									.prefersDefaultFocus(in: likeDislikeCommentNamespace)
-									.foregroundColor(viewModel.isLiked ? FPColors.blue : colorScheme == .light ? Color.black : Color.white)
-
-								// Dislike button
-								let additionalDislikes = viewModel.isDisliked && viewModel.latestUserInteraction != nil ? 1 : 0
-								Button(action: {
-									viewModel.dislike()
-								}) {
-									Image(systemName: viewModel.isDisliked ? "hand.thumbsdown.fill" : "hand.thumbsdown")
-										.accessibility(hidden: true)
-									Text("\(content.dislikes + additionalDislikes)")
-										.accessibilityLabel("Dislike")
-										.accessibilityValue("\(content.dislikes + additionalDislikes) dislikes")
-										.accessibilityHint(viewModel.isLiked ? "Removes dislike from post" : "Dislikes the post")
-								}
-									.foregroundColor(viewModel.isDisliked ? FPColors.blue : colorScheme == .light ? Color.black : Color.white)
-
-								// Comments label
-								Text("\(content.comments) comment\(content.comments == 1 ? "" : "s")")
+						HStack {
+							// Like button
+							let additionalLikes = viewModel.isLiked && viewModel.latestUserInteraction != nil ? 1 : 0
+							Button(action: {
+								viewModel.like()
+							}) {
+								Image(systemName: viewModel.isLiked ? "hand.thumbsup.fill" : "hand.thumbsup")
+									.accessibility(hidden: true)
+								Text("\(content.likes + additionalLikes)")
+									.accessibilityLabel("Like")
+									.accessibilityValue("\(content.likes + additionalLikes) likes")
+									.accessibilityHint(viewModel.isLiked ? "Removes like from post" : "Likes the post")
 							}
-								.padding()
+								.prefersDefaultFocus(in: likeDislikeCommentNamespace)
+								.foregroundColor(viewModel.isLiked ? FPColors.blue : colorScheme == .light ? Color.black : Color.white)
+
+							// Dislike button
+							let additionalDislikes = viewModel.isDisliked && viewModel.latestUserInteraction != nil ? 1 : 0
+							Button(action: {
+								viewModel.dislike()
+							}) {
+								Image(systemName: viewModel.isDisliked ? "hand.thumbsdown.fill" : "hand.thumbsdown")
+									.accessibility(hidden: true)
+								Text("\(content.dislikes + additionalDislikes)")
+									.accessibilityLabel("Dislike")
+									.accessibilityValue("\(content.dislikes + additionalDislikes) dislikes")
+									.accessibilityHint(viewModel.isLiked ? "Removes dislike from post" : "Dislikes the post")
+							}
+								.foregroundColor(viewModel.isDisliked ? FPColors.blue : colorScheme == .light ? Color.black : Color.white)
+
+							// Comments label
+							Text("\(content.comments) comment\(content.comments == 1 ? "" : "s")")
+							
+							// Extend the side, for focusSection behavior
+							Spacer()
 						}
 							.frame(maxWidth: .infinity)
+							.padding()
 							.focusSection()
 							.focusScope(likeDislikeCommentNamespace)
 						
