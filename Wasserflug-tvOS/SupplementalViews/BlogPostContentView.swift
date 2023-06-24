@@ -62,6 +62,7 @@ struct BlogPostContentView: View {
 								viewMode: .playButton,
 								width: geometry.size.width * 0.2,
 								playButtonSize: .small,
+								videoTitle: video.title,
 								playContent: { beginningWatchTime in
 									navCoordinator.push(route: .videoView(videoAttachment: video, content: content, description: description, beginningWatchTime: beginningWatchTime))
 								},

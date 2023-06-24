@@ -35,6 +35,7 @@ struct PlayButton: View {
 	}
 	
 	let size: Size
+	let videoTitle: String
 	let action: () -> Void
 	
 	var body: some View {
@@ -49,8 +50,7 @@ struct PlayButton: View {
 					.foregroundColor(.white)
 					.font(.system(size: size.imageSize))
 			}
-			.accessibilityLabel("Play video")
-			.accessibilityHint("Plays the video")
+			.accessibilityLabel("Play the video \(videoTitle)")
 		}
 			.buttonStyle(.card)
 			.onPlayPauseCommand(perform: self.action)
@@ -59,7 +59,7 @@ struct PlayButton: View {
 
 struct PlayButton_Previews: PreviewProvider {
 	static var previews: some View {
-		PlayButton(size: .small, action: { })
+		PlayButton(size: .small, videoTitle: "video name here", action: { })
 			.frame(width: 200, height: 300)
 	}
 }

@@ -17,6 +17,13 @@ struct RootTabView2: View {
 		case creator(String)
 		case channel(String)
 		case settings
+		
+		var isCreator: Bool {
+			switch self {
+			case .creator: return true
+			default: return false
+			}
+		}
 	}
 	
 	@EnvironmentObject var userInfo: UserInfo
@@ -99,7 +106,7 @@ struct RootTabView2: View {
 	var sideBarView: some View {
 		sideBar
 			.fixedSize(horizontal: true, vertical: false)
-			.frame(width: fixedWidth, alignment: .leading)
+			.frame(width: fixedWidth + (tabSelection.isCreator ? 30 : 0), alignment: .leading)
 			// These deal with focus management and focus transitions
 			.focusSection()
 			.focusScope(menuFocusNamespace)

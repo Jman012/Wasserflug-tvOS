@@ -13,6 +13,7 @@ struct PlayMediaView: View {
 	let viewMode: ViewMode
 	let width: CGFloat?
 	let playButtonSize: PlayButton.Size
+	let videoTitle: String
 	let playContent: (Double) -> Void
 	
 	@State var isShowingMedia = false
@@ -34,7 +35,7 @@ struct PlayMediaView: View {
 			ZStack {
 				image
 				
-				PlayButton(size: playButtonSize, action: {
+				PlayButton(size: playButtonSize, videoTitle: videoTitle, action: {
 					self.playContent(progress)
 				})
 					.focused($isFocused)
@@ -97,6 +98,7 @@ struct PlayMediaView_Previews: PreviewProvider {
 				viewMode: .playButton,
 				width: 200,
 				playButtonSize: .small,
+				videoTitle: "video title here",
 				playContent: { _ in },
 				watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
 			)
@@ -107,6 +109,7 @@ struct PlayMediaView_Previews: PreviewProvider {
 				viewMode: .imageCard,
 				width: 500,
 				playButtonSize: .default,
+				videoTitle: "video title here",
 				playContent: { _ in },
 				watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
 			)

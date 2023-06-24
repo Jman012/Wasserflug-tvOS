@@ -63,6 +63,7 @@ struct BlogPostView: View {
 								viewMode: (content.videoAttachments?.isEmpty == false ? .playButton : .imageCard),
 								width: geometry.size.width * 0.5,
 								playButtonSize: .default,
+								videoTitle: content.firstVideoAttachment?.title ?? "",
 								playContent: { beginningWatchTime in
 									if let firstVideo = content.firstVideoAttachment {
 										navCoordinator.push(route: .videoView(videoAttachment: firstVideo, content: content, description: viewModel.textAttributedString, beginningWatchTime: beginningWatchTime))
