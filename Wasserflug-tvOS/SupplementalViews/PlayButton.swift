@@ -37,7 +37,7 @@ struct PlayButton: View {
 	let size: Size
 	let videoTitle: String
 	let action: () -> Void
-	
+		
 	var body: some View {
 		Button(action: self.action) {
 			ZStack {
@@ -50,7 +50,11 @@ struct PlayButton: View {
 					.foregroundColor(.white)
 					.font(.system(size: size.imageSize))
 			}
-			.accessibilityLabel("Play the video \(videoTitle)")
+				.accessibilityLabel("Play the video titled \(videoTitle)")
+				// VoiceOver is being dumb and reading this as an image for some reason,
+				// so we have to manually label the contents as a button.
+				.accessibilityRemoveTraits(.isImage)
+				.accessibilityAddTraits(.isButton)
 		}
 			.buttonStyle(.card)
 			.onPlayPauseCommand(perform: self.action)

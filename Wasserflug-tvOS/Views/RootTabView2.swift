@@ -52,20 +52,23 @@ struct RootTabView2: View {
 				.accessibilityLabel("Main content")
 		}
 		.ignoresSafeArea()
+		.onFirstAppear {
+			menuIsFocused = true
+		}
 		.onChange(of: tabSelection) { tabSelection in
 			switch tabSelection {
 			case .home:
-				UIAccessibility.post(notification: .screenChanged, argument: "Switched to home screen")
+				UIAccessibility.post(notification: .announcement, argument: "Switched to home screen")
 			case let .creator(creatorId):
 				if let creator = self.userInfo.creators[creatorId] {
-					UIAccessibility.post(notification: .screenChanged, argument: "Switched to creator \(creator.title)")
+					UIAccessibility.post(notification: .announcement, argument: "Switched to creator \(creator.title)")
 				}
 			case let .channel(channelId):
 				if let channel = self.userInfo.creators.values.flatMap({ $0.channels }).first(where: { $0.id == channelId }) {
-					UIAccessibility.post(notification: .screenChanged, argument: "Switched to channel \(channel.title)")
+					UIAccessibility.post(notification: .announcement, argument: "Switched to channel \(channel.title)")
 				}
 			case .settings:
-				UIAccessibility.post(notification: .screenChanged, argument: "Switched to settings screen")
+				UIAccessibility.post(notification: .announcement, argument: "Switched to settings screen")
 			}
 		}
 	}
@@ -301,7 +304,7 @@ struct RootTabView2: View {
 			.animation(.spring(), value: showMenu)
 			.accessibilityElement(children: .ignore)
 			.accessibilityLabel("Creator \(creator.title)")
-			.accessibilityHint("Go to the creator page for \(creator.title)")
+//			.accessibilityHint("Go to the creator page for \(creator.title)")
 		})
 		.background(.clear)
 		.buttonStyle(.card)
@@ -339,7 +342,7 @@ struct RootTabView2: View {
 			.animation(.spring(), value: showMenu)
 			.accessibilityElement(children: .ignore)
 			.accessibilityLabel("Channel \(channel.title)")
-			.accessibilityHint("Go to the channel page for \(channel.title)")
+//			.accessibilityHint("Go to the channel page for \(channel.title)")
 		})
 		.background(.clear)
 		.buttonStyle(.card)
