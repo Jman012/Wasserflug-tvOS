@@ -1,10 +1,3 @@
-//
-//  Errors.swift
-//  Wasserflug-tvOS
-//
-//  Created by James Linnell on 4/1/23.
-//
-
 import Foundation
 
 enum WasserflugError: LocalizedError {

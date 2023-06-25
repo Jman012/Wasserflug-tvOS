@@ -32,7 +32,7 @@ struct RootTabView2: View {
 	
 	let fixedWidth: CGFloat = 140
 	@State var tabSelection: TabSelection = .home
-	@State var state: SideBarState = .collapsed
+	@State var state: SideBarState = .expanded
 	
 	@FocusState var menuIsFocused: Bool
 	@FocusState var contentIsFocused: Bool
@@ -52,11 +52,21 @@ struct RootTabView2: View {
 				.accessibilityLabel("Main content")
 		}
 		.ignoresSafeArea()
-		.onAppear {
-			contentIsFocused = true
-		}
-		.onChange(of: tabSelection) { _ in
-			UIAccessibility.post(notification: .screenChanged, argument: nil)
+		.onChange(of: tabSelection) { tabSelection in
+			switch tabSelection {
+			case .home:
+				UIAccessibility.post(notification: .screenChanged, argument: "Switched to home screen")
+			case let .creator(creatorId):
+				if let creator = self.userInfo.creators[creatorId] {
+					UIAccessibility.post(notification: .screenChanged, argument: "Switched to creator \(creator.title)")
+				}
+			case let .channel(channelId):
+				if let channel = self.userInfo.creators.values.flatMap({ $0.channels }).first(where: { $0.id == channelId }) {
+					UIAccessibility.post(notification: .screenChanged, argument: "Switched to channel \(channel.title)")
+				}
+			case .settings:
+				UIAccessibility.post(notification: .screenChanged, argument: "Switched to settings screen")
+			}
 		}
 	}
 	
@@ -189,6 +199,7 @@ struct RootTabView2: View {
 				})
 				.buttonStyle(.plain)
 				.focused($focusedItem, equals: TabSelection.home)
+				.prefersDefaultFocus(in: menuFocusNamespace)
 				.accessibilityLabel("Home view")
 				.accessibilityHint("Go to the home screen to view all subscription content")
 			}
@@ -251,8 +262,8 @@ struct RootTabView2: View {
 		}
 		.background(Color(red: 49.0/256.0, green: 63.0/256.0, blue: 85.0/256.0))
 		.environment(\.colorScheme, .dark)
-		.defaultFocus($focusedItem, tabSelection, priority: .userInitiated)
-		.defaultFocus($focusedItem, tabSelection, priority: .automatic)
+//		.defaultFocus($focusedItem, tabSelection, priority: .userInitiated)
+//		.defaultFocus($focusedItem, tabSelection, priority: .automatic)
 	}
 	
 	func button(forCreator creator: CreatorModelV3) -> some View {

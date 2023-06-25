@@ -15,7 +15,7 @@ extension TimeInterval {
 			return hourMinuteSecond
 		}
 	}
-	var accessibileFloatplanetimestamp: String {
+	var accessibleFloatplanetimestamp: String {
 		return accessibilityVideoDurationFormatter.string(from: Date.now, to: Date.now.addingTimeInterval(self)) ?? floatplaneTimestamp
 	}
 	var hourMinuteSecond: String {

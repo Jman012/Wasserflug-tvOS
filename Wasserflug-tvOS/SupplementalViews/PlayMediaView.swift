@@ -15,8 +15,8 @@ struct PlayMediaView: View {
 	let playButtonSize: PlayButton.Size
 	let videoTitle: String
 	let playContent: (Double) -> Void
+	let autoPlay: Bool
 	
-	@State var isShowingMedia = false
 	@FetchRequest var watchProgresses: FetchedResults<WatchProgress>
 	@FocusState private var isFocused
 	
@@ -39,6 +39,11 @@ struct PlayMediaView: View {
 					self.playContent(progress)
 				})
 					.focused($isFocused)
+					.onFirstAppear {
+						if autoPlay {
+							self.playContent(progress)
+						}
+					}
 			}
 		case .imageCard:
 			Button(action: {
@@ -49,6 +54,11 @@ struct PlayMediaView: View {
 				.buttonStyle(.card)
 				.focused($isFocused)
 				.padding()
+				.onFirstAppear {
+					if autoPlay {
+						self.playContent(progress)
+					}
+				}
 		}
 	}
 	
@@ -100,6 +110,7 @@ struct PlayMediaView_Previews: PreviewProvider {
 				playButtonSize: .small,
 				videoTitle: "video title here",
 				playContent: { _ in },
+				autoPlay: false,
 				watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
 			)
 				.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
@@ -111,6 +122,7 @@ struct PlayMediaView_Previews: PreviewProvider {
 				playButtonSize: .default,
 				videoTitle: "video title here",
 				playContent: { _ in },
+				autoPlay: false,
 				watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
 			)
 				.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)

@@ -164,7 +164,7 @@ struct BlogPostSelectionView: View {
 								Image(systemName: "clock")
 								Text("\(TimeInterval(duration).floatplaneTimestamp)")
 									.lineLimit(1)
-									.accessibilityLabel("Duration \(TimeInterval(duration).accessibileFloatplanetimestamp)")
+									.accessibilityLabel("Duration \(TimeInterval(duration).accessibleFloatplanetimestamp)")
 							}
 						}
 							.font(.system(size: 18, weight: .light))

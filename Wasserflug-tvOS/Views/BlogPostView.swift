@@ -11,10 +11,7 @@ struct BlogPostView: View {
 	@Environment(\.colorScheme) var colorScheme
 	@EnvironmentObject var navCoordinator: NavigationCoordinator<WasserflugRoute>
 	@Namespace var screenNamespace
-	@Namespace var likeDislikeCommentNamespace
-	
-	@State var isShowingVideo = false
-	
+		
 	var body: some View {
 		switch viewModel.state {
 		case .idle:
@@ -65,12 +62,15 @@ struct BlogPostView: View {
 								playButtonSize: .default,
 								videoTitle: content.firstVideoAttachment?.title ?? "",
 								playContent: { beginningWatchTime in
-									if let firstVideo = content.firstVideoAttachment {
-										navCoordinator.push(route: .videoView(videoAttachment: firstVideo, content: content, description: viewModel.textAttributedString, beginningWatchTime: beginningWatchTime))
+									DispatchQueue.main.async {
+										if let firstVideo = content.firstVideoAttachment {
+											navCoordinator.push(route: .videoView(videoAttachment: firstVideo, content: content, description: viewModel.textAttributedString, beginningWatchTime: beginningWatchTime))
+										}
 									}
 								},
-								isShowingMedia: shouldAutoPlay,
-								watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", content.id, content.firstVideoAttachmentId ?? ""), animation: .default))
+								autoPlay: shouldAutoPlay,
+								watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", content.id, content.firstVideoAttachmentId ?? ""), animation: .default)
+							)
 							.accessibilityIdentifier("Thumbnail and play button")
 							.prefersDefaultFocus(in: screenNamespace)
 
@@ -125,7 +125,6 @@ struct BlogPostView: View {
 									.accessibilityValue("\(content.likes + additionalLikes) likes")
 									.accessibilityHint(viewModel.isLiked ? "Removes like from post" : "Likes the post")
 							}
-								.prefersDefaultFocus(in: likeDislikeCommentNamespace)
 								.foregroundColor(viewModel.isLiked ? FPColors.blue : colorScheme == .light ? Color.black : Color.white)
 
 							// Dislike button
@@ -151,7 +150,6 @@ struct BlogPostView: View {
 							.frame(maxWidth: .infinity)
 							.padding()
 							.focusSection()
-							.focusScope(likeDislikeCommentNamespace)
 						
 						// If applicable, show all attachments as the last rows
 						if !(content.videoAttachments?.count == 1 && content.pictureAttachments?.isEmpty ?? true && content.audioAttachments?.isEmpty ?? true && content.galleryAttachments?.isEmpty ?? true) {

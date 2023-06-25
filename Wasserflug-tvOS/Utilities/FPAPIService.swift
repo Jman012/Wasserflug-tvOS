@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import Vapor
 import FloatplaneAPIClient
 
@@ -29,6 +30,17 @@ protocol FPAPIService {
 	// Interaction-related
 	func likeContent(id: String) -> EventLoopFuture<ContentV3API.LikeContent>
 	func dislikeContent(id: String) -> EventLoopFuture<ContentV3API.DislikeContent>
+}
+
+struct FPAPIServiceKey: EnvironmentKey {
+	static var defaultValue: FPAPIService = MockFPAPIService()
+}
+
+extension EnvironmentValues {
+	var fpApiService: FPAPIService {
+		get { self[FPAPIServiceKey.self] }
+		set { self[FPAPIServiceKey.self] = newValue }
+	}
 }
 
 class DefaultFPAPIService: FPAPIService {

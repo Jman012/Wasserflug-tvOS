@@ -66,6 +66,7 @@ struct BlogPostContentView: View {
 								playContent: { beginningWatchTime in
 									navCoordinator.push(route: .videoView(videoAttachment: video, content: content, description: description, beginningWatchTime: beginningWatchTime))
 								},
+								autoPlay: false,
 								watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", content.id, video.id), animation: .default)
 							)
 							Text(video.title)
