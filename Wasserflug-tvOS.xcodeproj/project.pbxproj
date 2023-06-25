@@ -10,9 +10,14 @@
 		E70448E22803A9110045A1AE /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70448E12803A9110045A1AE /* WaveformView.swift */; };
 		E70F775729D90D4900869BE3 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70F775629D90D4900869BE3 /* Errors.swift */; };
 		E70F777629DF7A5E00869BE3 /* ToastBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70F777529DF7A5E00869BE3 /* ToastBarView.swift */; };
+		E71CFE302A48C82600E8E1DC /* UserModelShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71CFE2F2A48C82600E8E1DC /* UserModelShared.swift */; };
+		E71CFE322A48CB1700E8E1DC /* OnFirstAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71CFE312A48CB1700E8E1DC /* OnFirstAppear.swift */; };
 		E71FDB3C27D3F89200A9C88B /* Swift+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB3B27D3F89200A9C88B /* Swift+Extensions.swift */; };
 		E71FDB7927E66D7E00A9C88B /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB7827E66D7E00A9C88B /* Persistence.swift */; };
 		E71FDB7C27E66DB100A9C88B /* Wasserflug.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E71FDB7A27E66DB100A9C88B /* Wasserflug.xcdatamodeld */; };
+		E72E39732A3F8CF000F33C67 /* FPColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72E39722A3F8CF000F33C67 /* FPColors.swift */; };
+		E72E39752A3F8D0400F33C67 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72E39742A3F8D0400F33C67 /* NavigationCoordinator.swift */; };
+		E72E39772A3F8D8100F33C67 /* NotificationName+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72E39762A3F8D8100F33C67 /* NotificationName+Extensions.swift */; };
 		E731AF0F289B22AC00A2DAD7 /* AttachmentPills.swift in Sources */ = {isa = PBXBuildFile; fileRef = E731AF0E289B22AC00A2DAD7 /* AttachmentPills.swift */; };
 		E7326D282A2D0C1F0065C016 /* CreatorOrChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7326D272A2D0C1F0065C016 /* CreatorOrChannel.swift */; };
 		E74C98A32A080AAC00FDDB9C /* RootTabView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74C98A22A080AAC00FDDB9C /* RootTabView2.swift */; };
@@ -59,7 +64,6 @@
 		E75337B727CB06BE0010E3D2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379C27CB06BE0010E3D2 /* ContentView.swift */; };
 		E75337B827CB06BE0010E3D2 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379D27CB06BE0010E3D2 /* RootTabView.swift */; };
 		E75337BC27CB07900010E3D2 /* FloatplaneAPIClient in Frameworks */ = {isa = PBXBuildFile; productRef = E75337BB27CB07900010E3D2 /* FloatplaneAPIClient */; };
-		E75337BE27CB08990010E3D2 /* EnvironmentKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75337BD27CB08990010E3D2 /* EnvironmentKeys.swift */; };
 		E7A2F42A28C58E0300583294 /* ExecuteCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A2F42928C58E0300583294 /* ExecuteCode.swift */; };
 		E7A2F42C28CE43D800583294 /* LivestreamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A2F42B28CE43D800583294 /* LivestreamView.swift */; };
 		E7A447E92815E1C0009BCE2E /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */; };
@@ -88,9 +92,14 @@
 		E70448E12803A9110045A1AE /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
 		E70F775629D90D4900869BE3 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		E70F777529DF7A5E00869BE3 /* ToastBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastBarView.swift; sourceTree = "<group>"; };
+		E71CFE2F2A48C82600E8E1DC /* UserModelShared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModelShared.swift; sourceTree = "<group>"; };
+		E71CFE312A48CB1700E8E1DC /* OnFirstAppear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnFirstAppear.swift; sourceTree = "<group>"; };
 		E71FDB3B27D3F89200A9C88B /* Swift+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Swift+Extensions.swift"; sourceTree = "<group>"; };
 		E71FDB7827E66D7E00A9C88B /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		E71FDB7B27E66DB100A9C88B /* Wasserflug.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Wasserflug.xcdatamodel; sourceTree = "<group>"; };
+		E72E39722A3F8CF000F33C67 /* FPColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPColors.swift; sourceTree = "<group>"; };
+		E72E39742A3F8D0400F33C67 /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
+		E72E39762A3F8D8100F33C67 /* NotificationName+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Extensions.swift"; sourceTree = "<group>"; };
 		E731AF0E289B22AC00A2DAD7 /* AttachmentPills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentPills.swift; sourceTree = "<group>"; };
 		E7326D272A2D0C1F0065C016 /* CreatorOrChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorOrChannel.swift; sourceTree = "<group>"; };
 		E74C98A22A080AAC00FDDB9C /* RootTabView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView2.swift; sourceTree = "<group>"; };
@@ -137,7 +146,6 @@
 		E753379B27CB06BE0010E3D2 /* SecondFactorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondFactorView.swift; sourceTree = "<group>"; };
 		E753379C27CB06BE0010E3D2 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		E753379D27CB06BE0010E3D2 /* RootTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
-		E75337BD27CB08990010E3D2 /* EnvironmentKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentKeys.swift; sourceTree = "<group>"; };
 		E7A2F42928C58E0300583294 /* ExecuteCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecuteCode.swift; sourceTree = "<group>"; };
 		E7A2F42B28CE43D800583294 /* LivestreamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivestreamView.swift; sourceTree = "<group>"; };
 		E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extensions.swift"; sourceTree = "<group>"; };
@@ -176,6 +184,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E71CFE2E2A48C7D300E8E1DC /* FloatplaneAPIClient+Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E753377127CB066E0010E3D2 /* FloatplaneAPIClient+Extensions.swift */,
+				E7326D272A2D0C1F0065C016 /* CreatorOrChannel.swift */,
+				E7BD7E7428E6682900E1BBE9 /* DeliveryHelper.swift */,
+				E71CFE2F2A48C82600E8E1DC /* UserModelShared.swift */,
+			);
+			path = "FloatplaneAPIClient+Extensions";
+			sourceTree = "<group>";
+		};
 		E753373027CAFAFE0010E3D2 = {
 			isa = PBXGroup;
 			children = (
@@ -210,6 +229,7 @@
 				E753378727CB06BE0010E3D2 /* ViewModels */,
 				E753379127CB06BE0010E3D2 /* Views */,
 				E75337B927CB06C60010E3D2 /* Utilities */,
+				E71CFE2E2A48C7D300E8E1DC /* FloatplaneAPIClient+Extensions */,
 				E753377E27CB06800010E3D2 /* Wasserflug_tvOSApp.swift */,
 				E753374027CAFAFF0010E3D2 /* Assets.xcassets */,
 				E753374227CAFAFF0010E3D2 /* Preview Content */,
@@ -312,16 +332,16 @@
 			isa = PBXGroup;
 			children = (
 				E753377027CB066E0010E3D2 /* Authentication.swift */,
-				E753377127CB066E0010E3D2 /* FloatplaneAPIClient+Extensions.swift */,
 				E753377427CB066E0010E3D2 /* FPAPIService.swift */,
 				E753377627CB066E0010E3D2 /* OSLoggingLogger.swift */,
-				E75337BD27CB08990010E3D2 /* EnvironmentKeys.swift */,
 				E71FDB3B27D3F89200A9C88B /* Swift+Extensions.swift */,
 				E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */,
-				E7BD7E7428E6682900E1BBE9 /* DeliveryHelper.swift */,
 				E70F775629D90D4900869BE3 /* Errors.swift */,
 				E7F2F23C2A113F0000602991 /* OnCustomAppear.swift */,
-				E7326D272A2D0C1F0065C016 /* CreatorOrChannel.swift */,
+				E72E39722A3F8CF000F33C67 /* FPColors.swift */,
+				E72E39742A3F8D0400F33C67 /* NavigationCoordinator.swift */,
+				E72E39762A3F8D8100F33C67 /* NotificationName+Extensions.swift */,
+				E71CFE312A48CB1700E8E1DC /* OnFirstAppear.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -485,6 +505,7 @@
 				E75337B127CB06BE0010E3D2 /* HomeView.swift in Sources */,
 				E71FDB3C27D3F89200A9C88B /* Swift+Extensions.swift in Sources */,
 				E7A447E92815E1C0009BCE2E /* SwiftUI+Extensions.swift in Sources */,
+				E71CFE322A48CB1700E8E1DC /* OnFirstAppear.swift in Sources */,
 				E7A2F42A28C58E0300583294 /* ExecuteCode.swift in Sources */,
 				E75337AB27CB06BE0010E3D2 /* CreatorContentViewModel.swift in Sources */,
 				E74C98A32A080AAC00FDDB9C /* RootTabView2.swift in Sources */,
@@ -493,13 +514,13 @@
 				E753377827CB066E0010E3D2 /* FloatplaneAPIClient+Extensions.swift in Sources */,
 				E70F775729D90D4900869BE3 /* Errors.swift in Sources */,
 				E75337A627CB06BE0010E3D2 /* VideoViewModel.swift in Sources */,
-				E75337BE27CB08990010E3D2 /* EnvironmentKeys.swift in Sources */,
 				E75337B727CB06BE0010E3D2 /* ContentView.swift in Sources */,
 				E753377727CB066E0010E3D2 /* Authentication.swift in Sources */,
 				E7BD7E7528E6682900E1BBE9 /* DeliveryHelper.swift in Sources */,
 				E753377F27CB06800010E3D2 /* Wasserflug_tvOSApp.swift in Sources */,
 				E731AF0F289B22AC00A2DAD7 /* AttachmentPills.swift in Sources */,
 				E75337A927CB06BE0010E3D2 /* AuthViewModel.swift in Sources */,
+				E71CFE302A48C82600E8E1DC /* UserModelShared.swift in Sources */,
 				E75337AA27CB06BE0010E3D2 /* ViewModelState.swift in Sources */,
 				E75337B027CB06BE0010E3D2 /* VideoView.swift in Sources */,
 				E74C98A82A082D5100FDDB9C /* HideableView.swift in Sources */,
@@ -515,10 +536,13 @@
 				E75337A727CB06BE0010E3D2 /* BaseViewModel.swift in Sources */,
 				E75337B527CB06BE0010E3D2 /* LivestreamPlayerView.swift in Sources */,
 				E75337A827CB06BE0010E3D2 /* LivestreamViewModel.swift in Sources */,
+				E72E39772A3F8D8100F33C67 /* NotificationName+Extensions.swift in Sources */,
 				E753379F27CB06BE0010E3D2 /* VideoPlayerView.swift in Sources */,
 				E75337A227CB06BE0010E3D2 /* BlogPostSelectionView.swift in Sources */,
 				E75337B427CB06BE0010E3D2 /* CreatorContentView.swift in Sources */,
 				E7326D282A2D0C1F0065C016 /* CreatorOrChannel.swift in Sources */,
+				E72E39732A3F8CF000F33C67 /* FPColors.swift in Sources */,
+				E72E39752A3F8D0400F33C67 /* NavigationCoordinator.swift in Sources */,
 				E75337A327CB06BE0010E3D2 /* ErrorView.swift in Sources */,
 				E75337AE27CB06BE0010E3D2 /* SettingsView.swift in Sources */,
 				E71FDB7C27E66DB100A9C88B /* Wasserflug.xcdatamodeld in Sources */,

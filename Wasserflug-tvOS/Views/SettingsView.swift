@@ -36,6 +36,7 @@ struct SettingsView: View {
 						ProgressView()
 							.frame(width: pfpSize, height: pfpSize)
 					})
+						.accessibilityLabel("Logged-in user profile picture")
 				}
 				.padding([.top])
 			}
@@ -45,14 +46,14 @@ struct SettingsView: View {
 			HStack {
 				Button(action: {
 					FloatplaneAPIClientAPI.removeAuthenticationCookies()
-					NotificationCenter.default.post(name: ContentView.Notifications.loggedOut, object: nil)
+					NotificationCenter.default.post(name: .loggedOut, object: nil)
 				}, label: {
 					Text("Logout")
 				})
 					.prefersDefaultFocus(in: namespace)
 			}
-				.frame(maxWidth: .infinity)
-				.focusSection()
+//				.frame(maxWidth: .infinity)
+//				.focusSection()
 			
 			HStack {
 				Button(action: {
@@ -61,8 +62,8 @@ struct SettingsView: View {
 					Text(showNewSidebar ? "Show old tab view" : "Show new sidebar")
 				})
 			}
-				.frame(maxWidth: .infinity)
-				.focusSection()
+//				.frame(maxWidth: .infinity)
+//				.focusSection()
 			
 			HStack {
 				Button(action: {
@@ -91,13 +92,13 @@ struct SettingsView: View {
 					.alert("Resetting View History Successful", isPresented: $showResetViewHistorySuccess, actions: {})
 					.alert("Resetting View History Failed", isPresented: $showResetViewHistoryFailure, actions: {})
 			}
-				.frame(maxWidth: .infinity)
-				.focusSection()
+//				.frame(maxWidth: .infinity)
+//				.focusSection()
 			
 			Spacer()
 		}
-			.frame(maxWidth: .infinity)
-			.focusScope(namespace)
+//			.frame(maxWidth: .infinity)
+//			.focusScope(namespace)
 	}
 }
 

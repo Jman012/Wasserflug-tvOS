@@ -3,66 +3,26 @@ import FloatplaneAPIClient
 import NIO
 import Network
 
-enum FPColors {
-	static let blue = Color(.sRGB, red: 0, green: 175.0/256.0, blue: 236.0/256.0, opacity: 1.0)
-	static let darkBlue = Color(.sRGB, red: 0, green: 175.0/256.0, blue: 236.0/256.0, opacity: 1.0)
-	static let watchProgressIndicatorBegin = Color(.sRGB, red: 244.0/256.0, green: 66.0/256.0, blue: 66.0/256.0, opacity: 1.0)
-	static let watchProgressIndicatorEnd = Color(.sRGB, red: 247.0/256.0, green: 125.0/256.0, blue: 125.0/256.0, opacity: 1.0)
-}
-
 struct ContentView: View {
 	
 	@ObservedObject var viewModel: AuthViewModel
 	
 	@Environment(\.colorScheme) var colorScheme
+	@Environment(\.fpApiService) var fpApiService
+	@Environment(\.managedObjectContext) var managedObjectContext
 	
-	@State var isLoggingIn = false
+	@StateObject var navigationCoordinator = NavigationCoordinator<WasserflugRoute>()
 	@State var hasInitiallyLoaded = false
 	@State var showErrorMoreDetails = false
 	
 	@AppStorage(SettingsView.showNewSidebarKey) var showNewSidebar: Bool = true
 	
-	enum Notifications {
-		static let loggedOut = Notification.Name("com.jamesnl.Wasserflug-tvOSApp.loggedOut")
-	}
-	
 	var body: some View {
-		VStack {
-			if viewModel.isLoadingAuthStatus {
-				ZStack {
-					Image("splash-bg")
-						.resizable()
-						.ignoresSafeArea()
-						.scaledToFill()
-					VisualEffectView(effect: UIBlurEffect(style: colorScheme == .dark ? .dark : .light))
-						.ignoresSafeArea()
-					HStack {
-						Image("wasserflug-logo")
-							.resizable()
-							.renderingMode(.template)
-							.foregroundColor(colorScheme == .dark ? .white : .black)
-							.scaledToFit()
-							.frame(height: 300)
-						VStack {
-							Text("Wasserflug")
-								.font(.title)
-							Text("An unofficial Floatplane client")
-						}
-					}
-					VStack {
-						Spacer()
-						ProgressView()
-					}
-				}
-			} else if !viewModel.isLoggedIn {
-				ZStack {
-					Image("splash-bg")
-						.resizable()
-						.ignoresSafeArea()
-						.scaledToFill()
-					VisualEffectView(effect: UIBlurEffect(style: colorScheme == .dark ? .dark : .light))
-						.ignoresSafeArea()
-					VStack {
+		NavigationStack(path: $navigationCoordinator.path) {
+			ZStack {
+				if viewModel.isLoadingAuthStatus || !viewModel.isLoggedIn {
+					ZStack {
+						// Logo and headings in center
 						HStack {
 							Image("wasserflug-logo")
 								.resizable()
@@ -70,47 +30,74 @@ struct ContentView: View {
 								.foregroundColor(colorScheme == .dark ? .white : .black)
 								.scaledToFit()
 								.frame(height: 300)
+								.accessibilityHidden(true)
 							VStack {
 								Text("Wasserflug")
 									.font(.title)
+									.accessibilityAddTraits(.isHeader)
 								Text("An unofficial Floatplane client")
 							}
 						}
+						
+						// Loading indicator/login button at bottom of screen
+						VStack {
+							Spacer()
+							if viewModel.isLoadingAuthStatus {
+								ProgressView()
+									.accessibilityLabel("Loading")
+							} else if !viewModel.isLoggedIn {
+								NavigationLink("Login", value: WasserflugRoute.login)
+									.accessibilityHint("Login to Wasserflug")
+							}
+						}
 					}
-					VStack {
-						Spacer()
-						Button("Login", action: {
-							isLoggingIn = true
-						})
-							.fullScreenCover(isPresented: $isLoggingIn, onDismiss: {
-								viewModel.determineAuthenticationStatus()
-							}, content: {
-								NavigationStack {
-									LoginView(isLoggingIn: $isLoggingIn, viewModel: viewModel)
-								}
-								.background(.ultraThinMaterial)
-							})
+					.onAppear {
+						viewModel.determineAuthenticationStatus()
 					}
-				}
-			} else {
-				if showNewSidebar {
-					RootTabView2()
+					.background(ZStack {
+						// Background blurred image of FP website splash image
+						Image("splash-bg")
+							.resizable()
+							.scaledToFill()
+						VisualEffectView(effect: UIBlurEffect(style: colorScheme == .dark ? .dark : .light))
+					}
+						.ignoresSafeArea()
+						.accessibilityHidden(true))
 				} else {
-					RootTabView()
+					// Main content view if logged in
+					ZStack {
+						if showNewSidebar {
+							RootTabView2()
+						} else {
+							RootTabView()
+						}
+					}
 				}
 			}
+			.navigationDestination(for: WasserflugRoute.self, destination: { route in
+				switch route {
+				case .login:
+					LoginView(viewModel: viewModel)
+				case .secondFactor:
+					SecondFactorView(viewModel: viewModel)
+				case let .blogPostView(blogPostId: blogPostId, autoPlay: autoPlay):
+					BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService, id: blogPostId),
+								 shouldAutoPlay: autoPlay)
+				case let .searchView(creatorOrChannel: creatorOrChannel, creatorOwner: creatorOwner):
+					CreatorSearchView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: creatorOrChannel, creatorOwner: creatorOwner), creatorName: creatorOrChannel.title)
+				case let .livestreamView(creatorId: creatorId):
+					LivestreamView(viewModel: LivestreamViewModel(fpApiService: fpApiService, creatorId: creatorId))
+				case let .videoView(videoAttachment: video, content: content, description: description, beginningWatchTime: beginningWatchTime):
+					VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: video, contentPost: content, description: description), beginningWatchTime: beginningWatchTime)
+				}
+			})
 		}
 		.overlay(alignment: .topTrailing, content: {
 			ToastBarView()
 		})
 		.environmentObject(viewModel.userInfo)
-		.onAppear(perform: {
-			if !hasInitiallyLoaded {
-				hasInitiallyLoaded = true
-				viewModel.determineAuthenticationStatus()
-			}
-		})
-		.onReceive(NotificationCenter.default.publisher(for: Notifications.loggedOut, object: nil), perform: { _ in
+		.environmentObject(navigationCoordinator) // Inject the navigation coordinator for children to access
+		.onReceive(NotificationCenter.default.publisher(for: .loggedOut, object: nil), perform: { _ in
 			viewModel.determineAuthenticationStatus()
 		})
 		.alert("Application Error", isPresented: $viewModel.showAuthenticationErrorAlert, presenting: viewModel.authenticationCheckError, actions: { _ in

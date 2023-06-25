@@ -17,15 +17,22 @@ struct RootTabView2: View {
 		case creator(String)
 		case channel(String)
 		case settings
+		
+		var isCreator: Bool {
+			switch self {
+			case .creator: return true
+			default: return false
+			}
+		}
 	}
 	
 	@EnvironmentObject var userInfo: UserInfo
 	@Environment(\.fpApiService) var fpApiService
 	@Environment(\.managedObjectContext) var managedObjectContext
 	
-	let fixedWidth: CGFloat = 165
+	let fixedWidth: CGFloat = 140
 	@State var tabSelection: TabSelection = .home
-	@State var state: SideBarState = .collapsed
+	@State var state: SideBarState = .expanded
 	
 	@FocusState var menuIsFocused: Bool
 	@FocusState var contentIsFocused: Bool
@@ -37,19 +44,32 @@ struct RootTabView2: View {
 		HStack(spacing: 0) {
 			sideBarView
 				.zIndex(2)
+				.accessibilityElement(children: .contain)
+				.accessibilityLabel("Navigation sidebar")
 			contentView
 				.zIndex(1)
+				.accessibilityElement(children: .contain)
+				.accessibilityLabel("Main content")
 		}
-		.onChange(of: tabSelection, perform: { _ in
-//			DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-//				withAnimation {
-//					contentIsFocused = true
-//				}
-//			})
-		})
 		.ignoresSafeArea()
-		.onAppear {
-			contentIsFocused = true
+		.onFirstAppear {
+			menuIsFocused = true
+		}
+		.onChange(of: tabSelection) { tabSelection in
+			switch tabSelection {
+			case .home:
+				UIAccessibility.post(notification: .announcement, argument: "Switched to home screen")
+			case let .creator(creatorId):
+				if let creator = self.userInfo.creators[creatorId] {
+					UIAccessibility.post(notification: .announcement, argument: "Switched to creator \(creator.title)")
+				}
+			case let .channel(channelId):
+				if let channel = self.userInfo.creators.values.flatMap({ $0.channels }).first(where: { $0.id == channelId }) {
+					UIAccessibility.post(notification: .announcement, argument: "Switched to channel \(channel.title)")
+				}
+			case .settings:
+				UIAccessibility.post(notification: .announcement, argument: "Switched to settings screen")
+			}
 		}
 	}
 	
@@ -68,66 +88,38 @@ struct RootTabView2: View {
 			})
 	}
 	
-//	var contentBody: some View {
-//		ZStack {
-//			switch tabSelection {
-//			case .home:
-//				HomeView(viewModel: HomeViewModel(userInfo: userInfo, fpApiService: fpApiService))
-//			case let .creator(id):
-//				if let (creator, creatorOwner) = userInfo.creatorsInOrder.first(where: { $0.0.id == id }) {
-//					CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, creator: creator, creatorOwner: creatorOwner), livestreamViewModel: LivestreamViewModel(fpApiService: fpApiService, creatorId: creator.id))
-//				} else {
-//					ErrorView(error: WasserflugError.creatorNotFound, tryAgainHandler: {})
-//				}
-//			case .settings:
-//				SettingsView()
-//			}
-//		}
-//	}
-	
-//	var contentBody: some View {
-//		ZStack {
-//			HomeView(viewModel: HomeViewModel(userInfo: userInfo, fpApiService: fpApiService))
-//				.hide(tabSelection != .home)
-//
-//			ForEach(userInfo.creatorsInOrder, id: \.0.id) { (creator, creatorOwner) in
-//				CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, creator: creator, creatorOwner: creatorOwner), livestreamViewModel: LivestreamViewModel(fpApiService: fpApiService, creatorId: creator.id))
-//					.hide(tabSelection != .creator(creator.id))
-//			}
-//
-//			SettingsView()
-//				.hide(tabSelection != .settings)
-//		}
-//	}
-	
 	var contentBody: some View {
 		ZStack {
 			HomeView(viewModel: HomeViewModel(userInfo: userInfo, fpApiService: fpApiService, managedObjectContext: managedObjectContext))
 				.customAppear(tabSelection == .home ? .appear : .disappear)
 				.opacity(tabSelection == .home ? 1 : 0)
+				.accessibilityHidden(tabSelection == .home ? false : true)
 
 			ForEach(userInfo.creatorsInOrder, id: \.0.id) { (creator, creatorOwner) in
-				CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: creator, creatorOwner: creatorOwner), livestreamViewModel: LivestreamViewModel(fpApiService: fpApiService, creatorId: creator.id))
+				CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: creator, creatorOwner: creatorOwner))
 					.customAppear(tabSelection == .creator(creator.id) ? .appear : .disappear)
 					.opacity(tabSelection == .creator(creator.id) ? 1 : 0)
+					.accessibilityHidden(tabSelection == .creator(creator.id) ? false : true)
 				
 				ForEach(creator.channels, id: \.id) { channel in
-					CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: channel, creatorOwner: creatorOwner), livestreamViewModel: LivestreamViewModel(fpApiService: fpApiService, creatorId: creator.id))
+					CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: channel, creatorOwner: creatorOwner))
 						.customAppear(tabSelection == .channel(channel.id) ? .appear : .disappear)
 						.opacity(tabSelection == .channel(channel.id) ? 1 : 0)
+						.accessibilityHidden(tabSelection == .channel(channel.id) ? false : true)
 				}
 			}
 
 			SettingsView()
 				.customAppear(tabSelection == .settings ? .appear : .disappear)
 				.opacity(tabSelection == .settings ? 1 : 0)
+				.accessibilityHidden(tabSelection == .settings ? false : true)
 		}
 	}
 	
 	var sideBarView: some View {
 		sideBar
 			.fixedSize(horizontal: true, vertical: false)
-			.frame(width: fixedWidth, alignment: .leading)
+			.frame(width: fixedWidth + (tabSelection.isCreator ? 30 : 0), alignment: .leading)
 			// These deal with focus management and focus transitions
 			.focusSection()
 			.focusScope(menuFocusNamespace)
@@ -210,6 +202,9 @@ struct RootTabView2: View {
 				})
 				.buttonStyle(.plain)
 				.focused($focusedItem, equals: TabSelection.home)
+				.prefersDefaultFocus(in: menuFocusNamespace)
+				.accessibilityLabel("Home view")
+				.accessibilityHint("Go to the home screen to view all subscription content")
 			}
 			.padding([.top], 30)
 			.padding([.leading, .trailing], showMenu ? 50 : 0)
@@ -226,9 +221,6 @@ struct RootTabView2: View {
 										proxy.scrollTo(focusedItem)
 									}
 								})
-								.onChange(of: focusedItem, perform: { focusedItem in
-									
-								})
 							
 							ForEach(creator.channels, id: \.id) { channel in
 								button(forChannel: channel, creator: creator)
@@ -238,9 +230,6 @@ struct RootTabView2: View {
 										if focusedItem == .channel(channel.id) {
 											proxy.scrollTo(focusedItem)
 										}
-									})
-									.onChange(of: focusedItem, perform: { focusedItem in
-										
 									})
 							}
 						}
@@ -269,13 +258,15 @@ struct RootTabView2: View {
 				.animation(.linear, value: showMenu)
 				.focused($focusedItem, equals: TabSelection.settings)
 				.padding([.bottom], 20)
+				.accessibilityLabel("Wasserflug Settings")
+				.accessibilityHint("Go to the settings page")
 			}
 			.padding(30)
 		}
 		.background(Color(red: 49.0/256.0, green: 63.0/256.0, blue: 85.0/256.0))
 		.environment(\.colorScheme, .dark)
-		.defaultFocus($focusedItem, tabSelection, priority: .userInitiated)
-		.defaultFocus($focusedItem, tabSelection, priority: .automatic)
+//		.defaultFocus($focusedItem, tabSelection, priority: .userInitiated)
+//		.defaultFocus($focusedItem, tabSelection, priority: .automatic)
 	}
 	
 	func button(forCreator creator: CreatorModelV3) -> some View {
@@ -311,6 +302,9 @@ struct RootTabView2: View {
 			.padding(showMenu || isSelected ? 15 : 0)
 			.background(isSelected ? VisualEffectView(effect: UIBlurEffect(style: .light)) : nil)
 			.animation(.spring(), value: showMenu)
+			.accessibilityElement(children: .ignore)
+			.accessibilityLabel("Creator \(creator.title)")
+//			.accessibilityHint("Go to the creator page for \(creator.title)")
 		})
 		.background(.clear)
 		.buttonStyle(.card)
@@ -346,6 +340,9 @@ struct RootTabView2: View {
 			.padding(showMenu || isSelected ? 15 : 0)
 			.background(isSelected ? VisualEffectView(effect: UIBlurEffect(style: .light)) : nil)
 			.animation(.spring(), value: showMenu)
+			.accessibilityElement(children: .ignore)
+			.accessibilityLabel("Channel \(channel.title)")
+//			.accessibilityHint("Go to the channel page for \(channel.title)")
 		})
 		.background(.clear)
 		.buttonStyle(.card)

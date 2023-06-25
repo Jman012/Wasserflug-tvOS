@@ -12,14 +12,12 @@ struct BlogPostSelectionView: View {
 	let blogPost: BlogPostModelV3
 	let viewOrigin: ViewOrigin
 	@FetchRequest var watchProgresses: FetchedResults<WatchProgress>
-//	let progressPercentage: Int
 	@State var geometrySize: CGSize?
 	
 	@Environment(\.fpApiService) var fpApiService
 	@Environment(\.managedObjectContext) private var viewContext
+	@EnvironmentObject var navCoordinator: NavigationCoordinator<WasserflugRoute>
 
-	@State var isSelected = false
-	@State var isAutoSelected = false
 	@FocusState private var isFocused
 	
 	private let relativeTimeConverter: RelativeDateTimeFormatter = {
@@ -56,7 +54,7 @@ struct BlogPostSelectionView: View {
 	var body: some View {
 		Button(action: {
 			if blogPost.isAccessible {
-				isSelected = true
+				navCoordinator.push(route: .blogPostView(blogPostId: blogPost.id, autoPlay: false))
 			}
 		}, label: {
 			VStack(alignment: .leading, spacing: 10) {
@@ -83,8 +81,9 @@ struct BlogPostSelectionView: View {
 							}
 							.frame(height: isFocused ? 16 : 8)
 							.animation(.spring(), value: isFocused)
+							.accessibilityLabel(progress == 0 ? "Not watched" : progress == 1 ? "Watched" : "\(Int(progress * 100)) percent watched")
 						}
-						.cornerRadius(10.0)
+							.cornerRadius(10.0)
 					}, placeholder: {
 						ZStack {
 							ProgressView()
@@ -165,6 +164,7 @@ struct BlogPostSelectionView: View {
 								Image(systemName: "clock")
 								Text("\(TimeInterval(duration).floatplaneTimestamp)")
 									.lineLimit(1)
+									.accessibilityLabel("Duration \(TimeInterval(duration).accessibleFloatplanetimestamp)")
 							}
 						}
 							.font(.system(size: 18, weight: .light))
@@ -190,26 +190,8 @@ struct BlogPostSelectionView: View {
 			.padding(isTvOS16_4 ? 32 : 0)
 			.onPlayPauseCommand(perform: {
 				if blogPost.isAccessible {
-					isAutoSelected = true
+					navCoordinator.push(route: .blogPostView(blogPostId: blogPost.id, autoPlay: true))
 				}
-			})
-			.sheet(isPresented: $isSelected, onDismiss: {
-				isSelected = false
-			}, content: {
-				BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService, id: blogPost.id),
-							 shouldAutoPlay: false)
-				.overlay(alignment: .topTrailing, content: {
-					ToastBarView()
-				})
-			})
-			.sheet(isPresented: $isAutoSelected, onDismiss: {
-				isAutoSelected = false
-			}, content: {
-				BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService, id: blogPost.id),
-							 shouldAutoPlay: true)
-				.overlay(alignment: .topTrailing, content: {
-					ToastBarView()
-				})
 			})
 	}
 }
