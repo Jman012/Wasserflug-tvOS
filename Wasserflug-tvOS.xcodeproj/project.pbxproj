@@ -703,7 +703,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Wasserflug-tvOS/Wasserflug-tvOS.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 19;
 				DEVELOPMENT_ASSET_PATHS = "\"Wasserflug-tvOS/Preview Content\"";
 				DEVELOPMENT_TEAM = 2TJ5K7WSP8;
 				ENABLE_PREVIEWS = YES;
@@ -735,7 +735,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Wasserflug-tvOS/Wasserflug-tvOS.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 19;
 				DEVELOPMENT_ASSET_PATHS = "\"Wasserflug-tvOS/Preview Content\"";
 				DEVELOPMENT_TEAM = 2TJ5K7WSP8;
 				ENABLE_PREVIEWS = YES;
