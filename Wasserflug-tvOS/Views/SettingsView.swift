@@ -2,7 +2,6 @@ import SwiftUI
 import CoreData
 import Logging
 import FloatplaneAPIClient
-import CachedAsyncImage
 
 struct SettingsView: View {
 	@Namespace var namespace
@@ -28,7 +27,7 @@ struct SettingsView: View {
 				HStack(spacing: 20) {
 					Text(verbatim: "Logged in as \(userSelf.username)")
 					let pfpSize: CGFloat = 75
-					CachedAsyncImage(url: imageUrl, content: { image in
+					AsyncImage(url: imageUrl, content: { image in
 						image
 							.resizable()
 							.frame(width: pfpSize, height: pfpSize)

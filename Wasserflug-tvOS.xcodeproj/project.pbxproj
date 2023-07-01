@@ -29,7 +29,6 @@
 		E753374E27CAFAFF0010E3D2 /* Wasserflug_tvOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753374D27CAFAFF0010E3D2 /* Wasserflug_tvOSTests.swift */; };
 		E753375827CAFAFF0010E3D2 /* Wasserflug_tvOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753375727CAFAFF0010E3D2 /* Wasserflug_tvOSUITests.swift */; };
 		E753375A27CAFAFF0010E3D2 /* Wasserflug_tvOSUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753375927CAFAFF0010E3D2 /* Wasserflug_tvOSUITestsLaunchTests.swift */; };
-		E753376827CAFF550010E3D2 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = E753376727CAFF550010E3D2 /* CachedAsyncImage */; };
 		E753376B27CB01FD0010E3D2 /* Vapor in Frameworks */ = {isa = PBXBuildFile; productRef = E753376A27CB01FD0010E3D2 /* Vapor */; };
 		E753377727CB066E0010E3D2 /* Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753377027CB066E0010E3D2 /* Authentication.swift */; };
 		E753377827CB066E0010E3D2 /* FloatplaneAPIClient+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753377127CB066E0010E3D2 /* FloatplaneAPIClient+Extensions.swift */; };
@@ -162,7 +161,6 @@
 			files = (
 				E75337BC27CB07900010E3D2 /* FloatplaneAPIClient in Frameworks */,
 				E74C98A62A080B9E00FDDB9C /* DebouncedOnChange in Frameworks */,
-				E753376827CAFF550010E3D2 /* CachedAsyncImage in Frameworks */,
 				E753376B27CB01FD0010E3D2 /* Vapor in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -370,7 +368,6 @@
 			);
 			name = "Wasserflug-tvOS";
 			packageProductDependencies = (
-				E753376727CAFF550010E3D2 /* CachedAsyncImage */,
 				E753376A27CB01FD0010E3D2 /* Vapor */,
 				E75337BB27CB07900010E3D2 /* FloatplaneAPIClient */,
 				E74C98A52A080B9E00FDDB9C /* DebouncedOnChange */,
@@ -448,7 +445,6 @@
 			);
 			mainGroup = E753373027CAFAFE0010E3D2;
 			packageReferences = (
-				E753376627CAFF550010E3D2 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 				E753376927CB01FD0010E3D2 /* XCRemoteSwiftPackageReference "vapor" */,
 				E74C98A42A080B9E00FDDB9C /* XCRemoteSwiftPackageReference "DebouncedOnChange" */,
 			);
@@ -889,14 +885,6 @@
 				minimumVersion = 1.1.0;
 			};
 		};
-		E753376627CAFF550010E3D2 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image";
-			requirement = {
-				kind = exactVersion;
-				version = 2.1.1;
-			};
-		};
 		E753376927CB01FD0010E3D2 /* XCRemoteSwiftPackageReference "vapor" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/vapor/vapor";
@@ -912,11 +900,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E74C98A42A080B9E00FDDB9C /* XCRemoteSwiftPackageReference "DebouncedOnChange" */;
 			productName = DebouncedOnChange;
-		};
-		E753376727CAFF550010E3D2 /* CachedAsyncImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E753376627CAFF550010E3D2 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
-			productName = CachedAsyncImage;
 		};
 		E753376A27CB01FD0010E3D2 /* Vapor */ = {
 			isa = XCSwiftPackageProductDependency;

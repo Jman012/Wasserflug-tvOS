@@ -2,7 +2,6 @@ import SwiftUI
 import CoreData
 import GameController
 import FloatplaneAPIClient
-import CachedAsyncImage
 import DebouncedOnChange
 
 struct RootTabView2: View {
@@ -280,7 +279,7 @@ struct RootTabView2: View {
 			}
 		}, label: {
 			HStack(spacing: 0) {
-				CachedAsyncImage(url: (creator.icon as ImageModelShared?).bestImage(for: CGSize(width: imageSize, height: imageSize))) { image in
+				AsyncImage(url: (creator.icon as ImageModelShared?).bestImage(for: CGSize(width: imageSize, height: imageSize))) { image in
 					image.resizable()
 				} placeholder: {
 					ProgressView()
@@ -321,7 +320,7 @@ struct RootTabView2: View {
 			}
 		}, label: {
 			HStack(spacing: 0) {
-				CachedAsyncImage(url: (channel.icon as ImageModelShared?).bestImage(for: CGSize(width: imageSize, height: imageSize))) { image in
+				AsyncImage(url: (channel.icon as ImageModelShared?).bestImage(for: CGSize(width: imageSize, height: imageSize))) { image in
 					image.resizable()
 				} placeholder: {
 					ProgressView()

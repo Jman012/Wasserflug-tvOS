@@ -1,5 +1,4 @@
 import SwiftUI
-import CachedAsyncImage
 
 struct LivestreamView: View {
 	@Environment(\.scenePhase) var scenePhase
@@ -21,7 +20,7 @@ struct LivestreamView: View {
 			case let .loaded((creator, _, _)):
 				if !viewModel.isLive {
 					VStack {
-						CachedAsyncImage(url: URL(string: creator.liveStream?.offline.thumbnail?.path ?? ""), content: { image in
+						AsyncImage(url: URL(string: creator.liveStream?.offline.thumbnail?.path ?? ""), content: { image in
 							image
 								.resizable()
 								.scaledToFit()

@@ -1,6 +1,5 @@
 import SwiftUI
 import FloatplaneAPIClient
-import CachedAsyncImage
 
 struct BlogPostSelectionView: View {
 	
@@ -60,7 +59,7 @@ struct BlogPostSelectionView: View {
 			VStack(alignment: .leading, spacing: 10) {
 				// Thumbnail
 				ZStack(alignment: .center) {
-					CachedAsyncImage(url: (blogPost.thumbnail as ImageModelShared?).bestImage(for: geometrySize), content: { image in
+					AsyncImage(url: (blogPost.thumbnail as ImageModelShared?).bestImage(for: geometrySize), content: { image in
 						// Thumbnail image with watch progress indicator overlaid on
 						// the bottom of the image
 						ZStack(alignment: .bottomLeading) {
@@ -69,7 +68,7 @@ struct BlogPostSelectionView: View {
 								.resizable()
 								.scaledToFit()
 								.frame(maxWidth: .infinity)
-							
+
 							// Watch progress indicator
 							GeometryReader { geometry in
 								Rectangle()
@@ -123,7 +122,7 @@ struct BlogPostSelectionView: View {
 					// Show the channel icon, regardless of view origin.
 					if case let .typeChannelModel(channel) = blogPost.channel,
 					   let channelIconUrl = URL(string: channel.icon.path) {
-						CachedAsyncImage(url: channelIconUrl, content: { image in
+						AsyncImage(url: channelIconUrl, content: { image in
 							image
 								.resizable()
 								.scaledToFit()

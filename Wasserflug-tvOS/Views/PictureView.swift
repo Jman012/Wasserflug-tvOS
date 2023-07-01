@@ -1,7 +1,6 @@
 import SwiftUI
 import AVKit
 import FloatplaneAPIClient
-import CachedAsyncImage
 
 struct PictureView: View {
 	
@@ -20,7 +19,7 @@ struct PictureView: View {
 				viewModel.state = .idle
 			})
 		case let .loaded(content):
-			CachedAsyncImage(url: URL(string: content.imageFiles.first!.path), content: { image in
+			AsyncImage(url: URL(string: content.imageFiles.first!.path), content: { image in
 				image
 					.resizable()
 					.scaledToFit()

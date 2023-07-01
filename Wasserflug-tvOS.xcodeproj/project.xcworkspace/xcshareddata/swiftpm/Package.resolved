@@ -173,15 +173,6 @@
         }
       },
       {
-        "package": "swiftui-cached-async-image",
-        "repositoryURL": "https://github.com/lorenzofiamingo/swiftui-cached-async-image",
-        "state": {
-          "branch": null,
-          "revision": "467a3d17479887943ab917a379e62bbaff60ac8a",
-          "version": "2.1.1"
-        }
-      },
-      {
         "package": "vapor",
         "repositoryURL": "https://github.com/vapor/vapor",
         "state": {

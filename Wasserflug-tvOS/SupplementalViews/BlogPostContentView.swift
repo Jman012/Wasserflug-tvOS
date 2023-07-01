@@ -1,6 +1,5 @@
 import SwiftUI
 import FloatplaneAPIClient
-import CachedAsyncImage
 
 struct BlogPostContentView: View {
 	
@@ -90,7 +89,7 @@ struct BlogPostContentView: View {
 							Button(action: {
 								showingPicture = picture
 							}, label: {
-								CachedAsyncImage(url: URL(string: picture.thumbnail.path), content: { image in
+								AsyncImage(url: URL(string: picture.thumbnail.path), content: { image in
 									image
 										.resizable()
 										.scaledToFit()

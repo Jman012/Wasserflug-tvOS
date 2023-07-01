@@ -1,6 +1,5 @@
 import SwiftUI
 import FloatplaneAPIClient
-import CachedAsyncImage
 
 struct CreatorContentView: View {
 	@EnvironmentObject var userInfo: UserInfo
@@ -37,7 +36,7 @@ struct CreatorContentView: View {
 				GeometryReader { geometry in
 					ScrollView {
 						// Banner image
-						CachedAsyncImage(url: viewModel.coverImagePath, content: { image in
+						AsyncImage(url: viewModel.coverImagePath, content: { image in
 							ZStack {
 								image
 									.resizable()
@@ -59,7 +58,7 @@ struct CreatorContentView: View {
 						HStack(alignment: .top) {
 							
 							// Creator profile picture, moved up into the above banner image and circled
-							CachedAsyncImage(url: viewModel.creatorProfileImagePath, content: { image in
+							AsyncImage(url: viewModel.creatorProfileImagePath, content: { image in
 								image
 									.resizable()
 									.frame(width: 150, height: 150)

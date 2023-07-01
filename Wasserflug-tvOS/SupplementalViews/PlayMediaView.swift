@@ -1,6 +1,5 @@
 import SwiftUI
 import FloatplaneAPIClient
-import CachedAsyncImage
 
 struct PlayMediaView: View {
 	
@@ -63,7 +62,7 @@ struct PlayMediaView: View {
 	}
 	
 	var image: some View {
-		CachedAsyncImage(url: thumbnail.pathUrlOrNil, content: { image in
+		AsyncImage(url: thumbnail.pathUrlOrNil, content: { image in
 			ZStack(alignment: .bottomLeading) {
 				// Thumbnail image
 				image

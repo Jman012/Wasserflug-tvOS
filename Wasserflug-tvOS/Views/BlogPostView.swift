@@ -1,6 +1,5 @@
 import SwiftUI
 import FloatplaneAPIClient
-import CachedAsyncImage
 
 struct BlogPostView: View {
 	@StateObject var viewModel: BlogPostViewModel
@@ -78,7 +77,7 @@ struct BlogPostView: View {
 							VStack(alignment: .leading) {
 								HStack(alignment: .center, spacing: 20) {
 									// Creator profile picture
-									CachedAsyncImage(url: URL(string: content.creator.icon.path), content: { image in
+									AsyncImage(url: URL(string: content.creator.icon.path), content: { image in
 										image
 											.resizable()
 											.frame(width: 75, height: 75)
