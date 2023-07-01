@@ -35,6 +35,7 @@ struct RootTabView2: View {
 	
 	@FocusState var menuIsFocused: Bool
 	@FocusState var contentIsFocused: Bool
+	@FocusState var focusHackIsFocused: Bool
 	@Namespace var menuFocusNamespace
 	@Namespace var contentFocusNamespace
 	@FocusState var focusedItem: TabSelection?
@@ -49,11 +50,33 @@ struct RootTabView2: View {
 				.zIndex(1)
 				.accessibilityElement(children: .contain)
 				.accessibilityLabel("Main content")
+				.disabled(state == .expanded)
+				.overlay {
+					if state == .expanded {
+						Rectangle()
+							.fill(Color.black.opacity(0.2))
+					}
+				}
 		}
+		.overlay(alignment: .trailing, content: {
+			if state == .expanded {
+				Rectangle()
+					.fill(.clear)
+					.frame(width: 50, height: .infinity)
+					.focusable(true)
+					.focused($focusHackIsFocused)
+			}
+		})
 		.ignoresSafeArea()
 		.onFirstAppear {
 			menuIsFocused = true
 		}
+		.onChange(of: focusHackIsFocused, perform: { isFocused in
+			if isFocused {
+				focusHackIsFocused = false
+				contentIsFocused = true
+			}
+		})
 		.onChange(of: tabSelection) { tabSelection in
 			switch tabSelection {
 			case .home:
@@ -132,44 +155,6 @@ struct RootTabView2: View {
 				} else {
 					withAnimation {
 						state = .collapsed
-					}
-				}
-			})
-			// Manually move focus from sidebar to content on swipe right.
-			// This is needed because the overlapping focusSections don't allow
-			// for proper focus traversal.
-			.onMoveCommand { direction in
-				if menuIsFocused && direction == .right {
-					withAnimation {
-						contentIsFocused = true
-					}
-				}
-			}
-			// Same as above, but for swipes instead of arrow key/directional
-			// move commands.
-			.onAppear(perform: {
-				guard let microGamepad = GCController.controllers().first?.microGamepad else {
-					return
-				}
-				microGamepad.reportsAbsoluteDpadValues = true
-				microGamepad.dpad.valueChangedHandler = { pad, x, y in
-					let fingerDistanceFromSiriRemoteCenter: Float = 0.7
-//					let swipeValues: String = "x: \(x), y: \(y), pad.left: \(pad.left), pad.right: \(pad.right), pad.down: \(pad.down), pad.up: \(pad.up), pad.xAxis: \(pad.xAxis), pad.yAxis: \(pad.yAxis)"
-					if y > fingerDistanceFromSiriRemoteCenter {
-//						print(">>> up \(swipeValues)")
-					} else if y < -fingerDistanceFromSiriRemoteCenter {
-//						print(">>> down \(swipeValues)")
-					} else if x < -fingerDistanceFromSiriRemoteCenter {
-//						print(">>> left \(swipeValues)")
-					} else if x > fingerDistanceFromSiriRemoteCenter {
-//						print(">>> right \(swipeValues)")
-						if menuIsFocused {
-							withAnimation {
-								contentIsFocused = true
-							}
-						}
-					} else {
-						//print(">>> tap \(swipeValues)")
 					}
 				}
 			})

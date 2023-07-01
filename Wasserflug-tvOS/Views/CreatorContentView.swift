@@ -99,7 +99,7 @@ struct CreatorContentView: View {
 									viewOrigin: .creator,
 									watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", blogPost.id), animation: .default)
 								)
-									.focused($blogPostFocus, equals: blogPost.id)
+//									.focused($blogPostFocus, equals: blogPost.id)
 									.onAppear(perform: {
 										viewModel.itemDidAppear(blogPost)
 									})

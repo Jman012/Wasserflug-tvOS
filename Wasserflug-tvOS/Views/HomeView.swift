@@ -37,7 +37,7 @@ struct HomeView: View {
 							viewOrigin: .home(userInfo.creatorOwners[blogPost.creator.owner.id]?.asAnyUserModelShared()),
 							watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", blogPost.id), animation: .default)
 						)
-							.focused($blogPostFocus, equals: blogPost.id)
+//							.focused($blogPostFocus, equals: blogPost.id)
 							.onAppear(perform: {
 								viewModel.itemDidAppear(blogPost)
 							})
