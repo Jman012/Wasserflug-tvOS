@@ -25,13 +25,21 @@ struct RootTabView2: View {
 		}
 	}
 	
+	enum ScrollViewPosition: Hashable {
+		case beginning
+		case middle
+		case end
+	}
+	
 	@EnvironmentObject var userInfo: UserInfo
 	@Environment(\.fpApiService) var fpApiService
 	@Environment(\.managedObjectContext) var managedObjectContext
 	
-	let fixedWidth: CGFloat = 140
+	let fixedWidth: CGFloat = 170
 	@State var tabSelection: TabSelection = .home
 	@State var state: SideBarState = .expanded
+	@State var scrollViewFrameHeight = 1000.0
+	@State var scrollViewPosition = ScrollViewPosition.beginning
 	
 	@FocusState var menuIsFocused: Bool
 	@FocusState var contentIsFocused: Bool
@@ -62,7 +70,7 @@ struct RootTabView2: View {
 			if state == .expanded {
 				Rectangle()
 					.fill(.clear)
-					.frame(width: 50, height: .infinity)
+					.frame(maxWidth: 50, maxHeight: .infinity)
 					.focusable(true)
 					.focused($focusHackIsFocused)
 			}
@@ -190,11 +198,11 @@ struct RootTabView2: View {
 				.accessibilityLabel("Home view")
 				.accessibilityHint("Go to the home screen to view all subscription content")
 			}
-			.padding([.top], 30)
+			.padding([.top, .bottom], 30)
 			.padding([.leading, .trailing], showMenu ? 50 : 0)
 			
-			ScrollView {
-				ScrollViewReader { proxy in
+			ScrollViewReader { proxy in
+				ScrollView {
 					VStack {
 						ForEach(userInfo.creatorsInOrder, id: \.0.id) { (creator, creatorOwner) in
 							button(forCreator: creator)
@@ -218,8 +226,30 @@ struct RootTabView2: View {
 							}
 						}
 					}
-					.padding(30)
+					.background(GeometryReader {
+						let scrollDistance = -$0.frame(in: .named("scroll")).origin.y
+						let scrollContentHeight = $0.frame(in: .named("scroll")).size.height
+						let position: ScrollViewPosition = scrollDistance <= 0.0 ? .beginning : scrollDistance >= scrollContentHeight - scrollViewFrameHeight ? .end : .middle
+						if position != self.scrollViewPosition {
+							let _ = Task { @MainActor in
+								self.scrollViewPosition = position
+							}
+						}
+					})
+					.padding([.leading, .trailing], 30)
+					.padding([.top, .bottom], 15)
 				}
+				.coordinateSpace(name: "scroll")
+				.background(GeometryReader { geoProxy in
+					let scrollViewFrameHeight = geoProxy.size.height
+					if self.scrollViewFrameHeight != scrollViewFrameHeight {
+						let _ = Task { @MainActor in
+							self.scrollViewFrameHeight = scrollViewFrameHeight
+						}
+					}
+					EmptyView()
+				})
+				.innerShadow(color: .black, radius: 30, edges: !showMenu ? [] : scrollViewPosition == .beginning ? .bottom : scrollViewPosition == .end ? .top : [.top, .bottom])
 			}
 			
 			VStack {
@@ -245,12 +275,11 @@ struct RootTabView2: View {
 				.accessibilityLabel("Wasserflug Settings")
 				.accessibilityHint("Go to the settings page")
 			}
-			.padding(30)
+			.padding([.top, .bottom], 30)
+			.padding([.leading, .trailing], showMenu ? 50 : 0)
 		}
 		.background(Color(red: 49.0/256.0, green: 63.0/256.0, blue: 85.0/256.0))
 		.environment(\.colorScheme, .dark)
-//		.defaultFocus($focusedItem, tabSelection, priority: .userInitiated)
-//		.defaultFocus($focusedItem, tabSelection, priority: .automatic)
 	}
 	
 	func button(forCreator creator: CreatorModelV3) -> some View {
@@ -283,12 +312,11 @@ struct RootTabView2: View {
 					}
 				}
 			}
-			.padding(showMenu || isSelected ? 15 : 0)
+			.padding(15)
 			.background(isSelected ? VisualEffectView(effect: UIBlurEffect(style: .light)) : nil)
 			.animation(.spring(), value: showMenu)
 			.accessibilityElement(children: .ignore)
 			.accessibilityLabel("Creator \(creator.title)")
-//			.accessibilityHint("Go to the creator page for \(creator.title)")
 		})
 		.background(.clear)
 		.buttonStyle(.card)
@@ -321,12 +349,11 @@ struct RootTabView2: View {
 					Spacer()
 				}
 			}
-			.padding(showMenu || isSelected ? 15 : 0)
+			.padding(15)
 			.background(isSelected ? VisualEffectView(effect: UIBlurEffect(style: .light)) : nil)
 			.animation(.spring(), value: showMenu)
 			.accessibilityElement(children: .ignore)
 			.accessibilityLabel("Channel \(channel.title)")
-//			.accessibilityHint("Go to the channel page for \(channel.title)")
 		})
 		.background(.clear)
 		.buttonStyle(.card)

@@ -63,6 +63,7 @@
 		E75337B727CB06BE0010E3D2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379C27CB06BE0010E3D2 /* ContentView.swift */; };
 		E75337B827CB06BE0010E3D2 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379D27CB06BE0010E3D2 /* RootTabView.swift */; };
 		E75337BC27CB07900010E3D2 /* FloatplaneAPIClient in Frameworks */ = {isa = PBXBuildFile; productRef = E75337BB27CB07900010E3D2 /* FloatplaneAPIClient */; };
+		E76E318E2A51EF8F00242CEC /* InnerShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76E318D2A51EF8F00242CEC /* InnerShadow.swift */; };
 		E7A2F42A28C58E0300583294 /* ExecuteCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A2F42928C58E0300583294 /* ExecuteCode.swift */; };
 		E7A2F42C28CE43D800583294 /* LivestreamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A2F42B28CE43D800583294 /* LivestreamView.swift */; };
 		E7A447E92815E1C0009BCE2E /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */; };
@@ -145,6 +146,7 @@
 		E753379B27CB06BE0010E3D2 /* SecondFactorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondFactorView.swift; sourceTree = "<group>"; };
 		E753379C27CB06BE0010E3D2 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		E753379D27CB06BE0010E3D2 /* RootTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
+		E76E318D2A51EF8F00242CEC /* InnerShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerShadow.swift; sourceTree = "<group>"; };
 		E7A2F42928C58E0300583294 /* ExecuteCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecuteCode.swift; sourceTree = "<group>"; };
 		E7A2F42B28CE43D800583294 /* LivestreamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivestreamView.swift; sourceTree = "<group>"; };
 		E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extensions.swift"; sourceTree = "<group>"; };
@@ -340,6 +342,7 @@
 				E72E39742A3F8D0400F33C67 /* NavigationCoordinator.swift */,
 				E72E39762A3F8D8100F33C67 /* NotificationName+Extensions.swift */,
 				E71CFE312A48CB1700E8E1DC /* OnFirstAppear.swift */,
+				E76E318D2A51EF8F00242CEC /* InnerShadow.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -520,6 +523,7 @@
 				E75337AA27CB06BE0010E3D2 /* ViewModelState.swift in Sources */,
 				E75337B027CB06BE0010E3D2 /* VideoView.swift in Sources */,
 				E74C98A82A082D5100FDDB9C /* HideableView.swift in Sources */,
+				E76E318E2A51EF8F00242CEC /* InnerShadow.swift in Sources */,
 				E753379E27CB06BE0010E3D2 /* BlogPostContentView.swift in Sources */,
 				E75337A027CB06BE0010E3D2 /* PlayButton.swift in Sources */,
 				E75337A527CB06BE0010E3D2 /* HomeViewModel.swift in Sources */,
