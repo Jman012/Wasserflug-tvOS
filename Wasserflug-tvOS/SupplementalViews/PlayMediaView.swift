@@ -40,7 +40,11 @@ struct PlayMediaView: View {
 					.focused($isFocused)
 					.onFirstAppear {
 						if autoPlay {
-							self.playContent(progress)
+							Task { @MainActor in
+								// Issues with it happening too quickly when the view appears not working.
+								try? await Task.sleep(for: .milliseconds(500))
+								self.playContent(progress)
+							}
 						}
 					}
 			}
