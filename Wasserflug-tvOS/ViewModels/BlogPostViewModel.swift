@@ -57,16 +57,16 @@ class BlogPostViewModel: BaseViewModel, ObservableObject {
 			
 			fpApiService
 				.getBlogPost(id: id)
-				.flatMapResult { (response) -> Result<ContentPostV3Response, Error> in
+				.flatMapResult { response -> Result<ContentPostV3Response, Error> in
 					switch response {
 					case let .http200(value: blogPost, raw: clientResponse):
 						self.logger.debug("Blog post raw response: \(clientResponse.plaintextDebugContent)")
 						return .success(blogPost)
 					case let .http0(value: errorModel, raw: clientResponse),
-						let .http400(value: errorModel, raw: clientResponse),
-						let .http401(value: errorModel, raw: clientResponse),
-						let .http403(value: errorModel, raw: clientResponse),
-						let .http404(value: errorModel, raw: clientResponse):
+						 let .http400(value: errorModel, raw: clientResponse),
+						 let .http401(value: errorModel, raw: clientResponse),
+						 let .http403(value: errorModel, raw: clientResponse),
+						 let .http404(value: errorModel, raw: clientResponse):
 						self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading the blog post. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
 						return .failure(errorModel)
 					case .http429(raw: _):
@@ -122,16 +122,16 @@ class BlogPostViewModel: BaseViewModel, ObservableObject {
 		])
 		fpApiService
 			.likeContent(id: id)
-			.flatMapResult({ (response) -> Result<[String], Error> in
+			.flatMapResult({ response -> Result<[String], Error> in
 				switch response {
 				case let .http200(value: result, raw: clientResponse):
 					self.logger.debug("Like raw response: \(clientResponse.plaintextDebugContent)")
 					return .success(result)
 				case let .http0(value: errorModel, raw: clientResponse),
-					let .http400(value: errorModel, raw: clientResponse),
-					let .http401(value: errorModel, raw: clientResponse),
-					let .http403(value: errorModel, raw: clientResponse),
-					let .http404(value: errorModel, raw: clientResponse):
+					 let .http400(value: errorModel, raw: clientResponse),
+					 let .http401(value: errorModel, raw: clientResponse),
+					 let .http403(value: errorModel, raw: clientResponse),
+					 let .http404(value: errorModel, raw: clientResponse):
 					self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while liking the blog post. Error Model: \(String(reflecting: errorModel)).")
 					return .failure(errorModel)
 				case .http429(raw: _):
@@ -161,16 +161,16 @@ class BlogPostViewModel: BaseViewModel, ObservableObject {
 		])
 		fpApiService
 			.dislikeContent(id: id)
-			.flatMapResult({ (response) -> Result<[String], Error> in
+			.flatMapResult({ response -> Result<[String], Error> in
 				switch response {
 				case let .http200(value: result, raw: clientResponse):
 					self.logger.debug("Dislike raw response: \(clientResponse.plaintextDebugContent)")
 					return .success(result)
 				case let .http0(value: errorModel, raw: clientResponse),
-					let .http400(value: errorModel, raw: clientResponse),
-					let .http401(value: errorModel, raw: clientResponse),
-					let .http403(value: errorModel, raw: clientResponse),
-					let .http404(value: errorModel, raw: clientResponse):
+					 let .http400(value: errorModel, raw: clientResponse),
+					 let .http401(value: errorModel, raw: clientResponse),
+					 let .http403(value: errorModel, raw: clientResponse),
+					 let .http404(value: errorModel, raw: clientResponse):
 					self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while disliking the blog post. Error Model: \(String(reflecting: errorModel)).")
 					return .failure(errorModel)
 				case .http429(raw: _):
@@ -194,4 +194,3 @@ class BlogPostViewModel: BaseViewModel, ObservableObject {
 			}
 	}
 }
-

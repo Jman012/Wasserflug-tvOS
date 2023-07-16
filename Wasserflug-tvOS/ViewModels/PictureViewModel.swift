@@ -22,16 +22,16 @@ class PictureViewModel: BaseViewModel, ObservableObject {
 		
 		fpApiService
 			.getPictureContent(id: pictureAttachment.guid)
-			.flatMapResult { (response) -> Result<ContentPictureV3Response, Error> in
+			.flatMapResult { response -> Result<ContentPictureV3Response, Error> in
 				switch response {
 				case let .http200(value: pictureAttachment, clientResponse):
 					self.logger.debug("Picture information raw response: \(clientResponse.plaintextDebugContent)")
 					return .success(pictureAttachment)
 				case let .http0(value: errorModel, clientResponse),
-					let .http400(value: errorModel, clientResponse),
-					let .http401(value: errorModel, clientResponse),
-					let .http403(value: errorModel, clientResponse),
-					let .http404(value: errorModel, clientResponse):
+					 let .http400(value: errorModel, clientResponse),
+					 let .http401(value: errorModel, clientResponse),
+					 let .http403(value: errorModel, clientResponse),
+					 let .http404(value: errorModel, clientResponse):
 					self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while loading picture information. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
 					return .failure(errorModel)
 				case .http429(raw: _):
@@ -55,4 +55,3 @@ class PictureViewModel: BaseViewModel, ObservableObject {
 			}
 	}
 }
-

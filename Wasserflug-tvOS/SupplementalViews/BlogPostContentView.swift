@@ -20,7 +20,7 @@ struct BlogPostContentView: View {
 	
 	var orderedVideoAttachments: [VideoAttachmentModel]? {
 		if let videoAttachments = content.videoAttachments {
-			return videoAttachments.sorted(by: { (a, b) -> Bool in
+			return videoAttachments.sorted(by: { a, b -> Bool in
 				return orderedAttachmentIds[a.id] ?? 0 < orderedAttachmentIds[b.id] ?? 0
 			})
 		} else {
@@ -30,7 +30,7 @@ struct BlogPostContentView: View {
 	
 	var orderedPictureAttachments: [PictureAttachmentModel]? {
 		if let pictureAttachments = content.pictureAttachments {
-			return pictureAttachments.sorted(by: { (a, b) -> Bool in
+			return pictureAttachments.sorted(by: { a, b -> Bool in
 				return orderedAttachmentIds[a.id] ?? 0 < orderedAttachmentIds[b.id] ?? 0
 			})
 		} else {
@@ -40,7 +40,7 @@ struct BlogPostContentView: View {
 	
 	var orderedAudioAttachments: [AudioAttachmentModel]? {
 		if let audioAttachments = content.audioAttachments {
-			return audioAttachments.sorted(by: { (a, b) -> Bool in
+			return audioAttachments.sorted(by: { a, b -> Bool in
 				return orderedAttachmentIds[a.id] ?? 0 < orderedAttachmentIds[b.id] ?? 0
 			})
 		} else {
@@ -71,8 +71,8 @@ struct BlogPostContentView: View {
 							Text(video.title)
 								.lineLimit(1)
 						}
-							.frame(maxWidth: geometry.size.width * 0.2)
-							.padding()
+						.frame(maxWidth: geometry.size.width * 0.2)
+						.padding()
 					}
 				}
 				Spacer()
@@ -102,8 +102,8 @@ struct BlogPostContentView: View {
 								})
 								.frame(width: geometry.size.width * 0.2, height: geometry.size.width * 0.2 / (content.thumbnail?.aspectRatio ?? 1.0))
 							})
-								.buttonStyle(.card)
-								.padding()
+							.buttonStyle(.card)
+							.padding()
 							Text(picture.title)
 								.frame(maxWidth: geometry.size.width * 0.2)
 								.lineLimit(1)
@@ -112,15 +112,15 @@ struct BlogPostContentView: View {
 				}
 				Spacer()
 			}
-				.focusSection()
-				.sheet(item: $showingPicture, onDismiss: {
-					showingPicture = nil
-				}, content: { item in
-					PictureView(viewModel: PictureViewModel(fpApiService: fpApiService, pictureAttachment: item))
-						.overlay(alignment: .topTrailing, content: {
-							ToastBarView()
-						})
-				})
+			.focusSection()
+			.sheet(item: $showingPicture, onDismiss: {
+				showingPicture = nil
+			}, content: { item in
+				PictureView(viewModel: PictureViewModel(fpApiService: fpApiService, pictureAttachment: item))
+					.overlay(alignment: .topTrailing, content: {
+						ToastBarView()
+					})
+			})
 		}
 		if let audioAttachments = orderedAudioAttachments, !audioAttachments.isEmpty {
 			Text("Audio")
@@ -137,14 +137,14 @@ struct BlogPostContentView: View {
 								WaveformView(waveform: audio.waveform,
 											 width: width - 40, // 40pt of padding on either side
 											 height: height * 0.5) // Half height for wave form
-										.frame(width: width, height: height)
-										.background(.black)
+									.frame(width: width, height: height)
+									.background(.black)
 							})
-								.buttonStyle(.card)
-								.padding()
-								.alert("Coming soon", isPresented: $showAudioAttachmentFeatureMissing, actions: {}, message: {
-									Text("This feature is coming soon.")
-								})
+							.buttonStyle(.card)
+							.padding()
+							.alert("Coming soon", isPresented: $showAudioAttachmentFeatureMissing, actions: {}, message: {
+								Text("This feature is coming soon.")
+							})
 							Text(audio.title)
 								.frame(maxWidth: geometry.size.width * 0.2)
 								.lineLimit(1)
@@ -153,7 +153,7 @@ struct BlogPostContentView: View {
 				}
 				Spacer()
 			}
-				.focusSection()
+			.focusSection()
 		}
 	}
 }

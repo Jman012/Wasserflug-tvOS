@@ -101,11 +101,11 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 		let resolutions: [UIAction] = viewModel.qualityLevels.values
 			.sorted(by: { $0.1.order ?? 0 < $1.1.order ?? 0 })
 			.reversed() // This keeps the higher quality on top of the menu
-			.map({ (qualityLevel) -> UIAction in
+			.map({ qualityLevel -> UIAction in
 				return UIAction(title: qualityLevel.1.label, identifier: UIAction.Identifier(qualityLevel.1.name), handler: { _ in
 					UserDefaults.standard.set(qualityLevel.1.name, forKey: "DesiredQuality")
 				})
-		})
+			})
 		let submenu = UIMenu(title: "Resolution", options: [.displayInline, .singleSelection], children: resolutions)
 		let menu = UIMenu(title: "Resolution", image: sparkleTvImage, children: [submenu])
 		return menu
@@ -118,7 +118,7 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 			self.parent = parent
 		}
 		
-		func playerViewControllerDidEndDismissalTransition(_ playerViewController: AVPlayerViewController) {			
+		func playerViewControllerDidEndDismissalTransition(_ playerViewController: AVPlayerViewController) {
 			let progressSeconds: Int
 			if let player = playerViewController.player, let lastPlayerItem = player.currentItem {
 				progressSeconds = Int(lastPlayerItem.currentTime().seconds)

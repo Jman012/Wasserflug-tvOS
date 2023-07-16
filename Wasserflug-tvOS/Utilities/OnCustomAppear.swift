@@ -74,7 +74,7 @@ extension View {
 	}
 }
 
-// Temporary while both sidebar and tabview are supported
+/// Temporary while both sidebar and tabview are supported
 struct CombinedOnCustomAppearModifier: ViewModifier {
 	@Environment(\.customAppear) var customAppear
 	@AppStorage(SettingsView.showNewSidebarKey) var showNewSidebar: Bool = true

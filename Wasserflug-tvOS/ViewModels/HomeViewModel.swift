@@ -80,7 +80,7 @@ class HomeViewModel: BaseViewModel, ObservableObject {
 			case let (.append, .loaded(prevResponse)):
 				self.logger.notice("Received home content. Appending new items to list. Received \(response.blogPosts.count) items.")
 				self.state = .loaded(.init(blogPosts: prevResponse.blogPosts + response.blogPosts, lastElements: response.lastElements))
-			case (.prepend, let .loaded(prevResponse)):
+			case let (.prepend, .loaded(prevResponse)):
 				let prevResponseIds = Set(prevResponse.blogPosts.lazy.map({ $0.id }))
 				if let last = response.blogPosts.last, prevResponseIds.contains(last.id) {
 					let newBlogPosts = response.blogPosts.filter({ !prevResponseIds.contains($0.id) })

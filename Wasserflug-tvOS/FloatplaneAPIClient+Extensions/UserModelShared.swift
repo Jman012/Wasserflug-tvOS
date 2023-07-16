@@ -8,11 +8,9 @@ protocol UserModelShared {
 }
 
 extension UserModel: UserModelShared {
-	
 }
 
 extension UserSelfModel: UserModelShared {
-	
 }
 
 struct AnyUserModelShared: UserModelShared, Hashable {
@@ -53,4 +51,3 @@ extension UserInfoV2ResponseUsersInnerUser {
 		}
 	}
 }
-

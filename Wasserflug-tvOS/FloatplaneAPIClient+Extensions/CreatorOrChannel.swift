@@ -17,9 +17,11 @@ extension CreatorModelV3: CreatorOrChannel {
 	var creatorId: String {
 		id
 	}
+
 	var channelId: String? {
 		nil
 	}
+
 	var aboutFixed: String {
 		about.replacingOccurrences(of: "\n\n", with: " ")
 	}
@@ -29,9 +31,11 @@ extension ChannelModel: CreatorOrChannel {
 	var creatorId: String {
 		creator
 	}
+
 	var channelId: String? {
 		id
 	}
+
 	var aboutFixed: String {
 		about.replacingOccurrences(of: "\n\n", with: " ")
 	}
@@ -55,13 +59,13 @@ struct AnyCreatorOrChannel: CreatorOrChannel, Hashable {
 	
 	static func == (lhs: AnyCreatorOrChannel, rhs: AnyCreatorOrChannel) -> Bool {
 		return lhs.id == rhs.id &&
-		lhs.title == rhs.title &&
-		lhs.about == rhs.about &&
-		lhs.cover == rhs.cover &&
-		lhs.icon == rhs.icon &&
-		lhs.creatorId == rhs.creatorId &&
-		lhs.channelId == rhs.channelId &&
-		lhs.aboutFixed == rhs.aboutFixed
+			lhs.title == rhs.title &&
+			lhs.about == rhs.about &&
+			lhs.cover == rhs.cover &&
+			lhs.icon == rhs.icon &&
+			lhs.creatorId == rhs.creatorId &&
+			lhs.channelId == rhs.channelId &&
+			lhs.aboutFixed == rhs.aboutFixed
 	}
 	
 	func hash(into hasher: inout Hasher) {

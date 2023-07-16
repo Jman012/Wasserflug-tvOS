@@ -61,8 +61,8 @@ struct ContentView: View {
 							.scaledToFill()
 						VisualEffectView(effect: UIBlurEffect(style: colorScheme == .dark ? .dark : .light))
 					}
-						.ignoresSafeArea()
-						.accessibilityHidden(true))
+					.ignoresSafeArea()
+					.accessibilityHidden(true))
 				} else {
 					// Main content view if logged in
 					ZStack {
@@ -107,10 +107,10 @@ struct ContentView: View {
 			})
 		}, message: { error in
 			Text("""
-Logging in was successful, but an error was encountered while loading your user profile. Please submit a bug report with the app developer, *NOT* with Floatplane staff.
+			Logging in was successful, but an error was encountered while loading your user profile. Please submit a bug report with the app developer, *NOT* with Floatplane staff.
 
-\(error.localizedDescription)
-""")
+			\(error.localizedDescription)
+			""")
 		})
 		.alert("Application Error", isPresented: $showErrorMoreDetails, presenting: viewModel.authenticationCheckError, actions: { _ in }, message: { error in
 			Text("\(String(describing: error))")

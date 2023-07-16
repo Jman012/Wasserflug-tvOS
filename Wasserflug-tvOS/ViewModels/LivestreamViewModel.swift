@@ -77,7 +77,7 @@ class LivestreamViewModel: BaseViewModel, ObservableObject {
 			}
 			
 			self.logger.notice("Received livestream information.", metadata: [
-				"origins": "\(cdnResponse.groups.flatMap({ $0.origins ?? [] }).map({ $0.url }).joined(separator: ", "))"
+				"origins": "\(cdnResponse.groups.flatMap({ $0.origins ?? [] }).map({ $0.url }).joined(separator: ", "))",
 			])
 			// Only use the first group, for now.
 			let group = cdnResponse.groups.first
@@ -188,4 +188,3 @@ class LivestreamViewModel: BaseViewModel, ObservableObject {
 		return templateItem
 	}
 }
-

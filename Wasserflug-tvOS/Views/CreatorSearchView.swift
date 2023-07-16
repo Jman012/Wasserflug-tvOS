@@ -33,12 +33,12 @@ struct CreatorSearchView: View {
 							viewOrigin: .creator,
 							watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", blogPost.id), animation: .default)
 						)
-							.onAppear(perform: {
-								viewModel.itemDidAppear(blogPost)
-							})
+						.onAppear(perform: {
+							viewModel.itemDidAppear(blogPost)
+						})
 					}
 				}
-					.padding(40)
+				.padding(40)
 			}
 		}
 		.searchable(text: $viewModel.searchText, prompt: "Search \(self.creatorName)")

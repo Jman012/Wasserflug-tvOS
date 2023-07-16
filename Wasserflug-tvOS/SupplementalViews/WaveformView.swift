@@ -15,7 +15,7 @@ struct WaveformView: View {
 	}()
 	
 	private func compute() -> (CGFloat, Range<Int>, CGFloat, ArraySlice<Int>, CGFloat) {
-		let range = 0..<(min(20, waveform.data.count))
+		let range = 0..<min(20, waveform.data.count)
 		let data = waveform.data[range]
 		let maxDataPoint = data.max() ?? 0
 		// The max times the scale should equal the height.

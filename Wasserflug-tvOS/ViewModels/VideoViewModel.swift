@@ -75,7 +75,7 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 			}
 			
 			self.logger.notice("Received video information.", metadata: [
-				"origins": "\(deliveryInfo.groups.flatMap({ $0.origins ?? [] }).map({ $0.url }).joined(separator: ", "))"
+				"origins": "\(deliveryInfo.groups.flatMap({ $0.origins ?? [] }).map({ $0.url }).joined(separator: ", "))",
 			])
 			
 			let screenNativeBounds = UIScreen.main.nativeBounds
@@ -103,7 +103,7 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 				return enabled && !hidden && videoSizeOkay
 			})
 			
-			let qualityLevelsAndUrls = filteredVariants?.compactMap({ (variant) -> (String, (URL, CdnDeliveryV3Variant))? in
+			let qualityLevelsAndUrls = filteredVariants?.compactMap({ variant -> (String, (URL, CdnDeliveryV3Variant))? in
 				// Map the quality level to the correct URL
 				if let url = DeliveryHelper.getBestUrl(variant: variant, group: group) {
 					return (variant.name, (url, variant))
@@ -217,4 +217,3 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 		}
 	}
 }
-

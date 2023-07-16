@@ -43,7 +43,7 @@ struct CreatorContentView: View {
 									.scaledToFill()
 									.overlay(LinearGradient(
 										// Only have a shadow on the banner in dark mode. Otherwise, looks odd in light mode.
-										colors: [.clear, (colorScheme == .dark ? .black.opacity(0.6) : .clear)],
+										colors: [.clear, colorScheme == .dark ? .black.opacity(0.6) : .clear],
 										startPoint: .top,
 										endPoint: .bottom)
 									)
@@ -67,7 +67,7 @@ struct CreatorContentView: View {
 								ProgressView()
 									.frame(width: 150, height: 150)
 							})
-								.offset(x: 20, y: -115) // Half the height (150/2=75) + 40pts of padding = 115pt
+							.offset(x: 20, y: -115) // Half the height (150/2=75) + 40pts of padding = 115pt
 							
 							// Search button
 							NavigationLink(value: WasserflugRoute.searchView(creatorOrChannel: AnyCreatorOrChannel(viewModel.creatorOrChannel), creatorOwner: AnyUserModelShared(viewModel.creatorOwner)), label: {
@@ -89,8 +89,8 @@ struct CreatorContentView: View {
 									.frame(maxWidth: .infinity, alignment: .leading)
 							}
 						}
-							.padding(.top)
-							.focusSection()
+						.padding(.top)
+						.focusSection()
 						
 						LazyVGrid(columns: gridColumns, spacing: 60) {
 							ForEach(content) { blogPost in
@@ -100,12 +100,12 @@ struct CreatorContentView: View {
 									watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", blogPost.id), animation: .default)
 								)
 //									.focused($blogPostFocus, equals: blogPost.id)
-									.onAppear(perform: {
-										viewModel.itemDidAppear(blogPost)
-									})
+								.onAppear(perform: {
+									viewModel.itemDidAppear(blogPost)
+								})
 							}
 						}
-							.padding(40)
+						.padding(40)
 					}
 				}.onCombinedCustomDisappear {
 					viewModel.creatorContentDidDisappear()
@@ -129,7 +129,6 @@ struct CreatorContentView: View {
 			}
 		}
 	}
-
 }
 
 struct CreatorContentView_Previews: PreviewProvider {
@@ -145,11 +144,11 @@ struct CreatorContentView_Previews: PreviewProvider {
 				creatorOrChannel: MockData.creatorV3,
 				creatorOwner: MockData.creatorOwners.users[0].user.userModelShared
 			))
-				.tag(RootTabView.Selection.creator(MockData.creatorV3.id))
-				.tabItem {
-					Text(MockData.creatorV3.title)
-				}
-				.environmentObject(MockData.userInfo)
+			.tag(RootTabView.Selection.creator(MockData.creatorV3.id))
+			.tabItem {
+				Text(MockData.creatorV3.title)
+			}
+			.environmentObject(MockData.userInfo)
 			Text("test").tabItem {
 				Text("Settings")
 			}

@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-fileprivate extension Notification.Name {
+private extension Notification.Name {
 	static let wasserflugToast = Notification.Name("WasserflugToast")
 }
 
@@ -49,7 +49,7 @@ struct ToastBarView: View {
 		.animation(.easeInOut, value: toasts)
 		.onReceive(NotificationCenter.default
 			.publisher(for: .wasserflugToast)
-			.compactMap { (notification) -> Toast? in
+			.compactMap { notification -> Toast? in
 				let toast = notification.object as? Toast
 				if let wasserflugToast = toast?.wasserflugToast {
 					// Skip excess failedToLoadProgress toasts if received within 5 minutes of the initial one.
@@ -62,13 +62,13 @@ struct ToastBarView: View {
 				return toast
 			}
 			.receive(on: RunLoop.main), perform: { toast in
-			toasts.insert(toast, at: 0)
+				toasts.insert(toast, at: 0)
 			
-			DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-				withAnimation {
-					self.toasts.removeAll(where: { $0.id == toast.id })
+				DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+					withAnimation {
+						self.toasts.removeAll(where: { $0.id == toast.id })
+					}
 				}
-			}
-		})
+			})
 	}
 }

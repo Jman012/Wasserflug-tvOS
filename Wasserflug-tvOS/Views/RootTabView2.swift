@@ -125,7 +125,7 @@ struct RootTabView2: View {
 				.opacity(tabSelection == .home ? 1 : 0)
 				.accessibilityHidden(tabSelection == .home ? false : true)
 
-			ForEach(userInfo.creatorsInOrder, id: \.0.id) { (creator, creatorOwner) in
+			ForEach(userInfo.creatorsInOrder, id: \.0.id) { creator, creatorOwner in
 				CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: creator, creatorOwner: creatorOwner))
 					.customAppear(tabSelection == .creator(creator.id) ? .appear : .disappear)
 					.opacity(tabSelection == .creator(creator.id) ? 1 : 0)
@@ -204,7 +204,7 @@ struct RootTabView2: View {
 			ScrollViewReader { proxy in
 				ScrollView {
 					VStack {
-						ForEach(userInfo.creatorsInOrder, id: \.0.id) { (creator, creatorOwner) in
+						ForEach(userInfo.creatorsInOrder, id: \.0.id) { creator, creatorOwner in
 							button(forCreator: creator)
 								.id(TabSelection.creator(creator.id))
 								.focused($focusedItem, equals: TabSelection.creator(creator.id))
@@ -298,9 +298,9 @@ struct RootTabView2: View {
 				} placeholder: {
 					ProgressView()
 				}
-					.frame(width: imageSize, height: imageSize)
-					.cornerRadius(imageSize)
-					.padding([.leading], indent)
+				.frame(width: imageSize, height: imageSize)
+				.cornerRadius(imageSize)
+				.padding([.leading], indent)
 				if showMenu {
 					Text(creator.title)
 						.lineLimit(1)
@@ -338,9 +338,9 @@ struct RootTabView2: View {
 				} placeholder: {
 					ProgressView()
 				}
-					.frame(width: imageSize, height: imageSize)
-					.cornerRadius(imageSize)
-					.padding([.leading], indent)
+				.frame(width: imageSize, height: imageSize)
+				.cornerRadius(imageSize)
+				.padding([.leading], indent)
 				if showMenu {
 					Text(channel.title)
 						.lineLimit(1)

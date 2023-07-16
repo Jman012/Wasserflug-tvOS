@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ExecuteCode : View {
-	init( _ codeToExec: () -> () ) {
+	init(_ codeToExec: () -> Void) {
 		codeToExec()
 	}
 	
@@ -9,4 +9,3 @@ struct ExecuteCode : View {
 		return Rectangle().fill(.clear)
 	}
 }
-

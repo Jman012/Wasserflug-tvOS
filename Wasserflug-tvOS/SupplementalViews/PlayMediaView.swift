@@ -37,16 +37,16 @@ struct PlayMediaView: View {
 				PlayButton(size: playButtonSize, videoTitle: videoTitle, action: {
 					self.playContent(progress)
 				})
-					.focused($isFocused)
-					.onFirstAppear {
-						if autoPlay {
-							Task { @MainActor in
-								// Issues with it happening too quickly when the view appears not working.
-								try? await Task.sleep(for: .milliseconds(500))
-								self.playContent(progress)
-							}
+				.focused($isFocused)
+				.onFirstAppear {
+					if autoPlay {
+						Task { @MainActor in
+							// Issues with it happening too quickly when the view appears not working.
+							try? await Task.sleep(for: .milliseconds(500))
+							self.playContent(progress)
 						}
 					}
+				}
 			}
 		case .imageCard:
 			Button(action: {
@@ -54,14 +54,14 @@ struct PlayMediaView: View {
 			}, label: {
 				image
 			})
-				.buttonStyle(.card)
-				.focused($isFocused)
-				.padding()
-				.onFirstAppear {
-					if autoPlay {
-						self.playContent(progress)
-					}
+			.buttonStyle(.card)
+			.focused($isFocused)
+			.padding()
+			.onFirstAppear {
+				if autoPlay {
+					self.playContent(progress)
 				}
+			}
 		}
 	}
 	
@@ -88,9 +88,9 @@ struct PlayMediaView: View {
 				.animation(.spring(), value: isFocused)
 				.accessibilityLabel(progress == 0 ? "Not watched" : progress == 1 ? "Watched" : "\(Int(progress * 100)) percent watched")
 			}
-				.frame(width: width)
-				// Apply the cornerRadius on the ZStack to get the corners of the watch progress indicator
-				.cornerRadius(10.0)
+			.frame(width: width)
+			// Apply the cornerRadius on the ZStack to get the corners of the watch progress indicator
+			.cornerRadius(10.0)
 		}, placeholder: {
 			ZStack {
 				ProgressView()
@@ -116,7 +116,7 @@ struct PlayMediaView_Previews: PreviewProvider {
 				autoPlay: false,
 				watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
 			)
-				.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 
 			PlayMediaView(
 				thumbnail: MockData.blogPosts.blogPosts.first!.thumbnail,
@@ -128,8 +128,7 @@ struct PlayMediaView_Previews: PreviewProvider {
 				autoPlay: false,
 				watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
 			)
-				.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-
+			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 		}
 	}
 }

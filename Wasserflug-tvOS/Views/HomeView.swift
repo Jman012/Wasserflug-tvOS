@@ -38,12 +38,12 @@ struct HomeView: View {
 							watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", blogPost.id), animation: .default)
 						)
 //							.focused($blogPostFocus, equals: blogPost.id)
-							.onAppear(perform: {
-								viewModel.itemDidAppear(blogPost)
-							})
+						.onAppear(perform: {
+							viewModel.itemDidAppear(blogPost)
+						})
 					}
 				}
-					.padding(40)
+				.padding(40)
 			}.onCombinedCustomDisappear {
 				viewModel.homeDidDisappear()
 			}.onCombinedCustomAppear {

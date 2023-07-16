@@ -56,7 +56,7 @@ struct BlogPostView: View {
 							// Thumbnail with play button, on left of screen
 							PlayMediaView(
 								thumbnail: content.thumbnail,
-								viewMode: (content.videoAttachments?.isEmpty == false ? .playButton : .imageCard),
+								viewMode: content.videoAttachments?.isEmpty == false ? .playButton : .imageCard,
 								width: geometry.size.width * 0.5,
 								playButtonSize: .default,
 								videoTitle: content.firstVideoAttachment?.title ?? "",
@@ -86,7 +86,7 @@ struct BlogPostView: View {
 										ProgressView()
 											.frame(width: 75, height: 75)
 									})
-										.accessibilityHidden(true)
+									.accessibilityHidden(true)
 									
 									VStack(alignment: .leading) {
 										// Creator name
@@ -108,7 +108,7 @@ struct BlogPostView: View {
 									.accessibilityIdentifier("Description")
 							}
 						}
-							.focusSection()
+						.focusSection()
 						
 						// Like/dislike/comments row
 						HStack {
@@ -124,7 +124,7 @@ struct BlogPostView: View {
 									.accessibilityValue("\(content.likes + additionalLikes) likes")
 									.accessibilityHint(viewModel.isLiked ? "Removes like from post" : "Likes the post")
 							}
-								.foregroundColor(viewModel.isLiked ? FPColors.blue : colorScheme == .light ? Color.black : Color.white)
+							.foregroundColor(viewModel.isLiked ? FPColors.blue : colorScheme == .light ? Color.black : Color.white)
 
 							// Dislike button
 							let additionalDislikes = viewModel.isDisliked && viewModel.latestUserInteraction != nil ? 1 : 0
@@ -138,7 +138,7 @@ struct BlogPostView: View {
 									.accessibilityValue("\(content.dislikes + additionalDislikes) dislikes")
 									.accessibilityHint(viewModel.isLiked ? "Removes dislike from post" : "Dislikes the post")
 							}
-								.foregroundColor(viewModel.isDisliked ? FPColors.blue : colorScheme == .light ? Color.black : Color.white)
+							.foregroundColor(viewModel.isDisliked ? FPColors.blue : colorScheme == .light ? Color.black : Color.white)
 
 							// Comments label
 							Text("\(content.comments) comment\(content.comments == 1 ? "" : "s")")
@@ -146,9 +146,9 @@ struct BlogPostView: View {
 							// Extend the side, for focusSection behavior
 							Spacer()
 						}
-							.frame(maxWidth: .infinity)
-							.padding()
-							.focusSection()
+						.frame(maxWidth: .infinity)
+						.padding()
+						.focusSection()
 						
 						// If applicable, show all attachments as the last rows
 						if !(content.videoAttachments?.count == 1 && content.pictureAttachments?.isEmpty ?? true && content.audioAttachments?.isEmpty ?? true && content.galleryAttachments?.isEmpty ?? true) {
@@ -157,7 +157,7 @@ struct BlogPostView: View {
 					}
 				}
 			}
-				.focusScope(screenNamespace)
+			.focusScope(screenNamespace)
 		}
 	}
 }

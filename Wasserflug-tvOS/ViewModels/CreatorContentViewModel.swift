@@ -43,6 +43,7 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 			return creatorOrChannel.aboutFixed.startIndex
 		}
 	}
+
 	lazy var creatorAboutHeader: AttributedString = (try? AttributedString(markdown: String(creatorOrChannel.aboutFixed[..<aboutFirstNewlineIndex]), options: .init(allowsExtendedAttributes: false, interpretedSyntax: .full, failurePolicy: .returnPartiallyParsedIfPossible, languageCode: nil))) ?? AttributedString("")
 	lazy var creatorAboutBody: AttributedString = (try? AttributedString(markdown: String(creatorOrChannel.aboutFixed[aboutFirstNewlineIndex...]), options: .init(allowsExtendedAttributes: false, interpretedSyntax: .full, failurePolicy: .returnPartiallyParsedIfPossible, languageCode: nil))) ?? AttributedString("")
 	

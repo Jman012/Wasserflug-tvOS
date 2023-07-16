@@ -13,6 +13,7 @@ struct LoginView: View {
 		case passwordField
 		case loginButton
 	}
+
 	@FocusState private var focusedField: Field?
 	
 	var body: some View {
@@ -73,8 +74,8 @@ struct LoginView: View {
 							Text("Login")
 						}
 					})
-						.disabled(viewModel.isAttemptingLogin)
-						.focused($focusedField, equals: .loginButton)
+					.disabled(viewModel.isAttemptingLogin)
+					.focused($focusedField, equals: .loginButton)
 				}
 				.multilineTextAlignment(.center)
 				.frame(maxWidth: geometry.size.width * 0.4)
@@ -84,15 +85,15 @@ struct LoginView: View {
 		.alert("Login", isPresented: $viewModel.showIncorrectLoginAlert, actions: { }, message: {
 			if let error = viewModel.loginError {
 				Text("""
-There was an error while attempting to log in. Please submit a bug report with the app developer, *NOT* with Floatplane staff.
+				There was an error while attempting to log in. Please submit a bug report with the app developer, *NOT* with Floatplane staff.
 
-\(error.localizedDescription)
-""")
+				\(error.localizedDescription)
+				""")
 			} else {
 				Text("""
-Username or password is incorrect.
-If you have forgotten your password, please reset it via https://www.floatplane.com/reset-password
-""")
+				Username or password is incorrect.
+				If you have forgotten your password, please reset it via https://www.floatplane.com/reset-password
+				""")
 			}
 		})
 	}

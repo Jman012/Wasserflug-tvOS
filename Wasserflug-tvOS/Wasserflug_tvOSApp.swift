@@ -9,14 +9,15 @@ struct Wasserflug_tvOSApp: App {
 	static var logger: Logging.Logger {
 		var logger = Logging.Logger(label: Bundle.main.bundleIdentifier!)
 		#if DEBUG
-		// For debugging, log at a lower level to get more information.
-		logger.logLevel = .info
+			// For debugging, log at a lower level to get more information.
+			logger.logLevel = .info
 		#else
-		// For release mode, only log important items.
-		logger.logLevel = .notice
+			// For release mode, only log important items.
+			logger.logLevel = .notice
 		#endif
 		return logger
 	}
+
 	static var networkLogger: Logging.Logger {
 		var logger = Logging.Logger(label: Bundle.main.bundleIdentifier!)
 		logger.logLevel = .info
@@ -48,7 +49,7 @@ struct Wasserflug_tvOSApp: App {
 		Configuration.contentConfiguration.use(decoder: JSONDecoder.custom(dates: .formatted(fpDateFormatter)), for: .json)
 		
 		// Bootstrap core logging.
-		LoggingSystem.bootstrap({ (label) -> LogHandler in
+		LoggingSystem.bootstrap({ label -> LogHandler in
 			var loggingLogger = OSLoggingLogger(label: label, category: "Wasserflug")
 			loggingLogger.logLevel = .debug
 			return MultiplexLogHandler([

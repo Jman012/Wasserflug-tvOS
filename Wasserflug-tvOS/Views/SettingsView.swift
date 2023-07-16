@@ -35,7 +35,7 @@ struct SettingsView: View {
 						ProgressView()
 							.frame(width: pfpSize, height: pfpSize)
 					})
-						.accessibilityLabel("Logged-in user profile picture")
+					.accessibilityLabel("Logged-in user profile picture")
 				}
 				.padding([.top])
 			}
@@ -49,7 +49,7 @@ struct SettingsView: View {
 				}, label: {
 					Text("Logout")
 				})
-					.prefersDefaultFocus(in: namespace)
+				.prefersDefaultFocus(in: namespace)
 			}
 //				.frame(maxWidth: .infinity)
 //				.focusSection()
@@ -70,26 +70,26 @@ struct SettingsView: View {
 				}, label: {
 					Text("Reset Local View History")
 				})
-					.confirmationDialog("Reset Local View History", isPresented: $showResetViewHistoryConfirmation, actions: {
-						Button("Reset", role: .destructive, action: {
+				.confirmationDialog("Reset Local View History", isPresented: $showResetViewHistoryConfirmation, actions: {
+					Button("Reset", role: .destructive, action: {
 
-							let fetchRequest: NSFetchRequest<NSFetchRequestResult> = WatchProgress.fetchRequest()
-							let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-							do {
-								try viewContext.execute(deleteRequest)
-								showResetViewHistorySuccess = true
-							} catch {
-								logger.error("Error resetting view history: \(String(reflecting: error))")
-								showResetViewHistoryFailure = true
-							}
+						let fetchRequest: NSFetchRequest<NSFetchRequestResult> = WatchProgress.fetchRequest()
+						let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+						do {
+							try viewContext.execute(deleteRequest)
+							showResetViewHistorySuccess = true
+						} catch {
+							logger.error("Error resetting view history: \(String(reflecting: error))")
+							showResetViewHistoryFailure = true
+						}
 
-							showResetViewHistoryConfirmation = false
-						})
-					}, message: {
-						Text("This will remove all view local history from this device. It may be restored from Floatplane view history. Are you sure you want to continue?")
+						showResetViewHistoryConfirmation = false
 					})
-					.alert("Resetting View History Successful", isPresented: $showResetViewHistorySuccess, actions: {})
-					.alert("Resetting View History Failed", isPresented: $showResetViewHistoryFailure, actions: {})
+				}, message: {
+					Text("This will remove all view local history from this device. It may be restored from Floatplane view history. Are you sure you want to continue?")
+				})
+				.alert("Resetting View History Successful", isPresented: $showResetViewHistorySuccess, actions: {})
+				.alert("Resetting View History Failed", isPresented: $showResetViewHistoryFailure, actions: {})
 			}
 //				.frame(maxWidth: .infinity)
 //				.focusSection()

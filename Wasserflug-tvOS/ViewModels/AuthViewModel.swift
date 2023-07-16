@@ -54,9 +54,9 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 				self.isLoadingAuthStatus = false
 				return
 			case let .http400(value: error, raw: _),
-				let .http401(value: error, raw: _),
-				let .http404(value: error, raw: _),
-				let .http0(value: error, raw: _):
+				 let .http401(value: error, raw: _),
+				 let .http404(value: error, raw: _),
+				 let .http0(value: error, raw: _):
 				self.logger.error("Encountered an unexpected response status code while loading user self. Reporting the error to the user. Showing login screen. Error: \(String(reflecting: error))")
 				self.isLoggedIn = false
 				self.isLoadingAuthStatus = false
@@ -117,7 +117,7 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 			var creatorInfos: [CreatorModelV3] = []
 			do {
 				for id in creatorGuids {
-					creatorInfos.append(try await self.fpApiService.getCreator(id: id))
+					try creatorInfos.append(await self.fpApiService.getCreator(id: id))
 				}
 			} catch {
 				self.logger.error("Encountered an unexpected error while loading user subscriptions. Reporting the error to the user. Showing login screen. Error: \(String(reflecting: error))")
@@ -193,9 +193,9 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 							self.logger.notice("Login attempt failed, received unauthorized response. ErrorModel: \(String(describing: response))")
 							self.showIncorrectLoginAlert = true
 						case let .http0(value: errorModel, raw: clientResponse),
-							let .http400(value: errorModel, raw: clientResponse),
-							let .http403(value: errorModel, raw: clientResponse),
-							let .http404(value: errorModel, raw: clientResponse):
+							 let .http400(value: errorModel, raw: clientResponse),
+							 let .http403(value: errorModel, raw: clientResponse),
+							 let .http404(value: errorModel, raw: clientResponse):
 							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while attempting login. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
 							self.showIncorrectLoginAlert = true
 							self.loginError = errorModel
@@ -243,9 +243,9 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 							self.logger.notice("2fa attempt failed, received unauthorized response. ErrorModel: \(String(describing: response))")
 							self.showIncorrectSecondFactorAlert = true
 						case let .http0(value: errorModel, raw: clientResponse),
-							let .http400(value: errorModel, raw: clientResponse),
-							let .http403(value: errorModel, raw: clientResponse),
-							let .http404(value: errorModel, raw: clientResponse):
+							 let .http400(value: errorModel, raw: clientResponse),
+							 let .http403(value: errorModel, raw: clientResponse),
+							 let .http404(value: errorModel, raw: clientResponse):
 							self.logger.warning("Received an unexpected HTTP status (\(clientResponse.status.code)) while attempting 2fa. Reporting the error to the user. Error Model: \(String(reflecting: errorModel)).")
 							self.showIncorrectSecondFactorAlert = true
 							self.secondFactorError = errorModel
@@ -273,6 +273,7 @@ class UserInfo: ObservableObject {
 			setCreatorsInOrder()
 		}
 	}
+
 	@Published var creatorsInOrder: [(CreatorModelV3, UserModelShared)] = []
 	
 	private func setCreatorsInOrder() {

@@ -13,7 +13,7 @@ extension FloatplaneAPIClientAPI {
 		let storedCookies = HTTPCookieStorage.shared.cookies(for: FloatplaneURL)
 		if let sailsSidCookie = storedCookies?.first(where: { $0.name == SailsSidCookieName }) {
 			FloatplaneAPIClientAPI.customHeaders.cookie = [
-				SailsSidCookieName: Vapor.HTTPCookies.Value(string: sailsSidCookie.value)
+				SailsSidCookieName: Vapor.HTTPCookies.Value(string: sailsSidCookie.value),
 			]
 			rawCookie = sailsSidCookie.name + "=" + sailsSidCookie.value
 		}

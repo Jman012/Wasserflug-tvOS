@@ -27,7 +27,7 @@ struct PictureView: View {
 			}, placeholder: {
 				ProgressView()
 			})
-				.edgesIgnoringSafeArea(.all)
+			.edgesIgnoringSafeArea(.all)
 //				.frame(maxWidth: .infinity, maxHeight: .infinity)
 		}
 	}

@@ -26,8 +26,8 @@ struct ErrorView: View {
 				})
 			}
 		}
-			.font(.headline)
-			.multilineTextAlignment(.center)
+		.font(.headline)
+		.multilineTextAlignment(.center)
 	}
 }
 

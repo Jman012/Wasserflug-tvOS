@@ -1,6 +1,5 @@
 import SwiftUI
 
-
 extension View {
 	func hide(_ hide: Bool) -> some View {
 		HideableView(isHidden: .constant(hide), view: self)
@@ -11,9 +10,9 @@ extension View {
 	}
 }
 
-// With love, and modifications, from
-// https://hfossli.medium.com/hiding-and-unhiding-views-in-swiftui-9474a839e5c9
-// This is a life saver <3
+/// With love, and modifications, from
+/// https://hfossli.medium.com/hiding-and-unhiding-views-in-swiftui-9474a839e5c9
+/// This is a life saver <3
 struct HideableView<Content: View>: UIViewRepresentable {
 	
 	@Environment(\.self) private var env
@@ -71,6 +70,5 @@ struct HideableView<Content: View>: UIViewRepresentable {
 				}
 			}
 		}
-		
 	}
 }

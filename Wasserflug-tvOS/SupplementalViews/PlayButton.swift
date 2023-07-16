@@ -50,14 +50,14 @@ struct PlayButton: View {
 					.foregroundColor(.white)
 					.font(.system(size: size.imageSize))
 			}
-				.accessibilityLabel("Play the video titled \(videoTitle)")
-				// VoiceOver is being dumb and reading this as an image for some reason,
-				// so we have to manually label the contents as a button.
-				.accessibilityRemoveTraits(.isImage)
-				.accessibilityAddTraits(.isButton)
+			.accessibilityLabel("Play the video titled \(videoTitle)")
+			// VoiceOver is being dumb and reading this as an image for some reason,
+			// so we have to manually label the contents as a button.
+			.accessibilityRemoveTraits(.isImage)
+			.accessibilityAddTraits(.isButton)
 		}
-			.buttonStyle(.card)
-			.onPlayPauseCommand(perform: self.action)
+		.buttonStyle(.card)
+		.onPlayPauseCommand(perform: self.action)
 	}
 }
 

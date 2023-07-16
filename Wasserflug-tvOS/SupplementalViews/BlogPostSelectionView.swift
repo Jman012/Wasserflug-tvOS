@@ -82,7 +82,7 @@ struct BlogPostSelectionView: View {
 							.animation(.spring(), value: isFocused)
 							.accessibilityLabel(progress == 0 ? "Not watched" : progress == 1 ? "Watched" : "\(Int(progress * 100)) percent watched")
 						}
-							.cornerRadius(10.0)
+						.cornerRadius(10.0)
 					}, placeholder: {
 						ZStack {
 							ProgressView()
@@ -92,7 +92,7 @@ struct BlogPostSelectionView: View {
 								.aspectRatio(blogPost.thumbnail?.aspectRatio ?? 1.0, contentMode: .fit)
 						}
 					})
-					.overlay(GeometryReader() { geometry in
+					.overlay(GeometryReader { geometry in
 						ExecuteCode {
 							if geometry.size.width > 40 && geometry.size.height > 40 {
 								DispatchQueue.main.async {
@@ -103,7 +103,7 @@ struct BlogPostSelectionView: View {
 					})
 					
 					// Optional lock icon if the post is inaccessible.
-					if (!blogPost.isAccessible) {
+					if !blogPost.isAccessible {
 						VisualEffectView(effect: UIBlurEffect(style: .dark))
 							.frame(width: 150, height: 150)
 							.cornerRadius(75.0)
@@ -112,7 +112,6 @@ struct BlogPostSelectionView: View {
 							.scaledToFit()
 							.frame(width: 100, height: 100)
 							.foregroundColor(.white)
-							
 					}
 				}
 				
@@ -166,7 +165,7 @@ struct BlogPostSelectionView: View {
 									.accessibilityLabel("Duration \(TimeInterval(duration).accessibleFloatplanetimestamp)")
 							}
 						}
-							.font(.system(size: 18, weight: .light))
+						.font(.system(size: 18, weight: .light))
 						
 						HStack {
 							// Creator name on bottom of card
@@ -177,21 +176,21 @@ struct BlogPostSelectionView: View {
 							Text("\(relativeTimeConverter.localizedString(for: blogPost.releaseDate, relativeTo: Date()))")
 								.lineLimit(1)
 						}
-							.font(.system(size: 18, weight: .light))
+						.font(.system(size: 18, weight: .light))
 					}
 				}
 			}
 			.padding([.top, .bottom], isTvOS16 ? (isTvOS16_4 ? 0 : -8) : 16)
 			.padding([.leading, .trailing], isTvOS16 ? -24 : 16)
 		})
-			.buttonStyle(.plain)
-			.focused($isFocused)
-			.padding(isTvOS16_4 ? 32 : 0)
-			.onPlayPauseCommand(perform: {
-				if blogPost.isAccessible {
-					navCoordinator.push(route: .blogPostView(blogPostId: blogPost.id, autoPlay: true))
-				}
-			})
+		.buttonStyle(.plain)
+		.focused($isFocused)
+		.padding(isTvOS16_4 ? 32 : 0)
+		.onPlayPauseCommand(perform: {
+			if blogPost.isAccessible {
+				navCoordinator.push(route: .blogPostView(blogPostId: blogPost.id, autoPlay: true))
+			}
+		})
 	}
 }
 
@@ -202,15 +201,15 @@ struct BlogPostSelectionView_Previews: PreviewProvider {
 			viewOrigin: .home(MockData.creatorOwners.users.first!.user.userModelShared.asAnyUserModelShared()),
 			watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
 		)
-			.environment(\.fpApiService, MockFPAPIService())
-			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-			.previewLayout(.fixed(width: 600, height: 500))
+		.environment(\.fpApiService, MockFPAPIService())
+		.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+		.previewLayout(.fixed(width: 600, height: 500))
 		BlogPostSelectionView(
 			blogPost: MockData.blogPosts.blogPosts.first!,
 			viewOrigin: .creator,
 			watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", MockData.blogPosts.blogPosts.first!.id), animation: .default)
 		)
-			.environment(\.fpApiService, MockFPAPIService())
-			.previewLayout(.fixed(width: 600, height: 500))
+		.environment(\.fpApiService, MockFPAPIService())
+		.previewLayout(.fixed(width: 600, height: 500))
 	}
 }

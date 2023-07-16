@@ -55,17 +55,17 @@ extension OSLogType {
 	static func from(loggerLevel: Logger.Level) -> Self {
 		switch loggerLevel {
 		case .trace:
-			/// `OSLog` doesn't have `trace`, so use `debug`
+			// `OSLog` doesn't have `trace`, so use `debug`
 			return .debug
 		case .debug:
 			return .debug
 		case .info:
 			return .info
 		case .notice:
-			/// `OSLog` doesn't have `notice`, so use `info`
+			// `OSLog` doesn't have `notice`, so use `info`
 			return .info
 		case .warning:
-			/// `OSLog` doesn't have `warning`, so use `info`
+			// `OSLog` doesn't have `warning`, so use `info`
 			return .info
 		case .error:
 			return .error

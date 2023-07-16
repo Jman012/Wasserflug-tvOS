@@ -19,7 +19,7 @@ struct VideoView: View {
 			ErrorView(error: error, tryAgainText: "Refresh", tryAgainHandler: {
 				viewModel.state = .idle
 			})
-		case .loaded(_):
+		case .loaded:
 			VideoPlayerView(viewModel: viewModel, beginningWatchTime: beginningWatchTime)
 				.edgesIgnoringSafeArea(.all)
 		}

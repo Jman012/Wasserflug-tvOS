@@ -11,6 +11,7 @@ struct SecondFactorView: View {
 		case secondFactorField
 		case loginButton
 	}
+
 	@FocusState private var focusedField: Field?
 	
 	var body: some View {
@@ -49,8 +50,8 @@ struct SecondFactorView: View {
 							Text("Submit")
 						}
 					})
-						.disabled(viewModel.isAttemptingSecondFactor)
-						.focused($focusedField, equals: .loginButton)
+					.disabled(viewModel.isAttemptingSecondFactor)
+					.focused($focusedField, equals: .loginButton)
 				}
 				.multilineTextAlignment(.center)
 				.frame(maxWidth: geometry.size.width * 0.4)
@@ -60,10 +61,10 @@ struct SecondFactorView: View {
 		.alert("Second Factor", isPresented: $viewModel.showIncorrectSecondFactorAlert, actions: { }, message: {
 			if let error = viewModel.secondFactorError {
 				Text("""
-There was an error while attempting to log in.
+				There was an error while attempting to log in.
 
-\(error.localizedDescription)
-""")
+				\(error.localizedDescription)
+				""")
 			} else {
 				Text("Invalid authentication code provided.")
 			}

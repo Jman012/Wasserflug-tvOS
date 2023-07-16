@@ -16,22 +16,22 @@ private struct InnerShadow: ViewModifier {
 	}
 
 	func body(content: Content) -> some View {
-			content
-				.background(LinearGradient(gradient: Gradient(colors: self.colors), startPoint: .top, endPoint: .bottom)
-					.frame(height: self.radius)
-					.opacity(edges.contains(.top) ? 1.0 : 0.0),
-						 alignment: .top)
-				.background(LinearGradient(gradient: Gradient(colors: self.colors), startPoint: .bottom, endPoint: .top)
-					.frame(height: self.radius)
-					.opacity(edges.contains(.bottom) ? 1.0 : 0.0),
-						 alignment: .bottom)
-				.background(LinearGradient(gradient: Gradient(colors: self.colors), startPoint: .leading, endPoint: .trailing)
-					.frame(width: self.radius)
-					.opacity(edges.contains(.leading) ? 1.0 : 0.0),
-						 alignment: .leading)
-				.background(LinearGradient(gradient: Gradient(colors: self.colors), startPoint: .trailing, endPoint: .leading)
-					.frame(width: self.radius)
-					.opacity(edges.contains(.trailing) ? 1.0 : 0.0),
-						 alignment: .trailing)
+		content
+			.background(LinearGradient(gradient: Gradient(colors: self.colors), startPoint: .top, endPoint: .bottom)
+				.frame(height: self.radius)
+				.opacity(edges.contains(.top) ? 1.0 : 0.0),
+				alignment: .top)
+			.background(LinearGradient(gradient: Gradient(colors: self.colors), startPoint: .bottom, endPoint: .top)
+				.frame(height: self.radius)
+				.opacity(edges.contains(.bottom) ? 1.0 : 0.0),
+				alignment: .bottom)
+			.background(LinearGradient(gradient: Gradient(colors: self.colors), startPoint: .leading, endPoint: .trailing)
+				.frame(width: self.radius)
+				.opacity(edges.contains(.leading) ? 1.0 : 0.0),
+				alignment: .leading)
+			.background(LinearGradient(gradient: Gradient(colors: self.colors), startPoint: .trailing, endPoint: .leading)
+				.frame(width: self.radius)
+				.opacity(edges.contains(.trailing) ? 1.0 : 0.0),
+				alignment: .trailing)
 	}
 }

@@ -361,6 +361,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E753375D27CAFAFF0010E3D2 /* Build configuration list for PBXNativeTarget "Wasserflug-tvOS" */;
 			buildPhases = (
+				E76E31942A647F2100242CEC /* ShellScript */,
 				E753373527CAFAFE0010E3D2 /* Sources */,
 				E753373627CAFAFE0010E3D2 /* Frameworks */,
 				E753373727CAFAFE0010E3D2 /* Resources */,
@@ -487,6 +488,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E76E31942A647F2100242CEC /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd BuildTools\nSDKROOT=(xcrun --sdk macosx --show-sdk-path)\n#swift package update #Uncomment this line temporarily to update the version used to the latest matching your BuildTools/Package.swift file\nswift run -c release swiftformat \"$SRCROOT\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E753373527CAFAFE0010E3D2 /* Sources */ = {
