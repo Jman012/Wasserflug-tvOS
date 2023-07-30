@@ -75,7 +75,7 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 			}
 			
 			self.logger.notice("Received video information.", metadata: [
-				"origins": "\(deliveryInfo.groups.flatMap({ $0.origins ?? [] }).map({ $0.url }).joined(separator: ", "))",
+				"origins": "\(deliveryInfo.groups.flatMap({ $0.origins ?? [] }).map(\.url).joined(separator: ", "))",
 			])
 			
 			let screenNativeBounds = UIScreen.main.nativeBounds
@@ -115,7 +115,7 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 			if self.qualityLevels.isEmpty {
 				self.logger.warning("No quality levels were able to be parsed from the video response. Showing an error to the user.", metadata: [
 					"id": "\(self.videoAttachment.guid)",
-					"qualityLevelNames": "\(group?.variants.map({ $0.name }).joined(separator: ", ") ?? "<nil>")",
+					"qualityLevelNames": "\(group?.variants.map(\.name).joined(separator: ", ") ?? "<nil>")",
 				])
 				self.state = .failed(VideoError.noQualityLevelsFound)
 			}
@@ -149,7 +149,7 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 				.last?
 				.value.0
 		}
-		guard let url = url else {
+		guard let url else {
 			self.logger.critical("No playable URL was found for the video. Invalid state. Closing the application.")
 			fatalError()
 		}

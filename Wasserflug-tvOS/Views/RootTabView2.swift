@@ -94,7 +94,7 @@ struct RootTabView2: View {
 					UIAccessibility.post(notification: .announcement, argument: "Switched to creator \(creator.title)")
 				}
 			case let .channel(channelId):
-				if let channel = self.userInfo.creators.values.flatMap({ $0.channels }).first(where: { $0.id == channelId }) {
+				if let channel = self.userInfo.creators.values.flatMap(\.channels).first(where: { $0.id == channelId }) {
 					UIAccessibility.post(notification: .announcement, argument: "Switched to channel \(channel.title)")
 				}
 			case .settings:

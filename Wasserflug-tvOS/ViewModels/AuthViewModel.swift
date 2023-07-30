@@ -87,7 +87,7 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 			self.logger.notice("Recieved successful user self and subscription responses.", metadata: [
 				"userId": "\(userSelf.id)",
 				"username": "\(userSelf.username)",
-				"subIds": "\(userSubscriptions.map({ $0.creator }))",
+				"subIds": "\(userSubscriptions.map(\.creator))",
 			])
 			
 			guard !userSubscriptions.isEmpty else {
@@ -104,7 +104,7 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 			
 			// With the subscriptions, get the creators of the subscriptions.
 			// Convert to Set to remove possible duplicates (which is possible).
-			let creatorGuids = Set<String>(self.userInfo.userSubscriptions.map({ $0.creator }))
+			let creatorGuids = Set<String>(self.userInfo.userSubscriptions.map(\.creator))
 			self.logger.info("Loading creator(s) information from subscriptions", metadata: [
 				"creatorGuids": "\(creatorGuids)",
 			])
@@ -132,7 +132,7 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 			self.userInfo.creators = Dictionary(uniqueKeysWithValues: creatorInfos.map({ ($0.id, $0) }))
 			
 			// With the creators, get the creator owners
-			let ownerIds = creatorInfos.map({ $0.owner.id })
+			let ownerIds = creatorInfos.map(\.owner.id)
 			self.logger.info("Loading creator owner(s) information.", metadata: [
 				"ownerIds": "\(ownerIds)",
 			])
@@ -150,7 +150,7 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 			}
 
 			self.logger.notice("Retrieved creator owner(s) information", metadata: [
-				"names": "\(creatorOwners.users.map({ $0.user.userModelShared.username }))",
+				"names": "\(creatorOwners.users.map(\.user.userModelShared.username))",
 			])
 			self.userInfo.creatorOwners = Dictionary(uniqueKeysWithValues: creatorOwners.users.map({ ($0.user.userModelShared.id, $0.user.userModelShared) }))
 			
@@ -218,7 +218,7 @@ class AuthViewModel: BaseViewModel, ObservableObject {
 		logger.info("Attempting 2fa action for login process.")
 		
 		// Sanitize the code
-		let secondFactorCode = secondFactorCode.filter({ $0.isNumber }).stringValue
+		let secondFactorCode = secondFactorCode.filter(\.isNumber).stringValue
 		
 		fpApiService.secondFactor(token: secondFactorCode)
 			.whenComplete { result in

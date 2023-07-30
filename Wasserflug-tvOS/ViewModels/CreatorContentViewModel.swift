@@ -104,7 +104,7 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 				logger.info("Loading progress for creator content in background.")
 				Task {
 					do {
-						let progresses = try await fpApiService.getProgress(ids: response.map({ $0.id }))
+						let progresses = try await fpApiService.getProgress(ids: response.map(\.id))
 						for progress in progresses {
 							let blogPostId = progress.id
 							if let blogPost = response.first(where: { $0.id == blogPostId }) {
@@ -126,7 +126,7 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 				self.logger.notice("Received creator content. Appending new items to list. Received \(response.count) items.")
 				self.state = .loaded(posts + response)
 			case let (.prepend, .loaded(prevResponse)):
-				let prevResponseIds = Set(prevResponse.lazy.map({ $0.id }))
+				let prevResponseIds = Set(prevResponse.lazy.map(\.id))
 				if let last = response.last, prevResponseIds.contains(last.id) {
 					let newBlogPosts = response.filter({ !prevResponseIds.contains($0.id) })
 					self.logger.notice("Received creator content. Received \(response.count) items. Prepending only new items to list. Prepending \(newBlogPosts.count) items.")

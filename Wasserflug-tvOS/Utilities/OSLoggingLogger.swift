@@ -19,7 +19,7 @@ public struct OSLoggingLogger: LogHandler {
 			: self.prettify(self.metadata.merging(metadata!, uniquingKeysWith: { _, new in new }))
 		
 		var formedMessage = "[\(level.rawValue)] [\(source)] \(message.description)"
-		if let prettyMetadata = prettyMetadata {
+		if let prettyMetadata {
 			formedMessage += " -- " + prettyMetadata
 		}
 		self.osLogger.log(level: OSLogType.from(loggerLevel: level), "\(formedMessage)")

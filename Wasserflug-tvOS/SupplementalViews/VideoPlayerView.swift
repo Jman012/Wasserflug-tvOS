@@ -74,7 +74,7 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 			
 			logger.notice("Updating the AVPlayerViewController's AVPlayerItem with the latest video URL and quality.")
 			
-			if let lastPlayerItem = lastPlayerItem {
+			if let lastPlayerItem {
 				let time = lastPlayerItem.currentTime()
 				logger.notice("User was in the middle of the video before this update. Seeking to the previous timestamp of \(time.seconds).")
 				newPlayerItem.seek(to: time, completionHandler: nil)

@@ -68,7 +68,7 @@ extension Optional where Wrapped == ImageModelShared {
 	}
 	
 	func bestImage(for geometrySize: CGSize?) -> URL? {
-		guard let self = self, let geometrySize = geometrySize else {
+		guard let self, let geometrySize else {
 			return nil
 		}
 		
@@ -119,7 +119,7 @@ extension BlogPostModelV3 {
 
 extension ContentPostV3Response {
 	var firstVideoAttachmentId: String? {
-		return self.attachmentOrder.filter({ self.videoAttachments?.lazy.map({ $0.id }).contains($0) == true }).first
+		return self.attachmentOrder.filter({ self.videoAttachments?.lazy.map(\.id).contains($0) == true }).first
 	}
 
 	var firstVideoAttachment: VideoAttachmentModel? {

@@ -60,7 +60,7 @@ class HomeViewModel: BaseViewModel, ObservableObject {
 			logger.info("Loading progress for home content in background.")
 			Task {
 				do {
-					let progresses = try await fpApiService.getProgress(ids: response.blogPosts.map({ $0.id }))
+					let progresses = try await fpApiService.getProgress(ids: response.blogPosts.map(\.id))
 					for progress in progresses {
 						let blogPostId = progress.id
 						if let blogPost = response.blogPosts.first(where: { $0.id == blogPostId }) {
@@ -81,7 +81,7 @@ class HomeViewModel: BaseViewModel, ObservableObject {
 				self.logger.notice("Received home content. Appending new items to list. Received \(response.blogPosts.count) items.")
 				self.state = .loaded(.init(blogPosts: prevResponse.blogPosts + response.blogPosts, lastElements: response.lastElements))
 			case let (.prepend, .loaded(prevResponse)):
-				let prevResponseIds = Set(prevResponse.blogPosts.lazy.map({ $0.id }))
+				let prevResponseIds = Set(prevResponse.blogPosts.lazy.map(\.id))
 				if let last = response.blogPosts.last, prevResponseIds.contains(last.id) {
 					let newBlogPosts = response.blogPosts.filter({ !prevResponseIds.contains($0.id) })
 					self.logger.notice("Received home content. Received \(response.blogPosts.count) items. Prepending only new items to list. Prepending \(newBlogPosts.count) items.")
