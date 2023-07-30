@@ -42,7 +42,7 @@ struct PlayButton: View {
 		Button(action: self.action) {
 			ZStack {
 				Rectangle()
-					.fill(Color(.sRGB, red: 0.0/256.0, green: 160.0/256.0, blue: 236.0/256.0, opacity: 0.70))
+					.fill(FPColors.playButtonBlue)
 					.cornerRadius(10.0)
 					.frame(width: size.frameWidth, height: size.frameHeight)
 				Image(systemName: "play.fill")

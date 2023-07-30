@@ -278,7 +278,7 @@ struct RootTabView2: View {
 			.padding([.top, .bottom], 30)
 			.padding([.leading, .trailing], showMenu ? 50 : 0)
 		}
-		.background(Color(red: 49.0/256.0, green: 63.0/256.0, blue: 85.0/256.0))
+		.background(FPColors.sidebarBlue)
 		.environment(\.colorScheme, .dark)
 	}
 	
