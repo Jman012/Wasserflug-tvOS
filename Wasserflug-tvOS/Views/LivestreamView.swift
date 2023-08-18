@@ -3,6 +3,7 @@ import SwiftUI
 struct LivestreamView: View {
 	@Environment(\.scenePhase) var scenePhase
 	@StateObject var viewModel: LivestreamViewModel
+	@StateObject var fpChatSocket: FPChatSocket
 	
 	var body: some View {
 		VStack {
@@ -40,14 +41,18 @@ struct LivestreamView: View {
 		}
 		.onAppear {
 			viewModel.startLoadingLiveStatus()
+			fpChatSocket.connect()
 		}.onDisappear {
 			viewModel.stopLoadingLiveStatus()
+			fpChatSocket.disconnect()
 		}.onChange(of: scenePhase, perform: { phase in
 			switch phase {
 			case .active:
 				viewModel.loadLiveStatus()
+				fpChatSocket.connect()
 			case .inactive, .background:
 				viewModel.stopLoadingLiveStatus()
+				fpChatSocket.disconnect()
 			@unknown default:
 				break
 			}
@@ -57,8 +62,9 @@ struct LivestreamView: View {
 
 struct LivestreamView_Previews: PreviewProvider {
 	static var previews: some View {
-		LivestreamView(viewModel: LivestreamViewModel(
-			fpApiService: MockFPAPIService(),
-			creatorId: MockData.creatorV3.id))
+		LivestreamView(
+			viewModel: LivestreamViewModel(fpApiService: MockFPAPIService(), creatorId: MockData.creatorV3.id),
+			fpChatSocket: MockFPSocket(sailsSid: "", channelId: "")
+		)
 	}
 }

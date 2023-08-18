@@ -75,7 +75,7 @@ struct CreatorContentView: View {
 							})
 							
 							// Livestream button
-							NavigationLink(value: WasserflugRoute.livestreamView(creatorId: self.viewModel.creatorOrChannel.creatorId), label: {
+							NavigationLink(value: WasserflugRoute.livestreamView(creatorId: self.viewModel.creatorOrChannel.creatorId, livestreamId: self.viewModel.creatorOrChannel.liveStream?.id ?? ""), label: {
 								Label("Livestream", systemImage: "play.tv")
 							})
 							

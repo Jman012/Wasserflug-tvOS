@@ -34,7 +34,9 @@ struct RootTabView2: View {
 	@EnvironmentObject var userInfo: UserInfo
 	@Environment(\.fpApiService) var fpApiService
 	@Environment(\.managedObjectContext) var managedObjectContext
+	@Environment(\.scenePhase) var scenePhase
 	
+	@State var fpFrontendSocket: FPFrontendSocket
 	let fixedWidth: CGFloat = 170
 	@State var tabSelection: TabSelection = .home
 	@State var state: SideBarState = .expanded
@@ -101,6 +103,7 @@ struct RootTabView2: View {
 				UIAccessibility.post(notification: .announcement, argument: "Switched to settings screen")
 			}
 		}
+		.modifier(ControlSocketModifier(fpFrontendSocket: fpFrontendSocket))
 	}
 	
 	var contentView: some View {
@@ -362,7 +365,7 @@ struct RootTabView2: View {
 
 struct RootTabView2_Previews: PreviewProvider {
 	static var previews: some View {
-		RootTabView2()
+		RootTabView2(fpFrontendSocket: MockFPFrontendSocket(sailsSid: "", channelId: ""))
 			.environmentObject(MockData.userInfo)
 			.environment(\.fpApiService, MockFPAPIService())
 	}

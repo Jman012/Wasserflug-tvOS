@@ -1,0 +1,1062 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema",
+	"title": "FloatplaneAPIAsyncModels",
+	"description": "This document serves as a collection of model schemas used in the associated AsyncAPI documents. The root level object is only here to reference everything within this document so that code generators (such as Quicktype) actually generate everything.",
+	"type": "object",
+	"properties": {
+		"SailsHeaders": {
+			"$ref": "#/definitions/SailsHeaders"
+		},
+		"SailsStatusCode": {
+			"$ref": "#/definitions/SailsStatusCode"
+		},
+		"JoinLivestreamRadioFrequency": {
+			"$ref": "#/definitions/JoinLivestreamRadioFrequency"
+		},
+		"JoinedLivestreamRadioFrequency": {
+			"$ref": "#/definitions/JoinedLivestreamRadioFrequency"
+		},
+		"LeaveLivestreamRadioFrequency": {
+			"$ref": "#/definitions/LeaveLivestreamRadioFrequency"
+		},
+		"LeftLivestreamRadioFrequency": {
+			"$ref": "#/definitions/LeftLivestreamRadioFrequency"
+		},
+		"GetChatUserList": {
+			"$ref": "#/definitions/GetChatUserList"
+		},
+		"ChatUserList": {
+			"$ref": "#/definitions/ChatUserList"
+		},
+		"SendLivestreamRadioChatter": {
+			"$ref": "#/definitions/SendLivestreamRadioChatter"
+		},
+		"SentLivestreamRadioChatter": {
+			"$ref": "#/definitions/SentLivestreamRadioChatter"
+		},
+		"RadioChatter": {
+			"$ref": "#/definitions/RadioChatter"
+		},
+		"EmoteList": {
+			"$ref": "#/definitions/EmoteList"
+		},
+		"SailsConnect": {
+			"$ref": "#/definitions/SailsConnect"
+		},
+		"SailsConnected": {
+			"$ref": "#/definitions/SailsConnected"
+		},
+		"JoinLiveRoom": {
+			"$ref": "#/definitions/JoinLiveRoom"
+		},
+		"JoinedLiveRoom": {
+			"$ref": "#/definitions/JoinedLiveRoom"
+		},
+		"LeaveLiveRoom": {
+			"$ref": "#/definitions/LeaveLiveRoom"
+		},
+		"LeftLiveRoom": {
+			"$ref": "#/definitions/LeftLiveRoom"
+		},
+		"CreatorNotification": {
+			"$ref": "#/definitions/CreatorNotification"
+		},
+		"PostRelease": {
+			"$ref": "#/definitions/PostRelease"
+		},
+		"NotificationData": {
+			"$ref": "#/definitions/NotificationData"
+		},
+		"CreatorMenuUpdate": {
+			"$ref": "#/definitions/CreatorMenuUpdate"
+		},
+		"PollOpenClose": {
+			"$ref": "#/definitions/PollOpenClose"
+		},
+		"PollUpdateTally": {
+			"$ref": "#/definitions/PollUpdateTally"
+		},
+		"ImageModel": {
+			"$ref": "#/definitions/ImageModel"
+		},
+		"ChildImageModel": {
+			"$ref": "#/definitions/ChildImageModel"
+		}
+	},
+	"definitions": {
+		"SailsHeaders": {
+			"type": "object",
+			"description": "Headers by Sails are not being used by Floatplane. Not much is known of this structure at this time.",
+			"additionalProperties": {
+				"type": "string"
+			}
+		},
+		"SailsStatusCode": {
+			"type": "integer",
+			"description": "These are the same as HTTP response status codes.",
+			"minimum": 200,
+			"maximum": 599
+		},
+		"JoinLivestreamRadioFrequency": {
+			"type": "object",
+			"description": "Join a livestream chat channel in order to receive chat messages (via the `radioChatter` event) from others in the room.",
+			"properties": {
+				"method": {
+					"const": "get",
+					"description": "This endpoint expects a GET."
+				},
+				"headers": {
+					"$ref": "#/definitions/SailsHeaders"
+				},
+				"data": {
+					"type": "object",
+					"properties": {
+						"channel": {
+							"type": "string",
+							"description": "Which livestream channel to join. Of the format `/live/{livestreamId}`. The `livestreamId` comes from the `liveStream` object on the creator's info in the REST API."
+						},
+						"message": {
+							"type": "null",
+							"description": "When joining, this is usually `null`."
+						}
+					},
+					"additionalProperties": false,
+					"required": [
+						"channel"
+					]
+				},
+				"url": {
+					"const": "/RadioMessage/joinLivestreamRadioFrequency",
+					"description": "The required endpoint for this event."
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"method",
+				"headers",
+				"data",
+				"url"
+			]
+		},
+		"JoinedLivestreamRadioFrequency": {
+			"type": "object",
+			"description": "Indicates that the channel has been joined successfully, as well as sending the current emotes configured for the livestream.",
+			"properties": {
+				"body": {
+					"type": "object",
+					"properties": {
+						"success": {
+							"type": "boolean"
+						},
+						"emotes": {
+							"$ref": "#/definitions/EmoteList"
+						}
+					},
+					"required": [
+						"success",
+						"emotes"
+					]
+				},
+				"headers": {
+					"$ref": "#/definitions/SailsHeaders"
+				},
+				"statusCode": {
+					"$ref": "#/definitions/SailsStatusCode"
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"body",
+				"headers",
+				"statusCode"
+			]
+		},
+		"LeaveLivestreamRadioFrequency": {
+			"type": "object",
+			"description": "Tells the server that this socket should no longer receive `radioChatter` events from the previously-joined channel.",
+			"properties": {
+				"method": {
+					"const": "post",
+					"description": "This endpoint expects a POST."
+				},
+				"headers": {
+					"$ref": "#/definitions/SailsHeaders"
+				},
+				"data": {
+					"type": "object",
+					"properties": {
+						"channel": {
+							"type": "string",
+							"description": "Which livestream channel to leave. Of the format `/live/{livestreamId}`."
+						},
+						"message": {
+							"type": "string",
+							"description": "This message does not appear to be relayed to others in the chat."
+						}
+					},
+					"additionalProperties": false,
+					"required": [
+						"channel",
+						"message"
+					]
+				},
+				"url": {
+					"const": "/RadioMessage/leaveLivestreamRadioFrequency",
+					"description": "The required endpoint for this event."
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"method",
+				"headers",
+				"data",
+				"url"
+			]
+		},
+		"LeftLivestreamRadioFrequency": {
+			"type": "object",
+			"properties": {
+				"body": {
+					"type": "object"
+				},
+				"headers": {
+					"$ref": "#/definitions/SailsHeaders"
+				},
+				"statusCode": {
+					"$ref": "#/definitions/SailsStatusCode"
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"body",
+				"headers",
+				"statusCode"
+			]
+		},
+		"GetChatUserList": {
+			"type": "object",
+			"description": "Returns a list of users currently in the channel/livestream/chat room, in order to display a full list in the UI.",
+			"properties": {
+				"method": {
+					"const": "get",
+					"description": "This endpoint expects a GET."
+				},
+				"headers": {
+					"$ref": "#/definitions/SailsHeaders"
+				},
+				"data": {
+					"type": "object",
+					"properties": {
+						"channel": {
+							"type": "string",
+							"description": "Which livestream channel to query. Of the format `/live/{livestreamId}`."
+						}
+					},
+					"additionalProperties": false,
+					"required": [
+						"channel"
+					]
+				},
+				"url": {
+					"const": "/RadioMessage/getChatUserList/",
+					"description": "The required endpoint for this event."
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"method",
+				"headers",
+				"data",
+				"url"
+			]
+		},
+		"ChatUserList": {
+			"type": "object",
+			"properties": {
+				"body": {
+					"type": "object",
+					"properties": {
+						"success": {
+							"type": "boolean"
+						},
+						"pilots": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"passengers": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						}
+					},
+					"additionalProperties": false,
+					"required": [
+						"success",
+						"pilots",
+						"passengers"
+					]
+				},
+				"headers": {
+					"$ref": "#/definitions/SailsHeaders"
+				},
+				"statusCode": {
+					"$ref": "#/definitions/SailsStatusCode"
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"body",
+				"headers",
+				"statusCode"
+			]
+		},
+		"SendLivestreamRadioChatter": {
+			"type": "object",
+			"description": "Sends a chat message to the specified livestream channel for other users to see. Note that sending a chat message will both receive a Sails HTTP response as well as a `radioChatter` event from yourself.",
+			"properties": {
+				"method": {
+					"const": "post",
+					"description": "This endpoint expects a POST."
+				},
+				"headers": {
+					"$ref": "#/definitions/SailsHeaders"
+				},
+				"data": {
+					"type": "object",
+					"properties": {
+						"channel": {
+							"type": "string",
+							"description": "Which livestream channel to send a chat to. Of the format `/live/{livestreamId}`."
+						},
+						"message": {
+							"type": "string",
+							"description": "Message contents. May contain emotes, a word surrounded by colons. In order to send a valid emote, it should be an emote code that is returned in the `JoinedLivestreamRadioFrequency` response."
+						}
+					},
+					"additionalProperties": false,
+					"required": [
+						"channel",
+						"message"
+					]
+				},
+				"url": {
+					"const": "/RadioMessage/sendLivestreamRadioChatter/",
+					"description": "The required endpoint for this event."
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"method",
+				"headers",
+				"data",
+				"url"
+			]
+		},
+		"SentLivestreamRadioChatter": {
+			"type": "object",
+			"properties": {
+				"body": {
+					"$ref": "#/definitions/RadioChatter"
+				},
+				"headers": {
+					"$ref": "#/definitions/SailsHeaders"
+				},
+				"statusCode": {
+					"$ref": "#/definitions/SailsStatusCode"
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"body",
+				"headers",
+				"statusCode"
+			]
+		},
+		"RadioChatter": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "string",
+					"description": "Identifier of the chat message itself. Should be unique per radio chatter."
+				},
+				"userGUID": {
+					"type": "string",
+					"description": "Identifier of the user sending the message."
+				},
+				"username": {
+					"type": "string",
+					"description": "Display name of the user sending the message."
+				},
+				"channel": {
+					"type": "string",
+					"description": "Which livestream the radio chatter is from. Of the format `/live/{livestreamId}`."
+				},
+				"message": {
+					"type": "string",
+					"description": "Message contents. May contain emotes, a word surrounded by colons. If the emote is valid for the user, the emote code and image path are included in `emotes` below."
+				},
+				"userType": {
+					"type": "string",
+					"enum": [
+						"Normal",
+						"Moderator"
+					]
+				},
+				"emotes": {
+					"$ref": "#/definitions/EmoteList"
+				},
+				"success": {
+					"type": "boolean",
+					"description": "Included in `radioChatter` events and is usually `true`, but mainly useful in `SentLivestreamRadioChatter` responses to indicate if sending the message was successful. An example of why it might not work is using an invalid emote, or some system problem."
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"id",
+				"userGUID",
+				"username",
+				"channel",
+				"message",
+				"userType"
+			]
+		},
+		"EmoteList": {
+			"type": "array",
+			"description": "When the user types this `code` in their message, surrounded by two colons (`:`), that portion of the message should be replaced with the `image` property in the UI.",
+			"items": {
+				"title": "Emote",
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "string"
+					},
+					"image": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"code",
+					"image"
+				]
+			}
+		},
+		"SailsConnect": {
+			"type": "object",
+			"description": "Connect to Floatplane (after a socket connection has been made) in order to receive sync events, such as new post notifications.",
+			"properties": {
+				"method": {
+					"const": "post",
+					"description": "This endpoint expects a POST."
+				},
+				"headers": {
+					"$ref": "#/definitions/SailsHeaders"
+				},
+				"data": {
+					"type": "object",
+					"description": "No payload necessary.",
+					"additionalProperties": false
+				},
+				"url": {
+					"const": "/api/v3/socket/connect",
+					"description": "The required endpoint for this event."
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"method",
+				"headers",
+				"data",
+				"url"
+			]
+		},
+		"SailsConnected": {
+			"type": "object",
+			"description": "The response received from connecting to Floatplane for sync events. Once this is successfully received, sync events may appear on the socket asynchronously.",
+			"properties": {
+				"body": {
+					"type": "object",
+					"properties": {
+						"message": {
+							"type": "string"
+						}
+					}
+				},
+				"headers": {
+					"$ref": "#/definitions/SailsHeaders"
+				},
+				"statusCode": {
+					"$ref": "#/definitions/SailsStatusCode"
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"body",
+				"headers",
+				"statusCode"
+			]
+		},
+		"JoinLiveRoom": {
+			"type": "object",
+			"description": "Connect to a creator's live poll room (after a socket connection has been made) in order to receive poll events, such as new polls, poll tally updates, and closed polls. While not on the chat socket, this should typically be connected to while watching a livestream, and disconnected when leaving a livestream.",
+			"properties": {
+				"method": {
+					"const": "post",
+					"description": "This endpoint expects a POST."
+				},
+				"headers": {
+					"$ref": "#/definitions/SailsHeaders"
+				},
+				"data": {
+					"type": "object",
+					"properties": {
+						"creatorId": {
+							"type": "string",
+							"description": "The id of the creator for which to join the live poll room."
+						}
+					},
+					"additionalProperties": false,
+					"required": [
+						"creatorId"
+					]
+				},
+				"url": {
+					"const": "/api/v3/poll/live/joinroom",
+					"description": "The required endpoint for this event."
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"method",
+				"headers",
+				"data",
+				"url"
+			]
+		},
+		"JoinedLiveRoom": {
+			"type": "object",
+			"description": "",
+			"properties": {
+				"body": {
+					"type": "object",
+					"properties": {
+						"activePolls": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/PollOpenClose"
+							}
+						}
+					},
+					"additionalProperties": false,
+					"required": [
+						"activePolls"
+					]
+				},
+				"headers": {
+					"$ref": "#/definitions/SailsHeaders"
+				},
+				"statusCode": {
+					"$ref": "#/definitions/SailsStatusCode"
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"body",
+				"headers",
+				"statusCode"
+			]
+		},
+		"LeaveLiveRoom": {
+			"type": "object",
+			"description": "Leave a live poll room and no longer receive poll events from the creator on this socket connection.",
+			"properties": {
+				"method": {
+					"const": "post",
+					"description": "This endpoint expects a POST."
+				},
+				"headers": {
+					"$ref": "#/definitions/SailsHeaders"
+				},
+				"data": {
+					"type": "object",
+					"properties": {
+						"creatorId": {
+							"type": "string",
+							"description": "The id of the creator from which to leave the live poll room."
+						}
+					},
+					"additionalProperties": false,
+					"required": [
+						"creatorId"
+					]
+				},
+				"url": {
+					"const": "/api/v3/poll/live/leaveroom",
+					"description": "The required endpoint for this event."
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"method",
+				"headers",
+				"data",
+				"url"
+			]
+		},
+		"LeftLiveRoom": {
+			"type": "object",
+			"description": "Indicates that leaving the live poll room was successful.",
+			"properties": {
+				"body": {
+					"type": "boolean"
+				},
+				"headers": {
+					"$ref": "#/definitions/SailsHeaders"
+				},
+				"statusCode": {
+					"$ref": "#/definitions/SailsStatusCode"
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"body",
+				"headers",
+				"statusCode"
+			]
+		},
+		"CreatorNotification": {
+			"type": "object",
+			"description": "This event is sent usually for new post notifications, where `eventType` is `CONTENT_POST_RELEASE`, along with information on which creator released a new post, and information on the post itself.",
+			"properties": {
+				"event": {
+					"const": "creatorNotification"
+				},
+				"data": {
+					"$ref": "#/definitions/NotificationData"
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"event",
+				"data"
+			]
+		},
+		"PostRelease": {
+			"type": "object",
+			"description": "This event is sent usually for new post notifications, where `eventType` is `CONTENT_POST_RELEASE`, along with information on which creator released a new post, and information on the post itself. This sync event type seems to be deprecated, as the Floatplane website uses the above `creatorNotification` instead of this `postRelease`. For `CONTENT_POST_RELEASE`, these two have the same schema.",
+			"properties": {
+				"event": {
+					"const": "postRelease"
+				},
+				"data": {
+					"$ref": "#/definitions/NotificationData"
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"event",
+				"data"
+			]
+		},
+		"NotificationData": {
+			"type": "object",
+			"description": "Contains data necessary to both show the notifiction in a user interface as well as technical details on what is being notified. Currently, this is used for notifying about new posts being released and the beginning of livestreams. Not all fields are present for all kinds of event types (for instance, livestream notifications do not have `video` or `content` objects, among others.",
+			"properties": {
+				"id": {
+					"type": "string",
+					"description": "Usually of the format `{eventType}:{content}`."
+				},
+				"eventType": {
+					"type": "string",
+					"enum": [
+						"CONTENT_POST_RELEASE",
+						"CONTENT_LIVESTREAM_START"
+					],
+					"description": "The `CONTENT_POST_RELEASE` enumeration indicates a new post has been released. The `CONTENT_LIVESTREAM_START` enumeration indicates that a livestream has been started by the creator. Other enumerations are unknown at this time."
+				},
+				"title": {
+					"type": "string",
+					"description": "Notification title."
+				},
+				"message": {
+					"type": "string",
+					"description": "Notification message/body."
+				},
+				"creator": {
+					"type": "string",
+					"description": "The identifier of the creator the notification is from."
+				},
+				"content": {
+					"type": "string",
+					"description": "Usually the id of the blog post, when `eventType` is `CONTENT_POST_RELEASE`."
+				},
+				"icon": {
+					"type": "string",
+					"format": "uri"
+				},
+				"thumbnail": {
+					"type": "string",
+					"format": "uri"
+				},
+				"target": {
+					"type": "object",
+					"description": "If the `target.matchPortion` of the browser's current href matches the `target.match` variable via the `target.matchScheme`, and if `target.foregroundDiscardOnMatch`, then do not show this notification because the user has already seen it.",
+					"properties": {
+						"url": {
+							"type": "string",
+							"description": "Unused in Floatplane code."
+						},
+						"matchScheme": {
+							"type": "string",
+							"description": "This is usually `contains`.",
+							"enum": [
+								"contains",
+								"startsWith",
+								"endsWith",
+								"equals"
+							]
+						},
+						"match": {
+							"type": "string"
+						},
+						"foregroundDiscardOnMatch": {
+							"type": "boolean"
+						},
+						"matchPortion": {
+							"type": "string",
+							"description": "This is usually `path` instead of `url`.",
+							"default": "path",
+							"enum": [
+								"path",
+								"url"
+							]
+						}
+					},
+					"required": [
+						"url",
+						"matchScheme",
+						"match",
+						"foregroundDiscardOnMatch",
+						"matchPortion"
+					]
+				},
+				"foregroundVisible": {
+					"type": "string",
+					"enum": [
+						"yes",
+						"no"
+					]
+				},
+				"video": {
+					"type": "object",
+					"properties": {
+						"creator": {
+							"type": "string"
+						},
+						"guid": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"creator",
+						"guid"
+					]
+				},
+				"post": {
+					"type": "object",
+					"properties": {
+						"creator": {
+							"type": "string"
+						},
+						"guid": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"text": {
+							"type": "string"
+						},
+						"title": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"required": [
+				"id",
+				"eventType",
+				"creator"
+			]
+		},
+		"CreatorMenuUpdate": {
+			"type": "object",
+			"description": "Does not appear to be used in Floatplane code. This model is similar to ContentPostV3Response in the REST API, but without attachment details. Its purpose is to help dynamically insert a single post into the list of posts on the screen, instead of making the client re-pull the 20 latest posts.",
+			"properties": {
+				"event": {
+					"const": "creatorMenuUpdate"
+				},
+				"data": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"guid": {
+							"type": "string"
+						},
+						"title": {
+							"type": "string"
+						},
+						"text": {
+							"type": "string"
+						},
+						"type": {
+							"type": "string"
+						},
+						"tags": {
+							"type": "array",
+							"items": {}
+						},
+						"attachmentOrder": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"metadata": {
+							"type": "object",
+							"properties": {
+								"hasVideo": {
+									"type": "boolean"
+								},
+								"videoCount": {
+									"type": "integer"
+								},
+								"videoDuration": {
+									"type": "integer"
+								},
+								"hasAudio": {
+									"type": "boolean"
+								},
+								"audioCount": {
+									"type": "integer"
+								},
+								"audioDuration": {
+									"type": "integer"
+								},
+								"hasPicture": {
+									"type": "boolean"
+								},
+								"pictureCount": {
+									"type": "integer"
+								},
+								"hasGallery": {
+									"type": "boolean"
+								},
+								"galleryCount": {
+									"type": "integer"
+								},
+								"isFeatured": {
+									"type": "boolean"
+								}
+							}
+						},
+						"releaseDate": {
+							"type": "string",
+							"format": "date-time"
+						},
+						"likes": {
+							"type": "integer"
+						},
+						"dislikes": {
+							"type": "integer"
+						},
+						"score": {
+							"type": "integer"
+						},
+						"comments": {
+							"type": "integer"
+						},
+						"creator": {
+							"type": "string"
+						},
+						"wasReleasedSilently": {
+							"type": "boolean"
+						},
+						"thumbnail": {
+							"$ref": "#/definitions/ImageModel"
+						}
+					}
+				}
+			}
+		},
+		"PollOpenClose": {
+			"type": "object",
+			"description": "This schema is used for both PollOpen and PollClose.",
+			"properties": {
+				"poll": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "string",
+							"description": "A unique identifier for the poll that is being opened or closed. Subsequent pollUpdateTally events will correspond to this id."
+						},
+						"type": {
+							"type": "string",
+							"description": "The type of poll that is being shown. So far, only `simple` is known as a type here."
+						},
+						"creator": {
+							"type": "string",
+							"description": "The id of the creator that is opening the poll. Useful if multiple livestreams are happening at the same time, so the UI knows which poll to show."
+						},
+						"title": {
+							"type": "string",
+							"description": "The main question of the poll being presented to the user."
+						},
+						"options": {
+							"type": "array",
+							"description": "The options that the user can select in the poll.",
+							"items": {
+								"type": "string"
+							}
+						},
+						"startDate": {
+							"type": "string",
+							"format": "date-time",
+							"description": "When the poll was first opened."
+						},
+						"endDate": {
+							"type": "string",
+							"format": "date-time",
+							"description": "For PollOpen events, this is the time in which the poll should automatically close. This is usually 60 seconds after `startDate`. For PollClose events which close a poll early, this is the time in which it was closed by the creator, and is usually before the `endDate` from the corresponding PollOpen event."
+						},
+						"finalTallyApproximate": {
+							"type": "null",
+							"description": "Unknown so far."
+						},
+						"finalTallyReal": {
+							"type": "null",
+							"description": "Unknown so far."
+						},
+						"runningTally": {
+							"type": "object",
+							"properties": {
+								"tick": {
+									"type": "integer",
+									"description": "A consecutively incrementing integer specifying the timeline of poll updates. Use the latest event by `tick` to show latest results. For PollOpen, this is always 0. For PollClose, this is the same tick as the latest PollUpdateTally event."
+								},
+								"counts": {
+									"type": "array",
+									"description": "A list of poll vote counts for each poll option. The order of these matches the order of `options` in the initial PollOpen event. For PollOpen, these are always 0. For PollClose, these reflect the same values as the latest PollUpdateTally event.",
+									"items": {
+										"type": "integer"
+									}
+								}
+							},
+							"additionalProperties": false,
+							"required": [
+								"tick",
+								"counts"
+							]
+						}
+					},
+					"additionalProperties": false,
+					"required": [
+						"id",
+						"type",
+						"creator",
+						"title",
+						"options",
+						"startDate",
+						"endDate",
+						"finalTallyApproximate",
+						"finalTallyReal",
+						"runningTally"
+					]
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"poll"
+			]
+		},
+		"PollUpdateTally": {
+			"type": "object",
+			"properties": {
+				"tick": {
+					"type": "integer",
+					"description": "A consecutively incrementing integer specifying the timeline of poll updates. Use the latest event by `tick` to show latest results."
+				},
+				"counts": {
+					"type": "array",
+					"description": "A list of poll vote counts for each poll option. The order of these matches the order of `options` in the initial PollOpen event.",
+					"items": {
+						"type": "integer"
+					}
+				},
+				"pollId": {
+					"type": "string",
+					"description": "Which poll this update corresponds to."
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"tick",
+				"counts",
+				"pollId"
+			]
+		},
+		"ImageModel": {
+			"type": "object",
+			"properties": {
+				"width": {
+					"type": "integer"
+				},
+				"height": {
+					"type": "integer"
+				},
+				"path": {
+					"type": "string",
+					"format": "uri"
+				},
+				"size": {
+					"type": "integer"
+				},
+				"childImages": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/ChildImageModel"
+					}
+				}
+			},
+			"required": [
+				"width",
+				"height",
+				"path"
+			]
+		},
+		"ChildImageModel": {
+			"type": "object",
+			"properties": {
+				"width": {
+					"type": "integer"
+				},
+				"height": {
+					"type": "integer"
+				},
+				"path": {
+					"type": "string",
+					"format": "uri"
+				}
+			},
+			"required": [
+				"width",
+				"height",
+				"path"
+			]
+		}
+	}
+}

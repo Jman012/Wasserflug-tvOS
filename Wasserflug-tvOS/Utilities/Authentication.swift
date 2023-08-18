@@ -7,7 +7,7 @@ extension FloatplaneAPIClientAPI {
 	private static var FloatplaneURL = URL(string: "https://www.floatplane.com")!
 	private static var SailsSidCookieName = "sails.sid"
 	
-	public static var rawCookie: String = ""
+	public static var rawCookieValue: String = ""
 	
 	static func loadAuthenticationCookiesFromStorage() {
 		let storedCookies = HTTPCookieStorage.shared.cookies(for: FloatplaneURL)
@@ -15,7 +15,7 @@ extension FloatplaneAPIClientAPI {
 			FloatplaneAPIClientAPI.customHeaders.cookie = [
 				SailsSidCookieName: Vapor.HTTPCookies.Value(string: sailsSidCookie.value),
 			]
-			rawCookie = sailsSidCookie.name + "=" + sailsSidCookie.value
+			rawCookieValue = sailsSidCookie.value
 		}
 	}
 	
@@ -23,7 +23,7 @@ extension FloatplaneAPIClientAPI {
 		if let sailsSidCookie = clientResponse.headers.setCookie?[SailsSidCookieName] {
 			FloatplaneAPIClientAPI.customHeaders.cookie = [SailsSidCookieName: sailsSidCookie]
 			let httpCookie = HTTPCookie(properties: [
-				.domain: "www.floatplane.com",
+				.domain: ".floatplane.com",
 				.path: "/",
 				.name: SailsSidCookieName,
 				.value: sailsSidCookie.string,
@@ -31,6 +31,7 @@ extension FloatplaneAPIClientAPI {
 				.expires: NSDate(timeIntervalSince1970: sailsSidCookie.expires!.timeIntervalSince1970),
 			])
 			HTTPCookieStorage.shared.setCookies([httpCookie!], for: FloatplaneURL, mainDocumentURL: nil)
+			rawCookieValue = sailsSidCookie.string
 		}
 	}
 	

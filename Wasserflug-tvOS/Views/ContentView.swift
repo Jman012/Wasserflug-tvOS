@@ -67,7 +67,7 @@ struct ContentView: View {
 					// Main content view if logged in
 					ZStack {
 						if showNewSidebar {
-							RootTabView2()
+							RootTabView2(fpFrontendSocket: FPFrontendSocket(sailsSid: FloatplaneAPIClientAPI.rawCookieValue, channelId: ""))
 						} else {
 							RootTabView()
 						}
@@ -85,8 +85,8 @@ struct ContentView: View {
 								 shouldAutoPlay: autoPlay)
 				case let .searchView(creatorOrChannel: creatorOrChannel, creatorOwner: creatorOwner):
 					CreatorSearchView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: creatorOrChannel, creatorOwner: creatorOwner), creatorName: creatorOrChannel.title)
-				case let .livestreamView(creatorId: creatorId):
-					LivestreamView(viewModel: LivestreamViewModel(fpApiService: fpApiService, creatorId: creatorId))
+				case let .livestreamView(creatorId: creatorId, livestreamId: livestreamId):
+					LivestreamView(viewModel: LivestreamViewModel(fpApiService: fpApiService, creatorId: creatorId), fpChatSocket: FPChatSocket(sailsSid: FloatplaneAPIClientAPI.rawCookieValue, channelId: livestreamId))
 				case let .videoView(videoAttachment: video, content: content, description: description, beginningWatchTime: beginningWatchTime):
 					VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: video, contentPost: content, description: description), beginningWatchTime: beginningWatchTime)
 				}
