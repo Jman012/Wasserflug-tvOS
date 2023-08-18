@@ -59,48 +59,56 @@ struct BlogPostSelectionView: View {
 			VStack(alignment: .leading, spacing: 10) {
 				// Thumbnail
 				ZStack(alignment: .center) {
-					AsyncImage(url: (blogPost.thumbnail as ImageModelShared?).bestImage(for: geometrySize), content: { image in
-						// Thumbnail image with watch progress indicator overlaid on
-						// the bottom of the image
-						ZStack(alignment: .bottomLeading) {
-							// Thumbnail image
-							image
-								.resizable()
-								.scaledToFit()
-								.frame(maxWidth: .infinity)
-
-							// Watch progress indicator
-							GeometryReader { geometry in
-								Rectangle()
-									.fill(LinearGradient(colors: [FPColors.watchProgressIndicatorBegin, FPColors.watchProgressIndicatorEnd], startPoint: .leading, endPoint: .trailing))
-									.frame(width: geometry.size.width)
-									.mask(alignment: .leading) {
-										Rectangle().frame(width: geometry.size.width * progress)
-									}
+					if let thumbnail = blogPost.thumbnail {
+						AsyncImage(url: (thumbnail as ImageModelShared).bestImage(for: geometrySize), content: { image in
+							// Thumbnail image with watch progress indicator overlaid on
+							// the bottom of the image
+							ZStack(alignment: .bottomLeading) {
+								// Thumbnail image
+								image
+									.resizable()
+									.scaledToFit()
+									.frame(maxWidth: .infinity)
+								
+								// Watch progress indicator
+								GeometryReader { geometry in
+									Rectangle()
+										.fill(LinearGradient(colors: [FPColors.watchProgressIndicatorBegin, FPColors.watchProgressIndicatorEnd], startPoint: .leading, endPoint: .trailing))
+										.frame(width: geometry.size.width)
+										.mask(alignment: .leading) {
+											Rectangle().frame(width: geometry.size.width * progress)
+										}
+								}
+								.frame(height: isFocused ? 16 : 8)
+								.animation(.spring(), value: isFocused)
+								.accessibilityLabel(progress == 0 ? "Not watched" : progress == 1 ? "Watched" : "\(Int(progress * 100)) percent watched")
 							}
-							.frame(height: isFocused ? 16 : 8)
-							.animation(.spring(), value: isFocused)
-							.accessibilityLabel(progress == 0 ? "Not watched" : progress == 1 ? "Watched" : "\(Int(progress * 100)) percent watched")
-						}
-						.cornerRadius(10.0)
-					}, placeholder: {
-						ZStack {
-							ProgressView()
-							Rectangle()
-								.fill(.clear)
-								.frame(maxWidth: .infinity)
-								.aspectRatio(blogPost.thumbnail?.aspectRatio ?? 1.0, contentMode: .fit)
-						}
-					})
-					.overlay(GeometryReader { geometry in
-						ExecuteCode {
-							if geometry.size.width > 40 && geometry.size.height > 40 {
-								DispatchQueue.main.async {
-									self.geometrySize = geometry.size
+							.cornerRadius(10.0)
+						}, placeholder: {
+							ZStack {
+								ProgressView()
+								Rectangle()
+									.fill(.clear)
+									.frame(maxWidth: .infinity)
+									.aspectRatio(blogPost.thumbnail?.aspectRatio ?? 1.78, contentMode: .fit)
+							}
+						})
+						.overlay(GeometryReader { geometry in
+							ExecuteCode {
+								if geometry.size.width > 40 && geometry.size.height > 40 {
+									DispatchQueue.main.async {
+										self.geometrySize = geometry.size
+									}
 								}
 							}
-						}
-					})
+						})
+					} else {
+						Rectangle()
+							.fill(Color(red: 221.0/256.0, green: 221.0/256.0, blue: 221.0/256.0))
+							.frame(maxWidth: .infinity)
+							.aspectRatio(1.78, contentMode: .fit)
+							.cornerRadius(10.0)
+					}
 					
 					// Optional lock icon if the post is inaccessible.
 					if !blogPost.isAccessible {

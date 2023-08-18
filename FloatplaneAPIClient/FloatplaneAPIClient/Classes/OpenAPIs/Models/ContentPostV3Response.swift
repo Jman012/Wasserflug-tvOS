@@ -50,7 +50,7 @@ public struct ContentPostV3Response: Content, Hashable {
     /** May be undefined when the post is locked. */
     public var galleryAttachments: [AnyCodable]?
 
-    public init(id: String, guid: String, title: String, text: String, type: ModelType, channel: ChannelModel, tags: [String], attachmentOrder: [String], metadata: PostMetadataModel, releaseDate: Date, likes: Int, dislikes: Int, score: Int, comments: Int, creator: CreatorModelV2, wasReleasedSilently: Bool, thumbnail: ImageModel?, isAccessible: Bool, userInteraction: [UserInteraction]?, videoAttachments: [VideoAttachmentModel]? = nil, audioAttachments: [AudioAttachmentModel]? = nil, pictureAttachments: [PictureAttachmentModel]? = nil, galleryAttachments: [AnyCodable]? = nil) {
+    public init(id: String, guid: String, title: String, text: String, type: ModelType, channel: ChannelModel, tags: [String], attachmentOrder: [String], metadata: PostMetadataModel, releaseDate: Date, likes: Int, dislikes: Int, score: Int, comments: Int, creator: CreatorModelV2, wasReleasedSilently: Bool, thumbnail: ImageModel? = nil, isAccessible: Bool, userInteraction: [UserInteraction]?, videoAttachments: [VideoAttachmentModel]? = nil, audioAttachments: [AudioAttachmentModel]? = nil, pictureAttachments: [PictureAttachmentModel]? = nil, galleryAttachments: [AnyCodable]? = nil) {
         self.id = id
         self.guid = guid
         self.title = title
@@ -122,7 +122,7 @@ public struct ContentPostV3Response: Content, Hashable {
         try container.encode(comments, forKey: .comments)
         try container.encode(creator, forKey: .creator)
         try container.encode(wasReleasedSilently, forKey: .wasReleasedSilently)
-        try container.encode(thumbnail, forKey: .thumbnail)
+        try container.encodeIfPresent(thumbnail, forKey: .thumbnail)
         try container.encode(isAccessible, forKey: .isAccessible)
         try container.encode(userInteraction, forKey: .userInteraction)
         try container.encodeIfPresent(videoAttachments, forKey: .videoAttachments)

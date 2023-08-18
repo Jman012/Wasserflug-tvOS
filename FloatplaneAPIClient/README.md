@@ -264,10 +264,13 @@ Class | Method | HTTP request | Description
  - [VotePollRequest](docs/VotePollRequest.md)
 
 
+<a id="documentation-for-authorization"></a>
 ## Documentation For Authorization
 
 
-## CookieAuth
+Authentication schemes defined for the API:
+<a id="CookieAuth"></a>
+### CookieAuth
 
 - **Type**: API key
 - **API key parameter name**: sails.sid

@@ -53,22 +53,9 @@ extension ImageModelShared {
 	var aspectRatio: CGFloat {
 		return CGFloat(self.width) / CGFloat(self.height)
 	}
-}
-
-extension ImageModel: ImageModelShared {
-}
-
-extension Optional where Wrapped == ImageModelShared {
-	var pathUrlOrNil: URL? {
-		if let thumbnail = self {
-			return URL(string: thumbnail.path)
-		} else {
-			return nil
-		}
-	}
 	
 	func bestImage(for geometrySize: CGSize?) -> URL? {
-		guard let self, let geometrySize else {
+		guard let geometrySize else {
 			return nil
 		}
 		
@@ -86,6 +73,27 @@ extension Optional where Wrapped == ImageModelShared {
 		}
 		
 		return URL(string: path)
+	}
+}
+
+extension ImageModel: ImageModelShared {
+}
+
+extension Optional where Wrapped == ImageModelShared {
+	var pathUrlOrNil: URL? {
+		if let thumbnail = self {
+			return URL(string: thumbnail.path)
+		} else {
+			return nil
+		}
+	}
+	
+	func bestImage(for geometrySize: CGSize?) -> URL? {
+		if let thumbnail = self {
+			return thumbnail.bestImage(for: geometrySize)
+		} else {
+			return nil
+		}
 	}
 }
 

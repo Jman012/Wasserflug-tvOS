@@ -54,24 +54,26 @@ struct BlogPostView: View {
 						/* Thumbnail and description row */
 						HStack(alignment: .top, spacing: 40) {
 							// Thumbnail with play button, on left of screen
-							PlayMediaView(
-								thumbnail: content.thumbnail,
-								viewMode: content.videoAttachments?.isEmpty == false ? .playButton : .imageCard,
-								width: geometry.size.width * 0.5,
-								playButtonSize: .default,
-								videoTitle: content.firstVideoAttachment?.title ?? "",
-								playContent: { beginningWatchTime in
-									DispatchQueue.main.async {
-										if let firstVideo = content.firstVideoAttachment {
-											navCoordinator.push(route: .videoView(videoAttachment: firstVideo, content: content, description: viewModel.textAttributedString, beginningWatchTime: beginningWatchTime))
+							if let thumbnail = content.thumbnail {
+								PlayMediaView(
+									thumbnail: content.thumbnail,
+									viewMode: content.videoAttachments?.isEmpty == false ? .playButton : .imageCard,
+									width: geometry.size.width * 0.5,
+									playButtonSize: .default,
+									videoTitle: content.firstVideoAttachment?.title ?? "",
+									playContent: { beginningWatchTime in
+										DispatchQueue.main.async {
+											if let firstVideo = content.firstVideoAttachment {
+												navCoordinator.push(route: .videoView(videoAttachment: firstVideo, content: content, description: viewModel.textAttributedString, beginningWatchTime: beginningWatchTime))
+											}
 										}
-									}
-								},
-								autoPlay: shouldAutoPlay,
-								watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", content.id, content.firstVideoAttachmentId ?? ""), animation: .default)
-							)
-							.accessibilityIdentifier("Thumbnail and play button")
-							.prefersDefaultFocus(in: screenNamespace)
+									},
+									autoPlay: shouldAutoPlay,
+									watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@ and videoId = %@", content.id, content.firstVideoAttachmentId ?? ""), animation: .default)
+								)
+								.accessibilityIdentifier("Thumbnail and play button")
+								.prefersDefaultFocus(in: screenNamespace)
+							}
 
 							// Creator pfp, publish date, and description
 							VStack(alignment: .leading) {

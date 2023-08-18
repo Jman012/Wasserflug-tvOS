@@ -1146,7 +1146,6 @@
                     "comments",
                     "creator",
                     "wasReleasedSilently",
-                    "thumbnail",
                     "isAccessible",
                     "userInteraction"
                 ]
