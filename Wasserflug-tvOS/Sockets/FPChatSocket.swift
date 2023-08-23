@@ -1,11 +1,9 @@
-// TODO: either combine event subscription or async responses?
-
 import Foundation
 import Combine
 import SocketIO
 import FloatplaneAPIAsync
 
-class FPChatSocket: BaseViewModel, ObservableObject {
+class FPChatSocket: BaseViewModel, ObservableObject, FPSocket {
 	
 	enum SocketError: Error {
 		case missingResponseData
@@ -16,7 +14,7 @@ class FPChatSocket: BaseViewModel, ObservableObject {
 	
 	enum Status: Hashable {
 		case notConnected
-		case getCookie
+		case waitingToReconnect
 		case socketConnecting
 		case socketConnected
 		case joiningLivestreamFrequency
@@ -26,7 +24,7 @@ class FPChatSocket: BaseViewModel, ObservableObject {
 	}
 	
 	let channelId: String
-	@Published private(set) var status: Status = .notConnected
+	@Published fileprivate(set) var status: Status = .notConnected
 	@Published var connectionError: Error? = nil
 	@Published var radioChatter: [RadioChatter] = []
 	
@@ -34,6 +32,8 @@ class FPChatSocket: BaseViewModel, ObservableObject {
 	private let timeoutSeconds: Double = 5.0
 	private let socketManager: SocketManager
 	private let socket: SocketIOClient
+	
+	private var shouldConnect = false
 	
 	private var livestreamFreq: String {
 		return "/live/" + channelId
@@ -44,23 +44,14 @@ class FPChatSocket: BaseViewModel, ObservableObject {
 		socketManager = SocketManager(
 			socketURL: URL(string: "wss://chat.floatplane.com")!,
 			config: [
-				.log(true),
+				.log(false),
 				.compress,
 				.forceWebsockets(true),
 				.extraHeaders([
-					"Host": "chat.floatplane.com",
 					"Origin": "https://www.floatplane.com",
 				]),
-				.cookies([
-					HTTPCookie(properties: [
-						.domain: ".floatplane.com",
-						.path: "/",
-						.name: "sails.sid",
-						.value: sailsSid,
-						.secure: "Secure",
-						.expires: NSDate(timeIntervalSinceNow: 1_000_000_000),
-					])!,
-				]),
+				// Utilize system cookie manager for sails.sid cookie
+				.cookies([]),
 				.reconnects(false),
 				.secure(true),
 				.path("/socket.io/"),
@@ -82,28 +73,28 @@ class FPChatSocket: BaseViewModel, ObservableObject {
 	
 	func connect() {
 		connectionError = nil
+		shouldConnect = true
 		continueConnecting()
+	}
+	
+	func disconnect() {
+		shouldConnect = false
+		continueDisconnecting()
 	}
 	
 	private func continueConnecting() {
 		switch status {
-		case .notConnected:
-//			URLSession.shared.dataTask(with: URLRequest(url: URL(string: "https://chat.floatplane.com/__getcookie")!), completionHandler: { _, _, _ in
+		case .notConnected, .waitingToReconnect:
 			// Begin connecting the socket
 			self.logger.info("Establishing chat socket connection")
 			self.socket.connect()
 			self.status = .socketConnecting
-//			}).resume()
-//			status = .getCookie
-		case .getCookie:
-			// Still doing __getCookie, do nothing
-			break
 		case .socketConnecting:
 			// Do nothing, still waiting for socket connection to establish
-			logger.info("Still waiting on chat socket connection")
+			break
 		case .socketConnected:
 			/// Socket connection established, join livestream freq
-			logger.info("Chat socket connection established, joining livestream radio frequency", metadata: [
+			logger.info("Joining livestream radio frequency", metadata: [
 				"channel": "\(livestreamFreq)",
 			])
 			let joinRequest = JoinLivestreamRadioFrequency(
@@ -149,6 +140,9 @@ class FPChatSocket: BaseViewModel, ObservableObject {
 					return
 				}
 				
+				self.logger.info("Joined livestream radio frequency", metadata: [
+					"channel": "\(self.livestreamFreq)",
+				])
 				self.status = .joinedLivestreamFrequency
 			})
 			
@@ -168,51 +162,20 @@ class FPChatSocket: BaseViewModel, ObservableObject {
 		}
 	}
 	
-//	func post(message: String) {
-//		guard status == .joinedLivestreamFrequency else {
-//			// TODO: handle error?
-//			return
-//		}
-//
-//		let radioChatterRequest = SendLivestreamRadioChatter(
-//			data: .init(channel: livestreamFreq, message: message),
-//			headers: [:],
-//			method: .post,
-//			url: .radioMessageSendLivestreamRadioChatter)
-//
-//		guard let radioChatterRequestSocketData = try? SocketDataEncoder().encode(radioChatterRequest) else {
-//			// TODO: handle error
-//			return
-//		}
-//
-//		self.socket.emitWithAck("post", radioChatterRequestSocketData).timingOut(after: timeoutSeconds, callback: { data in
-//			guard !data.isSocketIONoAck else {
-//				// TODO: handle timeout
-//				return
-//			}
-//
-//			// TODO: handle response
-//		})
-//	}
-	
-	func disconnect() {
-		continueDisconnecting()
-	}
-	
 	private func continueDisconnecting() {
 		let hardDisconnect: () -> Void = {
-			self.logger.info("Disconnecting socket connection")
-			self.socket.disconnect()
+			self.logger.info("Disconnecting chat socket connection")
 			self.status = .disconnecting
+			self.socket.disconnect()
 		}
 		
 		switch status {
 		case .notConnected:
 			// Do nothing, already disconnected
 			break
-		case .getCookie:
-			// Let the __getCookie request finish
-			break
+		case .waitingToReconnect:
+			// Stop attempt to disconnect
+			hardDisconnect()
 		case .socketConnecting:
 			// Attempt to interrupt connection request
 			hardDisconnect()
@@ -224,7 +187,9 @@ class FPChatSocket: BaseViewModel, ObservableObject {
 			hardDisconnect()
 		case .joinedLivestreamFrequency:
 			/// Be nice and try to officially leave the freq before severing the socket.
-			logger.info("Leaving livestream frequency")
+			logger.info("Leaving livestream frequency", metadata: [
+				"channel": "\(livestreamFreq)",
+			])
 			let leaveRequest = LeaveLivestreamRadioFrequency(
 				data: .init(channel: self.livestreamFreq, message: "Bye!"),
 				headers: [:],
@@ -267,7 +232,9 @@ class FPChatSocket: BaseViewModel, ObservableObject {
 					return
 				}
 			
-				self.logger.info("Left livestream frequency")
+				self.logger.info("Left livestream frequency", metadata: [
+					"channel": "\(self.livestreamFreq)",
+				])
 				hardDisconnect()
 			})
 		case .leavingLivestreamFrequency:
@@ -281,14 +248,24 @@ class FPChatSocket: BaseViewModel, ObservableObject {
 	
 	private func bindEvents(socket: SocketIOClient) {
 		socket.on(clientEvent: .connect, callback: { data, ack in
+			self.logger.info("Chat socket connection established")
 			self.status = .socketConnected
 			self.connectionError = nil
 			self.continueConnecting()
 		})
 		socket.on(clientEvent: .disconnect, callback: { data, ack in
-			self.logger.info("Chat socket connection has been closed")
-			self.status = .notConnected
-			self.connectionError = nil
+			if self.shouldConnect {
+				self.logger.info("Chat socket connection has been closed unexpectedly. Reconnecting after 5 seconds")
+				self.status = .notConnected
+				self.connectionError = nil
+				DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: {
+					self.continueConnecting()
+				})
+			} else {
+				self.logger.info("Chat socket connection has been closed")
+				self.status = .notConnected
+				self.connectionError = nil
+			}
 		})
 		socket.on("radioChatter", callback: { args, ack in
 			let radioChatter: RadioChatter
@@ -300,7 +277,7 @@ class FPChatSocket: BaseViewModel, ObservableObject {
 				return
 			}
 			
-			self.logger.debug("Radio chatter [\(self.livestreamFreq)]: \(String(reflecting: radioChatter))")
+			self.logger.info("Radio chatter [\(self.livestreamFreq)]: \(String(reflecting: radioChatter))")
 			self.radioChatter.append(radioChatter)
 			if self.radioChatter.count > 50 {
 				self.radioChatter = Array(self.radioChatter.dropFirst(self.radioChatter.count - 50))
@@ -319,22 +296,55 @@ class FPChatSocket: BaseViewModel, ObservableObject {
 	}
 }
 
-class MockFPSocket: FPChatSocket {
+class MockFPChatSocket: FPChatSocket {
+	static let all: [MockFPChatSocket] = [
+		.withNotConnected,
+		.withWaitingtoReconnect,
+		.withBlankConnecting,
+		.withConnectionError,
+		.withChatter,
+	]
+	
+	static let withNotConnected = MockFPChatSocket(display: "Not connected", channelId: "", status: .notConnected, connectionError: nil, radioChatter: [])
+	static let withWaitingtoReconnect = MockFPChatSocket(display: "Waiting to reconnect", channelId: "", status: .waitingToReconnect, connectionError: nil, radioChatter: [])
+	static let withBlankConnecting = MockFPChatSocket(display: "Blank connecting", channelId: "", status: .joiningLivestreamFrequency, connectionError: nil, radioChatter: [])
+	static let withConnectionError = MockFPChatSocket(display: "Connection error", channelId: "", status: .socketConnected, connectionError: FPChatSocket.SocketError.timedOut, radioChatter: [])
+	static let withChatter = MockFPChatSocket(display: "Chatter", channelId: "", status: .joinedLivestreamFrequency, connectionError: nil, radioChatter: [
+		.init(channel: "", emotes: nil, id: "0", message: "message 0", success: nil, userGUID: "", username: "user 0", userType: .normal),
+		.init(channel: "", emotes: nil, id: "1", message: "message 1", success: nil, userGUID: "", username: "user 1", userType: .normal),
+		.init(channel: "", emotes: nil, id: "2", message: "message 2", success: nil, userGUID: "", username: "user 2", userType: .normal),
+		.init(channel: "", emotes: nil, id: "3", message: "message 3", success: nil, userGUID: "", username: "user 3", userType: .normal),
+		.init(channel: "", emotes: nil, id: "4", message: "message 4", success: nil, userGUID: "", username: "user 4", userType: .normal),
+		.init(channel: "", emotes: nil, id: "5", message: "message 5", success: nil, userGUID: "", username: "user 5", userType: .normal),
+		.init(channel: "", emotes: nil, id: "6", message: "message 6", success: nil, userGUID: "", username: "user 6", userType: .normal),
+		.init(channel: "", emotes: nil, id: "7", message: "message 7", success: nil, userGUID: "", username: "user 7", userType: .normal),
+		.init(channel: "", emotes: nil, id: "8", message: "message 8", success: nil, userGUID: "", username: "user 8", userType: .normal),
+		.init(channel: "", emotes: nil, id: "9", message: "message 9", success: nil, userGUID: "", username: "user 9", userType: .normal),
+	])
+	
+	let display: String
+	
+	init(display: String, channelId: String, status: FPChatSocket.Status, connectionError: Error?, radioChatter: [RadioChatter]) {
+		self.display = display
+		super.init(sailsSid: "", channelId: channelId)
+		self.status = status
+		self.connectionError = connectionError
+		self.radioChatter = radioChatter
+	}
+
 	override func connect() {
-		// Do nothing
 	}
 	
 	override func disconnect() {
-		// Do nothing
 	}
 }
 
-extension Array where Element : Any {
-	var isSocketIONoAck: Bool {
-		if let first = self.first as? String, first == SocketAckStatus.noAck {
-			return true
-		} else {
-			return false
-		}
+extension MockFPChatSocket: Hashable {
+	static func == (lhs: MockFPChatSocket, rhs: MockFPChatSocket) -> Bool {
+		return lhs.display == rhs.display
+	}
+	
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(display)
 	}
 }

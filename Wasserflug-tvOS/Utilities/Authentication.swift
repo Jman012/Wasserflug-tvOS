@@ -16,6 +16,22 @@ extension FloatplaneAPIClientAPI {
 				SailsSidCookieName: Vapor.HTTPCookies.Value(string: sailsSidCookie.value),
 			]
 			rawCookieValue = sailsSidCookie.value
+			
+			// Cookies were previously stored for `www.floatplane.com` instead of `.floatplane.com`.
+			// On app startup/loading auth cookies, detect if this cookie is old and re-save it
+			// with the proper domain
+			if sailsSidCookie.domain == "www.floatplane.com" {
+				HTTPCookieStorage.shared.deleteCookie(sailsSidCookie)
+				let newSailsSidCookie = HTTPCookie(properties: [
+					.domain: ".floatplane.com",
+					.path: "/",
+					.name: SailsSidCookieName,
+					.value: sailsSidCookie.value,
+					.secure: "Secure",
+					.expires: sailsSidCookie.expiresDate as Any,
+				])!
+				HTTPCookieStorage.shared.setCookies([newSailsSidCookie], for: FloatplaneURL, mainDocumentURL: nil)
+			}
 		}
 	}
 	

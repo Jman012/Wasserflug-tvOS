@@ -6,7 +6,7 @@ import DebouncedOnChange
 
 struct RootTabView2: View {
 	
-	enum SideBarState {
+	enum SideBarState: Equatable, CaseIterable {
 		case collapsed
 		case expanded
 	}
@@ -103,7 +103,7 @@ struct RootTabView2: View {
 				UIAccessibility.post(notification: .announcement, argument: "Switched to settings screen")
 			}
 		}
-		.modifier(ControlSocketModifier(fpFrontendSocket: fpFrontendSocket))
+		.fpSocketControlSocket(fpFrontendSocket, on: [.onAppear, .onSceneActive, .onSceneInactive, .onSceneBackground])
 	}
 	
 	var contentView: some View {
@@ -365,7 +365,7 @@ struct RootTabView2: View {
 
 struct RootTabView2_Previews: PreviewProvider {
 	static var previews: some View {
-		RootTabView2(fpFrontendSocket: MockFPFrontendSocket(sailsSid: "", channelId: ""))
+		RootTabView2(fpFrontendSocket: MockFPFrontendSocket(sailsSid: ""))
 			.environmentObject(MockData.userInfo)
 			.environment(\.fpApiService, MockFPAPIService())
 	}

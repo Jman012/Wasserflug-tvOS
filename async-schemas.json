@@ -46,6 +46,12 @@
 		"SailsConnected": {
 			"$ref": "#/definitions/SailsConnected"
 		},
+		"SailsDisonnect": {
+			"$ref": "#/definitions/SailsDisconnect"
+		},
+		"SailsDisonnected": {
+			"$ref": "#/definitions/SailsDisconnected"
+		},
 		"JoinLiveRoom": {
 			"$ref": "#/definitions/JoinLiveRoom"
 		},
@@ -96,6 +102,38 @@
 			"description": "These are the same as HTTP response status codes.",
 			"minimum": 200,
 			"maximum": 599
+		},
+		"FPFrontendPost": {
+			"type": "object",
+			"description": "Join a livestream chat channel in order to receive chat messages (via the `radioChatter` event) from others in the room.",
+			"properties": {
+				"method": {
+					"const": "post",
+					"description": "This endpoint expects a POST."
+				},
+				"headers": {
+					"$ref": "#/definitions/SailsHeaders"
+				},
+				"data": {
+
+				},
+				"url": {
+					"const": "/RadioMessage/joinLivestreamRadioFrequency"
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"method",
+				"headers",
+				"data",
+				"url"
+			]
+		},
+		"FPChatGet": {
+
+		},
+		"FPChatPost": {
+
 		},
 		"JoinLivestreamRadioFrequency": {
 			"type": "object",
@@ -217,7 +255,10 @@
 			"type": "object",
 			"properties": {
 				"body": {
-					"type": "object"
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					}
 				},
 				"headers": {
 					"$ref": "#/definitions/SailsHeaders"
@@ -475,6 +516,61 @@
 		"SailsConnected": {
 			"type": "object",
 			"description": "The response received from connecting to Floatplane for sync events. Once this is successfully received, sync events may appear on the socket asynchronously.",
+			"properties": {
+				"body": {
+					"type": "object",
+					"properties": {
+						"message": {
+							"type": "string"
+						}
+					}
+				},
+				"headers": {
+					"$ref": "#/definitions/SailsHeaders"
+				},
+				"statusCode": {
+					"$ref": "#/definitions/SailsStatusCode"
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"body",
+				"headers",
+				"statusCode"
+			]
+		},
+		"SailsDisconnect": {
+			"type": "object",
+			"description": "Disconnect from Floatplane (after a socket connection has been made) in order to stop receiving sync events.",
+			"properties": {
+				"method": {
+					"const": "post",
+					"description": "This endpoint expects a POST."
+				},
+				"headers": {
+					"$ref": "#/definitions/SailsHeaders"
+				},
+				"data": {
+					"type": "object",
+					"description": "No payload necessary.",
+					"additionalProperties": false
+				},
+				"url": {
+					"const": "/api/v3/socket/disconnect",
+					"description": "The required endpoint for this event."
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"method",
+				"headers",
+				"data",
+				"url"
+			]
+		},
+		"SailsDisconnected": {
+			"type": "object",
+			"description": "The response received after disconnecting from Floatplane sync events.",
 			"properties": {
 				"body": {
 					"type": "object",
@@ -818,7 +914,9 @@
 						},
 						"tags": {
 							"type": "array",
-							"items": {}
+							"items": {
+								"type": "string"
+							}
 						},
 						"attachmentOrder": {
 							"type": "array",

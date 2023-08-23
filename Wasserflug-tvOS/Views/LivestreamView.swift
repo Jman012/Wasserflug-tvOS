@@ -5,6 +5,8 @@ struct LivestreamView: View {
 	@StateObject var viewModel: LivestreamViewModel
 	@StateObject var fpChatSocket: FPChatSocket
 	
+	@State var chatState: RootTabView2.SideBarState = .expanded
+	
 	var body: some View {
 		VStack {
 			switch viewModel.state {
@@ -19,52 +21,95 @@ struct LivestreamView: View {
 					viewModel.state = .idle
 				})
 			case let .loaded((creator, _, _)):
-				if !viewModel.isLive {
-					VStack {
-						AsyncImage(url: URL(string: creator.liveStream?.offline.thumbnail?.path ?? ""), content: { image in
-							image
-								.resizable()
-								.scaledToFit()
-						}, placeholder: {
-							ProgressView()
+				GeometryReader { geoProxy in
+					HStack(spacing: 0) {
+						ZStack {
+							if !viewModel.isLive {
+								ZStack {
+									AsyncImage(url: URL(string: creator.liveStream?.offline.thumbnail?.path ?? ""), content: { image in
+										image
+											.resizable()
+											.scaledToFit()
+									}, placeholder: {
+										ProgressView()
+									})
+									
+									VStack {
+										Text("This channel is offline")
+											.font(.title2)
+											.fontWeight(.semibold)
+										Text("Hang around and the stream will start automatically when it goes live!")
+											.font(.callout)
+									}
+									.padding(30)
+									.background(.regularMaterial)
+									.cornerRadius(10)
+								}
+								.frame(maxWidth: .infinity, maxHeight: .infinity)
+								.environment(\.colorScheme, .dark)
+								.background(.black)
+							} else {
+								LivestreamPlayerView(viewModel: viewModel)
+							}
+						}
+						.overlay(alignment: .topTrailing, content: {
+							if chatState == .collapsed {
+								Button(action: {
+									withAnimation {
+										chatState = .expanded
+									}
+								}, label: {
+									Image(systemName: "arrow.left.to.line")
+								})
+								.buttonStyle(LivestreamCircleButtonStyle())
+								.padding()
+							}
 						})
-
-						Text(creator.liveStream?.offline.title ?? "")
-							.font(.title2)
-						Text(creator.liveStream?.offline.description ?? "")
+						
+						if chatState == .expanded {
+							Divider()
+							
+							LivestreamChatSidebar(fpChatSocket: fpChatSocket, onCollapse: {
+								withAnimation {
+									chatState = .collapsed
+								}
+							}, onConnect: {
+								fpChatSocket.connect()
+							})
+							.frame(maxWidth: geoProxy.size.width * 0.25)
+						}
 					}
-				} else {
-					LivestreamPlayerView(viewModel: viewModel)
-						.ignoresSafeArea()
 				}
+				.ignoresSafeArea()
 			}
 		}
 		.onAppear {
 			viewModel.startLoadingLiveStatus()
-			fpChatSocket.connect()
 		}.onDisappear {
 			viewModel.stopLoadingLiveStatus()
-			fpChatSocket.disconnect()
 		}.onChange(of: scenePhase, perform: { phase in
 			switch phase {
 			case .active:
 				viewModel.loadLiveStatus()
-				fpChatSocket.connect()
 			case .inactive, .background:
 				viewModel.stopLoadingLiveStatus()
-				fpChatSocket.disconnect()
 			@unknown default:
 				break
 			}
 		})
+		.fpSocketControlSocket(fpChatSocket, on: [.onAppear, .onDisappear, .onSceneActive, .onSceneInactive, .onSceneBackground])
 	}
 }
 
 struct LivestreamView_Previews: PreviewProvider {
 	static var previews: some View {
-		LivestreamView(
-			viewModel: LivestreamViewModel(fpApiService: MockFPAPIService(), creatorId: MockData.creatorV3.id),
-			fpChatSocket: MockFPSocket(sailsSid: "", channelId: "")
-		)
+		ForEach(RootTabView2.SideBarState.allCases, id: \.self) {
+			LivestreamView(
+				viewModel: MockOfflineLivestreamViewModel(),
+				fpChatSocket: MockFPChatSocket.withChatter,
+				chatState: $0
+			)
+			.previewDisplayName("\($0)")
+		}
 	}
 }

@@ -9,4 +9,5 @@ npx quicktype \
 	--struct-or-class struct \
 	--no-initializers \
 	--coding-keys \
+	--protocol hashable \
 	--access-level public

@@ -67,7 +67,7 @@ struct ContentView: View {
 					// Main content view if logged in
 					ZStack {
 						if showNewSidebar {
-							RootTabView2(fpFrontendSocket: FPFrontendSocket(sailsSid: FloatplaneAPIClientAPI.rawCookieValue, channelId: ""))
+							RootTabView2(fpFrontendSocket: FPFrontendSocket(sailsSid: FloatplaneAPIClientAPI.rawCookieValue))
 						} else {
 							RootTabView()
 						}
@@ -81,14 +81,26 @@ struct ContentView: View {
 				case .secondFactor:
 					SecondFactorView(viewModel: viewModel)
 				case let .blogPostView(blogPostId: blogPostId, autoPlay: autoPlay):
-					BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService, id: blogPostId),
+					BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService,
+															  id: blogPostId),
 								 shouldAutoPlay: autoPlay)
 				case let .searchView(creatorOrChannel: creatorOrChannel, creatorOwner: creatorOwner):
-					CreatorSearchView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: creatorOrChannel, creatorOwner: creatorOwner), creatorName: creatorOrChannel.title)
+					CreatorSearchView(viewModel: CreatorContentViewModel(fpApiService: fpApiService,
+																		 managedObjectContext: managedObjectContext,
+																		 creatorOrChannel: creatorOrChannel,
+																		 creatorOwner: creatorOwner),
+									  creatorName: creatorOrChannel.title)
 				case let .livestreamView(creatorId: creatorId, livestreamId: livestreamId):
-					LivestreamView(viewModel: LivestreamViewModel(fpApiService: fpApiService, creatorId: creatorId), fpChatSocket: FPChatSocket(sailsSid: FloatplaneAPIClientAPI.rawCookieValue, channelId: livestreamId))
+					LivestreamView(viewModel: LivestreamViewModel(fpApiService: fpApiService,
+																  creatorId: creatorId),
+								   fpChatSocket: FPChatSocket(sailsSid: FloatplaneAPIClientAPI.rawCookieValue,
+															  channelId: livestreamId))
 				case let .videoView(videoAttachment: video, content: content, description: description, beginningWatchTime: beginningWatchTime):
-					VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: video, contentPost: content, description: description), beginningWatchTime: beginningWatchTime)
+					VideoView(viewModel: VideoViewModel(fpApiService: fpApiService,
+														videoAttachment: video,
+														contentPost: content,
+														description: description),
+							  beginningWatchTime: beginningWatchTime)
 				}
 			})
 		}

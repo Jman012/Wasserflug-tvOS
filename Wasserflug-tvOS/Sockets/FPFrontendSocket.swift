@@ -4,7 +4,7 @@ import SwiftUI
 import SocketIO
 import FloatplaneAPIAsync
 
-class FPFrontendSocket: BaseViewModel, ObservableObject {
+class FPFrontendSocket: BaseViewModel, ObservableObject, FPSocket {
 	
 	enum SocketError: Error {
 		case missingResponseData
@@ -17,60 +17,43 @@ class FPFrontendSocket: BaseViewModel, ObservableObject {
 		case notConnected
 		case socketConnecting
 		case socketConnected
-		case joiningLivestreamFrequency
-		case joinedLivestreamFrequency
-		case leavingLivestreamFrequency
+		case sailsConnecting
+		case sailsConnected
+		case sailsDisconnecting
 		case disconnecting
 	}
 	
-	let channelId: String
 	@Published private(set) var status: Status = .notConnected
 	@Published var connectionError: Error? = nil
-	@Published var radioChatter: [RadioChatter] = []
 	
 	private let timeoutSeconds: Double = 5.0
 	private let socketManager: SocketManager
 	private let socket: SocketIOClient
 	
-	private var livestreamFreq: String {
-		return "/live/" + channelId
-	}
-	
-	init(sailsSid: String, channelId: String) {
+	init(sailsSid: String) {
 		socketManager = SocketManager(
 			socketURL: URL(string: "wss://www.floatplane.com")!,
 			config: [
-				.log(true),
+				.log(false),
 				.compress,
 				.forceWebsockets(true),
 				.extraHeaders([
-					"Host": "www.floatplane.com",
 					"Origin": "https://www.floatplane.com",
-					"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.9999.0 Safari/537.36",
 				]),
-				.cookies([
-					HTTPCookie(properties: [
-						.domain: ".floatplane.com",
-						.path: "/",
-						.name: "sails.sid",
-						.value: sailsSid,
-						.secure: "Secure",
-						.expires: NSDate(timeIntervalSinceNow: 1_000_000_000),
-					])!,
-				]),
+				// Utilize system cookie manager for sails.sid cookie
+				.cookies([]),
 				.reconnects(false),
 				.secure(true),
 				.path("/socket.io/"),
 				.connectParams([
 					"__sails_io_sdk_version": "0.13.8",
-					"__sails_io_sdk_platform": "browser",
-					"__sails_io_sdk_language": "javascript",
+					"__sails_io_sdk_platform": "tvos",
+					"__sails_io_sdk_language": "swift",
 				]),
 				.version(.two),
 			])
 		
 		socket = socketManager.defaultSocket
-		self.channelId = channelId
 		
 		super.init()
 		
@@ -80,6 +63,10 @@ class FPFrontendSocket: BaseViewModel, ObservableObject {
 	func connect() {
 		connectionError = nil
 		continueConnecting()
+	}
+	
+	func disconnect() {
+		continueDisconnecting()
 	}
 	
 	private func continueConnecting() {
@@ -94,9 +81,7 @@ class FPFrontendSocket: BaseViewModel, ObservableObject {
 			logger.info("Still waiting on frontend socket connection")
 		case .socketConnected:
 			/// Socket connection established, join livestream freq
-			logger.info("Frontend socket connection established, joining livestream radio frequency", metadata: [
-				"channel": "\(livestreamFreq)",
-			])
+			logger.info("Frontend socket connection established, connecting to Sails")
 			let sailsConnectRequest = SailsConnect(
 				data: .init(),
 				headers: [:],
@@ -134,23 +119,24 @@ class FPFrontendSocket: BaseViewModel, ObservableObject {
 				}
 				
 				guard sailsConnectedResponse.statusCode == 200 else {
-					self.logger.warning("Failed to connect to sails: \(String(reflecting: sailsConnectedResponse))")
+					self.logger.warning("Failed to connect to Sails: \(String(reflecting: sailsConnectedResponse))")
 					self.status = .socketConnected
 					self.connectionError = SocketError.unsuccessfulJoin
 					return
 				}
 				
-				self.status = .joinedLivestreamFrequency
+				self.logger.info("Connected to Sails")
+				self.status = .sailsConnected
 			})
 			
-			status = .joiningLivestreamFrequency
-		case .joiningLivestreamFrequency:
+			status = .sailsConnecting
+		case .sailsConnecting:
 			// Do nothing, waiting on connection
 			break
-		case .joinedLivestreamFrequency:
+		case .sailsConnected:
 			// Do nothing, already fully connected
 			break
-		case .leavingLivestreamFrequency:
+		case .sailsDisconnecting:
 			// Do nothing, need to wait on leave request first
 			break
 		case .disconnecting:
@@ -158,16 +144,12 @@ class FPFrontendSocket: BaseViewModel, ObservableObject {
 			break
 		}
 	}
-		
-	func disconnect() {
-		continueDisconnecting()
-	}
 	
 	private func continueDisconnecting() {
 		let hardDisconnect: () -> Void = {
-			self.logger.info("Disconnecting socket connection")
-			self.socket.disconnect()
+			self.logger.info("Disconnecting frontend socket connection")
 			self.status = .disconnecting
+			self.socket.disconnect()
 		}
 		
 		switch status {
@@ -178,60 +160,60 @@ class FPFrontendSocket: BaseViewModel, ObservableObject {
 			// Attempt to interrupt connection request
 			hardDisconnect()
 		case .socketConnected:
-			// Socket connected but not in livestream freq. Disconnect.
+			// Socket connected but not in Sails. Disconnect.
 			hardDisconnect()
-		case .joiningLivestreamFrequency:
-			// Not in livestream freq yet. Disconnect.
+		case .sailsConnecting:
+			// Not in Sails yet. Disconnect.
 			hardDisconnect()
-		case .joinedLivestreamFrequency:
+		case .sailsConnected:
 			/// Be nice and try to officially leave the freq before severing the socket.
-			logger.info("Leaving livestream frequency")
-			let leaveRequest = LeaveLivestreamRadioFrequency(
-				data: .init(channel: self.livestreamFreq, message: "Bye!"),
+			logger.info("Disconnecting from Sails")
+			let disconnectRequest = SailsDisconnect(
+				data: .init(),
 				headers: [:],
 				method: .post,
-				url: .radioMessageLeaveLivestreamRadioFrequency)
+				url: .apiV3SocketDisconnect)
 			
-			let leaveRequestSocketData: SocketData
+			let disconnectRequestSocketData: SocketData
 			do {
-				guard let data = try SocketDataEncoder().encode(leaveRequest) else {
+				guard let data = try SocketDataEncoder().encode(disconnectRequest) else {
 					throw SocketError.nilSocketData
 				}
-				leaveRequestSocketData = data
+				disconnectRequestSocketData = data
 			} catch {
-				// Kill the connection despite being in livestream freq
-				logger.warning("Failed to encode leave request. Disconnecting socket despite being in livestream freq. Error: \(error)")
+				// Kill the connection despite being connected to Sails
+				logger.warning("Failed to encode Sails disconnect request. Disconnecting socket despite being connected to Sails. Error: \(error)")
 				hardDisconnect()
 				return
 			}
 			
-			socket.emitWithAck("post", leaveRequestSocketData).timingOut(after: self.timeoutSeconds, callback: { data in
+			socket.emitWithAck("post", disconnectRequestSocketData).timingOut(after: self.timeoutSeconds, callback: { data in
 				guard !data.isSocketIONoAck else {
-					// Kill the connection despite failing to leave livestream freq
-					self.logger.warning("Timed out leaving livestream freq. Disconnecting socket anyway.")
+					// Kill the connection despite failing to disconnect from Sails
+					self.logger.warning("Timed out disconnecting from Sails. Disconnecting socket anyway.")
 					hardDisconnect()
 					return
 				}
 				
-				let leftResponse: LeftLivestreamRadioFrequency
+				let sailsDisconnected: SailsDisconnected
 				do {
-					leftResponse = try self.decode(LeftLivestreamRadioFrequency.self, from: data)
+					sailsDisconnected = try self.decode(SailsDisconnected.self, from: data)
 				} catch {
-					self.logger.warning("Failed to decode LeftLivestreamRadioFrequency response: \(error). Data: \(String(reflecting: data))")
+					self.logger.warning("Failed to decode SailsDisconnected response: \(error). Data: \(String(reflecting: data))")
 					hardDisconnect()
 					return
 				}
 				
-				guard leftResponse.statusCode == 200 else {
-					self.logger.warning("Failed to leave livestream radio frequency: \(String(reflecting: leftResponse))")
+				guard sailsDisconnected.statusCode == 200 else {
+					self.logger.warning("Failed to disconnect from Sails: \(String(reflecting: sailsDisconnected))")
 					hardDisconnect()
 					return
 				}
 			
-				self.logger.info("Left livestream frequency")
+				self.logger.info("Disconnected from Sails")
 				hardDisconnect()
 			})
-		case .leavingLivestreamFrequency:
+		case .sailsDisconnecting:
 			// Do nothing, waiting on leave response
 			break
 		case .disconnecting:
@@ -242,30 +224,15 @@ class FPFrontendSocket: BaseViewModel, ObservableObject {
 	
 	private func bindEvents(socket: SocketIOClient) {
 		socket.on(clientEvent: .connect, callback: { data, ack in
+			self.logger.info("Frontend socket connection has been established")
 			self.status = .socketConnected
 			self.connectionError = nil
 			self.continueConnecting()
 		})
 		socket.on(clientEvent: .disconnect, callback: { data, ack in
-			self.logger.info("Chat socket connection has been closed")
+			self.logger.info("Frontend socket connection has been closed")
 			self.status = .notConnected
 			self.connectionError = nil
-		})
-		socket.on("radioChatter", callback: { args, ack in
-			let radioChatter: RadioChatter
-			do {
-				radioChatter = try self.decode(RadioChatter.self, from: args)
-			} catch {
-				self.logger.warning("Failed to decode radio chatter: \(error). Data: \(String(reflecting: args))")
-				// Do nothing else
-				return
-			}
-			
-			self.logger.debug("Radio chatter [\(self.livestreamFreq)]: \(String(reflecting: radioChatter))")
-			self.radioChatter.append(radioChatter)
-			if self.radioChatter.count > 50 {
-				self.radioChatter = Array(self.radioChatter.dropFirst(self.radioChatter.count - 50))
-			}
 		})
 	}
 	
@@ -277,38 +244,5 @@ class FPFrontendSocket: BaseViewModel, ObservableObject {
 		let responseBytes = try JSONSerialization.data(withJSONObject: responseData)
 		let response = try JSONDecoder().decode(type, from: responseBytes)
 		return response
-	}
-}
-
-class MockFPFrontendSocket: FPFrontendSocket {
-	override func connect() {
-		// Do nothing
-	}
-	
-	override func disconnect() {
-		// Do nothing
-	}
-}
-
-struct ControlSocketModifier: ViewModifier {
-	@Environment(\.scenePhase) var scenePhase
-	let fpFrontendSocket: FPFrontendSocket
-	
-	func body(content: Content) -> some View {
-		return content
-			.onAppear {
-				fpFrontendSocket.connect()
-//			}.onDisappear {
-//				fpFrontendSocket.disconnect()
-			}.onChange(of: scenePhase, perform: { phase in
-				switch phase {
-				case .active:
-					fpFrontendSocket.connect()
-				case .inactive, .background:
-					fpFrontendSocket.disconnect()
-				@unknown default:
-					break
-				}
-			})
 	}
 }

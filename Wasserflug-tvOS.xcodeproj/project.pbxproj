@@ -28,6 +28,8 @@
 		E7304FBB2A86FE730008DE93 /* FloatplaneAPIAsync in Frameworks */ = {isa = PBXBuildFile; productRef = E7304FBA2A86FE730008DE93 /* FloatplaneAPIAsync */; };
 		E731AF0F289B22AC00A2DAD7 /* AttachmentPills.swift in Sources */ = {isa = PBXBuildFile; fileRef = E731AF0E289B22AC00A2DAD7 /* AttachmentPills.swift */; };
 		E7326D282A2D0C1F0065C016 /* CreatorOrChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7326D272A2D0C1F0065C016 /* CreatorOrChannel.swift */; };
+		E748E36E2A92B01700616BD4 /* MockLivestreamViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E748E36D2A92B01700616BD4 /* MockLivestreamViewModel.swift */; };
+		E748E3702A92E0F000616BD4 /* LivestreamChatSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E748E36F2A92E0F000616BD4 /* LivestreamChatSidebar.swift */; };
 		E74C98A32A080AAC00FDDB9C /* RootTabView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74C98A22A080AAC00FDDB9C /* RootTabView2.swift */; };
 		E74C98A62A080B9E00FDDB9C /* DebouncedOnChange in Frameworks */ = {isa = PBXBuildFile; productRef = E74C98A52A080B9E00FDDB9C /* DebouncedOnChange */; };
 		E74C98A82A082D5100FDDB9C /* HideableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74C98A72A082D5100FDDB9C /* HideableView.swift */; };
@@ -71,6 +73,10 @@
 		E75337B727CB06BE0010E3D2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379C27CB06BE0010E3D2 /* ContentView.swift */; };
 		E75337B827CB06BE0010E3D2 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379D27CB06BE0010E3D2 /* RootTabView.swift */; };
 		E75337BC27CB07900010E3D2 /* FloatplaneAPIClient in Frameworks */ = {isa = PBXBuildFile; productRef = E75337BB27CB07900010E3D2 /* FloatplaneAPIClient */; };
+		E76D68532A913363009A2374 /* SwiftUI+FPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76D68522A913363009A2374 /* SwiftUI+FPSocket.swift */; };
+		E76D68552A91338D009A2374 /* FPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76D68542A91338D009A2374 /* FPSocket.swift */; };
+		E76D68592A91A2EA009A2374 /* RadioChatterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76D68582A91A2EA009A2374 /* RadioChatterView.swift */; };
+		E76D685C2A927EE4009A2374 /* BigNumber in Frameworks */ = {isa = PBXBuildFile; productRef = E76D685B2A927EE4009A2374 /* BigNumber */; };
 		E76E318E2A51EF8F00242CEC /* InnerShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76E318D2A51EF8F00242CEC /* InnerShadow.swift */; };
 		E79CF1562A8872B00074F755 /* FPFrontendSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79CF1552A8872B00074F755 /* FPFrontendSocket.swift */; };
 		E7A2F42A28C58E0300583294 /* ExecuteCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A2F42928C58E0300583294 /* ExecuteCode.swift */; };
@@ -118,6 +124,8 @@
 		E7304FB82A86FB790008DE93 /* SocketDataKeyedEncodingContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketDataKeyedEncodingContainer.swift; sourceTree = "<group>"; };
 		E731AF0E289B22AC00A2DAD7 /* AttachmentPills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentPills.swift; sourceTree = "<group>"; };
 		E7326D272A2D0C1F0065C016 /* CreatorOrChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorOrChannel.swift; sourceTree = "<group>"; };
+		E748E36D2A92B01700616BD4 /* MockLivestreamViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLivestreamViewModel.swift; sourceTree = "<group>"; };
+		E748E36F2A92E0F000616BD4 /* LivestreamChatSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivestreamChatSidebar.swift; sourceTree = "<group>"; };
 		E74C98A22A080AAC00FDDB9C /* RootTabView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView2.swift; sourceTree = "<group>"; };
 		E74C98A72A082D5100FDDB9C /* HideableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideableView.swift; sourceTree = "<group>"; };
 		E74C98A92A08979700FDDB9C /* HideableView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideableView2.swift; sourceTree = "<group>"; };
@@ -162,6 +170,9 @@
 		E753379B27CB06BE0010E3D2 /* SecondFactorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondFactorView.swift; sourceTree = "<group>"; };
 		E753379C27CB06BE0010E3D2 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		E753379D27CB06BE0010E3D2 /* RootTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
+		E76D68522A913363009A2374 /* SwiftUI+FPSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+FPSocket.swift"; sourceTree = "<group>"; };
+		E76D68542A91338D009A2374 /* FPSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPSocket.swift; sourceTree = "<group>"; };
+		E76D68582A91A2EA009A2374 /* RadioChatterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioChatterView.swift; sourceTree = "<group>"; };
 		E76E318D2A51EF8F00242CEC /* InnerShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerShadow.swift; sourceTree = "<group>"; };
 		E79CF1552A8872B00074F755 /* FPFrontendSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPFrontendSocket.swift; sourceTree = "<group>"; };
 		E7A2F42928C58E0300583294 /* ExecuteCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecuteCode.swift; sourceTree = "<group>"; };
@@ -182,6 +193,7 @@
 				E7304FBB2A86FE730008DE93 /* FloatplaneAPIAsync in Frameworks */,
 				E7304FAE2A86F9B60008DE93 /* SocketIO in Frameworks */,
 				E74C98A62A080B9E00FDDB9C /* DebouncedOnChange in Frameworks */,
+				E76D685C2A927EE4009A2374 /* BigNumber in Frameworks */,
 				E753376B27CB01FD0010E3D2 /* Vapor in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -218,8 +230,10 @@
 			isa = PBXGroup;
 			children = (
 				E7304FAF2A86FB170008DE93 /* SocketDataEncoder */,
+				E76D68542A91338D009A2374 /* FPSocket.swift */,
 				E7304FAA2A86F9380008DE93 /* FPChatSocket.swift */,
 				E79CF1552A8872B00074F755 /* FPFrontendSocket.swift */,
+				E76D68522A913363009A2374 /* SwiftUI+FPSocket.swift */,
 			);
 			path = Sockets;
 			sourceTree = "<group>";
@@ -234,6 +248,14 @@
 				E7304FB82A86FB790008DE93 /* SocketDataKeyedEncodingContainer.swift */,
 			);
 			path = SocketDataEncoder;
+			sourceTree = "<group>";
+		};
+		E748E36C2A92B00A00616BD4 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				E748E36D2A92B01700616BD4 /* MockLivestreamViewModel.swift */,
+			);
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 		E753373027CAFAFE0010E3D2 = {
@@ -329,6 +351,8 @@
 				E7A2F42928C58E0300583294 /* ExecuteCode.swift */,
 				E74C98A72A082D5100FDDB9C /* HideableView.swift */,
 				E74C98A92A08979700FDDB9C /* HideableView2.swift */,
+				E76D68582A91A2EA009A2374 /* RadioChatterView.swift */,
+				E748E36F2A92E0F000616BD4 /* LivestreamChatSidebar.swift */,
 			);
 			path = SupplementalViews;
 			sourceTree = "<group>";
@@ -336,6 +360,7 @@
 		E753378727CB06BE0010E3D2 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				E748E36C2A92B00A00616BD4 /* Mocks */,
 				E753378E27CB06BE0010E3D2 /* ViewModelState.swift */,
 				E753378B27CB06BE0010E3D2 /* BaseViewModel.swift */,
 				E753378D27CB06BE0010E3D2 /* AuthViewModel.swift */,
@@ -420,6 +445,7 @@
 				E74C98A52A080B9E00FDDB9C /* DebouncedOnChange */,
 				E7304FAD2A86F9B60008DE93 /* SocketIO */,
 				E7304FBA2A86FE730008DE93 /* FloatplaneAPIAsync */,
+				E76D685B2A927EE4009A2374 /* BigNumber */,
 			);
 			productName = "Wasserflug-tvOS";
 			productReference = E753373927CAFAFE0010E3D2 /* Wasserflug.app */;
@@ -497,6 +523,7 @@
 				E753376927CB01FD0010E3D2 /* XCRemoteSwiftPackageReference "vapor" */,
 				E74C98A42A080B9E00FDDB9C /* XCRemoteSwiftPackageReference "DebouncedOnChange" */,
 				E7304FAC2A86F9B60008DE93 /* XCRemoteSwiftPackageReference "socket" */,
+				E76D685A2A927EE4009A2374 /* XCRemoteSwiftPackageReference "Swift-BigInt" */,
 			);
 			productRefGroup = E753373A27CAFAFE0010E3D2 /* Products */;
 			projectDirPath = "";
@@ -552,7 +579,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd BuildTools\nSDKROOT=(xcrun --sdk macosx --show-sdk-path)\n#swift package update #Uncomment this line temporarily to update the version used to the latest matching your BuildTools/Package.swift file\nswift run -c release swiftformat \"$SRCROOT\" --swiftversion 5.8\n";
+			shellScript = "if [ \"${ENABLE_PREVIEWS}\" = \"YES\" ]; then\n\texit 0;\nfi\n\ncd BuildTools\nSDKROOT=(xcrun --sdk macosx --show-sdk-path)\n#swift package update #Uncomment this line temporarily to update the version used to the latest matching your BuildTools/Package.swift file\nswift run -c release swiftformat \"$SRCROOT\" --swiftversion 5.8\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -575,8 +602,10 @@
 				E7A447E92815E1C0009BCE2E /* SwiftUI+Extensions.swift in Sources */,
 				E71CFE322A48CB1700E8E1DC /* OnFirstAppear.swift in Sources */,
 				E7A2F42A28C58E0300583294 /* ExecuteCode.swift in Sources */,
+				E748E3702A92E0F000616BD4 /* LivestreamChatSidebar.swift in Sources */,
 				E75337AB27CB06BE0010E3D2 /* CreatorContentViewModel.swift in Sources */,
 				E74C98A32A080AAC00FDDB9C /* RootTabView2.swift in Sources */,
+				E76D68592A91A2EA009A2374 /* RadioChatterView.swift in Sources */,
 				E75337AF27CB06BE0010E3D2 /* LoginView.swift in Sources */,
 				E7304FB92A86FB790008DE93 /* SocketDataKeyedEncodingContainer.swift in Sources */,
 				E753377B27CB066E0010E3D2 /* FPAPIService.swift in Sources */,
@@ -593,15 +622,18 @@
 				E75337A927CB06BE0010E3D2 /* AuthViewModel.swift in Sources */,
 				E71CFE302A48C82600E8E1DC /* UserModelShared.swift in Sources */,
 				E75337AA27CB06BE0010E3D2 /* ViewModelState.swift in Sources */,
+				E76D68552A91338D009A2374 /* FPSocket.swift in Sources */,
 				E75337B027CB06BE0010E3D2 /* VideoView.swift in Sources */,
 				E74C98A82A082D5100FDDB9C /* HideableView.swift in Sources */,
 				E76E318E2A51EF8F00242CEC /* InnerShadow.swift in Sources */,
 				E753379E27CB06BE0010E3D2 /* BlogPostContentView.swift in Sources */,
 				E75337A027CB06BE0010E3D2 /* PlayButton.swift in Sources */,
 				E7304FB72A86FB740008DE93 /* SocketDataUnkeyedEncodingContainer.swift in Sources */,
+				E76D68532A913363009A2374 /* SwiftUI+FPSocket.swift in Sources */,
 				E75337A527CB06BE0010E3D2 /* HomeViewModel.swift in Sources */,
 				E7F2F23D2A113F0000602991 /* OnCustomAppear.swift in Sources */,
 				E70F777629DF7A5E00869BE3 /* ToastBarView.swift in Sources */,
+				E748E36E2A92B01700616BD4 /* MockLivestreamViewModel.swift in Sources */,
 				E75337AD27CB06BE0010E3D2 /* CreatorSearchView.swift in Sources */,
 				E7304FB12A86FB220008DE93 /* SocketDataEncoder.swift in Sources */,
 				E71FDB7927E66D7E00A9C88B /* Persistence.swift in Sources */,
@@ -980,6 +1012,14 @@
 				version = 4.65.2;
 			};
 		};
+		E76D685A2A927EE4009A2374 /* XCRemoteSwiftPackageReference "Swift-BigInt" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mkrd/Swift-BigInt.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1005,6 +1045,11 @@
 		E75337BB27CB07900010E3D2 /* FloatplaneAPIClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FloatplaneAPIClient;
+		};
+		E76D685B2A927EE4009A2374 /* BigNumber */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E76D685A2A927EE4009A2374 /* XCRemoteSwiftPackageReference "Swift-BigInt" */;
+			productName = BigNumber;
 		};
 /* End XCSwiftPackageProductDependency section */
 

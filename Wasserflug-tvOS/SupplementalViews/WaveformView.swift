@@ -8,12 +8,12 @@ struct WaveformView: View {
 	let width: CGFloat
 	let height: CGFloat
 	
-	let logger: Logger = {
-		var logger = Wasserflug_tvOSApp.logger
-		logger[metadataKey: "class"] = "\(Self.Type.self)"
-		return logger
-	}()
-	
+	///	let logger: Logger = {
+	///		var logger = Wasserflug_tvOSApp.logger
+//		logger[metadataKey: "class"] = "\(Self.Type.self)"
+	///		return logger
+	///	}()
+	///
 	private func compute() -> (CGFloat, Range<Int>, CGFloat, ArraySlice<Int>, CGFloat) {
 		let range = 0..<min(20, waveform.data.count)
 		let data = waveform.data[range]
@@ -24,7 +24,7 @@ struct WaveformView: View {
 		let spacing: CGFloat = 4
 		let heightScale = height / CGFloat(maxDataPoint)
 		let waveWidth = (width - (CGFloat(range.count - 1) * spacing)) / CGFloat(range.count)
-		logger.debug("range=\(range), data=\(data), maxDataPoint=\(maxDataPoint), spacing=\(spacing), heightScale=\(heightScale), waveWidth=\(waveWidth), width=\(width), height=\(height)")
+//		logger.debug("range=\(range), data=\(data), maxDataPoint=\(maxDataPoint), spacing=\(spacing), heightScale=\(heightScale), waveWidth=\(waveWidth), width=\(width), height=\(height)")
 		return (spacing, range, waveWidth, data, heightScale)
 	}
 	
@@ -33,7 +33,7 @@ struct WaveformView: View {
 		HStack(spacing: spacing) {
 			ForEach(range, id: \.self) {
 				Rectangle()
-					.fill(.white)
+					.fill(.primary)
 					.frame(width: waveWidth, height: CGFloat(data[$0]) * heightScale)
 					.cornerRadius(waveWidth)
 			}
@@ -43,7 +43,12 @@ struct WaveformView: View {
 
 struct WaveformView_Previews: PreviewProvider {
 	static var previews: some View {
-		WaveformView(waveform: MockData.getBlogPost.audioAttachments!.first!.waveform, width: 192, height: 108)
-			.previewLayout(.fixed(width: 192, height: 108))
+		WaveformView(waveform: .init(dataSetLength: 1000,
+									 highestValue: 127,
+									 lowestValue: 19,
+									 data: Array((0..<1000).map({ _ in (abs(Int.random()) % (127 - 19)) + 19 }))),
+					 width: 192,
+					 height: 108)
+			.previewLayout(.fixed(width: 192, height: 108 + 10))
 	}
 }
