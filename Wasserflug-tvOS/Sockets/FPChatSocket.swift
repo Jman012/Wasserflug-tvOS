@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 import Combine
 import SocketIO
 import FloatplaneAPIAsync
@@ -24,9 +25,13 @@ class FPChatSocket: BaseViewModel, ObservableObject, FPSocket {
 	}
 	
 	let channelId: String
+	let selfUsername: String
 	@Published fileprivate(set) var status: Status = .notConnected
 	@Published var connectionError: Error? = nil
-	@Published var radioChatter: [RadioChatter] = []
+	@Published var radioChatter: [RenderedRadioChatter] = []
+	
+	let loadedEmotesLock = NSLock()
+	@Published var loadedEmotes: [String: LoadedEmote] = [:]
 	
 	private let sailsSid: String
 	private let timeoutSeconds: Double = 5.0
@@ -39,7 +44,7 @@ class FPChatSocket: BaseViewModel, ObservableObject, FPSocket {
 		return "/live/" + channelId
 	}
 	
-	init(sailsSid: String, channelId: String) {
+	init(sailsSid: String, channelId: String, selfUsername: String) {
 		self.sailsSid = sailsSid
 		socketManager = SocketManager(
 			socketURL: URL(string: "wss://chat.floatplane.com")!,
@@ -65,6 +70,7 @@ class FPChatSocket: BaseViewModel, ObservableObject, FPSocket {
 		
 		socket = socketManager.defaultSocket
 		self.channelId = channelId
+		self.selfUsername = selfUsername
 		
 		super.init()
 		
@@ -142,7 +148,11 @@ class FPChatSocket: BaseViewModel, ObservableObject, FPSocket {
 				
 				self.logger.info("Joined livestream radio frequency", metadata: [
 					"channel": "\(self.livestreamFreq)",
+					"emotes": "\(joinedResponse.body.emotes ?? [])",
 				])
+				
+				self.asyncLoadEmotes(from: joinedResponse)
+				
 				self.status = .joinedLivestreamFrequency
 			})
 			
@@ -277,8 +287,14 @@ class FPChatSocket: BaseViewModel, ObservableObject, FPSocket {
 				return
 			}
 			
+			// Ignore emotes from channels we're not joined to.
+			guard radioChatter.channel != self.channelId else {
+				return
+			}
+			
 			self.logger.info("Radio chatter [\(self.livestreamFreq)]: \(String(reflecting: radioChatter))")
-			self.radioChatter.append(radioChatter)
+			let rendered = RenderedRadioChatter(radioChatter: radioChatter, loadedEmotes: self.loadedEmotes, selfUsername: self.selfUsername)
+			self.radioChatter.append(rendered)
 			if self.radioChatter.count > 50 {
 				self.radioChatter = Array(self.radioChatter.dropFirst(self.radioChatter.count - 50))
 			}
@@ -293,6 +309,33 @@ class FPChatSocket: BaseViewModel, ObservableObject, FPSocket {
 		let responseBytes = try JSONSerialization.data(withJSONObject: responseData)
 		let response = try JSONDecoder().decode(type, from: responseBytes)
 		return response
+	}
+	
+	private func asyncLoadEmotes(from joinedResponse: JoinedLivestreamRadioFrequency) {
+		for emote in joinedResponse.body.emotes ?? [] {
+			if let url = URL(string: emote.image) {
+				let request = URLRequest(url: url)
+				let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
+					guard let httpResp = response as? HTTPURLResponse,
+						  let data,
+						  let image = UIImage(data: data),
+						  error == nil && httpResp.isResponseOK() else {
+						return
+					}
+					
+					// Resize the emote to 32x32
+					let resizedImage = UIGraphicsImageRenderer(size: .init(width: 32, height: 32)).image { _ in
+						image.draw(in: CGRect(origin: .zero, size: .init(width: 32, height: 32)))
+					}
+					DispatchQueue.main.async {
+						self.loadedEmotesLock.withLock {
+							self.loadedEmotes[emote.code] = LoadedEmote(emote: emote, image: resizedImage)
+						}
+					}
+				})
+				task.resume()
+			}
+		}
 	}
 }
 
@@ -326,10 +369,10 @@ class MockFPChatSocket: FPChatSocket {
 	
 	init(display: String, channelId: String, status: FPChatSocket.Status, connectionError: Error?, radioChatter: [RadioChatter]) {
 		self.display = display
-		super.init(sailsSid: "", channelId: channelId)
+		super.init(sailsSid: "", channelId: channelId, selfUsername: "jamamp")
 		self.status = status
 		self.connectionError = connectionError
-		self.radioChatter = radioChatter
+		self.radioChatter = radioChatter.map({ .init(radioChatter: $0, loadedEmotes: [:], selfUsername: "jamamp") })
 	}
 
 	override func connect() {

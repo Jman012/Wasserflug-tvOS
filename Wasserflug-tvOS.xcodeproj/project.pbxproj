@@ -18,6 +18,8 @@
 		E72E39732A3F8CF000F33C67 /* FPColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72E39722A3F8CF000F33C67 /* FPColors.swift */; };
 		E72E39752A3F8D0400F33C67 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72E39742A3F8D0400F33C67 /* NavigationCoordinator.swift */; };
 		E72E39772A3F8D8100F33C67 /* NotificationName+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72E39762A3F8D8100F33C67 /* NotificationName+Extensions.swift */; };
+		E73024B12A958D4F008E6DF6 /* LoadedEmote.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73024B02A958D4F008E6DF6 /* LoadedEmote.swift */; };
+		E73024B32A95981C008E6DF6 /* RenderedRadioChatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73024B22A95981C008E6DF6 /* RenderedRadioChatter.swift */; };
 		E7304FAB2A86F9380008DE93 /* FPChatSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7304FAA2A86F9380008DE93 /* FPChatSocket.swift */; };
 		E7304FAE2A86F9B60008DE93 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = E7304FAD2A86F9B60008DE93 /* SocketIO */; };
 		E7304FB12A86FB220008DE93 /* SocketDataEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7304FB02A86FB220008DE93 /* SocketDataEncoder.swift */; };
@@ -116,6 +118,8 @@
 		E72E39742A3F8D0400F33C67 /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
 		E72E39762A3F8D8100F33C67 /* NotificationName+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Extensions.swift"; sourceTree = "<group>"; };
 		E72F21DC2A7CB27700831FD2 /* FloatplaneAPIAsync */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FloatplaneAPIAsync; sourceTree = "<group>"; };
+		E73024B02A958D4F008E6DF6 /* LoadedEmote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadedEmote.swift; sourceTree = "<group>"; };
+		E73024B22A95981C008E6DF6 /* RenderedRadioChatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderedRadioChatter.swift; sourceTree = "<group>"; };
 		E7304FAA2A86F9380008DE93 /* FPChatSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPChatSocket.swift; sourceTree = "<group>"; };
 		E7304FB02A86FB220008DE93 /* SocketDataEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketDataEncoder.swift; sourceTree = "<group>"; };
 		E7304FB22A86FB5E0008DE93 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
@@ -234,6 +238,8 @@
 				E7304FAA2A86F9380008DE93 /* FPChatSocket.swift */,
 				E79CF1552A8872B00074F755 /* FPFrontendSocket.swift */,
 				E76D68522A913363009A2374 /* SwiftUI+FPSocket.swift */,
+				E73024B02A958D4F008E6DF6 /* LoadedEmote.swift */,
+				E73024B22A95981C008E6DF6 /* RenderedRadioChatter.swift */,
 			);
 			path = Sockets;
 			sourceTree = "<group>";
@@ -588,6 +594,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E73024B32A95981C008E6DF6 /* RenderedRadioChatter.swift in Sources */,
 				E75337A427CB06BE0010E3D2 /* BlogPostViewModel.swift in Sources */,
 				E75337AC27CB06BE0010E3D2 /* PictureViewModel.swift in Sources */,
 				E75337B827CB06BE0010E3D2 /* RootTabView.swift in Sources */,
@@ -611,6 +618,7 @@
 				E753377B27CB066E0010E3D2 /* FPAPIService.swift in Sources */,
 				E7304FB32A86FB5E0008DE93 /* Utils.swift in Sources */,
 				E753377827CB066E0010E3D2 /* FloatplaneAPIClient+Extensions.swift in Sources */,
+				E73024B12A958D4F008E6DF6 /* LoadedEmote.swift in Sources */,
 				E70F775729D90D4900869BE3 /* Errors.swift in Sources */,
 				E75337A627CB06BE0010E3D2 /* VideoViewModel.swift in Sources */,
 				E75337B727CB06BE0010E3D2 /* ContentView.swift in Sources */,

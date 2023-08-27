@@ -129,13 +129,21 @@ struct RootTabView2: View {
 				.accessibilityHidden(tabSelection == .home ? false : true)
 
 			ForEach(userInfo.creatorsInOrder, id: \.0.id) { creator, creatorOwner in
-				CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: creator, creatorOwner: creatorOwner))
+				CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService,
+																	  managedObjectContext: managedObjectContext,
+																	  creatorOrChannel: creator,
+																	  creatorOwner: creatorOwner,
+																	  livestream: creator.liveStream))
 					.customAppear(tabSelection == .creator(creator.id) ? .appear : .disappear)
 					.opacity(tabSelection == .creator(creator.id) ? 1 : 0)
 					.accessibilityHidden(tabSelection == .creator(creator.id) ? false : true)
 				
 				ForEach(creator.channels, id: \.id) { channel in
-					CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: channel, creatorOwner: creatorOwner))
+					CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService,
+																		  managedObjectContext: managedObjectContext,
+																		  creatorOrChannel: channel,
+																		  creatorOwner: creatorOwner,
+																		  livestream: creator.liveStream))
 						.customAppear(tabSelection == .channel(channel.id) ? .appear : .disappear)
 						.opacity(tabSelection == .channel(channel.id) ? 1 : 0)
 						.accessibilityHidden(tabSelection == .channel(channel.id) ? false : true)

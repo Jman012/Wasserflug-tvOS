@@ -6,6 +6,7 @@ struct LivestreamView: View {
 	@StateObject var fpChatSocket: FPChatSocket
 	
 	@State var chatState: RootTabView2.SideBarState = .expanded
+	@State var shouldPlay = true
 	
 	var body: some View {
 		VStack {
@@ -49,11 +50,15 @@ struct LivestreamView: View {
 								.environment(\.colorScheme, .dark)
 								.background(.black)
 							} else {
-								LivestreamPlayerView(viewModel: viewModel)
+								LivestreamPlayerView(viewModel: viewModel, chatSidebarState: self.chatState, toggleChatSidebar: {
+									withAnimation {
+										self.chatState = .expanded
+									}
+								}, shouldPlay: $shouldPlay)
 							}
 						}
 						.overlay(alignment: .topTrailing, content: {
-							if chatState == .collapsed {
+							if chatState == .collapsed && !viewModel.isLive {
 								Button(action: {
 									withAnimation {
 										chatState = .expanded
@@ -75,8 +80,9 @@ struct LivestreamView: View {
 								}
 							}, onConnect: {
 								fpChatSocket.connect()
-							})
-							.frame(maxWidth: geoProxy.size.width * 0.25)
+							}, shouldPlay: $shouldPlay)
+								.frame(maxWidth: geoProxy.size.width * 0.25)
+								.transition(.move(edge: .trailing))
 						}
 					}
 				}

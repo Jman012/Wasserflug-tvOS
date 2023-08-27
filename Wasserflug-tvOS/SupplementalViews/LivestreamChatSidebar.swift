@@ -4,78 +4,101 @@ struct LivestreamChatSidebar: View {
 	let fpChatSocket: FPChatSocket
 	let onCollapse: () -> Void
 	let onConnect: () -> Void
+	@Binding var shouldPlay: Bool
+	
+	@FocusState private var collapseButtonIsFocused
 	
 	var body: some View {
 		VStack(spacing: 0) {
+			// Header
 			HStack(spacing: 20) {
 				Text("Live Chat")
 					.bold()
-					.foregroundColor(.white)
+					.foregroundColor(.white) // Always white, since both bg colors are dark regardless of color scheme
+				
 				Spacer()
+				
+				Button(action: {
+					shouldPlay.toggle()
+				}, label: {
+					Image(systemName: shouldPlay ? "pause.fill" : "play.fill")
+				})
+				
 				Button(action: {
 					onCollapse()
 				}, label: {
-					Image(systemName: "arrow.right.to.line")
+					Text(Image(systemName: "arrow.right.to.line"))
+						.fontWeight(.some(.black))
 				})
-				Button(action: {
-					
-				}, label: {
-					Image(systemName: "gearshape.fill")
-				})
+				.focused($collapseButtonIsFocused)
+				.onAppear {
+					collapseButtonIsFocused = true
+				}
 			}
 			.buttonStyle(LivestreamCircleButtonStyle())
 			.padding()
 			.background(FPColors.LiveChat.headerBg)
 			
+			// Main chat scroll view
 			ScrollViewReader { scrollProxy in
 				ScrollView {
 					VStack(spacing: 5) {
 						ForEach(fpChatSocket.radioChatter) { radioChatter in
-							Divider()
 							RadioChatterView(radioChatter: radioChatter)
+							Divider()
+								.id(radioChatter.id)
 						}
 					}
-					.padding([.top], 10)
-					
-					EmptyView()
-						.id("bottom")
+					.padding([.top, .bottom], 10)
 				}
 				.innerShadow(color: .gray, radius: 10, edges: .top)
-				.onChange(of: fpChatSocket.radioChatter, perform: { _ in
-					scrollProxy.scrollTo("bottom", anchor: .bottom)
+				.onChange(of: fpChatSocket.radioChatter, perform: { allChatter in
+					// Scroll to bottom
+					withAnimation(Animation.default.delay(0.01)) {
+						if let last = allChatter.last {
+							scrollProxy.scrollTo(last.id)
+						}
+					}
 				})
 			}
-		}
-		.overlay(content: {
-			if fpChatSocket.connectionError != nil || fpChatSocket.status != .joinedLivestreamFrequency {
-				VStack {
-					if fpChatSocket.connectionError != nil {
-						Text("Error connecting")
-						Button(action: {
-							onConnect()
-						}, label: {
-							Text("Try Again")
-						})
-					} else if fpChatSocket.status == .notConnected {
-						Text("Not connected")
-						Button(action: {
-							onConnect()
-						}, label: {
-							Text("Connect")
-						})
-					} else if fpChatSocket.status == .waitingToReconnect {
-						ProgressView()
-						Text("Attempting to reconnect")
-					} else if fpChatSocket.status != .joinedLivestreamFrequency {
-						ProgressView()
-						Text("Connecting")
+			.frame(maxWidth: .infinity, maxHeight: .infinity)
+			.overlay(content: {
+				// Loading or error notification overlay
+				if fpChatSocket.connectionError != nil || fpChatSocket.status != .joinedLivestreamFrequency {
+					VStack {
+						VStack {
+							if fpChatSocket.connectionError != nil {
+								Text("Error connecting")
+								Button(action: {
+									onConnect()
+								}, label: {
+									Text("Try Again")
+								})
+								.padding(30)
+							} else if fpChatSocket.status == .notConnected {
+								Text("Not connected")
+								Button(action: {
+									onConnect()
+								}, label: {
+									Text("Connect")
+								})
+							} else if fpChatSocket.status == .waitingToReconnect {
+								ProgressView()
+								Text("Attempting to reconnect")
+							} else if fpChatSocket.status != .joinedLivestreamFrequency {
+								ProgressView()
+								Text("Connecting")
+							}
+						}
+						.padding(30)
+						.background(.thinMaterial)
+						.cornerRadius(10)
 					}
+					.frame(maxWidth: .infinity, maxHeight: .infinity)
+					.focusSection()
 				}
-				.padding(30)
-				.background(.thinMaterial)
-				.cornerRadius(10)
-			}
-		})
+			})
+		}
 	}
 }
 
@@ -103,9 +126,12 @@ struct LivestreamCircleButtonStyle: ButtonStyle {
 }
 
 struct LivestreamChatSidebar_Previews: PreviewProvider {
+	@State static var shouldPlayTrue = true
+	@State static var shouldPlayFalse = false
+	
 	static var previews: some View {
 		ForEach(MockFPChatSocket.all, id: \.self) {
-			LivestreamChatSidebar(fpChatSocket: $0, onCollapse: {}, onConnect: {})
+			LivestreamChatSidebar(fpChatSocket: $0, onCollapse: {}, onConnect: {}, shouldPlay: Self.$shouldPlayTrue)
 				.ignoresSafeArea()
 				.previewLayout(.fixed(width: 500, height: 1000))
 				.previewDisplayName($0.display)

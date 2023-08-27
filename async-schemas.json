@@ -103,38 +103,6 @@
 			"minimum": 200,
 			"maximum": 599
 		},
-		"FPFrontendPost": {
-			"type": "object",
-			"description": "Join a livestream chat channel in order to receive chat messages (via the `radioChatter` event) from others in the room.",
-			"properties": {
-				"method": {
-					"const": "post",
-					"description": "This endpoint expects a POST."
-				},
-				"headers": {
-					"$ref": "#/definitions/SailsHeaders"
-				},
-				"data": {
-
-				},
-				"url": {
-					"const": "/RadioMessage/joinLivestreamRadioFrequency"
-				}
-			},
-			"additionalProperties": false,
-			"required": [
-				"method",
-				"headers",
-				"data",
-				"url"
-			]
-		},
-		"FPChatGet": {
-
-		},
-		"FPChatPost": {
-
-		},
 		"JoinLivestreamRadioFrequency": {
 			"type": "object",
 			"description": "Join a livestream chat channel in order to receive chat messages (via the `radioChatter` event) from others in the room.",
@@ -191,8 +159,7 @@
 						}
 					},
 					"required": [
-						"success",
-						"emotes"
+						"success"
 					]
 				},
 				"headers": {

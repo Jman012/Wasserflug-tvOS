@@ -810,10 +810,10 @@ public struct JoinedLivestreamRadioFrequency: Codable, Hashable {
 // MARK: - JoinedLivestreamRadioFrequencyBody
 
 public struct JoinedLivestreamRadioFrequencyBody: Codable, Hashable {
-	public let emotes: [Emote]
+	public let emotes: [Emote]?
 	public let success: Bool
 
-	public init(emotes: [Emote], success: Bool) {
+	public init(emotes: [Emote]?, success: Bool) {
 		self.emotes = emotes
 		self.success = success
 	}

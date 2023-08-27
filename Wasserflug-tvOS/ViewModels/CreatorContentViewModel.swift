@@ -18,6 +18,7 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 	let managedObjectContext: NSManagedObjectContext
 	let creatorOrChannel: CreatorOrChannel
 	let creatorOwner: UserModelShared
+	let livestream: LiveStreamModel?
 	var searchDebounce: AnyCancellable? = nil
 	
 	var hasCover: Bool {
@@ -47,11 +48,12 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 	lazy var creatorAboutHeader: AttributedString = (try? AttributedString(markdown: String(creatorOrChannel.aboutFixed[..<aboutFirstNewlineIndex]), options: .init(allowsExtendedAttributes: false, interpretedSyntax: .full, failurePolicy: .returnPartiallyParsedIfPossible, languageCode: nil))) ?? AttributedString("")
 	lazy var creatorAboutBody: AttributedString = (try? AttributedString(markdown: String(creatorOrChannel.aboutFixed[aboutFirstNewlineIndex...]), options: .init(allowsExtendedAttributes: false, interpretedSyntax: .full, failurePolicy: .returnPartiallyParsedIfPossible, languageCode: nil))) ?? AttributedString("")
 	
-	init(fpApiService: FPAPIService, managedObjectContext: NSManagedObjectContext, creatorOrChannel: CreatorOrChannel, creatorOwner: UserModelShared) {
+	init(fpApiService: FPAPIService, managedObjectContext: NSManagedObjectContext, creatorOrChannel: CreatorOrChannel, creatorOwner: UserModelShared, livestream: LiveStreamModel?) {
 		self.fpApiService = fpApiService
 		self.managedObjectContext = managedObjectContext
 		self.creatorOrChannel = creatorOrChannel
 		self.creatorOwner = creatorOwner
+		self.livestream = livestream
 		super.init()
 		
 		searchDebounce = $searchText
@@ -64,7 +66,11 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 	}
 	
 	func createSubViewModel() -> CreatorContentViewModel {
-		return CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: creatorOrChannel, creatorOwner: creatorOwner)
+		return CreatorContentViewModel(fpApiService: fpApiService,
+									   managedObjectContext: managedObjectContext,
+									   creatorOrChannel: creatorOrChannel,
+									   creatorOwner: creatorOwner,
+									   livestream: livestream)
 	}
 	
 	func load(loadingMode: LoadingMode = .append) {

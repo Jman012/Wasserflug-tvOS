@@ -88,13 +88,15 @@ struct ContentView: View {
 					CreatorSearchView(viewModel: CreatorContentViewModel(fpApiService: fpApiService,
 																		 managedObjectContext: managedObjectContext,
 																		 creatorOrChannel: creatorOrChannel,
-																		 creatorOwner: creatorOwner),
+																		 creatorOwner: creatorOwner,
+																		 livestream: nil),
 									  creatorName: creatorOrChannel.title)
 				case let .livestreamView(creatorId: creatorId, livestreamId: livestreamId):
 					LivestreamView(viewModel: LivestreamViewModel(fpApiService: fpApiService,
 																  creatorId: creatorId),
 								   fpChatSocket: FPChatSocket(sailsSid: FloatplaneAPIClientAPI.rawCookieValue,
-															  channelId: livestreamId))
+															  channelId: livestreamId,
+															  selfUsername: viewModel.userInfo.userSelf?.username ?? ""))
 				case let .videoView(videoAttachment: video, content: content, description: description, beginningWatchTime: beginningWatchTime):
 					VideoView(viewModel: VideoViewModel(fpApiService: fpApiService,
 														videoAttachment: video,
