@@ -8,7 +8,7 @@ struct RadioChatterView: View {
 	var body: some View {
 		HStack {
 			radioChatter.text
-				.font(Font.system(size: 20))
+				.font(.caption)
 			Spacer(minLength: 0)
 		}
 		.padding([.leading, .trailing], 10)
