@@ -35,7 +35,7 @@ struct RootTabView2: View {
 	@Environment(\.fpApiService) var fpApiService
 	@Environment(\.managedObjectContext) var managedObjectContext
 	
-	let fixedWidth: CGFloat = 170
+	let fixedWidth: CGFloat = 160
 	@State var tabSelection: TabSelection = .home
 	@State var state: SideBarState = .expanded
 	@State var scrollViewFrameHeight = 1000.0
@@ -149,7 +149,7 @@ struct RootTabView2: View {
 	var sideBarView: some View {
 		sideBar
 			.fixedSize(horizontal: true, vertical: false)
-			.frame(width: fixedWidth + (tabSelection.isCreator ? 30 : 0), alignment: .leading)
+			.frame(width: fixedWidth, alignment: .leading)
 			// These deal with focus management and focus transitions
 			.focusSection()
 			.focusScope(menuFocusNamespace)
@@ -365,5 +365,11 @@ struct RootTabView2_Previews: PreviewProvider {
 		RootTabView2()
 			.environmentObject(MockData.userInfo)
 			.environment(\.fpApiService, MockFPAPIService())
+			.previewDisplayName("Expanded")
+		
+		RootTabView2(tabSelection: .channel(MockData.creatorV3.id), state: .collapsed)
+			.environmentObject(MockData.userInfo)
+			.environment(\.fpApiService, MockFPAPIService())
+			.previewDisplayName("Collapsed")
 	}
 }
