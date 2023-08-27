@@ -86,7 +86,13 @@ struct RenderedRadioChatter: Equatable, Identifiable {
 			}
 		}
 		
-		self.text = username + spacer + message
+		var text = username + spacer + message
+		
+		if radioChatter.userType == .moderator {
+			text = Text(Image("badge-mod")) + Text(" ") + text
+		}
+		
+		self.text = text
 	}
 	
 	/// BigNumber/BitInt calculations are slow, so cache the results.
