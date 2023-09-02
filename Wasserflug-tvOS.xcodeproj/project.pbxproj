@@ -84,6 +84,8 @@
 		E7A2F42A28C58E0300583294 /* ExecuteCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A2F42928C58E0300583294 /* ExecuteCode.swift */; };
 		E7A2F42C28CE43D800583294 /* LivestreamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A2F42B28CE43D800583294 /* LivestreamView.swift */; };
 		E7A447E92815E1C0009BCE2E /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */; };
+		E7A469B32A9BCF51003A156A /* FPChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A469B22A9BCF51003A156A /* FPChatManager.swift */; };
+		E7A469B52A9BCF59003A156A /* FPChatClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A469B42A9BCF59003A156A /* FPChatClient.swift */; };
 		E7BD7E7528E6682900E1BBE9 /* DeliveryHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BD7E7428E6682900E1BBE9 /* DeliveryHelper.swift */; };
 		E7F2F23D2A113F0000602991 /* OnCustomAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F2F23C2A113F0000602991 /* OnCustomAppear.swift */; };
 /* End PBXBuildFile section */
@@ -182,6 +184,8 @@
 		E7A2F42928C58E0300583294 /* ExecuteCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecuteCode.swift; sourceTree = "<group>"; };
 		E7A2F42B28CE43D800583294 /* LivestreamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivestreamView.swift; sourceTree = "<group>"; };
 		E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extensions.swift"; sourceTree = "<group>"; };
+		E7A469B22A9BCF51003A156A /* FPChatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPChatManager.swift; sourceTree = "<group>"; };
+		E7A469B42A9BCF59003A156A /* FPChatClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPChatClient.swift; sourceTree = "<group>"; };
 		E7BD7E7428E6682900E1BBE9 /* DeliveryHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryHelper.swift; sourceTree = "<group>"; };
 		E7CCF2D1285314B600506E51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E7CCF2D2285315B400506E51 /* Wasserflug-tvOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Wasserflug-tvOS.entitlements"; sourceTree = "<group>"; };
@@ -240,6 +244,8 @@
 				E76D68522A913363009A2374 /* SwiftUI+FPSocket.swift */,
 				E73024B02A958D4F008E6DF6 /* LoadedEmote.swift */,
 				E73024B22A95981C008E6DF6 /* RenderedRadioChatter.swift */,
+				E7A469B22A9BCF51003A156A /* FPChatManager.swift */,
+				E7A469B42A9BCF59003A156A /* FPChatClient.swift */,
 			);
 			path = Sockets;
 			sourceTree = "<group>";
@@ -618,6 +624,7 @@
 				E753377B27CB066E0010E3D2 /* FPAPIService.swift in Sources */,
 				E7304FB32A86FB5E0008DE93 /* Utils.swift in Sources */,
 				E753377827CB066E0010E3D2 /* FloatplaneAPIClient+Extensions.swift in Sources */,
+				E7A469B52A9BCF59003A156A /* FPChatClient.swift in Sources */,
 				E73024B12A958D4F008E6DF6 /* LoadedEmote.swift in Sources */,
 				E70F775729D90D4900869BE3 /* Errors.swift in Sources */,
 				E75337A627CB06BE0010E3D2 /* VideoViewModel.swift in Sources */,
@@ -642,6 +649,7 @@
 				E7F2F23D2A113F0000602991 /* OnCustomAppear.swift in Sources */,
 				E70F777629DF7A5E00869BE3 /* ToastBarView.swift in Sources */,
 				E748E36E2A92B01700616BD4 /* MockLivestreamViewModel.swift in Sources */,
+				E7A469B32A9BCF51003A156A /* FPChatManager.swift in Sources */,
 				E75337AD27CB06BE0010E3D2 /* CreatorSearchView.swift in Sources */,
 				E7304FB12A86FB220008DE93 /* SocketDataEncoder.swift in Sources */,
 				E71FDB7927E66D7E00A9C88B /* Persistence.swift in Sources */,

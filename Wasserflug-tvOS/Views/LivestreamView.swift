@@ -1,9 +1,10 @@
 import SwiftUI
 
-struct LivestreamView: View {
+struct LivestreamView<ChatClient>: View where ChatClient: FPChatClient {
 	@Environment(\.scenePhase) var scenePhase
 	@StateObject var viewModel: LivestreamViewModel
-	@StateObject var fpChatSocket: FPChatSocket
+	///	@StateObject var fpChatSocket: FPChatSocket
+	@StateObject var fpChatClient: ChatClient
 	
 	@State var chatState: RootTabView2.SideBarState = .expanded
 	@State var shouldPlay = true
@@ -74,12 +75,12 @@ struct LivestreamView: View {
 						if chatState == .expanded {
 							Divider()
 							
-							LivestreamChatSidebar(fpChatSocket: fpChatSocket, onCollapse: {
+							LivestreamChatSidebar(fpChatClient: fpChatClient, onCollapse: {
 								withAnimation {
 									chatState = .collapsed
 								}
 							}, onConnect: {
-								fpChatSocket.connect()
+								fpChatClient.connect()
 							}, shouldPlay: $shouldPlay)
 								.frame(maxWidth: geoProxy.size.width * 0.25)
 								.transition(.move(edge: .trailing))
@@ -103,7 +104,7 @@ struct LivestreamView: View {
 				break
 			}
 		})
-		.fpSocketControlSocket(fpChatSocket, on: [.onAppear, .onDisappear, .onSceneActive, .onSceneInactive, .onSceneBackground])
+		.fpSocketControlSocket(fpChatClient, on: [.onAppear, .onDisappear])
 	}
 }
 
@@ -112,7 +113,7 @@ struct LivestreamView_Previews: PreviewProvider {
 		ForEach(RootTabView2.SideBarState.allCases, id: \.self) {
 			LivestreamView(
 				viewModel: MockOfflineLivestreamViewModel(),
-				fpChatSocket: MockFPChatSocket.withChatter,
+				fpChatClient: MockFPChatClient.withChatter,
 				chatState: $0
 			)
 			.previewDisplayName("\($0)")

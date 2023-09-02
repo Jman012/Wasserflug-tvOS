@@ -266,7 +266,7 @@ class FPChatSocket: BaseViewModel, ObservableObject, FPSocket {
 		socket.on(clientEvent: .disconnect, callback: { data, ack in
 			if self.shouldConnect {
 				self.logger.info("Chat socket connection has been closed unexpectedly. Reconnecting after 5 seconds")
-				self.status = .notConnected
+				self.status = .waitingToReconnect
 				self.connectionError = nil
 				DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: {
 					self.continueConnecting()
@@ -327,6 +327,7 @@ class FPChatSocket: BaseViewModel, ObservableObject, FPSocket {
 					let resizedImage = UIGraphicsImageRenderer(size: .init(width: 32, height: 32)).image { _ in
 						image.draw(in: CGRect(origin: .zero, size: .init(width: 32, height: 32)))
 					}
+					
 					DispatchQueue.main.async {
 						self.loadedEmotesLock.withLock {
 							self.loadedEmotes[emote.code] = LoadedEmote(emote: emote, image: resizedImage)

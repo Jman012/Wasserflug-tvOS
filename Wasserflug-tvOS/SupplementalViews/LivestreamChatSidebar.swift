@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct LivestreamChatSidebar: View {
-	let fpChatSocket: FPChatSocket
+struct LivestreamChatSidebar<ChatClient>: View where ChatClient: FPChatClient {
+	let fpChatClient: ChatClient
 	let onCollapse: () -> Void
 	let onConnect: () -> Void
 	@Binding var shouldPlay: Bool
@@ -43,7 +43,7 @@ struct LivestreamChatSidebar: View {
 			ScrollViewReader { scrollProxy in
 				ScrollView {
 					VStack(spacing: 5) {
-						ForEach(fpChatSocket.radioChatter) { radioChatter in
+						ForEach(fpChatClient.radioChatter) { radioChatter in
 							RadioChatterView(radioChatter: radioChatter)
 							Divider()
 								.id(radioChatter.id)
@@ -52,7 +52,7 @@ struct LivestreamChatSidebar: View {
 					.padding([.top, .bottom], 10)
 				}
 				.innerShadow(color: .gray, radius: 10, edges: .top)
-				.onChange(of: fpChatSocket.radioChatter, perform: { allChatter in
+				.onChange(of: fpChatClient.radioChatter, perform: { allChatter in
 					// Scroll to bottom
 					withAnimation(Animation.default.delay(0.01)) {
 						if let last = allChatter.last {
@@ -64,10 +64,10 @@ struct LivestreamChatSidebar: View {
 			.frame(maxWidth: .infinity, maxHeight: .infinity)
 			.overlay(content: {
 				// Loading or error notification overlay
-				if fpChatSocket.connectionError != nil || fpChatSocket.status != .joinedLivestreamFrequency {
+				if fpChatClient.status != .connected {
 					VStack {
 						VStack {
-							if fpChatSocket.connectionError != nil {
+							if fpChatClient.status == .unexpectedlyDisconnected {
 								Text("Error connecting")
 								Button(action: {
 									onConnect()
@@ -75,17 +75,22 @@ struct LivestreamChatSidebar: View {
 									Text("Try Again")
 								})
 								.padding(30)
-							} else if fpChatSocket.status == .notConnected {
+							} else if fpChatClient.status == .disconnectedBySelf {
+								Text("Disconnected")
+								Button(action: {
+									onConnect()
+								}, label: {
+									Text("Reconnect")
+								})
+								.padding(30)
+							} else if fpChatClient.status == .notConnected {
 								Text("Not connected")
 								Button(action: {
 									onConnect()
 								}, label: {
 									Text("Connect")
 								})
-							} else if fpChatSocket.status == .waitingToReconnect {
-								ProgressView()
-								Text("Attempting to reconnect")
-							} else if fpChatSocket.status != .joinedLivestreamFrequency {
+							} else if fpChatClient.status != .connected {
 								ProgressView()
 								Text("Connecting")
 							}
@@ -130,8 +135,8 @@ struct LivestreamChatSidebar_Previews: PreviewProvider {
 	@State static var shouldPlayFalse = false
 	
 	static var previews: some View {
-		ForEach(MockFPChatSocket.all, id: \.self) {
-			LivestreamChatSidebar(fpChatSocket: $0, onCollapse: {}, onConnect: {}, shouldPlay: Self.$shouldPlayTrue)
+		ForEach(MockFPChatClient.all, id: \.self) {
+			LivestreamChatSidebar(fpChatClient: $0, onCollapse: {}, onConnect: {}, shouldPlay: Self.$shouldPlayTrue)
 				.ignoresSafeArea()
 				.previewLayout(.fixed(width: 500, height: 1000))
 				.previewDisplayName($0.display)
