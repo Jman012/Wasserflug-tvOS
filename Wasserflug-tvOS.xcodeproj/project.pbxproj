@@ -18,8 +18,20 @@
 		E72E39732A3F8CF000F33C67 /* FPColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72E39722A3F8CF000F33C67 /* FPColors.swift */; };
 		E72E39752A3F8D0400F33C67 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72E39742A3F8D0400F33C67 /* NavigationCoordinator.swift */; };
 		E72E39772A3F8D8100F33C67 /* NotificationName+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72E39762A3F8D8100F33C67 /* NotificationName+Extensions.swift */; };
+		E73024B12A958D4F008E6DF6 /* LoadedEmote.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73024B02A958D4F008E6DF6 /* LoadedEmote.swift */; };
+		E73024B32A95981C008E6DF6 /* RenderedRadioChatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73024B22A95981C008E6DF6 /* RenderedRadioChatter.swift */; };
+		E7304FAB2A86F9380008DE93 /* FPChatSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7304FAA2A86F9380008DE93 /* FPChatSocket.swift */; };
+		E7304FAE2A86F9B60008DE93 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = E7304FAD2A86F9B60008DE93 /* SocketIO */; };
+		E7304FB12A86FB220008DE93 /* SocketDataEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7304FB02A86FB220008DE93 /* SocketDataEncoder.swift */; };
+		E7304FB32A86FB5E0008DE93 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7304FB22A86FB5E0008DE93 /* Utils.swift */; };
+		E7304FB52A86FB6C0008DE93 /* SocketDataSingleValueEncodingContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7304FB42A86FB6C0008DE93 /* SocketDataSingleValueEncodingContainer.swift */; };
+		E7304FB72A86FB740008DE93 /* SocketDataUnkeyedEncodingContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7304FB62A86FB740008DE93 /* SocketDataUnkeyedEncodingContainer.swift */; };
+		E7304FB92A86FB790008DE93 /* SocketDataKeyedEncodingContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7304FB82A86FB790008DE93 /* SocketDataKeyedEncodingContainer.swift */; };
+		E7304FBB2A86FE730008DE93 /* FloatplaneAPIAsync in Frameworks */ = {isa = PBXBuildFile; productRef = E7304FBA2A86FE730008DE93 /* FloatplaneAPIAsync */; };
 		E731AF0F289B22AC00A2DAD7 /* AttachmentPills.swift in Sources */ = {isa = PBXBuildFile; fileRef = E731AF0E289B22AC00A2DAD7 /* AttachmentPills.swift */; };
 		E7326D282A2D0C1F0065C016 /* CreatorOrChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7326D272A2D0C1F0065C016 /* CreatorOrChannel.swift */; };
+		E748E36E2A92B01700616BD4 /* MockLivestreamViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E748E36D2A92B01700616BD4 /* MockLivestreamViewModel.swift */; };
+		E748E3702A92E0F000616BD4 /* LivestreamChatSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E748E36F2A92E0F000616BD4 /* LivestreamChatSidebar.swift */; };
 		E74C98A32A080AAC00FDDB9C /* RootTabView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74C98A22A080AAC00FDDB9C /* RootTabView2.swift */; };
 		E74C98A62A080B9E00FDDB9C /* DebouncedOnChange in Frameworks */ = {isa = PBXBuildFile; productRef = E74C98A52A080B9E00FDDB9C /* DebouncedOnChange */; };
 		E74C98A82A082D5100FDDB9C /* HideableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74C98A72A082D5100FDDB9C /* HideableView.swift */; };
@@ -63,10 +75,17 @@
 		E75337B727CB06BE0010E3D2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379C27CB06BE0010E3D2 /* ContentView.swift */; };
 		E75337B827CB06BE0010E3D2 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379D27CB06BE0010E3D2 /* RootTabView.swift */; };
 		E75337BC27CB07900010E3D2 /* FloatplaneAPIClient in Frameworks */ = {isa = PBXBuildFile; productRef = E75337BB27CB07900010E3D2 /* FloatplaneAPIClient */; };
+		E76D68532A913363009A2374 /* SwiftUI+FPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76D68522A913363009A2374 /* SwiftUI+FPSocket.swift */; };
+		E76D68552A91338D009A2374 /* FPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76D68542A91338D009A2374 /* FPSocket.swift */; };
+		E76D68592A91A2EA009A2374 /* RadioChatterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76D68582A91A2EA009A2374 /* RadioChatterView.swift */; };
+		E76D685C2A927EE4009A2374 /* BigNumber in Frameworks */ = {isa = PBXBuildFile; productRef = E76D685B2A927EE4009A2374 /* BigNumber */; };
 		E76E318E2A51EF8F00242CEC /* InnerShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76E318D2A51EF8F00242CEC /* InnerShadow.swift */; };
+		E79CF1562A8872B00074F755 /* FPFrontendSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79CF1552A8872B00074F755 /* FPFrontendSocket.swift */; };
 		E7A2F42A28C58E0300583294 /* ExecuteCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A2F42928C58E0300583294 /* ExecuteCode.swift */; };
 		E7A2F42C28CE43D800583294 /* LivestreamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A2F42B28CE43D800583294 /* LivestreamView.swift */; };
 		E7A447E92815E1C0009BCE2E /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */; };
+		E7A469B32A9BCF51003A156A /* FPChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A469B22A9BCF51003A156A /* FPChatManager.swift */; };
+		E7A469B52A9BCF59003A156A /* FPChatClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A469B42A9BCF59003A156A /* FPChatClient.swift */; };
 		E7BD7E7528E6682900E1BBE9 /* DeliveryHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BD7E7428E6682900E1BBE9 /* DeliveryHelper.swift */; };
 		E7F2F23D2A113F0000602991 /* OnCustomAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F2F23C2A113F0000602991 /* OnCustomAppear.swift */; };
 /* End PBXBuildFile section */
@@ -100,8 +119,19 @@
 		E72E39722A3F8CF000F33C67 /* FPColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPColors.swift; sourceTree = "<group>"; };
 		E72E39742A3F8D0400F33C67 /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
 		E72E39762A3F8D8100F33C67 /* NotificationName+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Extensions.swift"; sourceTree = "<group>"; };
+		E72F21DC2A7CB27700831FD2 /* FloatplaneAPIAsync */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FloatplaneAPIAsync; sourceTree = "<group>"; };
+		E73024B02A958D4F008E6DF6 /* LoadedEmote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadedEmote.swift; sourceTree = "<group>"; };
+		E73024B22A95981C008E6DF6 /* RenderedRadioChatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderedRadioChatter.swift; sourceTree = "<group>"; };
+		E7304FAA2A86F9380008DE93 /* FPChatSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPChatSocket.swift; sourceTree = "<group>"; };
+		E7304FB02A86FB220008DE93 /* SocketDataEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketDataEncoder.swift; sourceTree = "<group>"; };
+		E7304FB22A86FB5E0008DE93 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		E7304FB42A86FB6C0008DE93 /* SocketDataSingleValueEncodingContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketDataSingleValueEncodingContainer.swift; sourceTree = "<group>"; };
+		E7304FB62A86FB740008DE93 /* SocketDataUnkeyedEncodingContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketDataUnkeyedEncodingContainer.swift; sourceTree = "<group>"; };
+		E7304FB82A86FB790008DE93 /* SocketDataKeyedEncodingContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketDataKeyedEncodingContainer.swift; sourceTree = "<group>"; };
 		E731AF0E289B22AC00A2DAD7 /* AttachmentPills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentPills.swift; sourceTree = "<group>"; };
 		E7326D272A2D0C1F0065C016 /* CreatorOrChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorOrChannel.swift; sourceTree = "<group>"; };
+		E748E36D2A92B01700616BD4 /* MockLivestreamViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLivestreamViewModel.swift; sourceTree = "<group>"; };
+		E748E36F2A92E0F000616BD4 /* LivestreamChatSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivestreamChatSidebar.swift; sourceTree = "<group>"; };
 		E74C98A22A080AAC00FDDB9C /* RootTabView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView2.swift; sourceTree = "<group>"; };
 		E74C98A72A082D5100FDDB9C /* HideableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideableView.swift; sourceTree = "<group>"; };
 		E74C98A92A08979700FDDB9C /* HideableView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideableView2.swift; sourceTree = "<group>"; };
@@ -146,10 +176,16 @@
 		E753379B27CB06BE0010E3D2 /* SecondFactorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondFactorView.swift; sourceTree = "<group>"; };
 		E753379C27CB06BE0010E3D2 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		E753379D27CB06BE0010E3D2 /* RootTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
+		E76D68522A913363009A2374 /* SwiftUI+FPSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+FPSocket.swift"; sourceTree = "<group>"; };
+		E76D68542A91338D009A2374 /* FPSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPSocket.swift; sourceTree = "<group>"; };
+		E76D68582A91A2EA009A2374 /* RadioChatterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioChatterView.swift; sourceTree = "<group>"; };
 		E76E318D2A51EF8F00242CEC /* InnerShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerShadow.swift; sourceTree = "<group>"; };
+		E79CF1552A8872B00074F755 /* FPFrontendSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPFrontendSocket.swift; sourceTree = "<group>"; };
 		E7A2F42928C58E0300583294 /* ExecuteCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecuteCode.swift; sourceTree = "<group>"; };
 		E7A2F42B28CE43D800583294 /* LivestreamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivestreamView.swift; sourceTree = "<group>"; };
 		E7A447E82815E1C0009BCE2E /* SwiftUI+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extensions.swift"; sourceTree = "<group>"; };
+		E7A469B22A9BCF51003A156A /* FPChatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPChatManager.swift; sourceTree = "<group>"; };
+		E7A469B42A9BCF59003A156A /* FPChatClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPChatClient.swift; sourceTree = "<group>"; };
 		E7BD7E7428E6682900E1BBE9 /* DeliveryHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryHelper.swift; sourceTree = "<group>"; };
 		E7CCF2D1285314B600506E51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E7CCF2D2285315B400506E51 /* Wasserflug-tvOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Wasserflug-tvOS.entitlements"; sourceTree = "<group>"; };
@@ -162,7 +198,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				E75337BC27CB07900010E3D2 /* FloatplaneAPIClient in Frameworks */,
+				E7304FBB2A86FE730008DE93 /* FloatplaneAPIAsync in Frameworks */,
+				E7304FAE2A86F9B60008DE93 /* SocketIO in Frameworks */,
 				E74C98A62A080B9E00FDDB9C /* DebouncedOnChange in Frameworks */,
+				E76D685C2A927EE4009A2374 /* BigNumber in Frameworks */,
 				E753376B27CB01FD0010E3D2 /* Vapor in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -193,6 +232,42 @@
 				E71CFE2F2A48C82600E8E1DC /* UserModelShared.swift */,
 			);
 			path = "FloatplaneAPIClient+Extensions";
+			sourceTree = "<group>";
+		};
+		E7304FA92A86F9230008DE93 /* Sockets */ = {
+			isa = PBXGroup;
+			children = (
+				E7304FAF2A86FB170008DE93 /* SocketDataEncoder */,
+				E76D68542A91338D009A2374 /* FPSocket.swift */,
+				E7304FAA2A86F9380008DE93 /* FPChatSocket.swift */,
+				E79CF1552A8872B00074F755 /* FPFrontendSocket.swift */,
+				E76D68522A913363009A2374 /* SwiftUI+FPSocket.swift */,
+				E73024B02A958D4F008E6DF6 /* LoadedEmote.swift */,
+				E73024B22A95981C008E6DF6 /* RenderedRadioChatter.swift */,
+				E7A469B22A9BCF51003A156A /* FPChatManager.swift */,
+				E7A469B42A9BCF59003A156A /* FPChatClient.swift */,
+			);
+			path = Sockets;
+			sourceTree = "<group>";
+		};
+		E7304FAF2A86FB170008DE93 /* SocketDataEncoder */ = {
+			isa = PBXGroup;
+			children = (
+				E7304FB02A86FB220008DE93 /* SocketDataEncoder.swift */,
+				E7304FB22A86FB5E0008DE93 /* Utils.swift */,
+				E7304FB42A86FB6C0008DE93 /* SocketDataSingleValueEncodingContainer.swift */,
+				E7304FB62A86FB740008DE93 /* SocketDataUnkeyedEncodingContainer.swift */,
+				E7304FB82A86FB790008DE93 /* SocketDataKeyedEncodingContainer.swift */,
+			);
+			path = SocketDataEncoder;
+			sourceTree = "<group>";
+		};
+		E748E36C2A92B00A00616BD4 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				E748E36D2A92B01700616BD4 /* MockLivestreamViewModel.swift */,
+			);
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 		E753373027CAFAFE0010E3D2 = {
@@ -229,6 +304,7 @@
 				E753378727CB06BE0010E3D2 /* ViewModels */,
 				E753379127CB06BE0010E3D2 /* Views */,
 				E75337B927CB06C60010E3D2 /* Utilities */,
+				E7304FA92A86F9230008DE93 /* Sockets */,
 				E71CFE2E2A48C7D300E8E1DC /* FloatplaneAPIClient+Extensions */,
 				E753377E27CB06800010E3D2 /* Wasserflug_tvOSApp.swift */,
 				E753374027CAFAFF0010E3D2 /* Assets.xcassets */,
@@ -268,6 +344,7 @@
 			isa = PBXGroup;
 			children = (
 				E753376F27CB043D0010E3D2 /* FloatplaneAPIClient */,
+				E72F21DC2A7CB27700831FD2 /* FloatplaneAPIAsync */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -286,6 +363,8 @@
 				E7A2F42928C58E0300583294 /* ExecuteCode.swift */,
 				E74C98A72A082D5100FDDB9C /* HideableView.swift */,
 				E74C98A92A08979700FDDB9C /* HideableView2.swift */,
+				E76D68582A91A2EA009A2374 /* RadioChatterView.swift */,
+				E748E36F2A92E0F000616BD4 /* LivestreamChatSidebar.swift */,
 			);
 			path = SupplementalViews;
 			sourceTree = "<group>";
@@ -293,6 +372,7 @@
 		E753378727CB06BE0010E3D2 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				E748E36C2A92B00A00616BD4 /* Mocks */,
 				E753378E27CB06BE0010E3D2 /* ViewModelState.swift */,
 				E753378B27CB06BE0010E3D2 /* BaseViewModel.swift */,
 				E753378D27CB06BE0010E3D2 /* AuthViewModel.swift */,
@@ -375,6 +455,9 @@
 				E753376A27CB01FD0010E3D2 /* Vapor */,
 				E75337BB27CB07900010E3D2 /* FloatplaneAPIClient */,
 				E74C98A52A080B9E00FDDB9C /* DebouncedOnChange */,
+				E7304FAD2A86F9B60008DE93 /* SocketIO */,
+				E7304FBA2A86FE730008DE93 /* FloatplaneAPIAsync */,
+				E76D685B2A927EE4009A2374 /* BigNumber */,
 			);
 			productName = "Wasserflug-tvOS";
 			productReference = E753373927CAFAFE0010E3D2 /* Wasserflug.app */;
@@ -451,6 +534,8 @@
 			packageReferences = (
 				E753376927CB01FD0010E3D2 /* XCRemoteSwiftPackageReference "vapor" */,
 				E74C98A42A080B9E00FDDB9C /* XCRemoteSwiftPackageReference "DebouncedOnChange" */,
+				E7304FAC2A86F9B60008DE93 /* XCRemoteSwiftPackageReference "socket" */,
+				E76D685A2A927EE4009A2374 /* XCRemoteSwiftPackageReference "Swift-BigInt" */,
 			);
 			productRefGroup = E753373A27CAFAFE0010E3D2 /* Products */;
 			projectDirPath = "";
@@ -506,7 +591,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd BuildTools\nSDKROOT=(xcrun --sdk macosx --show-sdk-path)\n#swift package update #Uncomment this line temporarily to update the version used to the latest matching your BuildTools/Package.swift file\nswift run -c release swiftformat \"$SRCROOT\" --swiftversion 5.8\n";
+			shellScript = "if [ \"${ENABLE_PREVIEWS}\" = \"YES\" ]; then\n\texit 0;\nfi\n\ncd BuildTools\nSDKROOT=(xcrun --sdk macosx --show-sdk-path)\n#swift package update #Uncomment this line temporarily to update the version used to the latest matching your BuildTools/Package.swift file\nswift run -c release swiftformat \"$SRCROOT\" --swiftversion 5.8\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -515,6 +600,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E73024B32A95981C008E6DF6 /* RenderedRadioChatter.swift in Sources */,
 				E75337A427CB06BE0010E3D2 /* BlogPostViewModel.swift in Sources */,
 				E75337AC27CB06BE0010E3D2 /* PictureViewModel.swift in Sources */,
 				E75337B827CB06BE0010E3D2 /* RootTabView.swift in Sources */,
@@ -522,36 +608,50 @@
 				E75337A127CB06BE0010E3D2 /* PlayMediaView.swift in Sources */,
 				E70448E22803A9110045A1AE /* WaveformView.swift in Sources */,
 				E75337B227CB06BE0010E3D2 /* PictureView.swift in Sources */,
+				E79CF1562A8872B00074F755 /* FPFrontendSocket.swift in Sources */,
 				E75337B327CB06BE0010E3D2 /* BlogPostView.swift in Sources */,
 				E75337B127CB06BE0010E3D2 /* HomeView.swift in Sources */,
 				E71FDB3C27D3F89200A9C88B /* Swift+Extensions.swift in Sources */,
 				E7A447E92815E1C0009BCE2E /* SwiftUI+Extensions.swift in Sources */,
 				E71CFE322A48CB1700E8E1DC /* OnFirstAppear.swift in Sources */,
 				E7A2F42A28C58E0300583294 /* ExecuteCode.swift in Sources */,
+				E748E3702A92E0F000616BD4 /* LivestreamChatSidebar.swift in Sources */,
 				E75337AB27CB06BE0010E3D2 /* CreatorContentViewModel.swift in Sources */,
 				E74C98A32A080AAC00FDDB9C /* RootTabView2.swift in Sources */,
+				E76D68592A91A2EA009A2374 /* RadioChatterView.swift in Sources */,
 				E75337AF27CB06BE0010E3D2 /* LoginView.swift in Sources */,
+				E7304FB92A86FB790008DE93 /* SocketDataKeyedEncodingContainer.swift in Sources */,
 				E753377B27CB066E0010E3D2 /* FPAPIService.swift in Sources */,
+				E7304FB32A86FB5E0008DE93 /* Utils.swift in Sources */,
 				E753377827CB066E0010E3D2 /* FloatplaneAPIClient+Extensions.swift in Sources */,
+				E7A469B52A9BCF59003A156A /* FPChatClient.swift in Sources */,
+				E73024B12A958D4F008E6DF6 /* LoadedEmote.swift in Sources */,
 				E70F775729D90D4900869BE3 /* Errors.swift in Sources */,
 				E75337A627CB06BE0010E3D2 /* VideoViewModel.swift in Sources */,
 				E75337B727CB06BE0010E3D2 /* ContentView.swift in Sources */,
 				E753377727CB066E0010E3D2 /* Authentication.swift in Sources */,
+				E7304FB52A86FB6C0008DE93 /* SocketDataSingleValueEncodingContainer.swift in Sources */,
 				E7BD7E7528E6682900E1BBE9 /* DeliveryHelper.swift in Sources */,
 				E753377F27CB06800010E3D2 /* Wasserflug_tvOSApp.swift in Sources */,
 				E731AF0F289B22AC00A2DAD7 /* AttachmentPills.swift in Sources */,
 				E75337A927CB06BE0010E3D2 /* AuthViewModel.swift in Sources */,
 				E71CFE302A48C82600E8E1DC /* UserModelShared.swift in Sources */,
 				E75337AA27CB06BE0010E3D2 /* ViewModelState.swift in Sources */,
+				E76D68552A91338D009A2374 /* FPSocket.swift in Sources */,
 				E75337B027CB06BE0010E3D2 /* VideoView.swift in Sources */,
 				E74C98A82A082D5100FDDB9C /* HideableView.swift in Sources */,
 				E76E318E2A51EF8F00242CEC /* InnerShadow.swift in Sources */,
 				E753379E27CB06BE0010E3D2 /* BlogPostContentView.swift in Sources */,
 				E75337A027CB06BE0010E3D2 /* PlayButton.swift in Sources */,
+				E7304FB72A86FB740008DE93 /* SocketDataUnkeyedEncodingContainer.swift in Sources */,
+				E76D68532A913363009A2374 /* SwiftUI+FPSocket.swift in Sources */,
 				E75337A527CB06BE0010E3D2 /* HomeViewModel.swift in Sources */,
 				E7F2F23D2A113F0000602991 /* OnCustomAppear.swift in Sources */,
 				E70F777629DF7A5E00869BE3 /* ToastBarView.swift in Sources */,
+				E748E36E2A92B01700616BD4 /* MockLivestreamViewModel.swift in Sources */,
+				E7A469B32A9BCF51003A156A /* FPChatManager.swift in Sources */,
 				E75337AD27CB06BE0010E3D2 /* CreatorSearchView.swift in Sources */,
+				E7304FB12A86FB220008DE93 /* SocketDataEncoder.swift in Sources */,
 				E71FDB7927E66D7E00A9C88B /* Persistence.swift in Sources */,
 				E753377D27CB066E0010E3D2 /* OSLoggingLogger.swift in Sources */,
 				E74C98AA2A08979700FDDB9C /* HideableView2.swift in Sources */,
@@ -563,6 +663,7 @@
 				E75337A227CB06BE0010E3D2 /* BlogPostSelectionView.swift in Sources */,
 				E75337B427CB06BE0010E3D2 /* CreatorContentView.swift in Sources */,
 				E7326D282A2D0C1F0065C016 /* CreatorOrChannel.swift in Sources */,
+				E7304FAB2A86F9380008DE93 /* FPChatSocket.swift in Sources */,
 				E72E39732A3F8CF000F33C67 /* FPColors.swift in Sources */,
 				E72E39752A3F8D0400F33C67 /* NavigationCoordinator.swift in Sources */,
 				E75337A327CB06BE0010E3D2 /* ErrorView.swift in Sources */,
@@ -903,6 +1004,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		E7304FAC2A86F9B60008DE93 /* XCRemoteSwiftPackageReference "socket" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/socketio/socket.io-client-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 16.0.1;
+			};
+		};
 		E74C98A42A080B9E00FDDB9C /* XCRemoteSwiftPackageReference "DebouncedOnChange" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Tunous/DebouncedOnChange.git";
@@ -919,9 +1028,26 @@
 				version = 4.65.2;
 			};
 		};
+		E76D685A2A927EE4009A2374 /* XCRemoteSwiftPackageReference "Swift-BigInt" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mkrd/Swift-BigInt.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		E7304FAD2A86F9B60008DE93 /* SocketIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E7304FAC2A86F9B60008DE93 /* XCRemoteSwiftPackageReference "socket" */;
+			productName = SocketIO;
+		};
+		E7304FBA2A86FE730008DE93 /* FloatplaneAPIAsync */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FloatplaneAPIAsync;
+		};
 		E74C98A52A080B9E00FDDB9C /* DebouncedOnChange */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E74C98A42A080B9E00FDDB9C /* XCRemoteSwiftPackageReference "DebouncedOnChange" */;
@@ -935,6 +1061,11 @@
 		E75337BB27CB07900010E3D2 /* FloatplaneAPIClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FloatplaneAPIClient;
+		};
+		E76D685B2A927EE4009A2374 /* BigNumber */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E76D685A2A927EE4009A2374 /* XCRemoteSwiftPackageReference "Swift-BigInt" */;
+			productName = BigNumber;
 		};
 /* End XCSwiftPackageProductDependency section */
 

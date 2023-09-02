@@ -25,7 +25,11 @@ struct RootTabView: View {
 			// There is an issue where multiple subscriptions for one creator might be active.
 			// Instead of showing one tab per subscription, show one per creator.
 			ForEach(userInfo.creatorsInOrder, id: \.0.id) { creator, creatorOwner in
-				CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: creator, creatorOwner: creatorOwner))
+				CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService,
+																	  managedObjectContext: managedObjectContext,
+																	  creatorOrChannel: creator,
+																	  creatorOwner: creatorOwner,
+																	  livestream: creator.liveStream))
 					.tag(Selection.creator(creator.id))
 					.tabItem {
 						Text(creator.title)

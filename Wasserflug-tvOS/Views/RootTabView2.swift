@@ -6,7 +6,7 @@ import DebouncedOnChange
 
 struct RootTabView2: View {
 	
-	enum SideBarState {
+	enum SideBarState: Equatable, CaseIterable {
 		case collapsed
 		case expanded
 	}
@@ -34,7 +34,9 @@ struct RootTabView2: View {
 	@EnvironmentObject var userInfo: UserInfo
 	@Environment(\.fpApiService) var fpApiService
 	@Environment(\.managedObjectContext) var managedObjectContext
+	@Environment(\.scenePhase) var scenePhase
 	
+	@State var fpFrontendSocket: FPFrontendSocket
 	let fixedWidth: CGFloat = 160
 	@State var tabSelection: TabSelection = .home
 	@State var state: SideBarState = .expanded
@@ -101,6 +103,7 @@ struct RootTabView2: View {
 				UIAccessibility.post(notification: .announcement, argument: "Switched to settings screen")
 			}
 		}
+		.fpSocketControlSocket(fpFrontendSocket, on: [.onAppear, .onSceneActive, .onSceneInactive, .onSceneBackground])
 	}
 	
 	var contentView: some View {
@@ -126,13 +129,21 @@ struct RootTabView2: View {
 				.accessibilityHidden(tabSelection == .home ? false : true)
 
 			ForEach(userInfo.creatorsInOrder, id: \.0.id) { creator, creatorOwner in
-				CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: creator, creatorOwner: creatorOwner))
+				CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService,
+																	  managedObjectContext: managedObjectContext,
+																	  creatorOrChannel: creator,
+																	  creatorOwner: creatorOwner,
+																	  livestream: creator.liveStream))
 					.customAppear(tabSelection == .creator(creator.id) ? .appear : .disappear)
 					.opacity(tabSelection == .creator(creator.id) ? 1 : 0)
 					.accessibilityHidden(tabSelection == .creator(creator.id) ? false : true)
 				
 				ForEach(creator.channels, id: \.id) { channel in
-					CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: channel, creatorOwner: creatorOwner))
+					CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService,
+																		  managedObjectContext: managedObjectContext,
+																		  creatorOrChannel: channel,
+																		  creatorOwner: creatorOwner,
+																		  livestream: creator.liveStream))
 						.customAppear(tabSelection == .channel(channel.id) ? .appear : .disappear)
 						.opacity(tabSelection == .channel(channel.id) ? 1 : 0)
 						.accessibilityHidden(tabSelection == .channel(channel.id) ? false : true)
@@ -362,7 +373,7 @@ struct RootTabView2: View {
 
 struct RootTabView2_Previews: PreviewProvider {
 	static var previews: some View {
-		RootTabView2()
+		RootTabView2(fpFrontendSocket: MockFPFrontendSocket(sailsSid: ""))
 			.environmentObject(MockData.userInfo)
 			.environment(\.fpApiService, MockFPAPIService())
 			.previewDisplayName("Expanded")

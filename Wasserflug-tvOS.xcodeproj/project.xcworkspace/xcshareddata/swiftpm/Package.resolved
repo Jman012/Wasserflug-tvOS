@@ -65,6 +65,24 @@
         }
       },
       {
+        "package": "SocketIO",
+        "repositoryURL": "https://github.com/socketio/socket.io-client-swift",
+        "state": {
+          "branch": null,
+          "revision": "af5ce97b755d964235348d96f6db5cbdcbe334a5",
+          "version": "16.0.1"
+        }
+      },
+      {
+        "package": "Starscream",
+        "repositoryURL": "https://github.com/daltoniam/Starscream",
+        "state": {
+          "branch": null,
+          "revision": "df8d82047f6654d8e4b655d1b1525c64e1059d21",
+          "version": "4.0.4"
+        }
+      },
+      {
         "package": "swift-algorithms",
         "repositoryURL": "https://github.com/apple/swift-algorithms.git",
         "state": {
@@ -89,6 +107,15 @@
           "branch": null,
           "revision": "d3e04a9d4b3833363fb6192065b763310b156d54",
           "version": "1.3.1"
+        }
+      },
+      {
+        "package": "BigNumber",
+        "repositoryURL": "https://github.com/mkrd/Swift-BigInt.git",
+        "state": {
+          "branch": null,
+          "revision": "f98947c391b84f7557fb13fa40f3d3bcbc0d9ff0",
+          "version": "2.2.1"
         }
       },
       {

@@ -11,6 +11,7 @@ protocol CreatorOrChannel {
 	var creatorId: String { get }
 	var channelId: String? { get }
 	var aboutFixed: String { get }
+	var liveStream: LiveStreamModel? { get }
 }
 
 extension CreatorModelV3: CreatorOrChannel {
@@ -39,6 +40,10 @@ extension ChannelModel: CreatorOrChannel {
 	var aboutFixed: String {
 		about.replacingOccurrences(of: "\n\n", with: " ")
 	}
+	
+	var liveStream: LiveStreamModel? {
+		nil
+	}
 }
 
 struct AnyCreatorOrChannel: CreatorOrChannel, Hashable {
@@ -52,6 +57,7 @@ struct AnyCreatorOrChannel: CreatorOrChannel, Hashable {
 	var creatorId: String { creatorOrChannel.creatorId }
 	var channelId: String? { creatorOrChannel.channelId }
 	var aboutFixed: String { creatorOrChannel.aboutFixed }
+	var liveStream: LiveStreamModel? { creatorOrChannel.liveStream }
 	
 	init(_ creatorOrChannel: CreatorOrChannel) {
 		self.creatorOrChannel = creatorOrChannel
@@ -65,7 +71,8 @@ struct AnyCreatorOrChannel: CreatorOrChannel, Hashable {
 			lhs.icon == rhs.icon &&
 			lhs.creatorId == rhs.creatorId &&
 			lhs.channelId == rhs.channelId &&
-			lhs.aboutFixed == rhs.aboutFixed
+			lhs.aboutFixed == rhs.aboutFixed &&
+			lhs.liveStream == rhs.liveStream
 	}
 	
 	func hash(into hasher: inout Hasher) {
@@ -77,5 +84,6 @@ struct AnyCreatorOrChannel: CreatorOrChannel, Hashable {
 		hasher.combine(creatorId)
 		hasher.combine(channelId)
 		hasher.combine(aboutFixed)
+		hasher.combine(liveStream)
 	}
 }

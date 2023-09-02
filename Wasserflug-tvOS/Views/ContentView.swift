@@ -5,6 +5,8 @@ import Network
 
 struct ContentView: View {
 	
+	static var fpChatManager = FPChatManager()
+	
 	@ObservedObject var viewModel: AuthViewModel
 	
 	@Environment(\.colorScheme) var colorScheme
@@ -21,53 +23,12 @@ struct ContentView: View {
 		NavigationStack(path: $navigationCoordinator.path) {
 			ZStack {
 				if viewModel.isLoadingAuthStatus || !viewModel.isLoggedIn {
-					ZStack {
-						// Logo and headings in center
-						HStack {
-							Image("wasserflug-logo")
-								.resizable()
-								.renderingMode(.template)
-								.foregroundColor(colorScheme == .dark ? .white : .black)
-								.scaledToFit()
-								.frame(height: 300)
-								.accessibilityHidden(true)
-							VStack {
-								Text("Wasserflug")
-									.font(.title)
-									.accessibilityAddTraits(.isHeader)
-								Text("An unofficial Floatplane client")
-							}
-						}
-						
-						// Loading indicator/login button at bottom of screen
-						VStack {
-							Spacer()
-							if viewModel.isLoadingAuthStatus {
-								ProgressView()
-									.accessibilityLabel("Loading")
-							} else if !viewModel.isLoggedIn {
-								NavigationLink("Login", value: WasserflugRoute.login)
-									.accessibilityHint("Login to Wasserflug")
-							}
-						}
-					}
-					.onAppear {
-						viewModel.determineAuthenticationStatus()
-					}
-					.background(ZStack {
-						// Background blurred image of FP website splash image
-						Image("splash-bg")
-							.resizable()
-							.scaledToFill()
-						VisualEffectView(effect: UIBlurEffect(style: colorScheme == .dark ? .dark : .light))
-					}
-					.ignoresSafeArea()
-					.accessibilityHidden(true))
+					landingScreen
 				} else {
 					// Main content view if logged in
 					ZStack {
 						if showNewSidebar {
-							RootTabView2()
+							RootTabView2(fpFrontendSocket: FPFrontendSocket(sailsSid: FloatplaneAPIClientAPI.rawCookieValue))
 						} else {
 							RootTabView()
 						}
@@ -75,21 +36,7 @@ struct ContentView: View {
 				}
 			}
 			.navigationDestination(for: WasserflugRoute.self, destination: { route in
-				switch route {
-				case .login:
-					LoginView(viewModel: viewModel)
-				case .secondFactor:
-					SecondFactorView(viewModel: viewModel)
-				case let .blogPostView(blogPostId: blogPostId, autoPlay: autoPlay):
-					BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService, id: blogPostId),
-								 shouldAutoPlay: autoPlay)
-				case let .searchView(creatorOrChannel: creatorOrChannel, creatorOwner: creatorOwner):
-					CreatorSearchView(viewModel: CreatorContentViewModel(fpApiService: fpApiService, managedObjectContext: managedObjectContext, creatorOrChannel: creatorOrChannel, creatorOwner: creatorOwner), creatorName: creatorOrChannel.title)
-				case let .livestreamView(creatorId: creatorId):
-					LivestreamView(viewModel: LivestreamViewModel(fpApiService: fpApiService, creatorId: creatorId))
-				case let .videoView(videoAttachment: video, content: content, description: description, beginningWatchTime: beginningWatchTime):
-					VideoView(viewModel: VideoViewModel(fpApiService: fpApiService, videoAttachment: video, contentPost: content, description: description), beginningWatchTime: beginningWatchTime)
-				}
+				self.view(for: route)
 			})
 		}
 		.overlay(alignment: .topTrailing, content: {
@@ -100,6 +47,7 @@ struct ContentView: View {
 		.onReceive(NotificationCenter.default.publisher(for: .loggedOut, object: nil), perform: { _ in
 			viewModel.determineAuthenticationStatus()
 		})
+		.fpSocketControlSocket(ContentView.fpChatManager, on: [.onSceneActive, .onSceneInactive, .onSceneInactive])
 		.alert("Application Error", isPresented: $viewModel.showAuthenticationErrorAlert, presenting: viewModel.authenticationCheckError, actions: { _ in
 			Button("OK", action: {})
 			Button("More Information", action: {
@@ -118,6 +66,81 @@ struct ContentView: View {
 		.alert("Subscriptions", isPresented: $viewModel.showNoSubscriptionsAlert, actions: {}, message: {
 			Text("Logging in was successful, but the account does not have any subscriptions at this time. Wasserflug requires at least one subscription in order to work properly. Please try again later.")
 		})
+	}
+	
+	var landingScreen: some View {
+		ZStack {
+			// Logo and headings in center
+			HStack {
+				Image("wasserflug-logo")
+					.resizable()
+					.renderingMode(.template)
+					.foregroundColor(colorScheme == .dark ? .white : .black)
+					.scaledToFit()
+					.frame(height: 300)
+					.accessibilityHidden(true)
+				VStack {
+					Text("Wasserflug")
+						.font(.title)
+						.accessibilityAddTraits(.isHeader)
+					Text("An unofficial Floatplane client")
+				}
+			}
+			
+			// Loading indicator/login button at bottom of screen
+			VStack {
+				Spacer()
+				if viewModel.isLoadingAuthStatus {
+					ProgressView()
+						.accessibilityLabel("Loading")
+				} else if !viewModel.isLoggedIn {
+					NavigationLink("Login", value: WasserflugRoute.login)
+						.accessibilityHint("Login to Wasserflug")
+				}
+			}
+		}
+		.onAppear {
+			viewModel.determineAuthenticationStatus()
+		}
+		.background(ZStack {
+			// Background blurred image of FP website splash image
+			Image("splash-bg")
+				.resizable()
+				.scaledToFill()
+			VisualEffectView(effect: UIBlurEffect(style: colorScheme == .dark ? .dark : .light))
+		}
+		.ignoresSafeArea()
+		.accessibilityHidden(true))
+	}
+	
+	@ViewBuilder func view(for route: WasserflugRoute) -> some View {
+		switch route {
+		case .login:
+			LoginView(viewModel: viewModel)
+		case .secondFactor:
+			SecondFactorView(viewModel: viewModel)
+		case let .blogPostView(blogPostId: blogPostId, autoPlay: autoPlay):
+			BlogPostView(viewModel: BlogPostViewModel(fpApiService: fpApiService,
+													  id: blogPostId),
+						 shouldAutoPlay: autoPlay)
+		case let .searchView(creatorOrChannel: creatorOrChannel, creatorOwner: creatorOwner):
+			CreatorSearchView(viewModel: CreatorContentViewModel(fpApiService: fpApiService,
+																 managedObjectContext: managedObjectContext,
+																 creatorOrChannel: creatorOrChannel,
+																 creatorOwner: creatorOwner,
+																 livestream: nil),
+							  creatorName: creatorOrChannel.title)
+		case let .livestreamView(creatorId: creatorId, livestreamId: livestreamId):
+			LivestreamView(viewModel: LivestreamViewModel(fpApiService: fpApiService,
+														  creatorId: creatorId),
+						   fpChatClient: Self.fpChatManager.client(forChannel: livestreamId, selfUserName: viewModel.userInfo.userSelf?.username ?? ""))
+		case let .videoView(videoAttachment: video, content: content, description: description, beginningWatchTime: beginningWatchTime):
+			VideoView(viewModel: VideoViewModel(fpApiService: fpApiService,
+												videoAttachment: video,
+												contentPost: content,
+												description: description),
+					  beginningWatchTime: beginningWatchTime)
+		}
 	}
 }
 

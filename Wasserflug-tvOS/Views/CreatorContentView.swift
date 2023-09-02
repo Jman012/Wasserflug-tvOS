@@ -75,9 +75,12 @@ struct CreatorContentView: View {
 							})
 							
 							// Livestream button
-							NavigationLink(value: WasserflugRoute.livestreamView(creatorId: self.viewModel.creatorOrChannel.creatorId), label: {
-								Label("Livestream", systemImage: "play.tv")
-							})
+							if let livestream = self.viewModel.livestream {
+								NavigationLink(value: WasserflugRoute.livestreamView(creatorId: self.viewModel.creatorOrChannel.creatorId,
+																					 livestreamId: livestream.id), label: {
+										Label("Livestream", systemImage: "play.tv")
+									})
+							}
 							
 							// Creator "about" information
 							VStack {
@@ -142,7 +145,8 @@ struct CreatorContentView_Previews: PreviewProvider {
 				fpApiService: MockFPAPIService(),
 				managedObjectContext: PersistenceController.preview.container.viewContext,
 				creatorOrChannel: MockData.creatorV3,
-				creatorOwner: MockData.creatorOwners.users[0].user.userModelShared
+				creatorOwner: MockData.creatorOwners.users[0].user.userModelShared,
+				livestream: MockData.creatorV3.liveStream
 			))
 			.tag(RootTabView.Selection.creator(MockData.creatorV3.id))
 			.tabItem {

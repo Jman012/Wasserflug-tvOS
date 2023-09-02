@@ -44,3 +44,9 @@ extension TimeInterval {
 		Int((self*1000).truncatingRemainder(dividingBy: 1000))
 	}
 }
+
+extension HTTPURLResponse {
+	func isResponseOK() -> Bool {
+		return (200...299).contains(self.statusCode)
+	}
+}
