@@ -373,12 +373,12 @@ struct RootTabView2: View {
 
 struct RootTabView2_Previews: PreviewProvider {
 	static var previews: some View {
-		RootTabView2(fpFrontendSocket: MockFPFrontendSocket(sailsSid: ""))
+		RootTabView2(fpFrontendSocket: MockFPFrontendSocket(sailsSid: ""), state: .expanded)
 			.environmentObject(MockData.userInfo)
 			.environment(\.fpApiService, MockFPAPIService())
 			.previewDisplayName("Expanded")
 		
-		RootTabView2(tabSelection: .channel(MockData.creatorV3.id), state: .collapsed)
+		RootTabView2(fpFrontendSocket: MockFPFrontendSocket(sailsSid: ""), tabSelection: .channel(MockData.creatorV3.id), state: .collapsed)
 			.environmentObject(MockData.userInfo)
 			.environment(\.fpApiService, MockFPAPIService())
 			.previewDisplayName("Collapsed")
