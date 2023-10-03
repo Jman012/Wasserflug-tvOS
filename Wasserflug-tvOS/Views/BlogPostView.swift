@@ -58,7 +58,6 @@ struct BlogPostView: View {
 								PlayMediaView(
 									thumbnail: content.thumbnail,
 									viewMode: content.videoAttachments?.isEmpty == false ? .playButton : .imageCard,
-									width: geometry.size.width * 0.5,
 									playButtonSize: .default,
 									videoTitle: content.firstVideoAttachment?.title ?? "",
 									playContent: { beginningWatchTime in

@@ -30,17 +30,13 @@ struct HomeView: View {
 			})
 		case let .loaded(response):
 			ScrollView {
-				LazyVGrid(columns: gridColumns, spacing: 60) {
+				LazyVGrid(columns: gridColumns, spacing: 20) {
 					ForEach(response.blogPosts) { blogPost in
-						BlogPostSelectionView(
-							blogPost: blogPost,
-							viewOrigin: .home(userInfo.creatorOwners[blogPost.creator.owner.id]?.asAnyUserModelShared()),
-							watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", blogPost.id), animation: .default)
-						)
+						BlogPostSelectionView(blogPost: blogPost)
 //							.focused($blogPostFocus, equals: blogPost.id)
-						.onAppear(perform: {
-							viewModel.itemDidAppear(blogPost)
-						})
+							.onAppear(perform: {
+								viewModel.itemDidAppear(blogPost)
+							})
 					}
 				}
 				.padding(40)

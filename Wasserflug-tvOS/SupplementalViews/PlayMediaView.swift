@@ -10,7 +10,6 @@ struct PlayMediaView: View {
 	
 	let thumbnail: ImageModelShared?
 	let viewMode: ViewMode
-	let width: CGFloat?
 	let playButtonSize: PlayButton.Size
 	let videoTitle: String
 	let playContent: (Double) -> Void
@@ -66,40 +65,7 @@ struct PlayMediaView: View {
 	}
 	
 	var image: some View {
-		AsyncImage(url: thumbnail.pathUrlOrNil, content: { image in
-			ZStack(alignment: .bottomLeading) {
-				// Thumbnail image
-				image
-					.resizable()
-					.scaledToFit()
-					.frame(width: width)
-					.accessibilityLabel("Thumbnail")
-				
-				// Watch progress indicator
-				GeometryReader { geometry in
-					Rectangle()
-						.fill(LinearGradient(colors: [FPColors.watchProgressIndicatorBegin, FPColors.watchProgressIndicatorEnd], startPoint: .leading, endPoint: .trailing))
-						.frame(width: geometry.size.width)
-						.mask(alignment: .leading) {
-							Rectangle().frame(width: geometry.size.width * progress)
-						}
-				}
-				.frame(height: isFocused ? 16 : 8)
-				.animation(.spring(), value: isFocused)
-				.accessibilityLabel(progress == 0 ? "Not watched" : progress == 1 ? "Watched" : "\(Int(progress * 100)) percent watched")
-			}
-			.frame(width: width)
-			// Apply the cornerRadius on the ZStack to get the corners of the watch progress indicator
-			.cornerRadius(10.0)
-		}, placeholder: {
-			ZStack {
-				ProgressView()
-				Rectangle()
-					.fill(.clear)
-					.aspectRatio(thumbnail?.aspectRatio ?? 1.0, contentMode: .fit)
-					.frame(width: width)
-			}
-		})
+		MediaThumbnail(thumbnail: thumbnail, watchProgresses: _watchProgresses)
 	}
 }
 
@@ -109,7 +75,6 @@ struct PlayMediaView_Previews: PreviewProvider {
 			PlayMediaView(
 				thumbnail: MockData.blogPosts.blogPosts.first!.thumbnail,
 				viewMode: .playButton,
-				width: 200,
 				playButtonSize: .small,
 				videoTitle: "video title here",
 				playContent: { _ in },
@@ -121,7 +86,6 @@ struct PlayMediaView_Previews: PreviewProvider {
 			PlayMediaView(
 				thumbnail: MockData.blogPosts.blogPosts.first!.thumbnail,
 				viewMode: .imageCard,
-				width: 500,
 				playButtonSize: .default,
 				videoTitle: "video title here",
 				playContent: { _ in },

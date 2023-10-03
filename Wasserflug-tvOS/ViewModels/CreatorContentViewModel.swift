@@ -58,7 +58,7 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 		
 		searchDebounce = $searchText
 			.debounce(for: 0.8, scheduler: DispatchQueue.main)
-			.dropFirst()
+			.removeDuplicates()
 			.sink(receiveValue: { _ in
 				self.state = .loading
 				self.load()
@@ -171,5 +171,12 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 		if !isVisible {
 			self.load(loadingMode: .prepend)
 		}
+	}
+}
+
+class MockCreatorContentViewModel: CreatorContentViewModel {
+	init(state: ViewModelState<[BlogPostModelV3]>) {
+		super.init(fpApiService: MockFPAPIService(), managedObjectContext: PersistenceController.preview.container.viewContext, creatorOrChannel: MockData.creatorV3, creatorOwner: MockData.creatorOwners.users[0].user.userModelShared, livestream: MockData.creatorV3.liveStream)
+		self.state = state
 	}
 }

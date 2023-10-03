@@ -2,16 +2,53 @@ import CoreData
 
 struct PersistenceController {
 	static let shared = PersistenceController()
+	
+	static let previewBlogPostId = "previewBlogPostId"
+	static let previewVideoId0 = "previewVideoId0"
+	static let previewVideoId25 = "previewVideoId25"
+	static let previewVideoId50 = "previewVideoId50"
+	static let previewVideoId75 = "previewVideoId75"
+	static let previewVideoId100 = "previewVideoId100"
 
 	static var preview: PersistenceController = {
 		let result = PersistenceController(inMemory: true)
 		let viewContext = result.container.viewContext
 		
 		// Mock seed data
+		do {
+			let newWatchProgress = WatchProgress(context: viewContext)
+			newWatchProgress.blogPostId = Self.previewBlogPostId
+			newWatchProgress.videoId = Self.previewVideoId0
+			newWatchProgress.progress = 0.1
+		}
+		
+		do {
+			let newWatchProgress = WatchProgress(context: viewContext)
+			newWatchProgress.blogPostId = Self.previewBlogPostId
+			newWatchProgress.videoId = Self.previewVideoId25
+			newWatchProgress.progress = 0.25
+		}
+		
+		do {
+			let newWatchProgress = WatchProgress(context: viewContext)
+			newWatchProgress.blogPostId = Self.previewBlogPostId
+			newWatchProgress.videoId = Self.previewVideoId50
+			newWatchProgress.progress = 0.50
+		}
+		
+//		do {
 		let newWatchProgress = WatchProgress(context: viewContext)
-		newWatchProgress.blogPostId = "0YXGhFR08U"
-		newWatchProgress.videoId = "7Wgsd59qiX"
+		newWatchProgress.blogPostId = Self.previewBlogPostId
+		newWatchProgress.videoId = Self.previewVideoId75
 		newWatchProgress.progress = 0.75
+//		}
+		
+		do {
+			let newWatchProgress = WatchProgress(context: viewContext)
+			newWatchProgress.blogPostId = Self.previewBlogPostId
+			newWatchProgress.videoId = Self.previewVideoId100
+			newWatchProgress.progress = 1.00
+		}
 		
 		do {
 			try viewContext.save()

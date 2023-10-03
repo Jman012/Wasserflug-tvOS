@@ -26,16 +26,12 @@ struct CreatorSearchView: View {
 					viewModel.load()
 				})
 			case let .loaded(content):
-				LazyVGrid(columns: gridColumns, spacing: 60) {
+				LazyVGrid(columns: gridColumns, spacing: 20) {
 					ForEach(content) { blogPost in
-						BlogPostSelectionView(
-							blogPost: blogPost,
-							viewOrigin: .creator,
-							watchProgresses: FetchRequest(entity: WatchProgress.entity(), sortDescriptors: [], predicate: NSPredicate(format: "blogPostId = %@", blogPost.id), animation: .default)
-						)
-						.onAppear(perform: {
-							viewModel.itemDidAppear(blogPost)
-						})
+						BlogPostSelectionView(blogPost: blogPost)
+							.onAppear(perform: {
+								viewModel.itemDidAppear(blogPost)
+							})
 					}
 				}
 				.padding(40)

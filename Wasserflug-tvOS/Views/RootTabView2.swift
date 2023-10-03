@@ -127,6 +127,8 @@ struct RootTabView2: View {
 				.customAppear(tabSelection == .home ? .appear : .disappear)
 				.opacity(tabSelection == .home ? 1 : 0)
 				.accessibilityHidden(tabSelection == .home ? false : true)
+				.disabled(tabSelection == .home ? false : true)
+				.redacted(reason: tabSelection == .home ? [] : [.placeholder])
 
 			ForEach(userInfo.creatorsInOrder, id: \.0.id) { creator, creatorOwner in
 				CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService,
@@ -137,6 +139,8 @@ struct RootTabView2: View {
 					.customAppear(tabSelection == .creator(creator.id) ? .appear : .disappear)
 					.opacity(tabSelection == .creator(creator.id) ? 1 : 0)
 					.accessibilityHidden(tabSelection == .creator(creator.id) ? false : true)
+					.disabled(tabSelection == .creator(creator.id) ? false : true)
+					.redacted(reason: tabSelection == .creator(creator.id) ? [] : [.placeholder])
 				
 				ForEach(creator.channels, id: \.id) { channel in
 					CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService,
@@ -147,6 +151,8 @@ struct RootTabView2: View {
 						.customAppear(tabSelection == .channel(channel.id) ? .appear : .disappear)
 						.opacity(tabSelection == .channel(channel.id) ? 1 : 0)
 						.accessibilityHidden(tabSelection == .channel(channel.id) ? false : true)
+						.disabled(tabSelection == .channel(channel.id) ? false : true)
+						.redacted(reason: tabSelection == .channel(channel.id) ? [] : [.placeholder])
 				}
 			}
 
@@ -154,6 +160,8 @@ struct RootTabView2: View {
 				.customAppear(tabSelection == .settings ? .appear : .disappear)
 				.opacity(tabSelection == .settings ? 1 : 0)
 				.accessibilityHidden(tabSelection == .settings ? false : true)
+				.disabled(tabSelection == .settings ? false : true)
+				.redacted(reason: tabSelection == .settings ? [] : [.placeholder])
 		}
 	}
 	

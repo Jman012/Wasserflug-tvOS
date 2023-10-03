@@ -165,7 +165,7 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 	}
 	
 	func updateProgress(progressSeconds: Int, managedObjectContext: NSManagedObjectContext) {
-		Task { @MainActor in
+		Task {
 			guard case let .loaded((_, videoModel)) = self.state else {
 				return
 			}

@@ -59,7 +59,6 @@ struct BlogPostContentView: View {
 							PlayMediaView(
 								thumbnail: video.thumbnail,
 								viewMode: .playButton,
-								width: geometry.size.width * 0.2,
 								playButtonSize: .small,
 								videoTitle: video.title,
 								playContent: { beginningWatchTime in
@@ -71,7 +70,7 @@ struct BlogPostContentView: View {
 							Text(video.title)
 								.lineLimit(1)
 						}
-						.frame(maxWidth: geometry.size.width * 0.2)
+						.frame(width: geometry.size.width * 0.17)
 						.padding()
 					}
 				}

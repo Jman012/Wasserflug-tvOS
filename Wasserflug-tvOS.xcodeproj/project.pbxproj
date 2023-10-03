@@ -75,6 +75,7 @@
 		E75337B727CB06BE0010E3D2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379C27CB06BE0010E3D2 /* ContentView.swift */; };
 		E75337B827CB06BE0010E3D2 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E753379D27CB06BE0010E3D2 /* RootTabView.swift */; };
 		E75337BC27CB07900010E3D2 /* FloatplaneAPIClient in Frameworks */ = {isa = PBXBuildFile; productRef = E75337BB27CB07900010E3D2 /* FloatplaneAPIClient */; };
+		E7565BA42AC9F83300543154 /* MediaThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7565BA32AC9F83300543154 /* MediaThumbnail.swift */; };
 		E76D68532A913363009A2374 /* SwiftUI+FPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76D68522A913363009A2374 /* SwiftUI+FPSocket.swift */; };
 		E76D68552A91338D009A2374 /* FPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76D68542A91338D009A2374 /* FPSocket.swift */; };
 		E76D68592A91A2EA009A2374 /* RadioChatterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76D68582A91A2EA009A2374 /* RadioChatterView.swift */; };
@@ -176,6 +177,7 @@
 		E753379B27CB06BE0010E3D2 /* SecondFactorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondFactorView.swift; sourceTree = "<group>"; };
 		E753379C27CB06BE0010E3D2 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		E753379D27CB06BE0010E3D2 /* RootTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
+		E7565BA32AC9F83300543154 /* MediaThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaThumbnail.swift; sourceTree = "<group>"; };
 		E76D68522A913363009A2374 /* SwiftUI+FPSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+FPSocket.swift"; sourceTree = "<group>"; };
 		E76D68542A91338D009A2374 /* FPSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPSocket.swift; sourceTree = "<group>"; };
 		E76D68582A91A2EA009A2374 /* RadioChatterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioChatterView.swift; sourceTree = "<group>"; };
@@ -365,6 +367,7 @@
 				E74C98A92A08979700FDDB9C /* HideableView2.swift */,
 				E76D68582A91A2EA009A2374 /* RadioChatterView.swift */,
 				E748E36F2A92E0F000616BD4 /* LivestreamChatSidebar.swift */,
+				E7565BA32AC9F83300543154 /* MediaThumbnail.swift */,
 			);
 			path = SupplementalViews;
 			sourceTree = "<group>";
@@ -615,6 +618,7 @@
 				E7A447E92815E1C0009BCE2E /* SwiftUI+Extensions.swift in Sources */,
 				E71CFE322A48CB1700E8E1DC /* OnFirstAppear.swift in Sources */,
 				E7A2F42A28C58E0300583294 /* ExecuteCode.swift in Sources */,
+				E7565BA42AC9F83300543154 /* MediaThumbnail.swift in Sources */,
 				E748E3702A92E0F000616BD4 /* LivestreamChatSidebar.swift in Sources */,
 				E75337AB27CB06BE0010E3D2 /* CreatorContentViewModel.swift in Sources */,
 				E74C98A32A080AAC00FDDB9C /* RootTabView2.swift in Sources */,
