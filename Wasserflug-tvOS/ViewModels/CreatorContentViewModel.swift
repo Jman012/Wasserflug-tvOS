@@ -59,6 +59,7 @@ class CreatorContentViewModel: BaseViewModel, ObservableObject {
 		searchDebounce = $searchText
 			.debounce(for: 0.8, scheduler: DispatchQueue.main)
 			.removeDuplicates()
+			.dropFirst()
 			.sink(receiveValue: { _ in
 				self.state = .loading
 				self.load()
