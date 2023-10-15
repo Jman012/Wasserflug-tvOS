@@ -200,6 +200,9 @@ struct RootTabView2: View {
 					}
 				}, label: {
 					HStack(spacing: 0) {
+						if showMenu {
+							Spacer()
+						}
 						Image("wasserflug-logo")
 							.resizable()
 							.renderingMode(.template)
@@ -284,6 +287,9 @@ struct RootTabView2: View {
 					}
 				}, label: {
 					HStack(spacing: 0) {
+						if showMenu {
+							Spacer()
+						}
 						Image(systemName: "gear")
 						if showMenu {
 							Text("Settings")

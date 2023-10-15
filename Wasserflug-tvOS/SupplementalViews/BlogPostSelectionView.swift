@@ -13,8 +13,6 @@ struct BlogPostSelectionView: View {
 	@State var geometrySize: CGSize?
 	
 	@EnvironmentObject var navCoordinator: NavigationCoordinator<WasserflugRoute>
-
-	@FocusState private var isFocused
 	
 	var body: some View {
 		VStack(alignment: .leading, spacing: 0) {
@@ -42,8 +40,7 @@ struct BlogPostSelectionView: View {
 				}
 			})
 			.buttonStyle(.card)
-			.focused($isFocused)
-			.padding()
+			.padding(.bottom)
 			.onPlayPauseCommand(perform: {
 				if blogPost.isAccessible {
 					navCoordinator.push(route: .blogPostView(blogPostId: blogPost.id, autoPlay: true))

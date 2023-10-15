@@ -12,12 +12,10 @@ struct CreatorContentView: View {
 	@State var isShowingSearch = false
 	@FocusState var blogPostFocus: String?
 	
-	let gridColumns: [GridItem] = [
-		GridItem(.flexible(minimum: 0, maximum: .infinity), alignment: .top),
-		GridItem(.flexible(minimum: 0, maximum: .infinity), alignment: .top),
-		GridItem(.flexible(minimum: 0, maximum: .infinity), alignment: .top),
-		GridItem(.flexible(minimum: 0, maximum: .infinity), alignment: .top),
-	]
+	private let gridColumns: [GridItem] = Array<GridItem>(
+		repeating: GridItem(.flexible(minimum: 0, maximum: .infinity), spacing: 30, alignment: .top),
+		count: 4
+	)
 	
 	var banner: some View {
 		AsyncImage(url: viewModel.coverImagePath, content: { image in

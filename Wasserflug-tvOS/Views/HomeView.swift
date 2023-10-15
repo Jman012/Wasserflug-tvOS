@@ -9,12 +9,10 @@ struct HomeView: View {
 	
 	@FocusState var blogPostFocus: String?
 	
-	private let gridColumns: [GridItem] = [
-		GridItem(.flexible(minimum: 0, maximum: .infinity), alignment: .top),
-		GridItem(.flexible(minimum: 0, maximum: .infinity), alignment: .top),
-		GridItem(.flexible(minimum: 0, maximum: .infinity), alignment: .top),
-		GridItem(.flexible(minimum: 0, maximum: .infinity), alignment: .top),
-	]
+	private let gridColumns: [GridItem] = Array<GridItem>(
+		repeating: GridItem(.flexible(minimum: 0, maximum: .infinity), spacing: 30, alignment: .top),
+		count: 4
+	)
 	
 	var body: some View {
 		switch viewModel.state {
