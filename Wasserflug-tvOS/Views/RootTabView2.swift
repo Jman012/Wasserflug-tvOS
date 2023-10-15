@@ -48,6 +48,7 @@ struct RootTabView2: View {
 	@FocusState var focusHackIsFocused: Bool
 	@Namespace var menuFocusNamespace
 	@Namespace var contentFocusNamespace
+	@Namespace var menuButtonItemsNamespace
 	@FocusState var focusedItem: TabSelection?
 	
 	var body: some View {
@@ -114,7 +115,7 @@ struct RootTabView2: View {
 			.focused($contentIsFocused)
 			.onExitCommand(perform: {
 				if state == .collapsed {
-					withAnimation {
+					withAnimation(.interactiveSpring) {
 						menuIsFocused = true
 					}
 				}
@@ -128,7 +129,7 @@ struct RootTabView2: View {
 				.opacity(tabSelection == .home ? 1 : 0)
 				.accessibilityHidden(tabSelection == .home ? false : true)
 				.disabled(tabSelection == .home ? false : true)
-				.redacted(reason: tabSelection == .home ? [] : [.placeholder])
+//				.redacted(reason: tabSelection == .home ? [] : [.placeholder])
 
 			ForEach(userInfo.creatorsInOrder, id: \.0.id) { creator, creatorOwner in
 				CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService,
@@ -140,7 +141,7 @@ struct RootTabView2: View {
 					.opacity(tabSelection == .creator(creator.id) ? 1 : 0)
 					.accessibilityHidden(tabSelection == .creator(creator.id) ? false : true)
 					.disabled(tabSelection == .creator(creator.id) ? false : true)
-					.redacted(reason: tabSelection == .creator(creator.id) ? [] : [.placeholder])
+//					.redacted(reason: tabSelection == .creator(creator.id) ? [] : [.placeholder])
 				
 				ForEach(creator.channels, id: \.id) { channel in
 					CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService,
@@ -152,7 +153,7 @@ struct RootTabView2: View {
 						.opacity(tabSelection == .channel(channel.id) ? 1 : 0)
 						.accessibilityHidden(tabSelection == .channel(channel.id) ? false : true)
 						.disabled(tabSelection == .channel(channel.id) ? false : true)
-						.redacted(reason: tabSelection == .channel(channel.id) ? [] : [.placeholder])
+//						.redacted(reason: tabSelection == .channel(channel.id) ? [] : [.placeholder])
 				}
 			}
 
@@ -161,7 +162,7 @@ struct RootTabView2: View {
 				.opacity(tabSelection == .settings ? 1 : 0)
 				.accessibilityHidden(tabSelection == .settings ? false : true)
 				.disabled(tabSelection == .settings ? false : true)
-				.redacted(reason: tabSelection == .settings ? [] : [.placeholder])
+//				.redacted(reason: tabSelection == .settings ? [] : [.placeholder])
 		}
 	}
 	
@@ -175,12 +176,12 @@ struct RootTabView2: View {
 			.focused($menuIsFocused)
 			.onChange(of: menuIsFocused, perform: { menuIsFocused in
 				if menuIsFocused {
-					withAnimation {
+					withAnimation(.interactiveSpring) {
 						state = .expanded
 						focusedItem = tabSelection
 					}
 				} else {
-					withAnimation {
+					withAnimation(.interactiveSpring) {
 						state = .collapsed
 					}
 				}
@@ -192,7 +193,7 @@ struct RootTabView2: View {
 		return VStack(spacing: 0) {
 			VStack {
 				Button(action: {
-					withAnimation {
+					withAnimation(.interactiveSpring) {
 						tabSelection = .home
 					}
 				}, label: {
@@ -208,17 +209,20 @@ struct RootTabView2: View {
 								.lineLimit(1)
 								.fixedSize()
 								.padding([.leading])
+							Spacer()
 						}
 					}
+					.padding()
 				})
-				.buttonStyle(.plain)
+				.buttonStyle(MatchedButtonStyle(namespace: menuButtonItemsNamespace))
+				.frame(maxWidth: .infinity)
 				.focused($focusedItem, equals: TabSelection.home)
 				.prefersDefaultFocus(in: menuFocusNamespace)
 				.accessibilityLabel("Home view")
 				.accessibilityHint("Go to the home screen to view all subscription content")
 			}
-			.padding([.top, .bottom], 30)
-			.padding([.leading, .trailing], showMenu ? 50 : 0)
+			.padding(.vertical, 30)
+			.padding(.horizontal, showMenu ? 50 : 0)
 			
 			ScrollViewReader { proxy in
 				ScrollView {
@@ -255,8 +259,8 @@ struct RootTabView2: View {
 							}
 						}
 					})
-					.padding([.leading, .trailing], 30)
-					.padding([.top, .bottom], 15)
+					.padding(.vertical, 30)
+					.padding(.horizontal, showMenu ? 50 : 15)
 				}
 				.coordinateSpace(name: "scroll")
 				.background(GeometryReader { geoProxy in
@@ -273,7 +277,7 @@ struct RootTabView2: View {
 			
 			VStack {
 				Button(action: {
-					withAnimation {
+					withAnimation(.interactiveSpring) {
 						tabSelection = .settings
 					}
 				}, label: {
@@ -284,18 +288,21 @@ struct RootTabView2: View {
 								.lineLimit(1)
 								.fixedSize()
 								.padding([.leading])
+							Spacer()
 						}
 					}
+					.padding()
 				})
-				.buttonStyle(.plain)
-				.animation(.linear, value: showMenu)
+				.buttonStyle(MatchedButtonStyle(namespace: menuButtonItemsNamespace))
+				.frame(maxWidth: .infinity)
+				.animation(.interactiveSpring, value: showMenu)
 				.focused($focusedItem, equals: TabSelection.settings)
 				.padding([.bottom], 20)
 				.accessibilityLabel("Wasserflug Settings")
 				.accessibilityHint("Go to the settings page")
 			}
-			.padding([.top, .bottom], 30)
-			.padding([.leading, .trailing], showMenu ? 50 : 0)
+			.padding(.vertical, 30)
+			.padding(.horizontal, showMenu ? 50 : 0)
 		}
 		.background(FPColors.sidebarBlue)
 		.environment(\.colorScheme, .dark)
@@ -307,7 +314,7 @@ struct RootTabView2: View {
 		let indent: CGFloat = 0
 		let isSelected = tabSelection == .creator(creator.id)
 		return Button(action: {
-			withAnimation {
+			withAnimation(.interactiveSpring) {
 				tabSelection = .creator(creator.id)
 			}
 		}, label: {
@@ -332,13 +339,13 @@ struct RootTabView2: View {
 				}
 			}
 			.padding(15)
-			.background(isSelected ? VisualEffectView(effect: UIBlurEffect(style: .light)) : nil)
-			.animation(.spring(), value: showMenu)
+			.background(isSelected ? VisualEffectView(effect: UIBlurEffect(style: .light)).cornerRadius(12) : nil)
+			.animation(.interactiveSpring, value: showMenu)
 			.accessibilityElement(children: .ignore)
 			.accessibilityLabel("Creator \(creator.title)")
 		})
-		.background(.clear)
-		.buttonStyle(.card)
+		.buttonStyle(MatchedButtonStyle(namespace: menuButtonItemsNamespace))
+		.frame(maxWidth: .infinity)
 	}
 	
 	func button(forChannel channel: ChannelModel, creator: CreatorModelV3) -> some View {
@@ -347,7 +354,7 @@ struct RootTabView2: View {
 		let indent: CGFloat = showMenu ? 40 : 0
 		let isSelected = tabSelection == .channel(channel.id)
 		return Button(action: {
-			withAnimation {
+			withAnimation(.interactiveSpring) {
 				tabSelection = .channel(channel.id)
 			}
 		}, label: {
@@ -369,13 +376,13 @@ struct RootTabView2: View {
 				}
 			}
 			.padding(15)
-			.background(isSelected ? VisualEffectView(effect: UIBlurEffect(style: .light)) : nil)
-			.animation(.spring(), value: showMenu)
+			.background(isSelected ? VisualEffectView(effect: UIBlurEffect(style: .light)).cornerRadius(12) : nil)
+			.animation(.interactiveSpring, value: showMenu)
 			.accessibilityElement(children: .ignore)
 			.accessibilityLabel("Channel \(channel.title)")
 		})
-		.background(.clear)
-		.buttonStyle(.card)
+		.buttonStyle(MatchedButtonStyle(namespace: menuButtonItemsNamespace))
+		.frame(maxWidth: .infinity)
 	}
 }
 
@@ -390,5 +397,33 @@ struct RootTabView2_Previews: PreviewProvider {
 			.environmentObject(MockData.userInfo)
 			.environment(\.fpApiService, MockFPAPIService())
 			.previewDisplayName("Collapsed")
+	}
+}
+
+struct MatchedButtonStyle: ButtonStyle {
+	
+	private static let matchedId = "MatchedButtonStyle"
+	
+	let namespace: Namespace.ID
+	@Environment(\.isFocused) private var isFocused: Bool
+	@Environment(\.colorScheme) private var colorScheme: ColorScheme
+	
+	@ViewBuilder func makeBody(configuration: Self.Configuration) -> some View {
+		configuration.label
+			.foregroundStyle(isFocused ? .black : colorScheme == .dark ? .white : .black)
+//			.padding(.horizontal, 40)
+//			.padding(.vertical, 12)
+			.scaleEffect(isFocused && !configuration.isPressed ? 1.15 : 1.0)
+			.background(content: {
+				if isFocused {
+					RoundedRectangle(cornerRadius: 12)
+						.fill(.white)
+						.shadow(radius: configuration.isPressed ? 10 : 15, y: configuration.isPressed ? 10 : 25)
+						.scaleEffect(configuration.isPressed ? 1.0 : 1.15)
+						.matchedGeometryEffect(id: Self.matchedId, in: namespace)
+				}
+			})
+			.animation(.interactiveSpring, value: isFocused)
+			.animation(.interactiveSpring, value: configuration.isPressed)
 	}
 }
