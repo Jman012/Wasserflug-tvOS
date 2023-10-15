@@ -37,7 +37,7 @@ struct RootTabView2: View {
 	@Environment(\.scenePhase) var scenePhase
 	
 	@State var fpFrontendSocket: FPFrontendSocket
-	let fixedWidth: CGFloat = 160
+	let fixedWidth: CGFloat = 150
 	@State var tabSelection: TabSelection = .home
 	@State var state: SideBarState = .expanded
 	@State var scrollViewFrameHeight = 1000.0
@@ -178,6 +178,8 @@ struct RootTabView2: View {
 				if menuIsFocused {
 					withAnimation(.interactiveSpring) {
 						state = .expanded
+					}
+					withAnimation(nil) {
 						focusedItem = tabSelection
 					}
 				} else {
@@ -423,7 +425,7 @@ struct MatchedButtonStyle: ButtonStyle {
 						.matchedGeometryEffect(id: Self.matchedId, in: namespace)
 				}
 			})
-			.animation(.interactiveSpring, value: isFocused)
+			.animation(.interactiveSpring.speed(0.5), value: isFocused)
 			.animation(.interactiveSpring, value: configuration.isPressed)
 	}
 }
