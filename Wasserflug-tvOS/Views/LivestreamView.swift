@@ -56,6 +56,11 @@ struct LivestreamView<ChatClient>: View where ChatClient: FPChatClient {
 										self.chatState = .expanded
 									}
 								}, shouldPlay: $shouldPlay)
+								.onAppear {
+									UIApplication.shared.isIdleTimerDisabled = true
+								}.onDisappear {
+									UIApplication.shared.isIdleTimerDisabled = false
+								}
 							}
 						}
 						.overlay(alignment: .topTrailing, content: {
