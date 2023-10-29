@@ -60,13 +60,13 @@ extension ImageModelShared {
 		}
 		
 		let geometryMagnitude = Int(geometrySize.width * geometrySize.height)
-		var difference = abs((self.width * self.height) - geometryMagnitude)
+		var difference = (self.width * self.height) - geometryMagnitude
 		var path = self.path
 		
 		for childImage in self.childImages ?? [] {
-			let childDifference = abs((childImage.width * childImage.height) - geometryMagnitude)
+			let childDifference = (childImage.width * childImage.height) - geometryMagnitude
 			
-			if childDifference < difference {
+			if childDifference >= 0 && childDifference < difference {
 				difference = childDifference
 				path = childImage.path
 			}
