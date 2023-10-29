@@ -104,7 +104,7 @@ struct RootTabView2: View {
 				UIAccessibility.post(notification: .announcement, argument: "Switched to settings screen")
 			}
 		}
-		.fpSocketControlSocket(fpFrontendSocket, on: [.onAppear, .onSceneActive, .onSceneInactive, .onSceneBackground])
+		.fpSocketControlSocket(fpFrontendSocket, on: [.onAppear, .onSceneActive, .onSceneBackground])
 	}
 	
 	var contentView: some View {

@@ -47,7 +47,7 @@ struct ContentView: View {
 		.onReceive(NotificationCenter.default.publisher(for: .loggedOut, object: nil), perform: { _ in
 			viewModel.determineAuthenticationStatus()
 		})
-		.fpSocketControlSocket(ContentView.fpChatManager, on: [.onSceneActive, .onSceneInactive, .onSceneInactive])
+		.fpSocketControlSocket(ContentView.fpChatManager, on: [.onSceneActive, .onSceneBackground])
 		.alert("Application Error", isPresented: $viewModel.showAuthenticationErrorAlert, presenting: viewModel.authenticationCheckError, actions: { _ in
 			Button("OK", action: {})
 			Button("More Information", action: {
