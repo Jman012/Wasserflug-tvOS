@@ -444,7 +444,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E753375D27CAFAFF0010E3D2 /* Build configuration list for PBXNativeTarget "Wasserflug-tvOS" */;
 			buildPhases = (
-				E76E31942A647F2100242CEC /* ShellScript */,
+				E76E31942A647F2100242CEC /* Run Script */,
 				E753373527CAFAFE0010E3D2 /* Sources */,
 				E753373627CAFAFE0010E3D2 /* Frameworks */,
 				E753373727CAFAFE0010E3D2 /* Resources */,
@@ -578,7 +578,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		E76E31942A647F2100242CEC /* ShellScript */ = {
+		E76E31942A647F2100242CEC /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -588,6 +588,7 @@
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -748,7 +749,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -811,7 +812,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
