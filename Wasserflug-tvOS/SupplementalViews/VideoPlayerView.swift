@@ -28,6 +28,8 @@ struct VideoPlayerView: UIViewControllerRepresentable {
 		])
 		let vc = AVPlayerViewController()
 		vc.delegate = context.coordinator
+		vc.speeds = viewModel.supportedSpeeds
+		vc.view.layoutIfNeeded() // This is needed or the OOTB speed controls don't display until you show the video for the second time
 		vc.transportBarCustomMenuItems = [createQualityAction()]
 		let playerItem = viewModel.createAVPlayerItem(desiredQuality: desiredQuality)
 		

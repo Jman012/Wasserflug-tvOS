@@ -29,6 +29,14 @@ class VideoViewModel: BaseViewModel, ObservableObject {
 	let contentPost: ContentPostV3Response
 	let description: AttributedString
 	
+	let supportedSpeeds = [AVPlaybackSpeed(rate: 0.5, localizedName: "x0.5"),
+						   AVPlaybackSpeed(rate: 0.75, localizedName: "x0.75"),
+						   AVPlaybackSpeed(rate: 1.0, localizedName: "x1.0"),
+						   AVPlaybackSpeed(rate: 1.25, localizedName: "x1.25"),
+						   AVPlaybackSpeed(rate: 1.5, localizedName: "x1.5"),
+						   AVPlaybackSpeed(rate: 1.75, localizedName: "x1.75"),
+						   AVPlaybackSpeed(rate: 2.0, localizedName: "x2.0")]
+	
 	var avMetadataItems: [AVMetadataItem] {
 		let desc = String(description.characters)
 		
