@@ -88,6 +88,7 @@
 		E7A469B32A9BCF51003A156A /* FPChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A469B22A9BCF51003A156A /* FPChatManager.swift */; };
 		E7A469B52A9BCF59003A156A /* FPChatClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A469B42A9BCF59003A156A /* FPChatClient.swift */; };
 		E7BD7E7528E6682900E1BBE9 /* DeliveryHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BD7E7428E6682900E1BBE9 /* DeliveryHelper.swift */; };
+		E7E713332CB4EB19003B8A0F /* MultipartKit in Frameworks */ = {isa = PBXBuildFile; productRef = E7E713322CB4EB19003B8A0F /* MultipartKit */; };
 		E7F2F23D2A113F0000602991 /* OnCustomAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F2F23C2A113F0000602991 /* OnCustomAppear.swift */; };
 /* End PBXBuildFile section */
 
@@ -201,6 +202,7 @@
 			files = (
 				E75337BC27CB07900010E3D2 /* FloatplaneAPIClient in Frameworks */,
 				E7304FBB2A86FE730008DE93 /* FloatplaneAPIAsync in Frameworks */,
+				E7E713332CB4EB19003B8A0F /* MultipartKit in Frameworks */,
 				E7304FAE2A86F9B60008DE93 /* SocketIO in Frameworks */,
 				E74C98A62A080B9E00FDDB9C /* DebouncedOnChange in Frameworks */,
 				E76D685C2A927EE4009A2374 /* BigNumber in Frameworks */,
@@ -461,6 +463,7 @@
 				E7304FAD2A86F9B60008DE93 /* SocketIO */,
 				E7304FBA2A86FE730008DE93 /* FloatplaneAPIAsync */,
 				E76D685B2A927EE4009A2374 /* BigNumber */,
+				E7E713322CB4EB19003B8A0F /* MultipartKit */,
 			);
 			productName = "Wasserflug-tvOS";
 			productReference = E753373927CAFAFE0010E3D2 /* Wasserflug.app */;
@@ -539,6 +542,7 @@
 				E74C98A42A080B9E00FDDB9C /* XCRemoteSwiftPackageReference "DebouncedOnChange" */,
 				E7304FAC2A86F9B60008DE93 /* XCRemoteSwiftPackageReference "socket" */,
 				E76D685A2A927EE4009A2374 /* XCRemoteSwiftPackageReference "Swift-BigInt" */,
+				E7E713312CB4EB19003B8A0F /* XCRemoteSwiftPackageReference "multipart-kit" */,
 			);
 			productRefGroup = E753373A27CAFAFE0010E3D2 /* Products */;
 			projectDirPath = "";
@@ -1034,7 +1038,7 @@
 			repositoryURL = "https://github.com/vapor/vapor";
 			requirement = {
 				kind = exactVersion;
-				version = 4.65.2;
+				version = 4.106.0;
 			};
 		};
 		E76D685A2A927EE4009A2374 /* XCRemoteSwiftPackageReference "Swift-BigInt" */ = {
@@ -1043,6 +1047,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.2.1;
+			};
+		};
+		E7E713312CB4EB19003B8A0F /* XCRemoteSwiftPackageReference "multipart-kit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vapor/multipart-kit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.7.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1075,6 +1087,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E76D685A2A927EE4009A2374 /* XCRemoteSwiftPackageReference "Swift-BigInt" */;
 			productName = BigNumber;
+		};
+		E7E713322CB4EB19003B8A0F /* MultipartKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E7E713312CB4EB19003B8A0F /* XCRemoteSwiftPackageReference "multipart-kit" */;
+			productName = MultipartKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 

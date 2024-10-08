@@ -12,7 +12,7 @@ private struct InnerShadow: ViewModifier {
 	var edges: Edge.Set
 
 	private var colors: [Color] {
-		[color.opacity(0.75), color.opacity(0.0), .clear]
+		[color.opacity(0.25), color.opacity(0.0)]
 	}
 
 	func body(content: Content) -> some View {

@@ -38,6 +38,7 @@ struct RootTabView2: View {
 	
 	@State var fpFrontendSocket: FPFrontendSocket
 	let fixedWidth: CGFloat = 150
+	let maxExpandedButtonWidth: CGFloat = 400
 	@State var tabSelection: TabSelection = .home
 	@State var state: SideBarState = .expanded
 	@State var scrollViewFrameHeight = 1000.0
@@ -45,7 +46,6 @@ struct RootTabView2: View {
 	
 	@FocusState var menuIsFocused: Bool
 	@FocusState var contentIsFocused: Bool
-	@FocusState var focusHackIsFocused: Bool
 	@Namespace var menuFocusNamespace
 	@Namespace var contentFocusNamespace
 	@Namespace var menuButtonItemsNamespace
@@ -54,14 +54,11 @@ struct RootTabView2: View {
 	var body: some View {
 		HStack(spacing: 0) {
 			sideBarView
-				.zIndex(2)
 				.accessibilityElement(children: .contain)
 				.accessibilityLabel("Navigation sidebar")
 			contentView
-				.zIndex(1)
 				.accessibilityElement(children: .contain)
 				.accessibilityLabel("Main content")
-				.disabled(state == .expanded)
 				.overlay {
 					if state == .expanded {
 						Rectangle()
@@ -69,25 +66,10 @@ struct RootTabView2: View {
 					}
 				}
 		}
-		.overlay(alignment: .trailing, content: {
-			if state == .expanded {
-				Rectangle()
-					.fill(.clear)
-					.frame(maxWidth: 50, maxHeight: .infinity)
-					.focusable(true)
-					.focused($focusHackIsFocused)
-			}
-		})
 		.ignoresSafeArea()
 		.onFirstAppear {
 			menuIsFocused = true
 		}
-		.onChange(of: focusHackIsFocused, perform: { isFocused in
-			if isFocused {
-				focusHackIsFocused = false
-				contentIsFocused = true
-			}
-		})
 		.onChange(of: tabSelection) { tabSelection in
 			switch tabSelection {
 			case .home:
@@ -114,7 +96,9 @@ struct RootTabView2: View {
 			.focusScope(contentFocusNamespace)
 			.focused($contentIsFocused)
 			.onExitCommand(perform: {
+				print("contentView onExitCommand")
 				if state == .collapsed {
+					print("contentView onExitCommand setMenuIsFocused = true")
 					withAnimation(.interactiveSpring) {
 						menuIsFocused = true
 					}
@@ -129,7 +113,6 @@ struct RootTabView2: View {
 				.opacity(tabSelection == .home ? 1 : 0)
 				.accessibilityHidden(tabSelection == .home ? false : true)
 				.disabled(tabSelection == .home ? false : true)
-//				.redacted(reason: tabSelection == .home ? [] : [.placeholder])
 
 			ForEach(userInfo.creatorsInOrder, id: \.0.id) { creator, creatorOwner in
 				CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService,
@@ -141,7 +124,6 @@ struct RootTabView2: View {
 					.opacity(tabSelection == .creator(creator.id) ? 1 : 0)
 					.accessibilityHidden(tabSelection == .creator(creator.id) ? false : true)
 					.disabled(tabSelection == .creator(creator.id) ? false : true)
-//					.redacted(reason: tabSelection == .creator(creator.id) ? [] : [.placeholder])
 				
 				ForEach(creator.channels, id: \.id) { channel in
 					CreatorContentView(viewModel: CreatorContentViewModel(fpApiService: fpApiService,
@@ -153,7 +135,6 @@ struct RootTabView2: View {
 						.opacity(tabSelection == .channel(channel.id) ? 1 : 0)
 						.accessibilityHidden(tabSelection == .channel(channel.id) ? false : true)
 						.disabled(tabSelection == .channel(channel.id) ? false : true)
-//						.redacted(reason: tabSelection == .channel(channel.id) ? [] : [.placeholder])
 				}
 			}
 
@@ -162,14 +143,11 @@ struct RootTabView2: View {
 				.opacity(tabSelection == .settings ? 1 : 0)
 				.accessibilityHidden(tabSelection == .settings ? false : true)
 				.disabled(tabSelection == .settings ? false : true)
-//				.redacted(reason: tabSelection == .settings ? [] : [.placeholder])
 		}
 	}
 	
 	var sideBarView: some View {
 		sideBar
-			.fixedSize(horizontal: true, vertical: false)
-			.frame(width: fixedWidth, alignment: .leading)
 			// These deal with focus management and focus transitions
 			.focusSection()
 			.focusScope(menuFocusNamespace)
@@ -201,7 +179,7 @@ struct RootTabView2: View {
 				}, label: {
 					HStack(spacing: 0) {
 						if showMenu {
-							Spacer()
+							Spacer(minLength: 0)
 						}
 						Image("wasserflug-logo")
 							.resizable()
@@ -214,13 +192,13 @@ struct RootTabView2: View {
 								.lineLimit(1)
 								.fixedSize()
 								.padding([.leading])
-							Spacer()
+							Spacer(minLength: 0)
 						}
 					}
 					.padding()
 				})
 				.buttonStyle(MatchedButtonStyle(namespace: menuButtonItemsNamespace))
-				.frame(maxWidth: .infinity)
+				.frame(maxWidth: showMenu ? maxExpandedButtonWidth : nil)
 				.focused($focusedItem, equals: TabSelection.home)
 				.prefersDefaultFocus(in: menuFocusNamespace)
 				.accessibilityLabel("Home view")
@@ -288,7 +266,7 @@ struct RootTabView2: View {
 				}, label: {
 					HStack(spacing: 0) {
 						if showMenu {
-							Spacer()
+							Spacer(minLength: 0)
 						}
 						Image(systemName: "gear")
 						if showMenu {
@@ -296,13 +274,13 @@ struct RootTabView2: View {
 								.lineLimit(1)
 								.fixedSize()
 								.padding([.leading])
-							Spacer()
+							Spacer(minLength: 0)
 						}
 					}
 					.padding()
 				})
 				.buttonStyle(MatchedButtonStyle(namespace: menuButtonItemsNamespace))
-				.frame(maxWidth: .infinity)
+				.frame(maxWidth: showMenu ? maxExpandedButtonWidth : nil)
 				.animation(.interactiveSpring, value: showMenu)
 				.focused($focusedItem, equals: TabSelection.settings)
 				.padding([.bottom], 20)
@@ -312,6 +290,7 @@ struct RootTabView2: View {
 			.padding(.vertical, 30)
 			.padding(.horizontal, showMenu ? 50 : 0)
 		}
+//		.frame(maxWidth: showMenu ? maxExpandedButtonWidth : nil)
 		.background(FPColors.sidebarBlue)
 		.environment(\.colorScheme, .dark)
 	}
@@ -340,7 +319,7 @@ struct RootTabView2: View {
 						.lineLimit(1)
 						.fixedSize()
 						.padding([.leading])
-					Spacer()
+					Spacer(minLength: 0)
 					if !creator.channels.isEmpty {
 						Image(systemName: "chevron.down")
 					}
@@ -353,7 +332,7 @@ struct RootTabView2: View {
 			.accessibilityLabel("Creator \(creator.title)")
 		})
 		.buttonStyle(MatchedButtonStyle(namespace: menuButtonItemsNamespace))
-		.frame(maxWidth: .infinity)
+		.frame(maxWidth: showMenu ? maxExpandedButtonWidth : nil)
 	}
 	
 	func button(forChannel channel: ChannelModel, creator: CreatorModelV3) -> some View {
@@ -380,7 +359,7 @@ struct RootTabView2: View {
 						.lineLimit(1)
 						.fixedSize()
 						.padding([.leading])
-					Spacer()
+					Spacer(minLength: 0)
 				}
 			}
 			.padding(15)
@@ -390,7 +369,7 @@ struct RootTabView2: View {
 			.accessibilityLabel("Channel \(channel.title)")
 		})
 		.buttonStyle(MatchedButtonStyle(namespace: menuButtonItemsNamespace))
-		.frame(maxWidth: .infinity)
+		.frame(maxWidth: showMenu ? maxExpandedButtonWidth : nil)
 	}
 }
 
