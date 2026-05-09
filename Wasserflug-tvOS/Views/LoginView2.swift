@@ -86,8 +86,8 @@ struct LoginView2: View {
 					}
 				}
 			case .authorized:
-				// For some reason we're trying to login while already authorized.
-				// Force the re-auth to continue by clearing and starting a new authorization.
+				/// For some reason we're trying to login while already authorized.
+				/// Force the re-auth to continue by clearing and starting a new authorization.
 				oauth.clear()
 				if let provider = oauth.providers.first {
 					oauth.authorize(provider: provider, grantType: .deviceCode)

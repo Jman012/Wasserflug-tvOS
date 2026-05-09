@@ -855,7 +855,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Wasserflug-tvOS/Wasserflug-tvOS.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 36;
+				CURRENT_PROJECT_VERSION = 38;
 				DEVELOPMENT_ASSET_PATHS = "\"Wasserflug-tvOS/Preview Content\"";
 				DEVELOPMENT_TEAM = 2TJ5K7WSP8;
 				ENABLE_PREVIEWS = YES;
@@ -887,7 +887,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Wasserflug-tvOS/Wasserflug-tvOS.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 36;
+				CURRENT_PROJECT_VERSION = 38;
 				DEVELOPMENT_ASSET_PATHS = "\"Wasserflug-tvOS/Preview Content\"";
 				DEVELOPMENT_TEAM = 2TJ5K7WSP8;
 				ENABLE_PREVIEWS = YES;
@@ -1073,8 +1073,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mkrd/Swift-BigInt.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.2.1;
+				kind = exactVersion;
+				version = 2.4.0;
 			};
 		};
 		E7E713312CB4EB19003B8A0F /* XCRemoteSwiftPackageReference "multipart-kit" */ = {

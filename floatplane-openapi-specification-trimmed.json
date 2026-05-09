@@ -2374,9 +2374,6 @@
                         "type": "string",
                         "nullable": true
                     },
-                    "interval": {
-                        "type": "string"
-                    },
                     "featured": {
                         "type": "boolean"
                     },
@@ -2404,7 +2401,6 @@
                     "price",
                     "currency",
                     "logo",
-                    "interval",
                     "featured",
                     "discordServers",
                     "discordRoles"
@@ -7155,7 +7151,6 @@
                                             "priceYearly": "50.00",
                                             "currency": "usd",
                                             "logo": null,
-                                            "interval": "month",
                                             "featured": true,
                                             "allowGrandfatheredAccess": false,
                                             "discordServers": [],
